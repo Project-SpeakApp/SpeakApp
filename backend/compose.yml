@@ -19,7 +19,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=user_db
     volumes:
-      - user_db_host:/var/lib/postgresql/data
+      - user_db_host:/var/lib/postgresql/user/data
     ports:
       - 5432:5432
     networks:
@@ -30,9 +30,44 @@ services:
       timeout: 5s
       retries: 5
 
+
+  post_service:
+    build: post-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - 8082:8082
+    networks:
+      - network_post_db_service
+    depends_on:
+      post_db_host:
+        condition: service_healthy
+
+  post_db_host:
+    image: postgres:16.0-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=post_db
+      - PGPORT=5433
+    volumes:
+      - post_db_host:/var/lib/postgresql/post/data
+    ports:
+      - 5433:5433
+    networks:
+      - network_post_db_service
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   network_user_db_service:
+  network_post_db_service:
 
 
 volumes:
   user_db_host:
+  post_db_host:
