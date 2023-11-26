@@ -22,22 +22,22 @@ services:
     ports:
       - 8081:8081
     networks:
-      - network_user_db_service
+      - net_userDB_userServ
     depends_on:
-      user_db_host:
+      user_db_service:
         condition: service_healthy
 
-  user_db_host:
+  user_db_service:
     <<: *db
     environment:
       <<: *db-env
       POSTGRES_DB: user_db
     volumes:
-      - user_db_host:/var/lib/postgresql/data
+      - vol_user_db:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
-      - network_user_db_service
+      - net_userDB_userServ
 
   post_service:
     <<: *service
@@ -45,28 +45,29 @@ services:
     ports:
       - 8082:8082
     networks:
-      - network_post_db_service
+      - net_postDB_postServ
     depends_on:
-      post_db_host:
+      post_db_service:
         condition: service_healthy
 
-  post_db_host:
+  post_db_service:
     <<: *db
     environment:
       <<: *db-env
       POSTGRES_DB: post_db
       PGPORT: 5433
     volumes:
-      - post_db_host:/var/lib/postgresql/data
+      - vol_post_db:/var/lib/postgresql/data
     ports:
       - 5433:5433
     networks:
-      - network_post_db_service
+      - net_postDB_postServ
 
 networks:
-  network_user_db_service:
-  network_post_db_service:
+  net_postDB_postServ:
+  net_userDB_userServ:
+  net_postServ_userServ:
 
 volumes:
-  user_db_host:
-  post_db_host:
+  vol_post_db:
+  vol_user_db:
