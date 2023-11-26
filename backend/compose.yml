@@ -23,6 +23,7 @@ services:
       - 8081:8081
     networks:
       - net_userDB_userServ
+      - net_postServ_userServ
     depends_on:
       user_db_service:
         condition: service_healthy
@@ -46,6 +47,7 @@ services:
       - 8082:8082
     networks:
       - net_postDB_postServ
+      - net_postServ_userServ
     depends_on:
       post_db_service:
         condition: service_healthy
