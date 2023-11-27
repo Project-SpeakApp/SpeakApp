@@ -27,6 +27,6 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:postgresql://post_db_host:5433/post_db
+    url: jdbc:postgresql://post_db_service:5433/post_db
     username: postgres
     password: postgres
