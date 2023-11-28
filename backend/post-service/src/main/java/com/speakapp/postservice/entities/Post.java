@@ -25,16 +25,16 @@ public class Post {
     @Column(nullable = false)
     private UUID userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 25)
     private Timestamp createdAt;
 
-    @Column
+    @Column(length = 25)
     private Timestamp editedAt;
 
     @Column
     private boolean isDeleted;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 3000)
     private String content;
 
 //   TODO Media service for photos, audio, video
