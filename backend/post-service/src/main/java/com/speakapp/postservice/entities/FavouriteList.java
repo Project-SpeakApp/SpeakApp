@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -15,30 +13,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post {
-
+public class FavouriteList {
     @Id
     @GeneratedValue
-    private UUID postId;
+    private UUID listId;
 
     @Column(nullable = false)
     private UUID userId;
 
     @Column(nullable = false)
-    private Timestamp createdAt;
-
-    @Column
-    private Timestamp editedAt;
-
-    @Column
-    private boolean isDeleted;
-
-    @Column(nullable = false)
-    private String content;
-
-//   TODO Media service for photos, audio, video
-//    @Lob
-//    private byte[] media;
+    private String name;
 
 }
-

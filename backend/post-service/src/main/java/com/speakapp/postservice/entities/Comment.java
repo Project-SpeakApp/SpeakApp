@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -15,11 +14,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post {
+public class Comment {
 
     @Id
     @GeneratedValue
-    private UUID postId;
+    private UUID commentId;
+
+    @ManyToOne
+    @JoinColumn(name = "postId")
+    private Post postId;
 
     @Column(nullable = false)
     private UUID userId;
@@ -33,12 +36,11 @@ public class Post {
     @Column
     private boolean isDeleted;
 
-    @Column(nullable = false)
+    @Column
     private String content;
 
-//   TODO Media service for photos, audio, video
-//    @Lob
-//    private byte[] media;
+    //   TODO Media service for photos, audio, video
+    //    @Lob
+    //    private byte[] media;
 
 }
-
