@@ -25,10 +25,10 @@ public class Post {
     @Column(nullable = false)
     private UUID userId;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false)
     private Timestamp createdAt;
 
-    @Column(length = 25)
+    @Column
     private Timestamp editedAt;
 
     @Column
