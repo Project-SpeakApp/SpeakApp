@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Entity
+@Entity(name = "FavouritePost")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "favourite_post")
 public class FavouritePost {
     @Id
     @GeneratedValue

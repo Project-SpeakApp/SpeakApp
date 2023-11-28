@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Entity
+@Entity(name = "Tagging")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "tagging")
 public class Tagging {
     @Id
     @GeneratedValue
@@ -23,7 +24,7 @@ public class Tagging {
     private Post postId;
 
     @ManyToOne
-    @JoinColumn(name = "tagId")
+    @JoinColumn(name = "tagging")
     private Tag tagId;
 
 }

@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "Comment")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "comment")
 public class Comment {
 
     @Id

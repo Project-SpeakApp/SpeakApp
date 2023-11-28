@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +40,7 @@ public class Post {
 //   TODO Media service for photos, audio, video
 //    @Lob
 //    private byte[] media;
+
 
 }
 

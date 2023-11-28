@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "Tag")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "tag")
 public class Tag {
     @Id
     @GeneratedValue
