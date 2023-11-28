@@ -1,21 +1,22 @@
 package com.speakapp.postservice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity(name = "Comment")
 @Data
+@SuperBuilder
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "comment")
-public class Comment {
+public class Comment extends Auditable {
 
     @Id
     @GeneratedValue
@@ -27,12 +28,6 @@ public class Comment {
 
     @Column(nullable = false)
     private UUID userId;
-
-    @Column(nullable = false)
-    private Timestamp createdAt;
-
-    @Column
-    private Timestamp editedAt;
 
     @Column
     private boolean isDeleted;

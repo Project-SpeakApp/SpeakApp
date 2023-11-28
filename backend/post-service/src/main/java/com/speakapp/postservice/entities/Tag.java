@@ -20,7 +20,7 @@ public class Tag {
     @GeneratedValue
     private UUID tagId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 64)
     private String tagName;
 
 }
