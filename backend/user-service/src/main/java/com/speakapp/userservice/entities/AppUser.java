@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -32,6 +32,7 @@ public class AppUser {
     @Column(length = 1024)
     private String about;
 
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
 
     @Column(nullable = false)
@@ -41,7 +42,7 @@ public class AppUser {
     private String email;
 
     @Column(nullable = false)
-    private Timestamp lastOnline;
+    private Instant lastOnline;
 
     // TODO Add media
     //    private String bgPhotoUrl;
