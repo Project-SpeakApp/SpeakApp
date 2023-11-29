@@ -30,4 +30,19 @@
   <p class="font-bold">The quick brown fox jumps over the lazy dog.</p>
   <p class="font-extrabold">The quick brown fox jumps over the lazy dog.</p>
   <p class="font-black">The quick brown fox jumps over the lazy dog.</p>
+
+  <button class="btn btn-primary" (click)="onShowAlert()">Primary</button>
+  <ul class="fixed top-6 right-0">
+  <li *ngFor="let alert of alerts()">
+    <div [ngClass]="{
+      'relative h-32 w-64 m-2 text-white px-4 py-2 rounded shadow-lg ease-in-out duration-500 transition-all': true,
+      'bg-red-500': alert.type === 'error',
+      'bg-green-500': alert.type === 'success',
+      'bg-blue-500': alert.type === 'info',
+      'bg-yellow-500': alert.type === 'warning',
+      'right-4 opacity-100 transform': alert.isShown,
+      'opacity-0 -right-[24rem]': !alert.isShown,
+      'opacity-0 transition-opacity transform': alert.hide
+    }" >{{alert.message}}</div>
+</ul>
 <router-outlet></router-outlet>
