@@ -1,0 +1,86 @@
+#server:
+#  port: 8080 # Server Port for Api Gateway
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: all-posts-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=api/posts/**
+            - Method=GET
+            - Header=Authorization, .*   # JWT TOKEN
+            - Query=page, size  # Query must contain params page, size
+          filters:
+            - RewritePath=/api/posts/(?<segment>.*), /$\{segment}
+            - SetPath=/api/posts  # Service expects this route
+
+        - id: post-by-id-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=/api/posts/{postId}
+            - Method=GET
+            - Header=Authorization, .* # JWT TOKEN
+          filters:
+            - RewritePath=/api/posts/(?<segment>.*), /$\{segment}
+            - SetPath/api/posts/{postId}  # Service expects this route
+
+        - id: by-user-posts-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=/api/posts/by-user/{userId}
+            - Method=GET
+            - Header=Authorization, .* # JWT TOKEN
+            - Query=currentPage, pageSize, sort
+          filters:
+            - RewritePath=/api/posts/by-user/(?<segment>.*), /$\{segment}
+            - SetPath=/api/posts/by-user/{userId}
+
+        - id: search-posts-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=/api/search
+            - Method=GET
+            - Header=Authorization, .* # JWT TOKEN
+            - Query=page, size, words
+          filters:
+            - RewritePath=/api/search/(?<segment>.*), /$\{segment}
+
+        - id: create-post-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=/api/posts
+            - Method=POST
+            - Header=Authorization, .* # JWT TOKEN
+          filters:
+            - RewritePath=/api/posts/(?<segment>.*), /$\{segment}
+            - SetPath=/api/posts
+#            - SetRequestHeader:
+#                Content-Type: application/json
+#                Request-Body: |
+#                  {
+#                    "content": "$request.body.content",
+#                    "photo": "$request.body.photo",
+#                    "taggedUsers": $request.body.taggedUsers
+#                  }
+
+        - id: update-post-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=/api/posts/{postId}
+            - Method=PUT
+            - Header=Authorization, .* # JWT TOKEN
+          filters:
+            - RewritePath=/api/posts/(?<segment>.*), /$\{segment}
+            - SetPath=/api/posts/{postId}
+
+        - id: delete-post-service
+          uri: ${POSTS_ROUTE_URI:http://localhost:8082}
+          predicates:
+            - Path=/api/posts/{postId}
+            - Method=DELETE
+            - Header=Authorization, .* # JWT TOKEN
+          filters:
+            - RewritePath=/api/posts/(?<segment>.*), /$\{segment}
+            - SetPath=/api/posts/{postId}
