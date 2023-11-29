@@ -30,3 +30,9 @@ spring:
     url: jdbc:postgresql://post_db_service:5433/post_db
     username: postgres
     password: postgres
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
