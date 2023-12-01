@@ -4,7 +4,17 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+          'fade': 'fade 1s ease-in-out reverse',
+      },
+      keyframes: {
+          fade: {
+            '0%': { opacity: '0' },
+            '100%': { opacity: '1' },
+          }
+      }
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

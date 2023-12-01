@@ -14,7 +14,11 @@ export class AppComponent {
   count = 0;
 
   onShowAlert() {
-    this.alertService.showAlert('This is an alert!' + this.count++, 'success');
+    this.alertService.showAlert('This is an alert! Read what it says carefully! You got it? ' + this.count++, 'success');
+  }
+
+  onRemoveAlert(alert: any) {
+    this.alertService.removeAlert(alert);
   }
 
   ngOnInit() {

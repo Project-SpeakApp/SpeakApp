@@ -18,21 +18,19 @@ export class AlertService {
     setTimeout(() => {
       alert.isShown = true;
       this.alerts.update(alerts => alerts.map(a => a.id === alert.id ? alert : a));
-    }, 300);
+    }, 100);
     // delete alert after 5 seconds
     setTimeout(() => this.closeAlert(alert), 5000);
   }
 
   closeAlert(alert: IAlert) {
-    console.log('closeAlert');
-    this.alerts.update(alerts => alerts.map(a => a.id === alert.id ? { ...a, hide: true } : a));
-    console.log(this.alerts().find(a => a.id === alert.id));
-    setTimeout(() => this.removeAlert(alert), 1000);
+    this.alerts.update(alerts => alerts.map(a => a.id === alert.id ? { ...a, isShown: false } : a));
+    // tutaj miało być transition ale nie działa
+    // setTimeout(() => this.removeAlert(alert), 100);
+    this.removeAlert(alert)
   }
 
   removeAlert(alert: IAlert) {
-    console.log('removeAlert');
-    console.log(this.alerts());
     this.alerts.update(alerts => alerts.filter(a => a.id !== alert.id));
   }
 }

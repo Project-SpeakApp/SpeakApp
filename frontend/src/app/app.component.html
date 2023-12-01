@@ -33,16 +33,14 @@
 
   <button class="btn btn-primary" (click)="onShowAlert()">Primary</button>
   <ul class="fixed top-6 right-0">
-  <li *ngFor="let alert of alerts()">
-    <div [ngClass]="{
-      'relative h-32 w-64 m-2 text-white px-4 py-2 rounded shadow-lg ease-in-out duration-500 transition-all': true,
-      'bg-red-500': alert.type === 'error',
-      'bg-green-500': alert.type === 'success',
-      'bg-blue-500': alert.type === 'info',
-      'bg-yellow-500': alert.type === 'warning',
-      'right-4 opacity-100 transform': alert.isShown,
-      'opacity-0 -right-[24rem]': !alert.isShown,
-      'opacity-0 transition-opacity transform': alert.hide
-    }" >{{alert.message}}</div>
+  <li *ngFor="let alert of alerts()" [ngClass]="{
+      'relative alert duration-500 transition-all w-[16rem] ease-in-out -right-1/2 opacity-0 shadow shadow-black border-none mb-4': true,
+      'right-4 z-30 opacity-100': alert.isShown,
+      'bg-red-500': alert.type ===  'error',
+      'bg-green-500': alert.type ===  'success',
+      'bg-blue-500': alert.type ===  'info',
+      'bg-yellow-500': alert.type ===  'warning'
+    }" (click)="onRemoveAlert(alert)">
+    <div>{{alert.message}}</div>
 </ul>
 <router-outlet></router-outlet>
