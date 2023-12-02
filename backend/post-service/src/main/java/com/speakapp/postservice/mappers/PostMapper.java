@@ -17,9 +17,9 @@ public interface PostMapper {
     Post toEntity(PostCreateDTO postCreateDTO, UUID userId);
 
     PostGetDTO toGetDTO(Post post,
-                               UserGetDTO author,
-                               Set<CommentGetDTO> comments,
-                               ReactionsGetDTO reactions,
-                               ReactionType currentUserReaction);
+                        UserGetDTO author,
+                        Set<CommentGetDTO> comments,
+                        ReactionsGetDTO reactions,
+                        ReactionType currentUserReaction);
 
 }
