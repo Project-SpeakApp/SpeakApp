@@ -22,7 +22,7 @@ public class CommentReaction {
 
     @ManyToOne
     @JoinColumn(name = "commentId")
-    private Comment commentId;
+    private Comment comment;
 
     @Column(nullable = false)
     private UUID userId;

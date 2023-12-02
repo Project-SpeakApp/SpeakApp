@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity(name = "Comment")
@@ -24,7 +23,7 @@ public class Comment extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "postId", nullable = false)
-    private Post postId;
+    private Post post;
 
     @Column(nullable = false)
     private UUID userId;
