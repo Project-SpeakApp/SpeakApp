@@ -18,7 +18,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PostGetDTO createPost(PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
+    public PostGetDTO createPost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
         return postService.createPost(postCreateDTO, userId);
     }
 
