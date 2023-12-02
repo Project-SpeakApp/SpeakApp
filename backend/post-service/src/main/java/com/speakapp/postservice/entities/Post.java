@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-
-import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +13,6 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Post extends Auditable{
 
     @Id

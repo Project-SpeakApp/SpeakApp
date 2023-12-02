@@ -13,7 +13,6 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "comment")
 public class Comment extends Auditable {
 

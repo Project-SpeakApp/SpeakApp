@@ -1,12 +1,8 @@
 package com.speakapp.postservice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Collection;
 import java.util.UUID;
 
 @Entity(name = "Tag")
@@ -15,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "tag")
+@EqualsAndHashCode
 public class Tag {
     @Id
     @GeneratedValue
