@@ -75,6 +75,8 @@ public class PostService {
         return commentGetDTOS;
     }
 
+    // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
+    // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForTheComment(Comment comment) {
         List<CommentReaction> commentReactions = commentReactionRepository.getCommentReactionByComment(comment);
 
@@ -93,6 +95,8 @@ public class PostService {
                 .build();
     }
 
+    // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
+    // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForThePost(Post post) {
         List<PostReaction> postReactions = postReactionRepository.findAllByPost(post);
 
