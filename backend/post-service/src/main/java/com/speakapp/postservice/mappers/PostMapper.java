@@ -7,13 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Mapper
 public interface PostMapper {
 
-    @Mapping(target = "isDeleted", constant = "true")
+    @Mapping(target = "isDeleted", constant = "false")
     @Mapping(target = "postId", ignore = true)
     Post toEntity(PostCreateDTO postCreateDTO, UUID userId);
 
