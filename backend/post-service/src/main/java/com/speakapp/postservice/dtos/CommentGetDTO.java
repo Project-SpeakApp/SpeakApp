@@ -3,7 +3,6 @@ package com.speakapp.postservice.dtos;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-import org.apache.catalina.User;
 
 import java.util.UUID;
 
@@ -17,4 +16,6 @@ public class CommentGetDTO {
     String content;
 
     UserGetDTO author;
+
+    ReactionsGetDTO reactionsGetDTO;
 }
