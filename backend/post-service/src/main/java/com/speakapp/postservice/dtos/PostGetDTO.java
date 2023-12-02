@@ -6,7 +6,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -22,7 +22,7 @@ public class PostGetDTO {
 
     Instant createdAt;
 
-    Set<CommentGetDTO> comments;
+    List<CommentGetDTO> comments;
 
     ReactionsGetDTO reactions;
 

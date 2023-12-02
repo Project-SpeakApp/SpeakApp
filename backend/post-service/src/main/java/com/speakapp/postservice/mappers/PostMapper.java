@@ -6,6 +6,7 @@ import com.speakapp.postservice.entities.ReactionType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public interface PostMapper {
 
     PostGetDTO toGetDTO(Post post,
                         UserGetDTO author,
-                        Set<CommentGetDTO> comments,
+                        List<CommentGetDTO> comments,
                         ReactionsGetDTO reactions,
                         ReactionType currentUserReaction);
 
