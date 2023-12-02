@@ -14,9 +14,9 @@ public interface PostMapper {
 
     @Mapping(target = "isDeleted", constant = "true")
     @Mapping(target = "postId", ignore = true)
-    public Post toEntity(PostCreateDTO postCreateDTO, UUID userId);
+    Post toEntity(PostCreateDTO postCreateDTO, UUID userId);
 
-    public PostGetDTO toGetDTO(Post post,
+    PostGetDTO toGetDTO(Post post,
                                UserGetDTO author,
                                Set<CommentGetDTO> comments,
                                ReactionsGetDTO reactions,
