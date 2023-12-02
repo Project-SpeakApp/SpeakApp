@@ -60,6 +60,7 @@ public class PostService {
 
         List<CommentGetDTO> commentGetDTOS = new ArrayList<>();
         for (Comment comment : comments) {
+            // TODO: Performance bottleneck in future - consider getting users from user-service by batches
             UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
             ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(comment);
 
