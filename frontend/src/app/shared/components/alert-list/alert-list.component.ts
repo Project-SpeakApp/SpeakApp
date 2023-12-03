@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-alert-list',
   templateUrl: './alert-list.component.html'
 })
-export class AlertListComponent {
+export class AlertListComponent implements OnInit {
 
   constructor(private alertService: AlertService) { }
 
