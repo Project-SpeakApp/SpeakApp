@@ -13,7 +13,7 @@ public class UserServiceCommunicationClient {
 
     public UserServiceCommunicationClient() {
         webClient = WebClient.builder()
-                .baseUrl("http://user-service:8081")
+                .baseUrl("http://user_service:8081")
                 .build();
     }
 
