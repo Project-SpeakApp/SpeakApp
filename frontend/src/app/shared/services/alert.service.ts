@@ -24,9 +24,9 @@ export class AlertService {
   }
 
   closeAlert(alert: IAlert) {
-    this.alerts.update(alerts => alerts.map(a => a.id === alert.id ? { ...a, isShown: false } : a));
+    this.alerts.update(alerts => alerts.map(a => a.id === alert.id ? { ...a, hide: true } : a));
     // tutaj miało być transition ale nie działa
-    // setTimeout(() => this.removeAlert(alert), 100);
+    //setTimeout(() => this.removeAlert(alert), 1000);
     this.removeAlert(alert)
   }
 
