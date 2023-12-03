@@ -1,10 +1,7 @@
 package com.speakapp.postservice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -14,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "post_reaction")
+@EqualsAndHashCode
 public class PostReaction {
     @Id
     @GeneratedValue
@@ -21,7 +19,7 @@ public class PostReaction {
 
     @ManyToOne
     @JoinColumn(name = "postId")
-    private Post postId;
+    private Post post;
 
     @Column(nullable = false)
     private UUID userId;
