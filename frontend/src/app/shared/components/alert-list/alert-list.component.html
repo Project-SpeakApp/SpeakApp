@@ -1,0 +1,16 @@
+<ul class="fixed top-6 right-0 mt-20">
+  <li
+    *ngFor="let alert of alerts()"
+    [ngClass]="{
+      'relative alert duration-500 transition-all w-[16rem] ease-in-out -right-1/2 opacity-0 shadow shadow-black border-none mb-4': true,
+      'right-4 z-30 opacity-100': alert.isShown,
+      'bg-red-500': alert.type === 'error',
+      'bg-green-500': alert.type === 'success',
+      'bg-blue-500': alert.type === 'info',
+      'bg-yellow-500': alert.type === 'warning'
+    }"
+    (click)="onRemoveAlert(alert)"
+  >
+    <div>{{ alert.message }}</div>
+  </li>
+</ul>
