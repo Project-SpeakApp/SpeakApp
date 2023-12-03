@@ -5,33 +5,42 @@
   </div>
   <!-- center menu-->
   <nav class="navbar-center flex flex-row justify-center gap-16 text-lg">
-    <div class="flex flex-row gap-2 transition duration-300 hover:scale-110">
+    <a
+      class="flex flex-row gap-2 transition duration-300 hover:scale-110"
+      routerLink="/home"
+    >
       <span class="material-symbols-outlined" style="font-size: 32px">
         home
       </span>
-      <a class="my-auto" routerLink="/home">Home</a>
-    </div>
-    <div class="flex flex-row gap-2 transition duration-300 hover:scale-110">
+      <h2 class="my-auto">Home</h2>
+    </a>
+    <a
+      class="flex flex-row gap-2 transition duration-300 hover:scale-110"
+      routerLink="/chats"
+    >
       <span class="material-symbols-outlined" style="font-size: 32px">
         chat
       </span>
-      <a class="my-auto" routerLink="/chats">Chats</a>
-    </div>
-    <div class="flex flex-row gap-2 transition duration-300 hover:scale-110">
+      <h2 class="my-auto">Chats</h2>
+    </a>
+    <a
+      class="flex flex-row gap-2 transition duration-300 hover:scale-110"
+      routerLink="/search"
+    >
       <span class="material-symbols-outlined" style="font-size: 32px">
         search
       </span>
-      <a class="my-auto" routerLink="/search">Search</a>
-    </div>
+      <h2 class="my-auto">Search</h2>
+    </a>
   </nav>
   <!-- user menu-->
-  <div class="navbar-end mr-16 w-100 gap-6">
-    <h2 class="text-lg font-semibold">Krzysio</h2>
-    <div class="avatar">
-      <div class="w-14 rounded-full">
-        <img
-          src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg"
-        />
+  <div class="navbar-end mr-16 w-100">
+    <div class="flex flex-row gap-6 cursor-pointer" routerLink="/profile">
+      <h2 class="text-lg font-semibold my-auto">Krzysio</h2>
+      <div class="avatar">
+        <div class="w-14 rounded-full">
+          <img src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg" />
+        </div>
       </div>
     </div>
   </div>
