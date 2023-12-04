@@ -1,0 +1,50 @@
+<header class="top-0 left-0 navbar h-20 fixed bg-primary">
+  <!-- logo -->
+  <div class="navbar-start ml-4 w-100 lg:ml-16">
+    <h1 class="text-3xl my-auto font-bold">SpeakApp</h1>
+  </div>
+  <!-- center menu-->
+  <nav
+    class="md:navbar-center md:static md:justify-center md:gap-16 md:w-auto
+           text-lg fixed left-0 bottom-0 bg-primary w-full h-20 m-0 justify-between px-4 flex flex-row "
+  >
+    <a
+      class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110"
+      routerLink="/home"
+    >
+      <span class="material-symbols-outlined" style="font-size: 32px">
+        home
+      </span>
+      <h2 class="my-auto hidden min-[320px]:block">Home</h2>
+    </a>
+    <a
+      class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110"
+      routerLink="/chats"
+    >
+      <span class="material-symbols-outlined" style="font-size: 32px">
+        chat
+      </span>
+      <h2 class="my-auto hidden min-[320px]:block">Chats</h2>
+    </a>
+    <a
+      class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110"
+      routerLink="/search"
+    >
+      <span class="material-symbols-outlined" style="font-size: 32px">
+        search
+      </span>
+      <h2 class="my-auto hidden min-[320px]:block">Search</h2>
+    </a>
+  </nav>
+  <!-- user menu-->
+  <div class="navbar-end mr-4 w-100 lg:mr-16">
+    <div class="flex flex-row gap-2 cursor-pointer sm:gap-6" routerLink="/profile">
+      <h2 class="text-lg font-semibold my-auto hidden min-[320px]:block">Krzysio</h2>
+      <div class="avatar">
+        <div class="w-14 rounded-full">
+          <img src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg" />
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
