@@ -9,8 +9,12 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,6 +56,41 @@ public class PostService {
                 reactionsGetDTO,
                 null
         );
+    }
+
+    public Map<String,Object> getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
+
+        List<PostGetDTO> userPostGetDTOS = new ArrayList<>();
+        for (Post userPost : userPostsPage.getContent()){
+            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(userPost.getUserId());
+            List<CommentGetDTO> postComments = getAllCommentsForThePost(userPost);
+            ReactionsGetDTO postReactions = getReactionsForThePost(userPost);
+            PostReaction currentUserReaction = postReactionRepository.findByPostAndUserId(userPost, userId);
+            ReactionType currentUserReactionType = null;
+            if(currentUserReaction!=null){
+                currentUserReactionType = currentUserReaction.getType();
+            }
+
+            PostGetDTO postGetDTO = postMapper.toGetDTO(
+                userPost,
+                postAuthor,
+                postComments,
+                postReactions,
+                currentUserReactionType
+            );
+            userPostGetDTOS.add(postGetDTO);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("posts", userPostGetDTOS);
+        response.put("currentPage", userPostsPage.getNumber()+1);
+        response.put("pageSize", userPostsPage.getSize());
+        response.put("totalPages", userPostsPage.getTotalPages());
+
+        return response;
+
     }
 
     @NotNull
