@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-
-import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "FavouriteList")
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
@@ -17,25 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post extends Auditable{
-
+@Table(name = "favourite_list")
+public class FavouriteList extends Auditable{
     @Id
     @GeneratedValue
-    private UUID postId;
+    private UUID listId;
 
     @Column(nullable = false)
     private UUID userId;
 
-    @Column
-    private boolean isDeleted;
-
-    @Column(nullable = false, length = 3000)
-    private String content;
-
-//   TODO Media service for photos, audio, video
-//    @Lob
-//    private byte[] media;
-
+    @Column(nullable = false)
+    private String name;
 
 }
-

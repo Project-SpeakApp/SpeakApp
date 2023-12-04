@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "Comment")
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
@@ -17,11 +15,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post extends Auditable{
+@Table(name = "comment")
+public class Comment extends Auditable {
 
     @Id
     @GeneratedValue
-    private UUID postId;
+    private UUID commentId;
+
+    @ManyToOne
+    @JoinColumn(name = "postId", nullable = false)
+    private Post postId;
 
     @Column(nullable = false)
     private UUID userId;
@@ -29,13 +32,11 @@ public class Post extends Auditable{
     @Column
     private boolean isDeleted;
 
-    @Column(nullable = false, length = 3000)
+    @Column(length = 500)
     private String content;
 
-//   TODO Media service for photos, audio, video
-//    @Lob
-//    private byte[] media;
-
+    //   TODO Media service for photos, audio, video
+    //    @Lob
+    //    private byte[] media;
 
 }
-
