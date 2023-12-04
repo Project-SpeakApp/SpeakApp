@@ -9,7 +9,6 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -52,7 +51,6 @@ public class PostService {
 
         return postMapper.toGetDTO(savedPost,
                 author,
-                commentGetDTOS,
                 reactionsGetDTO,
                 null
         );
@@ -65,7 +63,6 @@ public class PostService {
         List<PostGetDTO> userPostGetDTOS = new ArrayList<>();
         for (Post userPost : userPostsPage.getContent()){
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(userPost.getUserId());
-            List<CommentGetDTO> postComments = getAllCommentsForThePost(userPost);
             ReactionsGetDTO postReactions = getReactionsForThePost(userPost);
             PostReaction currentUserReaction = postReactionRepository.findByPostAndUserId(userPost, userId);
             ReactionType currentUserReactionType = null;
@@ -76,7 +73,6 @@ public class PostService {
             PostGetDTO postGetDTO = postMapper.toGetDTO(
                 userPost,
                 postAuthor,
-                postComments,
                 postReactions,
                 currentUserReactionType
             );

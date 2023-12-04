@@ -22,7 +22,7 @@ public class PostGetDTO {
 
     Instant createdAt;
 
-    List<CommentGetDTO> comments;
+   // List<CommentGetDTO> comments;
 
     ReactionsGetDTO reactions;
 

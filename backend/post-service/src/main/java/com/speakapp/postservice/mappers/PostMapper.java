@@ -18,7 +18,7 @@ public interface PostMapper {
 
     PostGetDTO toGetDTO(Post post,
                         UserGetDTO author,
-                        List<CommentGetDTO> comments,
+                        //List<CommentGetDTO> comments,
                         ReactionsGetDTO reactions,
                         ReactionType currentUserReaction);
 
