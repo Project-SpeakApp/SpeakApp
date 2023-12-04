@@ -11,7 +11,9 @@ import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -56,8 +58,11 @@ public class PostService {
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId){
 
-        //TODO: (permission checking) checking if user sending PUT request is author of the post
-        Post postUpdated = postRepository.getById(postId);
+        Post postUpdated = postRepository.getPostByPostId(postId);
+
+        if(postUpdated.getUserId() != userId){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
 
         postUpdated.setContent(postCreateDTO.getContent());
 

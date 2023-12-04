@@ -6,6 +6,7 @@ import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -23,9 +24,11 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) {
-        return postService.updatePost(postCreateDTO, postId, userId);
+    @ResponseStatus(HttpStatus.OK)
+    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId)
+            throws ResponseStatusException {
+            return postService.updatePost(postCreateDTO, postId, userId);
+
     }
 
 }
