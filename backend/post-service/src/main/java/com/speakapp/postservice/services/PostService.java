@@ -56,7 +56,7 @@ public class PostService {
         );
     }
 
-    public Map<String,Object> getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
+    public LatestUserPostsPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
 
@@ -79,13 +79,12 @@ public class PostService {
             userPostGetDTOS.add(postGetDTO);
         }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("posts", userPostGetDTOS);
-        response.put("currentPage", userPostsPage.getNumber()+1);
-        response.put("pageSize", userPostsPage.getSize());
-        response.put("totalPages", userPostsPage.getTotalPages());
-
-        return response;
+        return LatestUserPostsPageGetDTO.builder()
+                .posts(userPostGetDTOS)
+                .currentPage(userPostsPage.getNumber()+1)
+                .pageSize(userPostsPage.getSize())
+                .totalPages(userPostsPage.getTotalPages())
+                .build();
 
     }
 
