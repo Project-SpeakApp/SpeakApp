@@ -1,5 +1,6 @@
 package com.speakapp.userservice.controllers;
 
+import com.speakapp.userservice.dtos.AppUserCreateDTO;
 import com.speakapp.userservice.dtos.AppUserDTO;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.services.UserService;
@@ -18,7 +19,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserDTO getUserById(@RequestHeader(name = "UserId") UUID userId)
+    public AppUserDTO getUserById(@PathVariable(name = "userId") UUID userId)
             throws UserNotFoundException {
         return userService.getUser(userId);
     }
