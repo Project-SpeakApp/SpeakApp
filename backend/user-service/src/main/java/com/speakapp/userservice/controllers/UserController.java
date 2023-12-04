@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public AppUserDTO getUserById(@RequestHeader(name = "UserId") UUID userId)
             throws UserNotFoundException {
