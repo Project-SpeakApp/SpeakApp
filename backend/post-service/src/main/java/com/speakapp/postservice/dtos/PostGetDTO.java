@@ -22,8 +22,6 @@ public class PostGetDTO {
 
     Instant createdAt;
 
-   // List<CommentGetDTO> comments;
-
     ReactionsGetDTO reactions;
 
     ReactionType currentUserReaction;
