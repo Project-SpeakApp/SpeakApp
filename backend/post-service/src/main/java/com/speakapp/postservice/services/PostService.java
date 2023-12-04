@@ -55,6 +55,8 @@ public class PostService {
     }
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId){
+
+        //TODO: (permission checking) checking if user sending PUT request is author of the post
         Post postUpdated = postRepository.getById(postId);
 
         postUpdated.setContent(postCreateDTO.getContent());
