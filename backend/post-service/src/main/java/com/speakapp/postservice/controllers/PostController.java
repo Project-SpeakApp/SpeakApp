@@ -26,8 +26,8 @@ public class PostController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Object> getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
-        @RequestParam(defaultValue = "5") int pageSize, @RequestParam UUID userId){
-        return postService.getUsersLatestPosts(pageNumber, pageSize, userId);
+        @RequestParam(defaultValue = "5") int pageSize, @RequestParam UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
+        return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 
 }
