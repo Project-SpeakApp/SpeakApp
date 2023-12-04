@@ -22,4 +22,10 @@ public class PostController {
         return postService.createPost(postCreateDTO, userId);
     }
 
+    @PostMapping("/{postId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) {
+        return postService.updatePost(postCreateDTO, postId, userId);
+    }
+
 }

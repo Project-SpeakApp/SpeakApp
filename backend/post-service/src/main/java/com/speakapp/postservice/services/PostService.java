@@ -54,6 +54,32 @@ public class PostService {
         );
     }
 
+    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId){
+        Post postUpdated = postRepository.getById(postId);
+
+        postUpdated.setContent(postCreateDTO.getContent());
+
+        postRepository.save(postUpdated);
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
+
+        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
+        // TODO: delete after complex tests - can be assumed empty (post has been just created)
+        List<CommentGetDTO> commentGetDTOS = getAllCommentsForThePost(postUpdated);
+
+        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
+        // TODO: delete after complex tests - can be assumed empty (post has been just created)
+        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
+
+        return postMapper.toGetDTO(postUpdated,
+                author,
+                commentGetDTOS,
+                reactionsGetDTO,
+                null
+        );
+
+    }
+
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
