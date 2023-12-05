@@ -5,6 +5,7 @@ import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,5 +22,5 @@ public interface PostMapper {
                         List<CommentGetDTO> comments,
                         ReactionsGetDTO reactions,
                         ReactionType currentUserReaction);
-
+    void updatePostFromPostCreateDTO(PostCreateDTO postCreateDTO, @MappingTarget Post post);
 }

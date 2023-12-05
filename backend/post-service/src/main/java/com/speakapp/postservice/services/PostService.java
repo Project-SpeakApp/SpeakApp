@@ -61,28 +61,26 @@ public class PostService {
         Post postUpdated = postRepository.getPostByPostId(postId);
 
         if(postUpdated.getUserId() != userId){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can only update your own posts (postId and userId dont match)");
         }
 
-        postUpdated.setContent(postCreateDTO.getContent());
+        postMapper.updatePostFromPostCreateDTO(postCreateDTO, postUpdated);
 
         postRepository.save(postUpdated);
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
-        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
-        // TODO: delete after complex tests - can be assumed empty (post has been just created)
         List<CommentGetDTO> commentGetDTOS = getAllCommentsForThePost(postUpdated);
 
-        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
-        // TODO: delete after complex tests - can be assumed empty (post has been just created)
         ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
+
+        ReactionType currentUserReaction = postReactionRepository.findPostReactionByPostAndUserId(postUpdated, userId).getType();
 
         return postMapper.toGetDTO(postUpdated,
                 author,
                 commentGetDTOS,
                 reactionsGetDTO,
-                null
+                currentUserReaction
         );
 
     }
