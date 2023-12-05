@@ -2,6 +2,8 @@ package com.speakapp.postservice.repositories;
 
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.PostReaction;
+import com.speakapp.postservice.entities.ReactionType;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,6 @@ import java.util.UUID;
 public interface PostReactionRepository extends JpaRepository<PostReaction, UUID> {
 
     List<PostReaction> findAllByPost(Post post);
-    PostReaction findByPostAndUserId(Post post, UUID userId);
+    Optional<ReactionType> findByPostAndUserId(Post post, UUID userId);
 }
 

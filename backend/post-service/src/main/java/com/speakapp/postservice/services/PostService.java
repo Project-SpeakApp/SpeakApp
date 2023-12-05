@@ -56,31 +56,25 @@ public class PostService {
         );
     }
 
-    public LatestUserPostsPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
+    public PostPageWithInfoGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
 
-        List<PostGetDTO> userPostGetDTOS = new ArrayList<>();
-        for (Post userPost : userPostsPage.getContent()){
-            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(userPost.getUserId());
-            ReactionsGetDTO postReactions = getReactionsForThePost(userPost);
-            PostReaction currentUserReaction = postReactionRepository.findByPostAndUserId(userPost, userId);
-            ReactionType currentUserReactionType = null;
-            if(currentUserReaction!=null){
-                currentUserReactionType = currentUserReaction.getType();
-            }
+        Page<PostGetDTO> postPageGetDTOS = userPostsPage.map(post -> {
+            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
+            ReactionsGetDTO postReactions = getReactionsForThePost(post);
+            ReactionType currentUserReactionType = postReactionRepository.findByPostAndUserId(post, userId).orElse(null);
 
-            PostGetDTO postGetDTO = postMapper.toGetDTO(
-                userPost,
+            return postMapper.toGetDTO(
+                post,
                 postAuthor,
                 postReactions,
                 currentUserReactionType
             );
-            userPostGetDTOS.add(postGetDTO);
-        }
+        });
 
-        return LatestUserPostsPageGetDTO.builder()
-                .posts(userPostGetDTOS)
+        return PostPageWithInfoGetDTO.builder()
+                .postPage(postPageGetDTOS)
                 .currentPage(userPostsPage.getNumber()+1)
                 .pageSize(userPostsPage.getSize())
                 .totalPages(userPostsPage.getTotalPages())
