@@ -44,10 +44,12 @@ public class AppUser {
     @Column(nullable = false)
     private Instant lastOnline;
 
-    // TODO Add media
-    //    private String bgPhotoUrl;
+    private String bgPhoto;
 
-    //  TODO Add media
-    //   private String profilePhotoUrl;
+    private String profilePhoto;
+
+    public void initializeLastOnline() {
+        this.lastOnline = Instant.now();
+    }
 }
 

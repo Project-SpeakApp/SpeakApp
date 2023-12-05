@@ -1,6 +1,6 @@
 package com.speakapp.userservice.services;
 
-import com.speakapp.userservice.dtos.AppUserDTO;
+import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.entities.AppUser;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.mappers.UserAppMapper;
@@ -22,7 +22,49 @@ public class UserService {
 
         Optional<AppUser> user = userRepository.findById(userId);
 
-        return user.map(userAppMapper::toAppUserDto)
+        return user.map(userAppMapper::appUserDtoFomAppUser)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    public AppUserDTO createUser(AppUserCreateDTO userDTO) {
+        AppUser appUser = userAppMapper.appUserFromAppUserCreateDTO(userDTO);
+        appUser.initializeLastOnline();
+        AppUser createdUser = userRepository.save(appUser);
+        return userAppMapper.appUserDtoFomAppUser(createdUser);
+    }
+
+    public AppUserDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {
+
+        Optional<AppUser> user = userRepository.findById(userId);
+        AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
+
+        userAppMapper.updateAppUserFromAppUserUpdateDTO(appUserUpdateDTO, appUser);
+
+        AppUser updatedUser = userRepository.save(appUser);
+        return userAppMapper.appUserDtoFomAppUser(updatedUser);
+    }
+
+    public AppUserDTO updateUserProfilePhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
+        Optional<AppUser> user = userRepository.findById(userId);
+        AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
+
+        userAppMapper.updateAppUserProfilePhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
+
+        AppUser updatedUser = userRepository.save(appUser);
+        return userAppMapper.appUserDtoFomAppUser(updatedUser);
+    }
+
+    public AppUserDTO updateUserBackgroundPhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
+        Optional<AppUser> user = userRepository.findById(userId);
+        AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
+
+        userAppMapper.updateAppUserBackgroundPhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
+
+        AppUser updatedUser = userRepository.save(appUser);
+        return userAppMapper.appUserDtoFomAppUser(updatedUser);
+    }
+
+    public void deleteUser(UUID uuid) {
+        userRepository.deleteById(uuid);
     }
 }

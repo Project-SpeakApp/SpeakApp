@@ -1,14 +1,21 @@
 package com.speakapp.userservice.dtos;
 
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
+
 import java.time.LocalDate;
 
+@Value
+@Builder
+@Jacksonized
 public class AppUserDTO {
 
-    private String firstName;
-    private String lastName;
-    private String profile_photo;
-    private String bg_photo;
-    private String email;
-    private String about;
-    private LocalDate dateOfBirth;
+    String firstName;
+    String lastName;
+    String profilePhoto;
+    String bgPhoto;
+    String email;
+    String about;
+    LocalDate dateOfBirth;
 }
