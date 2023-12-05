@@ -1,6 +1,5 @@
 package com.speakapp.userservice.controllers;
 
-import com.speakapp.userservice.dtos.AppUserCreateDTO;
 import com.speakapp.userservice.dtos.AppUserDTO;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.services.UserService;
