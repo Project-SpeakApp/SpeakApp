@@ -1,6 +1,6 @@
 package com.speakapp.postservice.controllers;
 
-import com.speakapp.postservice.dtos.PostPageWithInfoGetDTO;
+import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.services.PostService;
@@ -23,10 +23,10 @@ public class PostController {
         return postService.createPost(postCreateDTO, userId);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{userIdOfProfileOwner}")
     @ResponseStatus(HttpStatus.OK)
-    public PostPageWithInfoGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
-        @RequestParam(defaultValue = "5") int pageSize, @PathVariable(value = "userId") UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
+    public PostPageGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
+        @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 

@@ -9,6 +9,7 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -56,11 +57,11 @@ public class PostService {
         );
     }
 
-    public PostPageWithInfoGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
+    public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
 
-        Page<PostGetDTO> postPageGetDTOS = userPostsPage.map(post -> {
+        List<PostGetDTO> postGetDTOS = userPostsPage.getContent().stream().map(post -> {
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
             ReactionsGetDTO postReactions = getReactionsForThePost(post);
             ReactionType currentUserReactionType = postReactionRepository.findByPostAndUserId(post, userId).orElse(null);
@@ -71,11 +72,11 @@ public class PostService {
                 postReactions,
                 currentUserReactionType
             );
-        });
+        }).toList();
 
-        return PostPageWithInfoGetDTO.builder()
-                .postPage(postPageGetDTOS)
-                .currentPage(userPostsPage.getNumber()+1)
+        return PostPageGetDTO.builder()
+                .posts(postGetDTOS)
+                .currentPage(userPostsPage.getNumber())
                 .pageSize(userPostsPage.getSize())
                 .totalPages(userPostsPage.getTotalPages())
                 .build();
