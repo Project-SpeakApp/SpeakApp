@@ -28,7 +28,7 @@ public class UserService {
 
     public void createUser(AppUserCreateDTO userDTO) {
         AppUser appUser = appUserMapper.appUserFromAppUserCreateDTO(userDTO);
-        appUser.initializeLastOnline();
+        appUser.updateLastOnline();
         AppUser createdUser = userRepository.save(appUser);
         appUserMapper.appUserDtoFomAppUser(createdUser);
     }
