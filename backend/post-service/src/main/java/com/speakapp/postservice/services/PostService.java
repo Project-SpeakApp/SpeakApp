@@ -11,9 +11,7 @@ import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -60,9 +58,7 @@ public class PostService {
 
         Post postUpdated = postRepository.getPostByPostId(postId);
 
-        if(postUpdated.getUserId() != userId){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can only update your own posts (postId and userId dont match)");
-        }
+        //TODO: Handling Exception when userId != postId
 
         postMapper.updatePostFromPostCreateDTO(postCreateDTO, postUpdated);
 
@@ -74,13 +70,19 @@ public class PostService {
 
         ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
 
-        ReactionType currentUserReaction = postReactionRepository.findPostReactionByPostAndUserId(postUpdated, userId).getType();
+        PostReaction currentUserReaction = postReactionRepository.findByPostAndUserId(postUpdated, userId);
+
+        ReactionType currentUserReactionType = null;
+
+        if(currentUserReaction!=null){
+            currentUserReactionType = currentUserReaction.getType();
+        }
 
         return postMapper.toGetDTO(postUpdated,
                 author,
                 commentGetDTOS,
                 reactionsGetDTO,
-                currentUserReaction
+                currentUserReactionType
         );
 
     }
