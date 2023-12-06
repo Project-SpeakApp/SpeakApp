@@ -9,7 +9,6 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -64,7 +63,7 @@ public class PostService {
         List<PostGetDTO> postGetDTOS = userPostsPage.getContent().stream().map(post -> {
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
             ReactionsGetDTO postReactions = getReactionsForThePost(post);
-            ReactionType currentUserReactionType = postReactionRepository.findByPostAndUserId(post, userId).orElse(null);
+            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
 
             return postMapper.toGetDTO(
                 post,
