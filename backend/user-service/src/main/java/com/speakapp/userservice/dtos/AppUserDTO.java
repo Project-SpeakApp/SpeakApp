@@ -13,8 +13,8 @@ public class AppUserDTO {
 
     String firstName;
     String lastName;
-    String profilePhoto;
-    String bgPhoto;
+    String profilePhotoUrl;
+    String bgPhotoUrl;
     String email;
     String about;
     LocalDate dateOfBirth;

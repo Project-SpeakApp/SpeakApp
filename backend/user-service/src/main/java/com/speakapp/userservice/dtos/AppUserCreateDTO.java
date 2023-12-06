@@ -14,7 +14,5 @@ public class AppUserCreateDTO {
     String firstName;
     String lastName;
     String email;
-    String about;
-    String password;
     LocalDate dateOfBirth;
 }

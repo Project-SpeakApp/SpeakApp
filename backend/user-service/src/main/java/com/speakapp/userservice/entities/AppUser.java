@@ -44,9 +44,9 @@ public class AppUser {
     @Column(nullable = false)
     private Instant lastOnline;
 
-    private String bgPhoto;
+    private String bgPhotoUrl;
 
-    private String profilePhoto;
+    private String profilePhotoUrl;
 
     public void initializeLastOnline() {
         this.lastOnline = Instant.now();
