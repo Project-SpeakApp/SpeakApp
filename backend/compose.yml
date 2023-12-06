@@ -16,6 +16,15 @@ x-db-env: &db-env
   POSTGRES_PASSWORD: postgres
 
 services:
+#  api_gateway:
+#    <<: *service
+#    build: gateway
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - net_apiGW_userServ
+#      - net_apiGW_postServ
+
   user_service:
     <<: *service
     build: user-service
@@ -66,6 +75,8 @@ services:
       - net_postDB_postServ
 
 networks:
+#  net_apiGW_userServ:
+#  net_apiGW_postServ:
   net_postDB_postServ:
   net_userDB_userServ:
   net_postServ_userServ:
