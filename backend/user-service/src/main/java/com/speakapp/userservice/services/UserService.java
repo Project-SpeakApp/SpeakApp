@@ -3,7 +3,7 @@ package com.speakapp.userservice.services;
 import com.speakapp.userservice.dtos.AppUserDTO;
 import com.speakapp.userservice.entities.AppUser;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
-import com.speakapp.userservice.mappers.UserAppMapper;
+import com.speakapp.userservice.mappers.AppUserMapper;
 import com.speakapp.userservice.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserAppMapper userAppMapper;
+    private final AppUserMapper userAppMapper;
 
     public AppUserDTO getUser(UUID userId) throws UserNotFoundException {
 
