@@ -57,7 +57,6 @@ public class PostService {
     }
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
-
         Post postUpdated = postRepository.getPostByPostId(postId);
 
         //TODO: Handling Exception when userId != postId
