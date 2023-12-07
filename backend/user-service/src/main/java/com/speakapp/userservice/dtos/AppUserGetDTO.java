@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Value
 @Builder
 @Jacksonized
-public class AppUserDTO {
+public class AppUserGetDTO {
 
     String firstName;
     String lastName;

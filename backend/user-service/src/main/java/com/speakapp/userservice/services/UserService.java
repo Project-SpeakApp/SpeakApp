@@ -18,50 +18,47 @@ public class UserService {
     private final UserRepository userRepository;
     private final AppUserMapper appUserMapper;
 
-    public AppUserDTO getUser(UUID userId) throws UserNotFoundException {
-
+    public AppUserGetDTO getUser(UUID userId) throws UserNotFoundException {
         Optional<AppUser> user = userRepository.findById(userId);
 
-        return user.map(appUserMapper::appUserDtoFomAppUser)
+        return user.map(appUserMapper::toGetDTO)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     public void createUser(AppUserCreateDTO userDTO) {
-        AppUser appUser = appUserMapper.appUserFromAppUserCreateDTO(userDTO);
+        AppUser appUser = appUserMapper.toEntity(userDTO);
         appUser.updateLastOnline();
-        AppUser createdUser = userRepository.save(appUser);
-        appUserMapper.appUserDtoFomAppUser(createdUser);
+        userRepository.save(appUser);
     }
 
-    public AppUserDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {
-
+    public AppUserGetDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {
         Optional<AppUser> user = userRepository.findById(userId);
         AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
 
         appUserMapper.updateAppUserFromAppUserUpdateDTO(appUserUpdateDTO, appUser);
 
         AppUser updatedUser = userRepository.save(appUser);
-        return appUserMapper.appUserDtoFomAppUser(updatedUser);
+        return appUserMapper.toGetDTO(updatedUser);
     }
 
-    public AppUserDTO updateUserProfilePhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
+    public AppUserGetDTO updateUserProfilePhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
         Optional<AppUser> user = userRepository.findById(userId);
         AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
 
         appUserMapper.updateAppUserProfilePhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
         AppUser updatedUser = userRepository.save(appUser);
-        return appUserMapper.appUserDtoFomAppUser(updatedUser);
+        return appUserMapper.toGetDTO(updatedUser);
     }
 
-    public AppUserDTO updateUserBackgroundPhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
+    public AppUserGetDTO updateUserBackgroundPhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
         Optional<AppUser> user = userRepository.findById(userId);
         AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
 
         appUserMapper.updateAppUserBackgroundPhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
         AppUser updatedUser = userRepository.save(appUser);
-        return appUserMapper.appUserDtoFomAppUser(updatedUser);
+        return appUserMapper.toGetDTO(updatedUser);
     }
 
     public void deleteUser(UUID uuid) {
