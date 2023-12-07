@@ -16,10 +16,10 @@ public class CommentReaction {
 
     @Id
     @GeneratedValue
-    private UUID commentReactionId;
+    private UUID reactionId;
 
     @ManyToOne
-    @JoinColumn(name = "commentId")
+    @JoinColumn(name = "comment_id")
     private Comment comment;
 
     @Column(nullable = false)

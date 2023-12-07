@@ -5,12 +5,17 @@ import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.PostMapper;
+import com.speakapp.postservice.mappers.PostPageMapper;
+import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,6 +36,10 @@ public class PostService {
 
     private final CommentMapper commentMapper;
 
+    private final ReactionsMapper reactionsMapper;
+
+    private final PostPageMapper postPageMapper;
+
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     public PostGetDTO createPost(PostCreateDTO postCreateDTO, UUID userId) {
@@ -38,23 +47,16 @@ public class PostService {
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
-        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
-        // TODO: delete after complex tests - can be assumed empty (post has been just created)
-        List<CommentGetDTO> commentGetDTOS = getAllCommentsForThePost(savedPost);
-
-        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
-        // TODO: delete after complex tests - can be assumed empty (post has been just created)
-        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(savedPost);
+        ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
 
         return postMapper.toGetDTO(savedPost,
                 author,
-                commentGetDTOS,
                 reactionsGetDTO,
                 null
         );
     }
 
-    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId){
+    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
 
         Post postUpdated = postRepository.getPostByPostId(postId);
 
@@ -66,27 +68,47 @@ public class PostService {
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
-        List<CommentGetDTO> commentGetDTOS = getAllCommentsForThePost(postUpdated);
-
         ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
 
         PostReaction currentUserReaction = postReactionRepository.findByPostAndUserId(postUpdated, userId);
 
         ReactionType currentUserReactionType = null;
 
-        if(currentUserReaction!=null){
+        if (currentUserReaction != null) {
             currentUserReactionType = currentUserReaction.getType();
         }
 
         return postMapper.toGetDTO(postUpdated,
                 author,
-                commentGetDTOS,
                 reactionsGetDTO,
-                currentUserReactionType
-        );
-
+                currentUserReactionType);
     }
 
+    public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId) {
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
+
+        List<PostGetDTO> postGetDTOS = userPostsPage.getContent().stream().map(post -> {
+            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
+            ReactionsGetDTO postReactions = getReactionsForThePost(post);
+            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+
+            return postMapper.toGetDTO(
+                    post,
+                    postAuthor,
+                    postReactions,
+                    currentUserReactionType
+            );
+        }).toList();
+
+        return postPageMapper.toGetDTO(
+                postGetDTOS,
+                page,
+                userPostsPage.getTotalPages()
+        );
+    }
+
+    // Keep the class implementation for migration to CommentService
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
@@ -109,6 +131,7 @@ public class PostService {
         return commentGetDTOS;
     }
 
+    // Keep the class implementation for migration to CommentService
     // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
     // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForTheComment(Comment comment) {

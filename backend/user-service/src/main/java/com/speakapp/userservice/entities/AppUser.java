@@ -35,9 +35,6 @@ public class AppUser {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false)
-    private String password; //Passwords need to be hashed and salted
-
     @Column(unique = true, nullable = false)
     private String email;
 
