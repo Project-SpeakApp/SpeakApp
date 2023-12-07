@@ -5,6 +5,7 @@ import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.PostMapper;
+import com.speakapp.postservice.mappers.PostPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
@@ -37,6 +38,8 @@ public class PostService {
 
     private final ReactionsMapper reactionsMapper;
 
+    private final PostPageMapper postPageMapper;
+
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     public PostGetDTO createPost(PostCreateDTO postCreateDTO, UUID userId) {
@@ -53,7 +56,7 @@ public class PostService {
         );
     }
 
-    public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId){
+    public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
 
@@ -63,19 +66,18 @@ public class PostService {
             ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
 
             return postMapper.toGetDTO(
-                post,
-                postAuthor,
-                postReactions,
-                currentUserReactionType
+                    post,
+                    postAuthor,
+                    postReactions,
+                    currentUserReactionType
             );
         }).toList();
 
-        return PostPageGetDTO.builder()
-                .posts(postGetDTOS)
-                .currentPage(userPostsPage.getNumber())
-                .pageSize(userPostsPage.getSize())
-                .totalPages(userPostsPage.getTotalPages())
-                .build();
+        return postPageMapper.toGetDTO(
+                postGetDTOS,
+                page,
+                userPostsPage.getTotalPages()
+        );
 
     }
 

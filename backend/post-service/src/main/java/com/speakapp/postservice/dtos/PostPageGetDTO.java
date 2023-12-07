@@ -1,17 +1,22 @@
 package com.speakapp.postservice.dtos;
 
-import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
+
+import java.util.List;
 
 @Value
 @Builder
 @Jacksonized
 public class PostPageGetDTO {
-  List<PostGetDTO> posts;
-  int currentPage;
-  int pageSize;
-  int totalPages;
+
+    List<PostGetDTO> posts;
+
+    int currentPage;
+
+    int pageSize;
+
+    int totalPages;
 
 }
