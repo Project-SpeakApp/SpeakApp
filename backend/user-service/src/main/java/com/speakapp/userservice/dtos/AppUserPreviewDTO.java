@@ -18,6 +18,8 @@ public class AppUserPreviewDTO {
     public static AppUserPreviewDTO empty(UUID userId) {
         return AppUserPreviewDTO.builder()
                 .userId(userId)
+                .fullName("")
+                .profilePhotoUrl("")
                 .build();
     }
 }
