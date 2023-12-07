@@ -34,6 +34,11 @@ spring:
     activate:
       on-profile: dev
 
+  sql:
+    init:
+      platform: postgres
+      mode: always
+
   mvc:
     log-request-details: true # for debugging
 
@@ -41,9 +46,11 @@ spring:
     url: jdbc:postgresql://post-db-service:5433/post_db
     username: postgres
     password: postgres
+
   jpa:
     properties:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+    defer-datasource-initialization: true # Very important to include - otherwise loading data.sql file will cause error
