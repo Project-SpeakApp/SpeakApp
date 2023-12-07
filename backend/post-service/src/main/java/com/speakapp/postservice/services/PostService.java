@@ -5,6 +5,7 @@ import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.PostMapper;
+import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
@@ -34,6 +35,8 @@ public class PostService {
 
     private final CommentMapper commentMapper;
 
+    private final ReactionsMapper reactionsMapper;
+
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     public PostGetDTO createPost(PostCreateDTO postCreateDTO, UUID userId) {
@@ -41,13 +44,7 @@ public class PostService {
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
-        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
-        // TODO: delete after complex tests - can be assumed empty (post has been just created)
-        List<CommentGetDTO> commentGetDTOS = getAllCommentsForThePost(savedPost);
-
-        // unnecessary but it is for query and jpa test purposes - it will fail if something is wrong in jpa config
-        // TODO: delete after complex tests - can be assumed empty (post has been just created)
-        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(savedPost);
+        ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
 
         return postMapper.toGetDTO(savedPost,
                 author,
@@ -82,6 +79,7 @@ public class PostService {
 
     }
 
+    // Keep the class implementation for migration to CommentService
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
@@ -104,6 +102,7 @@ public class PostService {
         return commentGetDTOS;
     }
 
+    // Keep the class implementation for migration to CommentService
     // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
     // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForTheComment(Comment comment) {
