@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public AppUserGetDTO updateUserInfo(@RequestHeader(name = "UserId") UUID userId,
                                         @RequestBody AppUserUpdateDTO userUpdateDTO) {
         return userService.updateUserInfo(userId, userUpdateDTO);
