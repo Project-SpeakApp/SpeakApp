@@ -13,7 +13,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -21,7 +20,6 @@ public class PostController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostGetDTO createPost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
-        log.info("Creating post for user with id = {} and post body = {}", userId, postCreateDTO);
         return postService.createPost(postCreateDTO, userId);
     }
 
