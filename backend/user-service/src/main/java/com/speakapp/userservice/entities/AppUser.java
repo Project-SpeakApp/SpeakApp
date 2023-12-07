@@ -35,10 +35,6 @@ public class AppUser {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-//    @Column(nullable = false) If we are not going to pass hashed password
-//                              while creating User it cannot be nullable
-    private String password; //Passwords need to be hashed and salted
-
     @Column(unique = true, nullable = false)
     private String email;
 
