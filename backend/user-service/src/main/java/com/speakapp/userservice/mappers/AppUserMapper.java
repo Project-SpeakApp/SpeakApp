@@ -5,9 +5,7 @@ import com.speakapp.userservice.dtos.AppUserGetDTO;
 import com.speakapp.userservice.dtos.AppUserUpdateDTO;
 import com.speakapp.userservice.dtos.PhotoUpdateDTO;
 import com.speakapp.userservice.entities.AppUser;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 @Mapper
 public interface AppUserMapper {
@@ -20,13 +18,16 @@ public interface AppUserMapper {
 
     AppUserGetDTO toGetDTO(AppUser appUser);
 
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     void updateAppUserFromAppUserUpdateDTO(AppUserUpdateDTO appUserUpdateDTO,
                                            @MappingTarget AppUser appUser);
 
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     @Mapping(target = "profilePhotoUrl", source = "photoUpdateDTO.photoUrl")
     void updateAppUserProfilePhotoFromPhotoUpdateDTO(PhotoUpdateDTO photoUpdateDTO,
                                                      @MappingTarget AppUser appUser);
 
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     @Mapping(target = "bgPhotoUrl", source = "photoUpdateDTO.photoUrl")
     void updateAppUserBackgroundPhotoFromPhotoUpdateDTO(PhotoUpdateDTO photoUpdateDTO,
                                                         @MappingTarget AppUser appUser);
