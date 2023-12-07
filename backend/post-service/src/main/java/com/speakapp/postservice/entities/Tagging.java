@@ -18,11 +18,11 @@ public class Tagging {
     private UUID taggingId;
 
     @ManyToOne
-    @JoinColumn(name = "postId")
-    private Post postId;
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "tagging")
-    private Tag tagId;
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
 }
