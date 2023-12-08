@@ -54,6 +54,26 @@ public class PostService {
         );
     }
 
+    public void deletePost(UUID userId, UUID postId){
+        //TODO: Handling Exception when userId != postId
+
+        Post postToDelete = postRepository.getPostByPostId(postId);
+
+        List<Comment> commentsToDelete = commentRepository.findAllByPost(postToDelete);
+
+        for(Comment comment : commentsToDelete){
+            commentReactionRepository.deleteByCommentId(comment.getCommentId());
+        }
+
+        commentRepository.deleteByPostId(postId);
+
+        postReactionRepository.deleteByPostId(postId);
+
+        postToDelete.setDeleted(true);
+
+    }
+
+
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
