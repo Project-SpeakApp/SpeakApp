@@ -67,7 +67,7 @@ public class PostService {
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
-        if(author.getUserId() != userId)
+        if(!postToUpdate.getUserId().equals(userId))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of post can update it");
 
         postMapper.updatePostFromPostCreateDTO(postCreateDTO, postToUpdate);
