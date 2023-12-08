@@ -2,6 +2,7 @@ package com.speakapp.postservice.controllers;
 
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
+import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class PostController {
     @GetMapping("/{userIdOfProfileOwner}")
     @ResponseStatus(HttpStatus.OK)
     public PostPageGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
-        @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
+                                             @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 

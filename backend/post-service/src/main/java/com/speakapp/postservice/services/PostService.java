@@ -16,7 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -81,27 +83,23 @@ public class PostService {
 
     }
 
-    // Keep the class implementation for migration to CommentService
     public void deletePost(UUID userId, UUID postId){
-        //TODO: Handling Exception when userId != postId
 
-        Post postToDelete = postRepository.getPostByPostId(postId);
+        if(postRepository.getPostByPostId(postId).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post of given postId has not been found");
 
-        List<Comment> commentsToDelete = commentRepository.findAllByPost(postToDelete);
+        Post postToDelete = postRepository.getPostByPostId(postId).get();
 
-        for(Comment comment : commentsToDelete){
-            commentReactionRepository.deleteByCommentId(comment.getCommentId());
-        }
-
-        commentRepository.deleteByPostId(postId);
-
-        postReactionRepository.deleteByPostId(postId);
+        if(userId != postToDelete.getUserId())
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
 
         postToDelete.setDeleted(true);
 
+        postRepository.save(postToDelete);
     }
 
 
+    // Keep the class implementation for migration to CommentService
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
