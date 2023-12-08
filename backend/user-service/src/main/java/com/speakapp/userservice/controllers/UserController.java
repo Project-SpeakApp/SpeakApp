@@ -40,21 +40,21 @@ public class UserController {
     }
 
     @PutMapping("/profile-photo")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public AppUserGetDTO updateUserProfilePhoto(@RequestHeader(name = "UserId") UUID userId,
                                                 @RequestBody PhotoUpdateDTO photoUpdateDTO) {
         return userService.updateUserProfilePhoto(userId, photoUpdateDTO);
     }
 
     @PutMapping("/background-photo")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public AppUserGetDTO updateUserBackgroundPhoto(@RequestHeader(name = "UserId") UUID userId,
                                                    @RequestBody PhotoUpdateDTO photoUpdateDTO) {
         return userService.updateUserBackgroundPhoto(userId, photoUpdateDTO);
     }
 
     @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserById(@PathVariable(name = "userId") UUID userId)
             throws UserNotFoundException {
         userService.deleteUser(userId);
