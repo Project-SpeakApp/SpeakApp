@@ -18,7 +18,7 @@ public class PostReaction {
     private UUID reactionId;
 
     @ManyToOne
-    @JoinColumn(name = "postId")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @Column(nullable = false)

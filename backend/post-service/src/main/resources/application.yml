@@ -1,12 +1,20 @@
 server:
   port: 8082
 
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+
 ---
 
 spring:
   config:
     activate:
       on-profile: local
+
+  mvc:
+    log-request-details: true # for debugging
 
   datasource:
     url: jdbc:h2:mem:db
@@ -26,13 +34,27 @@ spring:
     activate:
       on-profile: dev
 
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      separator: "^^^ END OF SCRIPT ^^^"
+
+  mvc:
+    log-request-details: true # for debugging
+
   datasource:
-    url: jdbc:postgresql://post_db_service:5433/post_db
+    url: jdbc:postgresql://post-db-service:5433/post_db
     username: postgres
     password: postgres
+
   jpa:
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+    defer-datasource-initialization: true # Very important to include - otherwise loading data.sql file will cause error

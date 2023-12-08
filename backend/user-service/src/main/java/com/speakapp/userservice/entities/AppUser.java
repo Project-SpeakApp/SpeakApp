@@ -35,19 +35,18 @@ public class AppUser {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false)
-    private String password; //Passwords need to be hashed and salted
-
     @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private Instant lastOnline;
 
-    // TODO Add media
-    //    private String bgPhotoUrl;
+    private String bgPhotoUrl;
 
-    //  TODO Add media
-    //   private String profilePhotoUrl;
+    private String profilePhotoUrl;
+
+    public void updateLastOnline() {
+        this.lastOnline = Instant.now();
+    }
 }
 
