@@ -16,8 +16,6 @@ public interface PostReactionRepository extends JpaRepository<PostReaction, UUID
 
     List<PostReaction> findAllByPost(Post post);
 
-    PostReaction findByPostAndUserId(Post post, UUID userId);
-
     @Query("SELECT pr.type FROM PostReaction pr WHERE pr.post = :post AND pr.userId = :userId")
     Optional<ReactionType> findTypeByPostAndUserId(Post post, UUID userId);
 }

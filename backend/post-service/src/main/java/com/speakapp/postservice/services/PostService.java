@@ -16,7 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -57,25 +59,25 @@ public class PostService {
     }
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
-        Post postUpdated = postRepository.getPostByPostId(postId);
 
-        //TODO: Handling Exception when userId != postId
+        if (postRepository.getPostByPostId(postId).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post of given postId has not been found");
 
-        postMapper.updatePostFromPostCreateDTO(postCreateDTO, postUpdated);
+        Post postToUpdate = postRepository.getPostByPostId(postId).get();
 
-        postRepository.save(postUpdated);
+        UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
-        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
+        if(author.getUserId() != userId)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of post can update it");
+
+        postMapper.updatePostFromPostCreateDTO(postCreateDTO, postToUpdate);
+
+        Post postUpdated = postRepository.save(postToUpdate);
 
         ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
 
-        PostReaction currentUserReaction = postReactionRepository.findByPostAndUserId(postUpdated, userId);
+        ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(postUpdated, userId).orElse(null);
 
-        ReactionType currentUserReactionType = null;
-
-        if (currentUserReaction != null) {
-            currentUserReactionType = currentUserReaction.getType();
-        }
 
         return postMapper.toGetDTO(postUpdated,
                 author,
