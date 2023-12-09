@@ -15,6 +15,5 @@ public class UserGetDTO {
 
     String fullName;
 
-    // TODO: Media support
-    // String profilePhotoUrl?
+    String profilePhotoUrl;
 }

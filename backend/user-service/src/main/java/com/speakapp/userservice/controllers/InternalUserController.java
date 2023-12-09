@@ -16,7 +16,7 @@ public class InternalUserController {
 
     private final InternalUserService internalUserService;
 
-    @GetMapping("/{userIds}")
+    @GetMapping("/userIds={userIds}")
     @ResponseStatus(HttpStatus.OK)
     public List<AppUserPreviewDTO> getUsers(@PathVariable List<UUID> userIds) {
         return internalUserService.getUsersPreviews(userIds);
