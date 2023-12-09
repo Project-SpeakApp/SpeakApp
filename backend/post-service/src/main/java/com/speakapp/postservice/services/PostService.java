@@ -59,15 +59,12 @@ public class PostService {
     }
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
-
-        if (postRepository.getPostByPostId(postId).isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post of given postId has not been found");
-
-        Post postToUpdate = postRepository.getPostByPostId(postId).get();
+        Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found"));
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
-        if(!postToUpdate.getUserId().equals(userId))
+        if (!postToUpdate.getUserId().equals(userId))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of post can update it");
 
         postMapper.updatePostFromPostCreateDTO(postCreateDTO, postToUpdate);
