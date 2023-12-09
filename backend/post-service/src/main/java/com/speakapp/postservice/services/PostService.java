@@ -85,10 +85,9 @@ public class PostService {
 
     public void deletePost(UUID userId, UUID postId){
 
-        if(postRepository.getPostByPostId(postId).isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post of given postId has not been found");
+        Post postToDelete = postRepository.findById(postId).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + "has not been found"));
 
-        Post postToDelete = postRepository.getPostByPostId(postId).get();
 
         if(!userId.equals(postToDelete.getUserId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
