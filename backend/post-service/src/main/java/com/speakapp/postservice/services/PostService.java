@@ -16,7 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -56,6 +58,30 @@ public class PostService {
         );
     }
 
+    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
+        Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found"));
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
+
+        if (!postToUpdate.getUserId().equals(userId))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of post can update it");
+
+        postMapper.updatePostFromPostCreateDTO(postCreateDTO, postToUpdate);
+
+        Post postUpdated = postRepository.save(postToUpdate);
+
+        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
+
+        ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(postUpdated, userId).orElse(null);
+
+
+        return postMapper.toGetDTO(postUpdated,
+                author,
+                reactionsGetDTO,
+                currentUserReactionType);
+    }
+
     public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
@@ -78,7 +104,6 @@ public class PostService {
                 page,
                 userPostsPage.getTotalPages()
         );
-
     }
 
     // Keep the class implementation for migration to CommentService
