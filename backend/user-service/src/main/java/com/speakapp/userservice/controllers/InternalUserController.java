@@ -14,11 +14,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InternalUserController {
 
-    private final InternalUserService userService;
+    private final InternalUserService internalUserService;
 
     @GetMapping("/{userIds}")
     @ResponseStatus(HttpStatus.OK)
     public List<AppUserPreviewDTO> getUsers(@PathVariable List<UUID> userIds) {
-        return userService.getUsersPreviews(userIds);
+        return internalUserService.getUsersPreviews(userIds);
+    }
+
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AppUserPreviewDTO getUser(@PathVariable UUID userId) {
+        return internalUserService.getUserPreview(userId);
     }
 }

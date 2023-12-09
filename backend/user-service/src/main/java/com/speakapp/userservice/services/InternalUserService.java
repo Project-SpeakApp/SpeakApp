@@ -21,4 +21,10 @@ public class InternalUserService {
                         .orElse(AppUserPreviewDTO.empty(userId)))
                 .toList();
     }
+
+    public AppUserPreviewDTO getUserPreview(UUID userId) {
+        return userRepository.findById(userId)
+                .map(appUserMapper::toAppUserPreviewDto)
+                .orElse(AppUserPreviewDTO.empty(userId));
+    }
 }
