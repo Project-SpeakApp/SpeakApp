@@ -9,13 +9,10 @@ import java.time.LocalDate;
 @Value
 @Builder
 @Jacksonized
-public class AppUserDTO {
+public class AppUserUpdateDTO {
 
     String firstName;
     String lastName;
-    String profilePhoto;
-    String bgPhoto;
-    String email;
     String about;
     LocalDate dateOfBirth;
 }
