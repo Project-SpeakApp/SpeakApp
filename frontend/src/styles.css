@@ -4,7 +4,10 @@
 
 @layer utilities {
   .app-btn {
-    @apply btn rounded-full shadow-md shadow-black;
+    @apply btn btn-sm rounded-full shadow-md shadow-black;
+  }
+  .app-input {
+    @apply bg-secondary rounded-full shadow-md shadow-black text-white p-2 h-8 placeholder-white focus:border-black focus:border-2
   }
 }
 

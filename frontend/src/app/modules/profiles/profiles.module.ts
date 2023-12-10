@@ -4,6 +4,7 @@ import { UserProfilePageComponent } from './components/user-profile-page/user-pr
 import { UserProfileNavigationComponent } from './components/user-profile-navigation/user-profile-navigation.component';
 import { UserProfileNavigationItemComponent } from './components/user-profile-navigation-item/user-profile-navigation-item.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
+import { ProfileSearchFormComponent } from './components/profile-search-form/profile-search-form.component';
 
 
 
@@ -11,7 +12,8 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
   declarations: [
     UserProfilePageComponent,
     UserProfileNavigationComponent,
-    UserProfileNavigationItemComponent
+    UserProfileNavigationItemComponent,
+    ProfileSearchFormComponent
   ],
   imports: [
     CommonModule,
