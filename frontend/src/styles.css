@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .app-btn {
+    @apply btn rounded-full shadow-md shadow-black;
+  }
+}
+
 @font-face {
   font-family: geist;
   src: url(assets/GeistVariableVF.ttf) format("truetype");
