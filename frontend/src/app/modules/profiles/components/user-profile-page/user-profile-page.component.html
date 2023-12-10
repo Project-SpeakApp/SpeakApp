@@ -1,19 +1,25 @@
 <div>
   <div>
-    <img class="absolute max-w-[calc(64rem-2rem)] z-[-1] w-[calc(100%-2rem)] h-[250px] rounded-[20px] object-cover" src="https://wallpaperaccess.com/full/1419752.jpg" alt="user background picture">
+    <img class="absolute max-w-[calc(64rem-2rem)] z-0 w-[calc(100%-2rem)] h-[250px] rounded-[20px] object-cover" src="https://wallpaperaccess.com/full/1419752.jpg" alt="user background picture">
     <div class="flex flex-row pt-[125px] pl-10">
       <div class="avatar">
         <div class="w-[180px] rounded-full border-white border-4">
           <img src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg" />
         </div>
       </div>
-      <div class="flex flex-col justify-end pb-4">
-        <h1 class="text-3xl font-semibold">Krzysio Misio</h1>
+      <div class="flex flex-col justify-end w-full">
+        <div class="flex flex-row justify-between">
+          <h1 class="text-3xl font-semibold">Krzysio Misio</h1>
+          <button class="flex flex-row gap-2 btn btn-primary rounded-full shadow-md shadow-black">
+            <h2 class="">Settings</h2>
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <div class="flex flex-row justify-between">
-    <nav class="mt-4 flex flex-row justify-start gap-4 text-lg text-primary">
+  <div class="flex flex-row justify-between mt-4">
+    <nav class="flex flex-row justify-start gap-4 text-lg text-primary">
       <app-user-profile-navigation></app-user-profile-navigation>
     </nav>
     <div>
