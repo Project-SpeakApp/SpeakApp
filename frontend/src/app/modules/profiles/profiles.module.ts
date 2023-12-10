@@ -23,12 +23,8 @@ import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-
   ],
   imports: [
     CommonModule,
-<<<<<<< HEAD
     AppRoutingModule,
   ],
-=======
 
-  ]
->>>>>>> 63183ca1f92cb44a770badbe4069af22551fc25b
 })
 export class ProfilesModule { }
