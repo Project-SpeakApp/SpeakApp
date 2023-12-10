@@ -4,16 +4,19 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.UUID;
+import java.util.List;
 
 @Value
 @Builder
 @Jacksonized
-public class UserGetDTO {
+public class PostPageGetDTO {
 
-    UUID userId;
+    List<PostGetDTO> posts;
 
-    String fullName;
+    int currentPage;
 
-    String profilePhotoUrl;
+    int pageSize;
+
+    int totalPages;
+
 }
