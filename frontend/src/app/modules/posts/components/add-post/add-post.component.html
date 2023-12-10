@@ -1,19 +1,14 @@
-<div style="background-color:#D9D9D9" class="card w-96 bg-base-100 shadow-xl ">
-  <div class="card-body">
-
-    <form #form="ngForm" (ngSubmit)="onFormSubmit()" class="space-y-6">
-      <div>
-        <label for="content" class="block text-xl font-medium leading-6 text-gray-900 text-center">Share your thoughts...</label>
-        <div class="mt-2">
-          <textarea id="content" [(ngModel)]="model.content" style="border-radius: 50px" style="padding-left: 10px" placeholder="Share your thoughts..." name="content" type="text" required class="block w-full bg-secondary rounded-md border-0 py-1.5 text-black text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400"></textarea>
-        </div>
+<div class="card w-96">
+  <form #form="ngForm" (ngSubmit)="onFormSubmit()" class="space-y-6">
+    <div>
+      <div class="mt-2">
+        <textarea id="content" [(ngModel)]="model.content" class="text-black w-full" placeholder="What's on your mind?" name="content" type="text"></textarea>
       </div>
-
       <div>
-        <button type="submit" style="border-radius: 20px" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-primary ">Post</button>
+        <button class="btn btn-primary" style="float:right; border-radius: 25px">Post</button>
       </div>
-    </form>
-  </div>
+    </div>
+
+
+  </form>
 </div>
-
-

@@ -11,7 +11,7 @@ import {Subscription} from "rxjs";
 })
 export class AddPostComponent implements OnDestroy {
   model: AddPost;
-  userId: string = ''; //give or get later some userId
+  userId: string = '6c84fb95-12c4-11ec-82a8-0242ac130003'; //give or get later some userId
   private addPostSubscription?: Subscription
 
   constructor(private PostService: PostService) {
