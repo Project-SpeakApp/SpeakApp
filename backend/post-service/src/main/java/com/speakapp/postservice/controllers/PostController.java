@@ -23,10 +23,17 @@ public class PostController {
         return postService.createPost(postCreateDTO, userId);
     }
 
+
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) {
         postService.deletePost(userId, postId);
+
+    @PutMapping("/{postId}")
+    @ResponseStatus(HttpStatus.OK)
+    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) {
+        return postService.updatePost(postCreateDTO, postId, userId);
+
     }
 
     @GetMapping("/{userIdOfProfileOwner}")

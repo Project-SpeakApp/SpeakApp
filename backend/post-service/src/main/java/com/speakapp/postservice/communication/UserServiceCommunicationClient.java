@@ -23,7 +23,7 @@ public class UserServiceCommunicationClient {
 
     public UserGetDTO getUserById(UUID userId) {
         return webClient.get()
-                .uri("/api/users/{id}", userId)
+                .uri("/api/internal/users/{id}", userId)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     return clientResponse.bodyToMono(String.class)
