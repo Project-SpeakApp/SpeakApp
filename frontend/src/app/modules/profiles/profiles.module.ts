@@ -5,6 +5,9 @@ import { UserProfileNavigationComponent } from './components/user-profile-naviga
 import { UserProfileNavigationItemComponent } from './components/user-profile-navigation-item/user-profile-navigation-item.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { ProfileSearchFormComponent } from './components/profile-search-form/profile-search-form.component';
+import { UserProfileInfoComponent } from './components/user-profile-info/user-profile-info.component';
+import { UserProfileInfoLabelComponent } from './components/user-profile-info-label/user-profile-info-label.component';
+import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-info-birthday-card/user-profile-info-birthday-card.component';
 
 
 
@@ -13,7 +16,10 @@ import { ProfileSearchFormComponent } from './components/profile-search-form/pro
     UserProfilePageComponent,
     UserProfileNavigationComponent,
     UserProfileNavigationItemComponent,
-    ProfileSearchFormComponent
+    ProfileSearchFormComponent,
+    UserProfileInfoComponent,
+    UserProfileInfoLabelComponent,
+    UserProfileInfoBirthdayCardComponent
   ],
   imports: [
     CommonModule,
