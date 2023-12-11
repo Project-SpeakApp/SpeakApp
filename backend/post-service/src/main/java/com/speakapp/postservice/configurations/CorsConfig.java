@@ -18,8 +18,7 @@ public class CorsConfig {
                                 "http://localhost:4200",
                                 "http://localhost:8080")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("Authorization", "Content-Type")
-                        .exposedHeaders("Custom-Header")
+                        .allowedHeaders("Authorization", "Content-Type", "UserId")
                         .allowCredentials(true)
                         .maxAge(3600);
             }
