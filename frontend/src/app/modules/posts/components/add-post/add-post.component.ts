@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
-import {FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {PostService} from "../../sevices/post.service";
 import {Subscription} from "rxjs";
 
@@ -18,16 +18,20 @@ export class AddPostComponent implements OnDestroy {
     this.model = {
       content: ''
     };
+
   }
   onFormSubmit() {
-    this.addPostSubscription = this.PostService.addPost(this.model, this.userId).subscribe({
-      next: (response) => {
-        console.log("Success");
-      },
-      error: (error) => {
-        console.log("Error");
-      }
-    })
+    if (this.model.content.trim().length > 0) {
+      this.addPostSubscription = this.PostService.addPost(this.model, this.userId).subscribe({
+        next: (response) => {
+          console.log("Success");
+        },
+        error: (error) => {
+          console.log("Error");
+        }
+      })
+    }
+    else console.log("Content Required");
   }
 
   ngOnDestroy(): void {
