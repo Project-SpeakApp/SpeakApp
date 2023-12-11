@@ -9,6 +9,7 @@ import { AlertListComponent } from './shared/components/alert-list/alert-list.co
 import {FormsModule} from "@angular/forms";
 import {AddPostComponent} from "./modules/posts/components/add-post/add-post.component";
 import {PostsModule} from "./modules/posts/posts.module";
+import { ProfilesModule } from './modules/profiles/profiles.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {PostsModule} from "./modules/posts/posts.module";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    PostsModule
+    PostsModule,
+    ProfilesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
