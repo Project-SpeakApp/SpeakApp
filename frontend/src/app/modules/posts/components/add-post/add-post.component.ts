@@ -1,41 +1,53 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PostService } from '../../sevices/post.service';
+import { Subscription } from 'rxjs';
+import { AlertService } from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
-import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
-import {PostService} from "../../sevices/post.service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-add-post',
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.css']
 })
-export class AddPostComponent implements OnDestroy {
+export class AddPostComponent implements OnInit, OnDestroy {
+  myForm!: FormGroup;
+  userId = '6c84fb95-12c4-11ec-82a8-0242ac130003'; // give or get later some userId
+  private addPostSubscription?: Subscription;
   model: AddPost;
-  userId: string = '6c84fb95-12c4-11ec-82a8-0242ac130003'; //give or get later some userId
-  private addPostSubscription?: Subscription
-
-  constructor(private PostService: PostService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private postService: PostService,
+    private alertService: AlertService
+  ) {
     this.model = {
       content: ''
     };
-
   }
-  onFormSubmit() {
-    if (this.model.content.trim().length > 0) {
-      this.addPostSubscription = this.PostService.addPost(this.model, this.userId).subscribe({
+
+  ngOnInit(): void {
+    this.myForm = this.formBuilder.group({
+      content: ['', [Validators.required, Validators.minLength(1)]]
+    });
+  }
+
+  onFormSubmit(): void {
+    if (this.myForm.valid) {
+      this.model.content = this.myForm.value.content;
+      this.addPostSubscription = this.postService.addPost(this.model, this.userId).subscribe({
         next: (response) => {
-          console.log("Success");
+          console.log('Success');
         },
         error: (error) => {
-          console.log("Error");
+          console.log('Error');
         }
-      })
+      });
+    } else {
+      this.alertService.showAlert('Type Content', 'error');
     }
-    else console.log("Content Required");
   }
 
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
   }
-
 }

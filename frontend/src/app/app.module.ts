@@ -21,7 +21,6 @@ import { ProfilesModule } from './modules/profiles/profiles.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
     PostsModule,
     ProfilesModule
   ],

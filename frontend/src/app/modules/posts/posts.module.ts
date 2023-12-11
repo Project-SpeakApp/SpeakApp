@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddPostComponent } from './components/add-post/add-post.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "../../app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 
@@ -15,7 +15,8 @@ import {HttpClientModule} from "@angular/common/http";
     CommonModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
 
   ],
 })
