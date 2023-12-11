@@ -1,4 +1,4 @@
-<app-profile [profile]="profile$ | async"></app-profile>
+<app-profile [profile]="profile$ | async" [isLoading]="isLoading()"></app-profile>
 <div class="mt-4">
   <router-outlet></router-outlet>
 </div>

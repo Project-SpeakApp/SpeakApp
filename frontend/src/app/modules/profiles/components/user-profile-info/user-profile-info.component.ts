@@ -7,4 +7,5 @@ import ProfileGetDTO from '../../types/ProfileGetDTO';
 })
 export class UserProfileInfoComponent {
   @Input() profile: ProfileGetDTO | null = null;
+  @Input() isLoading = false;
 }

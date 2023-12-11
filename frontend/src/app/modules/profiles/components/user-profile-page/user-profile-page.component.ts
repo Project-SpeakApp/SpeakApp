@@ -13,6 +13,7 @@ export class UserProfilePageComponent implements OnInit {
   constructor(private profilesService: ProfilesService, private route: ActivatedRoute) { }
 
   profile$: Observable<ProfileGetDTO> | null = null;
+  isLoading = this.profilesService.isLoading;
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('id');

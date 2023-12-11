@@ -1,4 +1,5 @@
-<div *ngIf="profile">
+<app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+<div *ngIf="profile && !isLoading">
   <h1 class="text-primary text-xl font-semibold mb-3 mt-8">About Me</h1>
   <p>{{ profile.about }}</p>
   <div class="flex flex-row justify-between mt-8">

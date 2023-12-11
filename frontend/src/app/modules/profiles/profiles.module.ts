@@ -9,9 +9,9 @@ import { UserProfileInfoComponent } from './components/user-profile-info/user-pr
 import { UserProfileInfoLabelComponent } from './components/user-profile-info-label/user-profile-info-label.component';
 import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-info-birthday-card/user-profile-info-birthday-card.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { UserProfileInfoPageComponent } from './components/user-profile-info-page/user-profile-info-page.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -30,7 +30,8 @@ import { UserProfileInfoPageComponent } from './components/user-profile-info-pag
   imports: [
     CommonModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
 })
 export class ProfilesModule { }
