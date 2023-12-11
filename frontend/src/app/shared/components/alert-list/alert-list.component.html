@@ -1,8 +1,8 @@
-<ul class="fixed top-2 md:top-6 right-[calc(50%-11.5rem)] md:right-0 mt-20">
+<ul class="fixed top-2 md:top-6 right-[calc(50%-11.5rem)] md:right-0 mt-20 z-40">
   <li
     *ngFor="let alert of alerts()"
     [ngClass]="{
-      'relative alert duration-500 transition-all w-[23rem] ease-in-out opacity-0 shadow shadow-black border-none mb-4
+      'relative alert duration-500 transition-all w-[23rem] z-40 ease-in-out opacity-0 shadow shadow-black border-none mb-4
        -right-1/2 top-0': true,
       'right-0 md:right-4 md:top-0 z-30 opacity-100': alert.isShown,
       'bg-red-500': alert.type === 'error',

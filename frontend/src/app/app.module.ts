@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { HomePageComponent } from './shared/home-page/home-page.component';
 import { AlertListComponent } from './shared/components/alert-list/alert-list.component';
+import { ProfilesModule } from './modules/profiles/profiles.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AlertListComponent } from './shared/components/alert-list/alert-list.co
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ProfilesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
