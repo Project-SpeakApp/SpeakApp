@@ -8,6 +8,9 @@ import { ProfileSearchFormComponent } from './components/profile-search-form/pro
 import { UserProfileInfoComponent } from './components/user-profile-info/user-profile-info.component';
 import { UserProfileInfoLabelComponent } from './components/user-profile-info-label/user-profile-info-label.component';
 import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-info-birthday-card/user-profile-info-birthday-card.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 
@@ -19,11 +22,13 @@ import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-
     ProfileSearchFormComponent,
     UserProfileInfoComponent,
     UserProfileInfoLabelComponent,
-    UserProfileInfoBirthdayCardComponent
+    UserProfileInfoBirthdayCardComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
     AppRoutingModule,
+    HttpClientModule
   ],
 })
 export class ProfilesModule { }

@@ -1,28 +1,4 @@
-<div>
-  <div>
-    <img class="absolute max-w-[calc(64rem-2rem)] z-0 w-[calc(100%-2rem)] h-[250px] rounded-[20px] object-cover" src="https://wallpaperaccess.com/full/1419752.jpg" alt="user background picture">
-    <div class="flex flex-row pt-[125px] pl-10">
-      <div class="avatar">
-        <div class="w-[180px] rounded-full border-white border-4">
-          <img src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg" />
-        </div>
-      </div>
-      <div class="flex flex-col justify-end w-full">
-        <div class="flex flex-row justify-between">
-          <h1 class="text-3xl font-semibold">Krzysio Misio</h1>
-          <button class="flex flex-row gap-2 app-btn btn-primary">
-            <h2 class="">Settings</h2>
-            <span class="material-symbols-outlined">settings</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="flex flex-row justify-between mt-4">
-    <app-user-profile-navigation></app-user-profile-navigation>
-    <app-profile-search-form></app-profile-search-form>
-  </div>
-</div>
+<app-profile [profile]="profile$ | async"></app-profile>
 <div class="mt-4">
   <router-outlet></router-outlet>
 </div>
