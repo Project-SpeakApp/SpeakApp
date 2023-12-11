@@ -26,5 +26,6 @@ import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-
     AppRoutingModule,
   ],
 
+
 })
 export class ProfilesModule { }

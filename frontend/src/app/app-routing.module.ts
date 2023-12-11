@@ -8,13 +8,17 @@ import { UserProfileInfoComponent } from './modules/profiles/components/user-pro
 import {PostComponent} from "./modules/posts/components/post/post/post.component";
 import {PostListComponent} from "./modules/posts/components/post-list/post-list/post-list.component";
 
+
+
+
 const routes: Routes = [
   { path: '', component: HomePageComponent },
+  { path: 'posts/create', component: AddPostComponent},
   { path: 'profiles/:id', component: UserProfilePageComponent, children: [
     { path: 'info', component: UserProfileInfoComponent  },
   ]},
-  { path: 'posts/create', component: AddPostComponent},
   { path: 'post/get', component: PostListComponent}
+
 ];
 
 @NgModule({

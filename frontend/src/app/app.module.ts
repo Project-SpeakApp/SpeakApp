@@ -11,6 +11,9 @@ import {FormsModule} from "@angular/forms";
 import {AddPostComponent} from "./modules/posts/components/add-post/add-post.component";
 import {PostsModule} from "./modules/posts/posts.module";
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,6 +27,7 @@ import {PostsModule} from "./modules/posts/posts.module";
     ProfilesModule,
     FormsModule,
     PostsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
