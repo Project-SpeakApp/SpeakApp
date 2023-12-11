@@ -6,6 +6,7 @@ import {AddPostComponent} from "./modules/posts/components/add-post/add-post.com
 import { UserProfilePageComponent } from './modules/profiles/components/user-profile-page/user-profile-page.component';
 import { UserProfileInfoComponent } from './modules/profiles/components/user-profile-info/user-profile-info.component';
 import {PostComponent} from "./modules/posts/components/post/post/post.component";
+import {PostListComponent} from "./modules/posts/components/post-list/post-list/post-list.component";
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -13,7 +14,7 @@ const routes: Routes = [
     { path: 'info', component: UserProfileInfoComponent  },
   ]},
   { path: 'posts/create', component: AddPostComponent},
-  { path: 'post/get', component: PostComponent}
+  { path: 'post/get', component: PostListComponent}
 ];
 
 @NgModule({

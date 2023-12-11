@@ -1,1 +1,5 @@
-<p>post-list works!</p>
+<ul class="flex flex-col gap-4">
+  <li *ngFor="let post of posts">
+    <app-post [post]="post"></app-post>
+  </li>
+</ul>

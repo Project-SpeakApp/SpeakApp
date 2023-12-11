@@ -13,7 +13,7 @@ import { PostListComponent } from './components/post-list/post-list/post-list.co
   declarations: [
     AddPostComponent,
     PostComponent,
-    PostListComponent
+    PostListComponent,
   ],
   imports: [
     CommonModule,

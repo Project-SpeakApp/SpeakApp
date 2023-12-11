@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
 import {ReactionsGet} from "../../../../../shared/types/posts/reactions-get.model";
 import {UserGet} from "../../../../../shared/types/profiles/user-get.model";
@@ -10,36 +10,21 @@ import {ReactionType} from "../../../../../shared/types/posts/ReactionType.enum"
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })
-export class PostComponent {
-  //@Input() post!: PostGet;
-  user: UserGet = {
-    userId: '123',
-    fullName: 'John Doe',
-    profilePhotoUrl: 'path-to-profile-photo'
-  };
-
-  reactions: ReactionsGet = {
-    sumOfReactions: 0,
-    sumOfReactionsByType: new Map<ReactionType, number>()
-  };
-  post: PostGet = {
-    postId: '456',
-    content: 'This is a sample post content.',
-    author: this.user,
-    createdAt: new Date(),
-    reactions: this.reactions,
-    currentUserReaction: ReactionType.LIKE
-  };
-
-  year = this.post.createdAt.getFullYear();
-  month = String(this.post.createdAt.getMonth() + 1).padStart(2, '0');
-  day = String(this.post.createdAt.getDate()).padStart(2, '0');
-  hours = String(this.post.createdAt.getHours()).padStart(2, '0');
-  minutes = String(this.post.createdAt.getMinutes()).padStart(2, '0');
-  formattedDate = `${this.year}-${this.month}-${this.day} ${this.hours}:${this.minutes}`;
+export class PostComponent implements OnChanges{
+  @Input() post: PostGet = {} as PostGet;
+  formattedDate: string = '';
 
 
-
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['post'] && this.post && this.post.createdAt) {
+      const createdAt = new Date(this.post.createdAt);
+      const year = createdAt.getFullYear();
+      const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+      const day = String(createdAt.getDate()).padStart(2, '0');
+      const hours = String(createdAt.getHours()).padStart(2, '0');
+      const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+      this.formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+  }
 
 }

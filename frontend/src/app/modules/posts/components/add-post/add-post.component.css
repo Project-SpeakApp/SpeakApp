@@ -19,3 +19,7 @@ textarea::placeholder {
   margin-right: auto;
 }
 
+button {
+  margin-bottom: 5px;
+}
+
