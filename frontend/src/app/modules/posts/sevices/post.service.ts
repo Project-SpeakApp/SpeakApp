@@ -24,4 +24,12 @@ export class PostService {
     return this.http.get<any>('http://localhost:8082/api/posts', {headers, params});
 
   }
+
+  deletePost(postId: string, userId: string): Observable<void> {
+    const headers = new HttpHeaders().set('UserId', userId);
+    return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers });
+  }
+
+
+
 }
