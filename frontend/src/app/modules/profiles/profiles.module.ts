@@ -11,6 +11,7 @@ import { UserProfileInfoBirthdayCardComponent } from './components/user-profile-
 import { ProfileComponent } from './components/profile/profile.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { UserProfileInfoPageComponent } from './components/user-profile-info-page/user-profile-info-page.component';
 
 
 
@@ -23,7 +24,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     UserProfileInfoComponent,
     UserProfileInfoLabelComponent,
     UserProfileInfoBirthdayCardComponent,
-    ProfileComponent
+    ProfileComponent,
+    UserProfileInfoPageComponent
   ],
   imports: [
     CommonModule,

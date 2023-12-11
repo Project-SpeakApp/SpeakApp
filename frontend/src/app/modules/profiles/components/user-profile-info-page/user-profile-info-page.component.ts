@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfilesService } from '../../services/profiles.service';
-import { Observable } from 'rxjs';
-import ProfileGetDTO from '../../types/ProfileGetDTO';
 import { ActivatedRoute } from '@angular/router';
+import ProfileGetDTO from '../../types/ProfileGetDTO';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-user-profile-page',
-  templateUrl: './user-profile-page.component.html'
+  selector: 'app-user-profile-info-page',
+  templateUrl: './user-profile-info-page.component.html'
 })
-export class UserProfilePageComponent implements OnInit {
+export class UserProfileInfoPageComponent implements OnInit {
 
   constructor(private profilesService: ProfilesService, private route: ActivatedRoute) { }
 
-  profile$: Observable<ProfileGetDTO> | null = null;
+  profile$: Observable<ProfileGetDTO> | null = null ;
 
   ngOnInit(): void {
-    const userId = this.route.snapshot.paramMap.get('id');
+    const userId = this.route.pathFromRoot[1].snapshot.paramMap.get('id');
     if (!userId) {
       console.log('No user id');
       return;
