@@ -24,7 +24,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
       content: ''
     };
   }
-    isLoading = this.postService.isLoading;
+    isLoading = this.postService.isLoadingAdd;
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       content: ['', [Validators.required, Validators.minLength(1)]]

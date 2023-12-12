@@ -13,17 +13,21 @@ export class PostService {
 
   }
 
-  isLoading = signal(false);
+  isLoadingAdd = signal(false);
+  isLoadingDelete = signal(false);
+
+  isLoadingGet = signal(false);
+
+
 
 
   addPost(model: AddPost, userId: string): Observable<void> {
-    this.isLoading.set(true);
+    this.isLoadingAdd.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    new Promise(resolve => setTimeout(resolve, 5000));
 
     return this.http.post<void>('http://localhost:8082/api/posts', model, {headers}).pipe(
       finalize( () => {
-        this.isLoading.set(false);
+        this.isLoadingAdd.set(false);
         }),
       tap(
         (data) => {console.log(data);},
@@ -34,16 +38,35 @@ export class PostService {
   }
 
   getPosts(userId: string, page: number, size: number): Observable<PostGetResponse> {
+    this.isLoadingGet.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams();
     params = params.set('page', page.toString()).set('size', size.toString());
-    return this.http.get<any>('http://localhost:8082/api/posts', {headers, params});
+    return this.http.get<any>('http://localhost:8082/api/posts', {headers, params}).pipe(
+      finalize( () => {
+        this.isLoadingGet.set(false);
+      }),
+      tap(
+        (data) => {console.log(data);},
+        (error) => {this.alertService.showAlert(error, 'error')},
+      )
+    );
 
   }
 
   deletePost(postId: string, userId: string): Observable<void> {
+    this.isLoadingDelete.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers });
+    return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
+      finalize( () => {
+        this.isLoadingDelete.set(false);
+      }),
+      tap(
+        (data) => {console.log(data);},
+        (error) => {this.alertService.showAlert(error, 'error')},
+      )
+
+    );
   }
 
 
