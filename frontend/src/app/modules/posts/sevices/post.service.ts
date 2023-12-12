@@ -18,7 +18,6 @@ export class PostService {
   addPost(model: AddPost, userId: string): Observable<void> {
     this.isLoadingAdd.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-
     return this.http.post<void>('http://localhost:8082/api/posts', model, {headers}).pipe(
       finalize( () => {
         this.isLoadingAdd.set(false);
