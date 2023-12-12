@@ -1,10 +1,10 @@
 
 
-<span *ngIf="visible" class="material-symbols-outlined" onclick="my_modal_1.showModal()">delete</span>
+<span *ngIf="visible" class="material-symbols-outlined" onclick="{{deleteComponentId}}.showModal()">delete</span>
 <dialog id="my_modal_1" class="modal">
-  <div class="modal-box">
+  <div class="{{deleteComponentId}}">
     <h1 class="font-bold text-lg text-center" style="font-size: 22px">Do you really want to delete your post?</h1>
-    <p class="py-4 text-center" style="color: #EEAF3A; font-size: 16px">The post data will be lost forever!</p>
+    <p class="py-4 text-center text-accent" style="font-size: 16px">The post data will be lost forever!</p>
     <div class="modal-action justify-between">
       <form method="dialog" class="form1">
         <button class="btn">CANCEL</button>

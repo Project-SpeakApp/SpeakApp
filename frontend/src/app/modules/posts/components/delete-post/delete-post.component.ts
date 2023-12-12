@@ -13,6 +13,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
 
   @Input() postId: string = "";
   @Input() authorId: string = "";
+  @Input() deleteComponentId: string = "";
 
   visible: boolean = true;
 
