@@ -3,6 +3,7 @@ version: '3.8'
 x-service: &service
   environment:
     - SPRING_PROFILES_ACTIVE=dev
+#    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:8761/eureka
 
 x-db: &db
   image: postgres:16.0-alpine
@@ -29,6 +30,15 @@ services:
     depends_on:
       user-db-service:
         condition: service_healthy
+#      eureka-service:
+#        condition: service_started
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/users" ]  # Replace with your health check endpoint
+      interval: 30s
+      timeout: 10s
+      retries: 3
+#    environment:
+#      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:8761/eureka
 
   user-db-service:
     <<: *db
@@ -53,6 +63,17 @@ services:
     depends_on:
       post-db-service:
         condition: service_healthy
+#      eureka-service:
+#        condition: service_started
+#    environment:
+#        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:8761/eureka
+#
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/posts" ]  # Replace with your health check endpoint
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 
   post-db-service:
     <<: *db
@@ -67,10 +88,39 @@ services:
     networks:
       - net-postDB-postServ
 
+#  eureka-service:
+#    image: springcloud/eureka
+#    build: discovery-service
+#
+#    ports:
+#      - '8761:8761'
+#    networks:
+#        - net-postServ-userServ
+#        - net-userDB-userServ
+#        - net-postDB-postServ
+#        - net-apiGw-userServ
+#        - net-apiGw-postServ
+
+  api-gateway:
+    <<: *service
+    build: gateway-service
+    ports:
+      - '8080:8080'
+    networks:
+      - net-apiGw-userServ
+      - net-apiGw-postServ
+    depends_on:
+      user-service:
+        condition: service_healthy
+      post-service:
+        condition: service_healthy
+
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
   net-postServ-userServ:
+  net-apiGw-userServ:
+  net-apiGw-postServ:
 
 volumes:
   vol-user-db:
