@@ -47,4 +47,7 @@
       </div>
     </div>
   </div>
+  <select (change)="themeChanges($event)" class="select select-sm">
+    <option *ngFor="let theme of themes" [value]="theme">{{ theme }}</option>
+  </select>
 </header>

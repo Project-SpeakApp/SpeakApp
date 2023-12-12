@@ -16,7 +16,7 @@ import { UserProfileInfoPageComponent } from './modules/profiles/components/user
 const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'profiles/:id', component: UserProfilePageComponent, children: [
-    { path: 'info', component: UserProfileInfoComponent  },
+    { path: 'info', component: UserProfileInfoPageComponent  },
   ]},
   { path: '**', component: NotFoundPageComponent }
 ];

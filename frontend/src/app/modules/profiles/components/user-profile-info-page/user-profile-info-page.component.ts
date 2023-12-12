@@ -17,6 +17,7 @@ export class UserProfileInfoPageComponent implements OnInit {
 
   ngOnInit(): void {
     const userId = this.route.pathFromRoot[1].snapshot.paramMap.get('id');
+    console.log("lmao");
     if (!userId) {
       console.log('No user id');
       return;
