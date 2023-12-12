@@ -21,12 +21,12 @@ spring:
     gateway:
       routes:
         - id: post-service
-          uri: http://post-service
+          uri: http://post-service:8082
           predicates:
             - Path=/api/posts
 
         # User service Route
         - id: user-service
-          uri: http://user-service
+          uri: http://user-service:8081
           predicates:
             - Path=/api/users

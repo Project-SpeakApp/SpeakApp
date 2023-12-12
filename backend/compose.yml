@@ -109,11 +109,11 @@ services:
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
-    depends_on:
-      user-service:
-        condition: service_healthy
-      post-service:
-        condition: service_healthy
+#    depends_on:
+#      user-service:
+#        condition: service_started
+#      post-service:
+#        condition: service_started
 
 networks:
   net-postDB-postServ:
