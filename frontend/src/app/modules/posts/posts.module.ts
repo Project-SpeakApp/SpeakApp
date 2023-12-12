@@ -4,6 +4,7 @@ import { AddPostComponent } from './components/add-post/add-post.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "../../app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
+import {SharedModule} from "../../shared/shared.module";
 
 
 
@@ -16,7 +17,8 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
 
   ],
   exports: [

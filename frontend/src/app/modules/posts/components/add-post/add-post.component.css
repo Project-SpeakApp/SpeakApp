@@ -19,3 +19,8 @@ textarea::placeholder {
   margin-right: auto;
 }
 
+.app-btn {
+  min-width: 75px;
+  max-width: 100%;
+
+}

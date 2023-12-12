@@ -4,8 +4,14 @@
       <div class="mt-2">
         <textarea id="content" formControlName="content" class="text-black w-full" placeholder="What's on your mind?" name="content" type="text"></textarea>
       </div>
-      <div>
-        <button [disabled]="(isLoading$ | async)" class="app-btn btn-primary" style="float:right; border-radius: 25px">Post</button>
+      <div >
+        <button [disabled]="isLoading()" class="app-btn btn-primary" style="float: right; border-radius: 25px; position: relative;">
+          <span *ngIf="isLoading()" class="loading loading-spinner"></span>
+          <ng-container *ngIf="!isLoading()">
+            Post
+          </ng-container>
+        </button>
+
       </div>
     </div>
   </form>
