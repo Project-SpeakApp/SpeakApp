@@ -1,0 +1,26 @@
+textarea {
+  height: 80px;
+  color: black;
+  border-radius: 20px;
+  background-color: #D9D9D9;
+  width: 100%;
+  padding-left:15px;
+  padding-top: 7px;
+  border-bottom: 2px solid #EF9FBC;
+  resize: none;
+
+}
+
+textarea::placeholder {
+  color: black;
+}
+.card {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app-btn {
+  min-width: 75px;
+  max-width: 100%;
+
+}
