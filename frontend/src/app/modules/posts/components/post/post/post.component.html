@@ -11,6 +11,9 @@
         <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>
         <p>{{formattedDate}}</p>
       </div>
+      <div class="ml-auto">
+        <app-delete-post [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
+      </div>
     </div>
 
     <p>{{post.content}}</p>

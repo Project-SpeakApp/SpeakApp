@@ -29,7 +29,8 @@ import {SharedModule} from "../../shared/shared.module";
   ],
   exports: [
     AddPostComponent,
-    DeletePostComponent
+    DeletePostComponent,
+    PostListComponent
   ]
 })
 export class PostsModule { }

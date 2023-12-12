@@ -12,34 +12,35 @@ import {PostGetResponse} from "../../../../../shared/types/posts/post-get-respon
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit{
+  user: UserGet = {
+    userId: '123',
+    fullName: 'John Doe',
+    profilePhotoUrl: 'path-to-profile-photo'
+  };
 
+  reactions: ReactionsGet = {
+    sumOfReactions: 0,
+    sumOfReactionsByType: new Map<ReactionType, number>()
+  };
+   post: PostGet = {
+    postId: '456',
+    content: 'This is a sample post content.',
+    author: this.user,
+    createdAt: new Date(),
+    reactions: this.reactions,
+    currentUserReaction: ReactionType.LIKE
+  };
   posts: PostGet[] = [];
   userId: string = '6c84fb95-12c4-11ec-82a8-0242ac130003'; //give or get later some userId
   constructor(private postService: PostService) { }
   ngOnInit(): void {
-    this.postService.getPosts(this.userId, 1, 10).subscribe((data: PostGetResponse) => {
+    this.posts.push(this.post, this.post);
+
+    /*this.postService.getPosts(this.userId, 1, 10).subscribe((data: PostGetResponse) => {
       this.posts = data.result;
-    });
+    });*/
   }
 
 }
 
-/*const user: UserGet = {
-      userId: '123',
-      fullName: 'John Doe',
-      profilePhotoUrl: 'path-to-profile-photo'
-    };
 
-    const reactions: ReactionsGet = {
-      sumOfReactions: 0,
-      sumOfReactionsByType: new Map<ReactionType, number>()
-    };
-    const post: PostGet = {
-      postId: '456',
-      content: 'This is a sample post content.',
-      author: user,
-      createdAt: new Date(),
-      reactions: reactions,
-      currentUserReaction: ReactionType.LIKE
-    };
-    this.posts.push(post, post); */ //for tests only, put in ngOnInitMethod
