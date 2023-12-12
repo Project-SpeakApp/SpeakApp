@@ -3,7 +3,6 @@ version: '3.8'
 x-service: &service
   environment:
     - SPRING_PROFILES_ACTIVE=dev
-#    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:8761/eureka
 
 x-db: &db
   image: postgres:16.0-alpine
@@ -27,18 +26,10 @@ services:
     networks:
       - net-userDB-userServ
       - net-postServ-userServ
+      - net-apiGw-userServ
     depends_on:
       user-db-service:
         condition: service_healthy
-#      eureka-service:
-#        condition: service_started
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/users" ]  # Replace with your health check endpoint
-      interval: 30s
-      timeout: 10s
-      retries: 3
-#    environment:
-#      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:8761/eureka
 
   user-db-service:
     <<: *db
@@ -60,19 +51,10 @@ services:
     networks:
       - net-postDB-postServ
       - net-postServ-userServ
+      - net-apiGw-postServ
     depends_on:
       post-db-service:
         condition: service_healthy
-#      eureka-service:
-#        condition: service_started
-#    environment:
-#        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-service:8761/eureka
-#
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/posts" ]  # Replace with your health check endpoint
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
 
   post-db-service:
@@ -87,7 +69,7 @@ services:
       - '5433:5433'
     networks:
       - net-postDB-postServ
-
+# TODO: add discovery service
 #  eureka-service:
 #    image: springcloud/eureka
 #    build: discovery-service
@@ -109,11 +91,6 @@ services:
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
-#    depends_on:
-#      user-service:
-#        condition: service_started
-#      post-service:
-#        condition: service_started
 
 networks:
   net-postDB-postServ:

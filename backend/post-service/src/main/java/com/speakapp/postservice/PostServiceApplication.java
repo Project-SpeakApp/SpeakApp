@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
-//@EnableEurekaClient // This annotation enables the Eureka Client in our application.
+//@EnableEurekaClient TODO: uncomment this line
 public class PostServiceApplication {
 
 	public static void main(String[] args) {
