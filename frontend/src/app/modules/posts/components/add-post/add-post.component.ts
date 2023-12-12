@@ -24,7 +24,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
       content: ''
     };
   }
-
+    isLoading$ = this.postService.isLoading;
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       content: ['', [Validators.required, Validators.minLength(1)]]
@@ -34,14 +34,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
   onFormSubmit(): void {
     if (this.myForm.valid) {
       this.model.content = this.myForm.value.content;
-      this.addPostSubscription = this.postService.addPost(this.model, this.userId).subscribe({
-        next: (response) => {
-          console.log('Success');
-        },
-        error: (error) => {
-          console.log('Error');
-        }
-      });
+      this.addPostSubscription = this.postService.addPost(this.model, this.userId).subscribe();
     } else {
       this.alertService.showAlert('Type Content', 'error');
     }

@@ -10,7 +10,6 @@ import { UserProfileInfoComponent } from './modules/profiles/components/user-pro
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
-  { path: 'posts/create', component: AddPostComponent},
   { path: 'profiles/:id', component: UserProfilePageComponent, children: [
     { path: 'info', component: UserProfileInfoComponent  },
   ] }

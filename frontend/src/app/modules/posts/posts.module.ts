@@ -19,5 +19,8 @@ import {HttpClientModule} from "@angular/common/http";
     ReactiveFormsModule
 
   ],
+  exports: [
+    AddPostComponent
+  ]
 })
 export class PostsModule { }
