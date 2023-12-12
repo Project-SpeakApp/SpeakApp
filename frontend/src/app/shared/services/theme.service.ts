@@ -45,7 +45,7 @@ export class ThemeService {
       "theme3"
   ]
 
-  currentTheme = signal("light");
+  currentTheme = signal("cupcake");
 
   loadTheme() {
     const theme = localStorage.getItem('theme');

@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserProfileInfoPageComponent } from './components/user-profile-info-page/user-profile-info-page.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserProfileSettingsPageComponent } from './components/user-profile-settings-page/user-profile-settings-page.component';
+import { UserProfileEditFormComponent } from './components/user-profile-edit-form/user-profile-edit-form.component';
 
 
 
@@ -27,7 +28,8 @@ import { UserProfileSettingsPageComponent } from './components/user-profile-sett
     UserProfileInfoBirthdayCardComponent,
     ProfileComponent,
     UserProfileInfoPageComponent,
-    UserProfileSettingsPageComponent
+    UserProfileSettingsPageComponent,
+    UserProfileEditFormComponent
   ],
   imports: [
     CommonModule,

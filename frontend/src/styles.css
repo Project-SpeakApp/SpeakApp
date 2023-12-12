@@ -4,10 +4,13 @@
 
 @layer utilities {
   .app-btn {
-    @apply btn btn-sm rounded-full shadow-md shadow-black;
+    @apply btn btn-sm rounded-full shadow-md shadow-gray-500;
   }
   .app-input {
-    @apply bg-secondary rounded-full shadow-md shadow-black text-white p-2 h-8 placeholder-white focus:border-black focus:border-2
+    @apply bg-secondary rounded-full w-full max-w-[24rem] mx-auto shadow-md shadow-gray-500 text-white p-2 h-8 placeholder-white focus:border-black focus:border-2
+  }
+  .app-textarea {
+    @apply bg-secondary rounded-lg min-h-[10rem] shadow-md shadow-gray-500 text-white p-2 placeholder-white focus:border-black focus:border-2
   }
 }
 
