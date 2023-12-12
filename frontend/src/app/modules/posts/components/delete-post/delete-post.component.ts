@@ -13,7 +13,6 @@ export class DeletePostComponent implements OnDestroy, OnInit{
 
   @Input() postId: string = "";
   @Input() authorId: string = "";
-  @Input() deleteComponentId: string = "";
 
   visible: boolean = true;
 
@@ -26,8 +25,15 @@ export class DeletePostComponent implements OnDestroy, OnInit{
     }
   }
 
+  openModal(modalId: string): void {
+    const modal = document.getElementById(modalId) as HTMLDialogElement;
+    if (modal) {
+      modal.showModal();
+    }
+  }
+
   onFormSubmit(): void {
-      this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe();
+    this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe();
   }
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();

@@ -1,5 +1,4 @@
 <div class="card w-96 bg-base-100 shadow-xl">
-
     <div class="flex items-center">
       <div class="w-1/6">
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 18 18">
@@ -9,14 +8,12 @@
       </div>
       <div >
         <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>
-        <p>{{formattedDate}}</p>
+        <p style="font-size: 12px" class="font-serif italic">{{formattedDate}}</p>
       </div>
       <div class="ml-auto">
-        <app-delete-post [deleteComponentId]="post.postId" [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
+        <app-delete-post [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
       </div>
     </div>
-
     <p>{{post.content}}</p>
     <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-
 </div>

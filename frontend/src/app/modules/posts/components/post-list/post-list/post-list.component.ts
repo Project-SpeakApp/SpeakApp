@@ -30,14 +30,23 @@ export class PostListComponent implements OnInit{
     reactions: this.reactions,
     currentUserReaction: ReactionType.LIKE
   };
+
+  post2: PostGet = {
+    postId: '4567',
+    content: 'This is a sample post content.',
+    author: this.user,
+    createdAt: new Date(),
+    reactions: this.reactions,
+    currentUserReaction: ReactionType.LIKE
+  };
   posts: PostGet[] = [];
   userId: string = '6c84fb95-12c4-11ec-82a8-0242ac130003'; //give or get later some userId
   constructor(private postService: PostService) { }
   ngOnInit(): void {
-    this.posts.push(this.post, this.post);
+    this.posts.push(this.post, this.post2);
 
     /*this.postService.getPosts(this.userId, 1, 10).subscribe((data: PostGetResponse) => {
-      this.posts = data.result;
+      this.posts = data.result; // jak bedzie endpoint trzeba to odkomentowac i usunac zmienne utworzone powyzej
     });*/
   }
 

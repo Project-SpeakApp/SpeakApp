@@ -14,12 +14,6 @@ export class PostService {
   }
 
   isLoadingAdd = signal(false);
-  isLoadingDelete = signal(false);
-
-  isLoadingGet = signal(false);
-
-
-
 
   addPost(model: AddPost, userId: string): Observable<void> {
     this.isLoadingAdd.set(true);
@@ -38,13 +32,12 @@ export class PostService {
   }
 
   getPosts(userId: string, page: number, size: number): Observable<PostGetResponse> {
-    this.isLoadingGet.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams();
     params = params.set('page', page.toString()).set('size', size.toString());
     return this.http.get<any>('http://localhost:8082/api/posts', {headers, params}).pipe(
       finalize( () => {
-        this.isLoadingGet.set(false);
+
       }),
       tap(
         (data) => {console.log(data);},
@@ -55,11 +48,10 @@ export class PostService {
   }
 
   deletePost(postId: string, userId: string): Observable<void> {
-    this.isLoadingDelete.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
     return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
       finalize( () => {
-        this.isLoadingDelete.set(false);
+
       }),
       tap(
         (data) => {console.log(data);},
