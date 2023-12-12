@@ -9,6 +9,8 @@ logging:
 ---
 
 spring:
+#  application:
+#    name: user-service
   mvc:
     log-request-details: true # for debugging
 
@@ -26,6 +28,12 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+      # This is the name of the service in docker-compose.yml was localhost:8761/eureka
 
 ---
 

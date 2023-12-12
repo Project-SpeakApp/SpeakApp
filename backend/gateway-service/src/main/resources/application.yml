@@ -4,8 +4,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 
-  application:
-    name: api-gateway
+#  application:
+#    name: api-gateway
 
 logging:
   level:
