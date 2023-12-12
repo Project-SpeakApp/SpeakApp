@@ -1,13 +1,17 @@
 <div class="card w-96">
-  <form #form="ngForm" (ngSubmit)="onFormSubmit()" class="space-y-6">
+  <form [formGroup]="myForm" (ngSubmit)="onFormSubmit()" class="space-y-6">
     <div>
       <div class="mt-2">
-        <textarea id="content" [(ngModel)]="model.content" #content="ngModel" minlength="1"  class="text-black w-full" placeholder="What's on your mind?" name="content" type="text"></textarea>
-
+        <textarea id="content" formControlName="content" class="text-black w-full" placeholder="What's on your mind?" name="content" type="text"></textarea>
       </div>
+      <div >
+        <button [disabled]="isLoading()" class="app-btn btn-primary" style="float: right; border-radius: 25px; position: relative;">
+          <span *ngIf="isLoading()" class="loading loading-spinner"></span>
+          <ng-container *ngIf="!isLoading()">
+            Post
+          </ng-container>
+        </button>
 
-      <div>
-        <button class="btn btn-primary" style="float:right; border-radius: 25px">Post</button>
       </div>
     </div>
   </form>
