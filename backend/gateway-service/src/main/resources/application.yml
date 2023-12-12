@@ -1,0 +1,32 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+
+  application:
+    name: api-gateway
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+    org.springframework.cloud.gateway: TRACE
+
+# Post service Route
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: post-service
+          uri: http://post-service
+          predicates:
+            - Path=/api/posts
+
+        # User service Route
+        - id: user-service
+          uri: http://user-service
+          predicates:
+            - Path=/api/users
