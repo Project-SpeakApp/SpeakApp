@@ -1,14 +1,15 @@
-<div class="card w-96 bg-base-100 shadow-xl">
+<div class="card w-96 py-2 bg-base-100 w-[500px] shadow-xl">
     <div class="flex items-center">
-      <div class="w-1/6">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 18 18">
-          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-        </svg>
+      <div class="w-1/8">
+        <div class="avatar">
+          <div class="w-12 rounded-full">
+            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+          </div>
+        </div>
       </div>
-      <div >
+      <div style="padding-left: 10px" >
         <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>
-        <p style="font-size: 12px" class="font-serif italic">{{formattedDate}}</p>
+        <p style="font-size: 12px" class="italic">{{formattedDate}}</p>
       </div>
       <div class="ml-auto">
         <app-delete-post [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
