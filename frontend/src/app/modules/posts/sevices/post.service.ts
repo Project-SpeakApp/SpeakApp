@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AddPost} from "../../../shared/types/posts/add-post.model";
 import {Observable} from "rxjs";
@@ -11,6 +11,9 @@ export class PostService {
   constructor(private http: HttpClient) {
 
   }
+
+  isLoading = signal(false);
+
 
   addPost(model: AddPost, userId: string): Observable<void> {
     const headers = new HttpHeaders().set('UserId', userId);
