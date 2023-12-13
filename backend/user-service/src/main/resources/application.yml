@@ -27,12 +27,6 @@ spring:
       enabled: true
       path: /h2-console
 
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka //TODO: add discovery client
-      # This is the name of the service in docker-compose.yml was localhost:8761/eureka
-
 ---
 
 spring:

@@ -69,19 +69,6 @@ services:
       - '5433:5433'
     networks:
       - net-postDB-postServ
-# TODO: add discovery service
-#  eureka-service:
-#    image: springcloud/eureka
-#    build: discovery-service
-#
-#    ports:
-#      - '8761:8761'
-#    networks:
-#        - net-postServ-userServ
-#        - net-userDB-userServ
-#        - net-postDB-postServ
-#        - net-apiGw-userServ
-#        - net-apiGw-postServ
 
   api-gateway:
     <<: *service
