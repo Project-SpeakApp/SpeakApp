@@ -1,0 +1,20 @@
+<div class="card w-96 py-2 bg-base-100 w-[500px] shadow-xl">
+    <div class="flex items-center">
+      <div class="w-1/8">
+        <div class="avatar">
+          <div class="w-12 rounded-full">
+            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+          </div>
+        </div>
+      </div>
+      <div style="padding-left: 10px" >
+        <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>
+        <p style="font-size: 12px" class="italic">{{formattedDate}}</p>
+      </div>
+      <div class="ml-auto">
+        <app-delete-post [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
+      </div>
+    </div>
+    <p>{{post.content}}</p>
+    <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+</div>

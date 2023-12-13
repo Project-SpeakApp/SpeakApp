@@ -3,12 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './shared/home-page/home-page.component';
-import { AlertListComponent } from './shared/components/alert-list/alert-list.component';
-import {FormsModule} from "@angular/forms";
-import {AddPostComponent} from "./modules/posts/components/add-post/add-post.component";
-import {PostsModule} from "./modules/posts/posts.module";
-
 import { ProfilesModule } from './modules/profiles/profiles.module';
+import {PostsModule} from "./modules/posts/posts.module";
 import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component';
 import { SharedModule } from './shared/shared.module';
 
@@ -21,8 +17,8 @@ import { SharedModule } from './shared/shared.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PostsModule,
     ProfilesModule,
+    PostsModule,
     SharedModule
   ],
   exports: [],
