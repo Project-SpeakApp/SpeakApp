@@ -43,7 +43,7 @@ export class PostService {
       }),
       tap(
         (data) => {console.log(data);},
-        (error) => {this.alertService.showAlert(error, 'error')},
+        (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
       )
     );
 

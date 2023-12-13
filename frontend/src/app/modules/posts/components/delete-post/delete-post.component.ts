@@ -38,14 +38,16 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   onFormSubmit(modalId: string): void {
     this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe(
       () => {
-        const modal = document.getElementById(modalId) as HTMLDialogElement;
-        if (modal) {
-          modal.close();
-        }
+        this.closeModal(modalId);
       }
     );
+  }
 
-
+  closeModal(modalId: string): void {
+    const modal = document.getElementById(modalId) as HTMLDialogElement;
+    if (modal) {
+      modal.close();
+    }
   }
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
