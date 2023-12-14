@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit, OnDestroy{
     sumOfReactionsByType: new Map<ReactionType, number>()
   };
    post: PostGet = {
-    postId: '456',
+    postId: '6c84fbad-12c4-11ec-82a8-0242ac130003',
     content: 'This is a sample post content.',
     author: this.user,
     createdAt: new Date(),

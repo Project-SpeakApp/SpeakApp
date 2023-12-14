@@ -17,6 +17,23 @@ export class PostService {
   isLoadingGet = signal(false);
   isLoadingDelete = signal(false);
 
+  isLoadingUpdate = signal(false);
+
+  updatePost(postId: string, model: AddPost, userId: string): Observable<void> {
+    this.isLoadingUpdate.set(true);
+    const headers = new HttpHeaders().set('UserId', userId);
+    return this.http.put<void>(`http://localhost:8082/api/posts/${postId}`, model, { headers }).pipe(
+      finalize( () => {
+        this.isLoadingUpdate.set(false);
+        }
+      ),
+      tap(
+        (data) => console.log(data),
+        (error)=> {this.alertService.showAlert('Something went wrong...', 'error'), console.log(error)}
+      )
+    );
+  }
+
   addPost(model: AddPost, userId: string): Observable<void> {
     this.isLoadingAdd.set(true);
     const headers = new HttpHeaders().set('UserId', userId);

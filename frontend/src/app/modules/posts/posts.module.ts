@@ -9,6 +9,7 @@ import { PostListComponent } from './components/post-list/post-list/post-list.co
 import { DeletePostComponent } from './components/delete-post/delete-post.component';
 import {SharedModule} from "../../shared/shared.module";
 import { PostFeedPageComponent } from './components/post-feed-page/post-feed-page.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
 
 
 
@@ -19,6 +20,7 @@ import { PostFeedPageComponent } from './components/post-feed-page/post-feed-pag
     PostListComponent,
     DeletePostComponent,
     PostFeedPageComponent,
+    EditPostComponent,
   ],
   imports: [
     CommonModule,
