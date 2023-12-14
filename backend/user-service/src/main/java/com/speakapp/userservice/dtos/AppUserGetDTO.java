@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Value
@@ -18,4 +19,5 @@ public class AppUserGetDTO {
     String email;
     String about;
     LocalDate dateOfBirth;
+    LocalDate createdAt;
 }
