@@ -49,7 +49,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
 
       );
     } else if (this.initContent === this.myForm.value.content) {
-      this.alertService.showAlert('You didn\'t change your post', 'error');
+      this.closeForm();
     } else {
       this.alertService.showAlert('Type content', 'error');
     }
