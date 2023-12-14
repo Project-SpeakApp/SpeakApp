@@ -1,5 +1,5 @@
 ### Put update user
-PUT http://localhost:8081/api/users
+PUT http://localhost:8080/api/users
 Content-Type: application/json
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
 
@@ -11,7 +11,7 @@ UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
 }
 
 ### Put update user profile photo
-PUT http://localhost:8081/api/users/profile-photo
+PUT http://localhost:8080/api/users/profile-photo
 Content-Type: application/json
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
 
@@ -20,7 +20,7 @@ UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
 }
 
 ### Put update user background photo
-PUT http://localhost:8081/api/users/background-photo
+PUT http://localhost:8080/api/users/background-photo
 Content-Type: application/json
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
 
