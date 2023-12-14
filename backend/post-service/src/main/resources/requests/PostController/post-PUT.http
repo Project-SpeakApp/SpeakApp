@@ -1,5 +1,5 @@
 ### PUT request from owner of the post
-PUT http://localhost:8082/api/posts/6c84fbac-12c4-11ec-82a8-0242ac130003
+PUT http://localhost:8080/api/posts/6c84fbac-12c4-11ec-82a8-0242ac130003
 Content-Type: application/json
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
 

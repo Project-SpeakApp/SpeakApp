@@ -1,5 +1,5 @@
 ### GET request from owner of the profile
-GET http://localhost:8082/api/posts/
+GET http://localhost:8080/api/posts/
     6c84fb95-12c4-11ec-82a8-0242ac130003?
     pageNumber=0&
     pageSize=5
