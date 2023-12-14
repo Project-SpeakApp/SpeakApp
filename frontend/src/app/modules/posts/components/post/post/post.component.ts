@@ -1,8 +1,5 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
-import {ReactionsGet} from "../../../../../shared/types/posts/reactions-get.model";
-import {UserGet} from "../../../../../shared/types/profiles/user-get.model";
-import {ReactionType} from "../../../../../shared/types/posts/ReactionType.enum";
 import {DateFormatting} from "../../../../../shared/util/DateFormatting";
 
 

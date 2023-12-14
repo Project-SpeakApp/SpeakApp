@@ -1,4 +1,4 @@
-<div class="card w-96 py-2 bg-base-100 w-[500px] shadow-xl">
+<div class="card py-2 bg-base-100 w-[500px] shadow-xl">
     <div class="flex items-center">
       <div class="w-1/8">
         <div class="avatar">
@@ -18,7 +18,7 @@
         </span>
       </div>
     </div>
-    <p *ngIf="!isEdited">{{post.content}}</p>
-    <app-edit-post (contentUpdated)="updateContent()" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
-    <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+    <p *ngIf="!isEdited" class="m-[1px]">{{post.content}}</p>
+    <app-edit-post class="-translate-y-[24px]"(contentUpdated)="updateContent()" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
+    <figure ><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
 </div>
