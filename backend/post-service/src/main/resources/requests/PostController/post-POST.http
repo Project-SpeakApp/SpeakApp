@@ -1,4 +1,4 @@
-###
+### Post request
 POST http://localhost:8082/api/posts
 Content-Type: application/json
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
