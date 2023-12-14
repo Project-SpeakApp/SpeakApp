@@ -8,4 +8,5 @@ export class DateFormatting {
     const minutes = String(createdAt.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   }
+
 }

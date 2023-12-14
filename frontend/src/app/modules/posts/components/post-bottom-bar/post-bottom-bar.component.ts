@@ -20,13 +20,12 @@ export class PostBottomBarComponent implements OnInit{
     if(this.post.modifiedAt === null) {
       this.isVisible = false;
     }
-    else if(DateFormatting.formatDateTime(this.post.createdAt) !== DateFormatting.formatDateTime(this.post.modifiedAt) ) {
+    else if(this.post.createdAt.valueOf() == this.post.modifiedAt.valueOf() ) {
       this.isVisible = false;
     }
     else {
       this.isVisible = true;
       this.formattedDate = DateFormatting.formatDateTime(this.post.modifiedAt);
-
     }
   }
 }
