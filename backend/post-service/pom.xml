@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -76,7 +77,6 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
