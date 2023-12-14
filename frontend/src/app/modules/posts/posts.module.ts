@@ -10,6 +10,7 @@ import { DeletePostComponent } from './components/delete-post/delete-post.compon
 import {SharedModule} from "../../shared/shared.module";
 import { PostFeedPageComponent } from './components/post-feed-page/post-feed-page.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
+import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom-bar.component';
 
 
 
@@ -21,6 +22,7 @@ import { EditPostComponent } from './components/edit-post/edit-post.component';
     DeletePostComponent,
     PostFeedPageComponent,
     EditPostComponent,
+    PostBottomBarComponent,
   ],
   imports: [
     CommonModule,

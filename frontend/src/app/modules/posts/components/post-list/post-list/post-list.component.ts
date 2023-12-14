@@ -25,6 +25,7 @@ export class PostListComponent implements OnInit, OnDestroy{
   };
    post: PostGet = {
     postId: '6c84fbad-12c4-11ec-82a8-0242ac130003',
+     modifiedAt: new Date(),
     content: 'This is a sample post content.',
     author: this.user,
     createdAt: new Date(),
@@ -37,6 +38,7 @@ export class PostListComponent implements OnInit, OnDestroy{
     content: 'This is a sample post content.',
     author: this.user,
     createdAt: new Date(),
+    modifiedAt: null,
     reactions: this.reactions,
     currentUserReaction: ReactionType.LIKE
   };
