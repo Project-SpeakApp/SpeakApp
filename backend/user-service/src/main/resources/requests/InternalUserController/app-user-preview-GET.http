@@ -7,8 +7,6 @@ GET http://localhost:8081/api/internal/users/6c84fb96-12c4-11ec-82a8-0242ac13000
 ###
 GET http://localhost:8081/api/internal/users/6c84fb97-12c4-11ec-82a8-0242ac130003
 
-uuid = lol
-###
-
+### Get list of user previews
 GET http://localhost:8081/api/internal/users/userIds=6c84fb95-12c4-11ec-82a8-0242ac130003,
     6c84fb96-12c4-11ec-82a8-0242ac130003,6c84fb97-12c4-11ec-82a8-0242ac130003
