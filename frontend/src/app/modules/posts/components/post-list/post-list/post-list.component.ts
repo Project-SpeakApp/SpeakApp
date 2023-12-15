@@ -25,6 +25,7 @@ export class PostListComponent implements OnInit, OnDestroy{
   };
    post: PostGet = {
     postId: '6c84fbad-12c4-11ec-82a8-0242ac130003',
+     modifiedAt: new Date(),
     content: 'This is a sample post content.',
     author: this.user,
     createdAt: new Date(),
@@ -37,6 +38,17 @@ export class PostListComponent implements OnInit, OnDestroy{
     content: 'This is a sample post content.',
     author: this.user,
     createdAt: new Date(),
+    modifiedAt: new Date(new Date().getTime() + 100000),
+    reactions: this.reactions,
+    currentUserReaction: ReactionType.LIKE
+  };
+
+  post3: PostGet = {
+    postId: '4567',
+    content: 'This is a sample post content.',
+    author: this.user,
+    createdAt: new Date(),
+    modifiedAt: null,
     reactions: this.reactions,
     currentUserReaction: ReactionType.LIKE
   };
@@ -50,7 +62,7 @@ export class PostListComponent implements OnInit, OnDestroy{
 
   constructor(private postService: PostService) { }
   ngOnInit(): void {
-    this.posts.push(this.post, this.post2);
+    this.posts.push(this.post, this.post2, this.post3);
     /*this.addPostSubscription = this.postService.getPosts(this.userId, 1, 10).subscribe((data: PostGetResponse) => {
       this.posts = data.result; // jak bedzie endpoint trzeba to odkomentowac i usunac zmienne utworzone powyzej
     });*/
