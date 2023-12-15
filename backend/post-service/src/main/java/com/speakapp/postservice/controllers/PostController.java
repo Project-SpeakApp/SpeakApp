@@ -28,6 +28,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) {
         postService.deletePost(userId, postId);
+    }
 
     @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
