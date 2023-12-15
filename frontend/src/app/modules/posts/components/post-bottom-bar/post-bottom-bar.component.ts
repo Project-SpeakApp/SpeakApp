@@ -17,7 +17,7 @@ export class PostBottomBarComponent implements OnInit{
   isVisible: boolean = true;
 
   checkIfPostWasEdited() {
-    if(this.post.modifiedAt === null || (this.post.createdAt.valueOf() == this.post.modifiedAt.valueOf())) {
+    if(this.post.modifiedAt == null || (this.post.createdAt.valueOf() == this.post.modifiedAt.valueOf())) {
       this.isVisible = false;
     }
     else {
