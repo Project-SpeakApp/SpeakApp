@@ -1,0 +1,14 @@
+<app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+<div *ngIf="profile && !isLoading">
+  <h1 class="text-primary text-xl font-semibold mb-3 mt-8">About Me</h1>
+  <p>{{ profile.about }}</p>
+  <div class="flex flex-row justify-between mt-8">
+    <ul>
+      <app-user-profile-info-label label="First Name" [value]="profile.firstName"></app-user-profile-info-label>
+      <app-user-profile-info-label label="Last Name" [value]="profile.lastName"></app-user-profile-info-label>
+      <app-user-profile-info-label label="Email" [value]="profile.email"></app-user-profile-info-label>
+      <app-user-profile-info-label label="Joined At" [value]="profile.dateOfBirth.toString()"></app-user-profile-info-label>
+    </ul>
+    <app-user-profile-info-birthday-card [birthday]="profile.dateOfBirth.toString()"></app-user-profile-info-birthday-card>
+  </div>
+</div>

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .app-btn {
+    @apply btn btn-sm rounded-full shadow-md shadow-black;
+  }
+  .app-input {
+    @apply bg-secondary rounded-full shadow-md shadow-black text-white p-2 h-8 placeholder-white focus:border-black focus:border-2
+  }
+}
+
 @font-face {
   font-family: geist;
   src: url(assets/GeistVariableVF.ttf) format("truetype");
