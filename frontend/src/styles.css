@@ -21,5 +21,18 @@
 
 * {
   font-family: geist;
+  --primary-color: #ef9fbc;
+  --primary-lighter-color: #fae2eb;
+  --primary-darker-color: #e883a5;
+  --text-primary-color: rgba(0, 0, 0, 0.87);
+  --text-primary-lighter-color: rgba(0, 0, 0, 0.87);
+  --text-primary-darker-color: rgba(0, 0, 0, 0.87);
+  --accent-color: #ef9fbc;
+  --accent-lighter-color: #fae2eb;
+  --accent-darker-color: #e883a5;
+  --text-accent-color: rgba(0, 0, 0, 0.87);
+  --text-accent-lighter-color: rgba(0, 0, 0, 0.87);
+  --text-accent-darker-color: rgba(0, 0, 0, 0.87);
 }
 
+@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";

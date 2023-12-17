@@ -7,6 +7,11 @@
     <label class="text-center">Last Name</label>
     <input class="app-input input-secondary"/>
     <label class="text-center">Date of Birth</label>
+    <mat-form-field class="w-full max-w-[24rem] mx-auto ">
+      <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
     <label class="text-center">About</label>
     <textarea class="app-textarea bg-secondary input-secondary resize-none"></textarea>
     <button type="submit" class="app-btn btn-primary max-w-xs w-full mt-8 mx-auto">Save</button>
