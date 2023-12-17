@@ -115,9 +115,7 @@ public class PostService {
         if(!userId.equals(postToDelete.getUserId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
 
-        postToDelete.setDeleted(true);
-
-        postRepository.save(postToDelete);
+        postRepository.delete(postToDelete);
     }
 
 
