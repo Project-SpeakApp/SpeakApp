@@ -26,14 +26,31 @@ $$
 
         INSERT INTO user_friend (requester_id, addressee_id, friend_id, status, created_at)
         VALUES (user_id_1, user_id_2, '6c84fb98-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-01-10 12:00:00'::timestamp),
-               (user_id_2, user_id_1, '6c84fb99-12c4-11ec-82a8-0242ac130003', 'FRIEND', '2023-02-15 12:00:00'::timestamp),
-               (user_id_3, user_id_1, '6c84fc91-12c4-11ec-82a8-0242ac130003', 'REQUEST', '2023-03-20 12:00:00'::timestamp),
+               (user_id_2, user_id_1, '6c84fb99-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-02-15 12:00:00'::timestamp),
+               (user_id_3, user_id_1, '6c84fc91-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-03-20 12:00:00'::timestamp),
                 (user_id_1, user_id_4, '6c84fba0-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-04-10 12:00:00'::timestamp),
-                (user_id_4, user_id_1, '6c84fba1-12c4-11ec-82a8-0242ac130003', 'REQUEST', '2023-04-15 12:00:00'::timestamp),
-                (user_id_1, user_id_5, '6c84fba2-12c4-11ec-82a8-0242ac130003', 'FRIEND', '2023-05-10 12:00:00'::timestamp),
-                (user_id_5, user_id_1, '6c84fba3-12c4-11ec-82a8-0242ac130003', 'REQUEST', '2023-05-15 12:00:00'::timestamp),
-                (user_id_1, user_id_6, '6c84fba4-12c4-11ec-82a8-0242ac130003', 'FRIEND', '2023-06-10 12:00:00'::timestamp),
-                (user_id_6, user_id_1, '6c84fba5-12c4-11ec-82a8-0242ac130003', 'FRIEND', '2023-06-15 12:00:00'::timestamp);
+                (user_id_4, user_id_1, '6c84fba1-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-04-15 12:00:00'::timestamp),
+                (user_id_1, user_id_5, '6c84fba2-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-05-10 12:00:00'::timestamp),
+                (user_id_5, user_id_1, '6c84fba3-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-05-15 12:00:00'::timestamp),
+                (user_id_1, user_id_6, '6c84fba4-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-06-10 12:00:00'::timestamp),
+                (user_id_6, user_id_1, '6c84fba5-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-06-15 12:00:00'::timestamp),
+               (user_id_7, user_id_1, '6c84fba6-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-07-10 12:00:00'::timestamp),
+               (user_id_1, user_id_8, '6c84fba7-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-08-10 12:00:00'::timestamp),
+               (user_id_8, user_id_1, '6c84fba8-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-08-15 12:00:00'::timestamp),
+               (user_id_1, user_id_9, '6c84fba9-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-09-10 12:00:00'::timestamp),
+               (user_id_9, user_id_1, '6c84fbaa-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-09-15 12:00:00'::timestamp),
+               (user_id_1, user_id_10, '6c84fbab-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-10-10 12:00:00'::timestamp),
+               (user_id_10, user_id_1, '6c84fbac-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-10-15 12:00:00'::timestamp),
+               (user_id_2, user_id_3, '6c84fbad-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-02-20 12:00:00'::timestamp),
+               (user_id_3, user_id_2, '6c84fbae-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-03-25 12:00:00'::timestamp),
+               (user_id_4, user_id_5, '6c84fbaf-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-04-20 12:00:00'::timestamp),
+               (user_id_5, user_id_4, '6c84fbb0-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-05-20 12:00:00'::timestamp),
+               (user_id_6, user_id_7, '6c84fbb1-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-06-20 12:00:00'::timestamp),
+               (user_id_7, user_id_6, '6c84fbb2-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-07-20 12:00:00'::timestamp),
+               (user_id_8, user_id_9, '6c84fbb3-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-08-20 12:00:00'::timestamp),
+               (user_id_9, user_id_8, '6c84fbb4-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-09-20 12:00:00'::timestamp),
+               (user_id_10, user_id_2, '6c84fbb5-12c4-11ec-82a8-0242ac130003'::uuid, 'REQUEST', '2023-10-20 12:00:00'::timestamp),
+               (user_id_2, user_id_10, '6c84fbb6-12c4-11ec-82a8-0242ac130003'::uuid, 'FRIEND', '2023-02-25 12:00:00'::timestamp);
 
 
 
