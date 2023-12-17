@@ -106,6 +106,30 @@ public class PostService {
         );
     }
 
+    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
+
+        List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
+            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
+            ReactionsGetDTO postReactions = getReactionsForThePost(post);
+            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+
+            return postMapper.toGetDTO(
+                post,
+                postAuthor,
+                postReactions,
+                currentUserReactionType
+            );
+        }).toList();
+
+        return postPageMapper.toGetDTO(
+            postGetDTOS,
+            page,
+            postsPage.getTotalPages()
+        );
+    }
+
     // Keep the class implementation for migration to CommentService
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {

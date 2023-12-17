@@ -37,4 +37,10 @@ public class PostController {
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public PostPageGetDTO getLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
+        @RequestParam(defaultValue = "5") int pageSize,  @RequestHeader("UserId") UUID userId ){
+      return postService.getLatestPosts(pageNumber, pageSize, userId);
+    }
 }
