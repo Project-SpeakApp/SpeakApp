@@ -106,6 +106,19 @@ public class PostService {
         );
     }
 
+    public ReactionsGetDTO addPostReaction(ReactionType reactionType, UUID postId, UUID userId){
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
+
+        postReactionRepository.save(PostReaction.builder()
+            .post(post)
+            .userId(userId)
+            .type(reactionType)
+            .build()
+        );
+
+        return getReactionsForThePost(post);
+    }
+
     // Keep the class implementation for migration to CommentService
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
