@@ -10,7 +10,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authService: AuthService, private themeService: ThemeService) { }
 
-  authState = this.authService.state();
+  authState = this.authService.state;
 
   themes = this.themeService.themes;
 

@@ -12,7 +12,7 @@ export class UserProfileSettingsPageComponent {
 
   constructor(private profilesService: ProfilesService, private route: ActivatedRoute) {}
 
-  profile$: Observable<ProfileGetDTO> | null = null;
+  profile$: Observable<ProfileGetDTO> = new Observable();
   isLoading = this.profilesService.isLoading;
 
   ngOnInit(): void {
