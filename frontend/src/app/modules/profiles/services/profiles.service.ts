@@ -28,7 +28,7 @@ export class ProfilesService {
       .pipe(
         finalize(() => this.isLoading.set(false)),
         tap(
-          () => {},
+          (r) => {console.log(r)},
           () => this.alertService.showAlert('Failed to load profile', 'error'),
         ),
       );
@@ -45,6 +45,7 @@ export class ProfilesService {
         tap(
           () => {
             this.alertService.showAlert('Profile updated', 'success');
+            this.authService.updateState
             this.router.navigate(['/profiles', this.authService.state().userId]);
           },
           () =>
