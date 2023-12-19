@@ -8,6 +8,9 @@ import { PostComponent } from './components/post/post/post.component';
 import { PostListComponent } from './components/post-list/post-list/post-list.component';
 import { DeletePostComponent } from './components/delete-post/delete-post.component';
 import {SharedModule} from "../../shared/shared.module";
+import { PostFeedPageComponent } from './components/post-feed-page/post-feed-page.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
+import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom-bar.component';
 
 
 
@@ -17,6 +20,9 @@ import {SharedModule} from "../../shared/shared.module";
     PostComponent,
     PostListComponent,
     DeletePostComponent,
+    PostFeedPageComponent,
+    EditPostComponent,
+    PostBottomBarComponent,
   ],
   imports: [
     CommonModule,
@@ -29,7 +35,8 @@ import {SharedModule} from "../../shared/shared.module";
   ],
   exports: [
     AddPostComponent,
-    DeletePostComponent
+    DeletePostComponent,
+    PostListComponent
   ]
 })
 export class PostsModule { }

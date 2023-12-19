@@ -1,23 +1,21 @@
 package com.speakapp.userservice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "AppUser")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "app_user")
-public class AppUser {
+public class AppUser extends Auditable {
 
     @Id
     @GeneratedValue

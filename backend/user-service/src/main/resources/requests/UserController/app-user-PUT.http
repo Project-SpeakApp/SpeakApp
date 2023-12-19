@@ -1,0 +1,29 @@
+### Put update user
+PUT http://localhost:8080/api/users
+Content-Type: application/json
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+{
+  "firstName": "Newbie",
+  "lastName": "Newton",
+  "about": "I am so so new",
+  "dateOfBirth": "2023-12-14"
+}
+
+### Put update user profile photo
+PUT http://localhost:8080/api/users/profile-photo
+Content-Type: application/json
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+{
+  "photoUrl": "http://url-to-profile-photo.com"
+}
+
+### Put update user background photo
+PUT http://localhost:8080/api/users/background-photo
+Content-Type: application/json
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+{
+  "photoUrl": "http://url-to-background-photo.com"
+}

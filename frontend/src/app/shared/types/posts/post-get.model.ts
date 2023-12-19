@@ -7,6 +7,7 @@ export interface PostGet {
   content: string;
   author: UserGet;
   createdAt: Date;
+  modifiedAt: Date | null;
   reactions: ReactionsGet;
   currentUserReaction: ReactionType;
 }

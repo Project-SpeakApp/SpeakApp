@@ -26,6 +26,7 @@ services:
     networks:
       - net-userDB-userServ
       - net-postServ-userServ
+      - net-apiGw-userServ
     depends_on:
       user-db-service:
         condition: service_healthy
@@ -50,9 +51,11 @@ services:
     networks:
       - net-postDB-postServ
       - net-postServ-userServ
+      - net-apiGw-postServ
     depends_on:
       post-db-service:
         condition: service_healthy
+
 
   post-db-service:
     <<: *db
@@ -67,10 +70,21 @@ services:
     networks:
       - net-postDB-postServ
 
+  api-gateway:
+    <<: *service
+    build: gateway-service
+    ports:
+      - '8080:8080'
+    networks:
+      - net-apiGw-userServ
+      - net-apiGw-postServ
+
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
   net-postServ-userServ:
+  net-apiGw-userServ:
+  net-apiGw-postServ:
 
 volumes:
   vol-user-db:

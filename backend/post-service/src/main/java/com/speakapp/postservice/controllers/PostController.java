@@ -30,7 +30,7 @@ public class PostController {
         return postService.updatePost(postCreateDTO, postId, userId);
     }
 
-    @GetMapping("/{userIdOfProfileOwner}")
+    @GetMapping("/by-user/{userIdOfProfileOwner}")
     @ResponseStatus(HttpStatus.OK)
     public PostPageGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
         @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
