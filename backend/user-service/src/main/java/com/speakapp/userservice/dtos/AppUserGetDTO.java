@@ -3,7 +3,6 @@ package com.speakapp.userservice.dtos;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-
 import java.time.LocalDate;
 
 @Value
@@ -18,4 +17,5 @@ public class AppUserGetDTO {
     String email;
     String about;
     LocalDate dateOfBirth;
+    LocalDate createdAt;
 }

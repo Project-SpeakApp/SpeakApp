@@ -1,18 +1,30 @@
+<div *ngIf="visible" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Delete">
+<span class="material-symbols-outlined relative -bottom-2" (click)="openModal('modal_'+postId)">
+delete
+</span>
+</div>
+<dialog id="modal_{{postId}}" class="modal">
 
-
-<span *ngIf="visible" class="material-symbols-outlined" onclick="my_modal_1.showModal()">delete</span>
-<dialog id="my_modal_1" class="modal">
   <div class="modal-box">
     <h1 class="font-bold text-lg text-center" style="font-size: 22px">Do you really want to delete your post?</h1>
-    <p class="py-4 text-center" style="color: #EEAF3A; font-size: 16px">The post data will be lost forever!</p>
+    <p class="py-4 text-center text-accent" style="font-size: 16px">The post data will be lost forever!</p>
     <div class="modal-action justify-between">
       <form method="dialog" class="form1">
         <button class="btn">CANCEL</button>
       </form>
-      <form (ngSubmit)="onFormSubmit()" class="form2">
-        <button class="btn btn-primary">DELETE</button>
+      <form (ngSubmit)="onFormSubmit('modal_'+postId)" class="form2">
+        <button [disabled]="isLoading()" class="btn btn-primary">
+          <span *ngIf="isLoading()" class="loading loading-spinner"></span>
+          <ng-container *ngIf="!isLoading()">
+            DELETE
+          </ng-container>
+        </button>
       </form>
     </div>
-
   </div>
+  <form method="dialog" class="modal-backdrop" style="cursor: auto !important;">
+    <a (click)="closeModal('modal_'+postId)">close</a>
+  </form>
 </dialog>
+
+

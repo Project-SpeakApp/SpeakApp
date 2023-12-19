@@ -9,6 +9,8 @@ logging:
 ---
 
 spring:
+  application:
+    name: post-service
   config:
     activate:
       on-profile: local
