@@ -22,6 +22,5 @@ export class UserProfileSettingsPageComponent {
       return;
     }
     this.profile$ = this.profilesService.getProfile(userId);
-    console.log(this.profile$);
   }
 }
