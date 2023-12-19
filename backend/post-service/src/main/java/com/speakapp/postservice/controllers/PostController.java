@@ -1,11 +1,10 @@
 package com.speakapp.postservice.controllers;
 
-import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
+import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,16 +23,24 @@ public class PostController {
         return postService.createPost(postCreateDTO, userId);
     }
 
+
+    @DeleteMapping("/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) {
+        postService.deletePost(userId, postId);
+    }
+
     @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
     public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) {
         return postService.updatePost(postCreateDTO, postId, userId);
+
     }
 
     @GetMapping("/by-user/{userIdOfProfileOwner}")
     @ResponseStatus(HttpStatus.OK)
     public PostPageGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
-        @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
+                                             @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 

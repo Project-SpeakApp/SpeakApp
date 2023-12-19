@@ -106,6 +106,19 @@ public class PostService {
         );
     }
 
+    public void deletePost(UUID userId, UUID postId){
+
+        Post postToDelete = postRepository.findById(postId).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + "has not been found"));
+
+
+        if(!userId.equals(postToDelete.getUserId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
+
+        postRepository.delete(postToDelete);
+    }
+
+
     // Keep the class implementation for migration to CommentService
     @NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
