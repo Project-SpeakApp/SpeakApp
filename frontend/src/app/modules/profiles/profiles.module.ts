@@ -12,6 +12,13 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileInfoPageComponent } from './components/user-profile-info-page/user-profile-info-page.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { UserProfileSettingsPageComponent } from './components/user-profile-settings-page/user-profile-settings-page.component';
+import { UserProfileEditFormComponent } from './components/user-profile-edit-form/user-profile-edit-form.component';
+import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -25,13 +32,20 @@ import { SharedModule } from 'src/app/shared/shared.module';
     UserProfileInfoLabelComponent,
     UserProfileInfoBirthdayCardComponent,
     ProfileComponent,
-    UserProfileInfoPageComponent
+    UserProfileInfoPageComponent,
+    UserProfileSettingsPageComponent,
+    UserProfileEditFormComponent
   ],
   imports: [
     CommonModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    NgxMatDatetimePickerModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 
 
