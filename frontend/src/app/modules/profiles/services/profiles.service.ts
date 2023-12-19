@@ -19,6 +19,7 @@ export class ProfilesService {
   ) {}
 
   isLoading = signal(false);
+  profileUpdateLoading = signal(false);
 
   public getProfile(userId: string) {
     this.isLoading.set(true);
@@ -34,13 +35,13 @@ export class ProfilesService {
   }
 
   public updateProfile(profile: ProfileUpdateDTO) {
-    this.isLoading.set(true);
+    this.profileUpdateLoading.set(true);
     return this.http
       .put<ProfileGetDTO>(`http://localhost:8081/api/users`, profile, {
         headers: { UserId: this.authService.state().userId },
       })
       .pipe(
-        finalize(() => this.isLoading.set(false)),
+        finalize(() => this.profileUpdateLoading.set(false)),
         tap(
           () => {
             this.alertService.showAlert('Profile updated', 'success');
