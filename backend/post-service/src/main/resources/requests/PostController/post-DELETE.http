@@ -23,3 +23,7 @@ UserId: 6c84fb96-12c4-11ec-82a8-0242ac130003
 ###
 DELETE http://localhost:8080/api/posts/6c84fbac-12c4-11ec-82a8-0242ac130003
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### DELETE post containg comments, reactions, commentsReactions, tags, lists
+DELETE http://localhost:8080/api/posts/6c84fbae-12c4-11ec-82a8-0242ac130003
+UserId: 6c84fb96-12c4-11ec-82a8-0242ac130003
