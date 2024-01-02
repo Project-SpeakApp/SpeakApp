@@ -6,6 +6,7 @@ import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.co
 import { UserProfileInfoPageComponent } from './modules/profiles/components/user-profile-info-page/user-profile-info-page.component';
 import { UserProfileSettingsPageComponent } from './modules/profiles/components/user-profile-settings-page/user-profile-settings-page.component';
 import {PostFeedPageComponent} from "./modules/posts/components/post-feed-page/post-feed-page.component";
+import {CommentComponent} from "./modules/posts/components/comment/comment.component";
 
 
 
@@ -16,8 +17,9 @@ const routes: Routes = [
     { path: 'info', component: UserProfileInfoPageComponent  },
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent },
-  { path: '**', component: NotFoundPageComponent },
   { path: 'posts', component: PostFeedPageComponent},
+  {path: 'comment', component: CommentComponent},
+  { path: '**', component: NotFoundPageComponent },
 ];
 
 @NgModule({

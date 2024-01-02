@@ -1,0 +1,6 @@
+<app-loading-spinner [isLoading]="isLoading()"></app-loading-spinner>
+<ul class="flex flex-col gap-4">
+  <li *ngFor="let comment of comments">
+    <app-comment [comment] ="comment"></app-comment>
+  </li>
+</ul>

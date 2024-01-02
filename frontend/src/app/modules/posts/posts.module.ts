@@ -11,6 +11,8 @@ import {SharedModule} from "../../shared/shared.module";
 import { PostFeedPageComponent } from './components/post-feed-page/post-feed-page.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom-bar.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
 
 
 
@@ -23,6 +25,8 @@ import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom
     PostFeedPageComponent,
     EditPostComponent,
     PostBottomBarComponent,
+    CommentComponent,
+    CommentListComponent,
   ],
   imports: [
     CommonModule,
