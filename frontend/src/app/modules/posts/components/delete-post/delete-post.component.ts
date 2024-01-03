@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {PostService} from "../../sevices/post.service";
-import {delay, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {AlertService} from "../../../../shared/services/alert.service";
 

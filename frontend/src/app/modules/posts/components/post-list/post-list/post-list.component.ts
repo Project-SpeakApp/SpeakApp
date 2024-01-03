@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component,OnInit} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
 import {PostService} from "../../../sevices/post.service";
-import {Subscription} from "rxjs";
 import {AuthService} from "../../../../../shared/services/auth.service";
 
 @Component({
@@ -21,7 +20,7 @@ export class PostListComponent implements OnInit{
     this.postService.posts$.subscribe(posts => {
       this.posts = posts;
     });
-    this.postService.getPosts(this.authService.state().userId, 0, 5).subscribe(); 
+    this.postService.getPosts(this.authService.state().userId, 0, 5).subscribe();
 
   }
 
