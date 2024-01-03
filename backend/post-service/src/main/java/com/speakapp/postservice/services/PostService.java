@@ -89,15 +89,20 @@ public class PostService {
         return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
     }
 
-    public ReactionsGetDTO addPostReaction(ReactionType reactionType, UUID postId, UUID userId){
+    public ReactionsGetDTO createUpdatePostReaction(ReactionType reactionType, UUID postId, UUID userId){
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
+        PostReaction postReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 
-        postReactionRepository.save(PostReaction.builder()
-            .post(post)
-            .userId(userId)
-            .type(reactionType)
-            .build()
-        );
+        if(postReaction != null) {
+            postReaction.setType(reactionType);
+        } else {
+            postReactionRepository.save(PostReaction.builder()
+                .post(post)
+                .userId(userId)
+                .type(reactionType)
+                .build()
+            );
+        }
 
         return getReactionsForThePost(post);
     }

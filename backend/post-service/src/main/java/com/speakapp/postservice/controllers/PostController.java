@@ -48,9 +48,9 @@ public class PostController {
 
     @PostMapping("/reaction/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ReactionsGetDTO addPostReaction(@RequestParam ReactionType reactionType, @PathVariable UUID postId,
+    public ReactionsGetDTO createUpdatePostReaction(@RequestParam ReactionType reactionType, @PathVariable UUID postId,
         @RequestHeader("UserId") UUID userId){
-        return postService.addPostReaction(reactionType, postId, userId);
+        return postService.createUpdatePostReaction(reactionType, postId, userId);
     }
 
     @GetMapping
