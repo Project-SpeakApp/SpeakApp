@@ -96,13 +96,13 @@ public class PostService {
         if(postReaction != null) {
             postReaction.setType(reactionType);
         } else {
-            postReactionRepository.save(PostReaction.builder()
+            postReaction = PostReaction.builder()
                 .post(post)
                 .userId(userId)
                 .type(reactionType)
-                .build()
-            );
+                .build();
         }
+        postReactionRepository.save(postReaction);
 
         return getReactionsForThePost(post);
     }
