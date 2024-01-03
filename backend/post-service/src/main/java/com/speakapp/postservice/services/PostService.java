@@ -86,24 +86,7 @@ public class PostService {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
 
-        List<PostGetDTO> postGetDTOS = userPostsPage.getContent().stream().map(post -> {
-            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
-            ReactionsGetDTO postReactions = getReactionsForThePost(post);
-            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
-
-            return postMapper.toGetDTO(
-                    post,
-                    postAuthor,
-                    postReactions,
-                    currentUserReactionType
-            );
-        }).toList();
-
-        return postPageMapper.toGetDTO(
-                postGetDTOS,
-                page,
-                userPostsPage.getTotalPages()
-        );
+        return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
     }
 
     public ReactionsGetDTO addPostReaction(ReactionType reactionType, UUID postId, UUID userId){
@@ -117,6 +100,25 @@ public class PostService {
         );
 
         return getReactionsForThePost(post);
+    }
+
+    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
+
+        return createPostPageGetDTOFromPostPage(postsPage, userId, page);
+    }
+
+    public void deletePost(UUID userId, UUID postId){
+
+        Post postToDelete = postRepository.findById(postId).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + "has not been found"));
+
+
+        if(!userId.equals(postToDelete.getUserId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
+
+        postRepository.delete(postToDelete);
     }
 
     // Keep the class implementation for migration to CommentService
@@ -183,5 +185,25 @@ public class PostService {
                 .build();
     }
 
+    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page){
+        List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
+            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
+            ReactionsGetDTO postReactions = getReactionsForThePost(post);
+            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+
+            return postMapper.toGetDTO(
+                post,
+                postAuthor,
+                postReactions,
+                currentUserReactionType
+            );
+        }).toList();
+
+        return postPageMapper.toGetDTO(
+            postGetDTOS,
+            page,
+            postsPage.getTotalPages()
+        );
+    }
 
 }

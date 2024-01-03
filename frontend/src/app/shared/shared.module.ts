@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { AlertListComponent } from './components/alert-list/alert-list.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule
   ],
   exports: [
     HeaderComponent,

@@ -4,10 +4,13 @@
 
 @layer utilities {
   .app-btn {
-    @apply btn btn-sm rounded-full shadow-md shadow-black;
+    @apply btn btn-sm rounded-full shadow-md shadow-gray-500;
   }
   .app-input {
-    @apply bg-secondary rounded-full shadow-md shadow-black text-white p-2 h-8 placeholder-white focus:border-black focus:border-2
+    @apply bg-secondary rounded-full w-full max-w-[24rem] mx-auto shadow-md shadow-gray-500 text-white p-2 h-8 placeholder-white focus:border-black focus:border-2
+  }
+  .app-textarea {
+    @apply bg-secondary rounded-lg min-h-[10rem] shadow-md shadow-gray-500 text-white p-2 placeholder-white focus:border-black focus:border-2
   }
 }
 
@@ -18,5 +21,18 @@
 
 * {
   font-family: geist;
+  --primary-color: #ef9fbc;
+  --primary-lighter-color: #fae2eb;
+  --primary-darker-color: #e883a5;
+  --text-primary-color: rgba(0, 0, 0, 0.87);
+  --text-primary-lighter-color: rgba(0, 0, 0, 0.87);
+  --text-primary-darker-color: rgba(0, 0, 0, 0.87);
+  --accent-color: #ef9fbc;
+  --accent-lighter-color: #fae2eb;
+  --accent-darker-color: #e883a5;
+  --text-accent-color: rgba(0, 0, 0, 0.87);
+  --text-accent-lighter-color: rgba(0, 0, 0, 0.87);
+  --text-accent-darker-color: rgba(0, 0, 0, 0.87);
 }
 
+@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";

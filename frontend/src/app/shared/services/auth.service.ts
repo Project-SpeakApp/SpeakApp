@@ -15,6 +15,14 @@ export class AuthService {
   }
 
   state = signal(this.defaultState);
+
+  public updateState(firstName: string, lastName: string) {
+    this.state.set({
+      ...this.state(),
+      firstName,
+      lastName,
+    });
+  }
 }
 
 type AuthState = {

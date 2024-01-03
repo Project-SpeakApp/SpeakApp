@@ -3,6 +3,8 @@ package com.speakapp.postservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ public class Comment extends Auditable {
     private UUID commentId;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "postId", nullable = false)
     private Post post;
 
