@@ -8,7 +8,6 @@ import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 @Component({
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
-  styleUrls: ['./comment-list.component.css']
 })
 export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";

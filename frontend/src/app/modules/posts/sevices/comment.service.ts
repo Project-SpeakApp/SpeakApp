@@ -16,7 +16,7 @@ export class CommentService {
     this.isLoadingGet.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams().set('postId', postId);
-    return this.http.get<any>('http://localhost:8082/api/posts/comments', {headers, params}).pipe(
+    return this.http.get<any>('http://localhost:8080/api/posts/comments', {headers, params}).pipe( //tez nie jestem pewny czy tak powinien wygladac endpoint
       finalize( () => {
         this.isLoadingGet.set(false);
       }),
