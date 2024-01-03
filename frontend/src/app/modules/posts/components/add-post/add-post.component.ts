@@ -4,6 +4,7 @@ import { PostService } from '../../sevices/post.service';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
+import {AuthService} from "../../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-add-post',
@@ -12,13 +13,13 @@ import {AddPost} from "../../../../shared/types/posts/add-post.model";
 })
 export class AddPostComponent implements OnInit, OnDestroy {
   myForm!: FormGroup;
-  userId = '6c84fb95-12c4-11ec-82a8-0242ac130003'; // give or get later some userId
   private addPostSubscription?: Subscription;
   model: AddPost;
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService,
   ) {
     this.model = {
       content: ''
@@ -34,7 +35,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
   onFormSubmit(): void {
     if (this.myForm.valid) {
       this.model.content = this.myForm.value.content;
-      this.addPostSubscription = this.postService.addPost(this.model, this.userId).subscribe();
+      this.addPostSubscription = this.postService.addPost(this.model, this.authService.state().userId).subscribe();
     } else {
       this.alertService.showAlert('Type Content', 'error');
     }
