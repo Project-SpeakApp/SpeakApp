@@ -2,7 +2,6 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
-import {CommentListGet} from "../../../../shared/types/posts/comment-list-get";
 import {CommentGet} from "../../../../shared/types/posts/comment-get";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 
@@ -80,7 +79,39 @@ export class CommentListComponent implements OnInit, OnDestroy{
         sumOfReactions: 8,
         sumOfReactionsByType: new Map<ReactionType, number>() // Empty map
       }
-    }
+    },
+    {
+      commentId: 'c3',
+      content: 'Interesting perspective, but I have some reservations.',
+      createdAt: new Date('2023-01-10T08:30:00'), // Example date and time
+      modifiedAt: new Date('2023-01-11T14:20:00'), // Example date and time
+      author: {
+        userId: 'u3',
+        fullName: 'Carol Williams',
+        profilePhotoUrl: 'https://example.com/photos/u3.jpg'
+      },
+      reactions: {
+        sumOfReactions: 8,
+        sumOfReactionsByType: new Map<ReactionType, number>() // Empty map
+      }
+    },
+    {
+      commentId: 'c3',
+      content: 'Interesting perspective, but I have some reservations.',
+      createdAt: new Date('2023-01-10T08:30:00'), // Example date and time
+      modifiedAt: new Date('2023-01-11T14:20:00'), // Example date and time
+      author: {
+        userId: 'u3',
+        fullName: 'Carol Williams',
+        profilePhotoUrl: 'https://example.com/photos/u3.jpg'
+      },
+      reactions: {
+        sumOfReactions: 8,
+        sumOfReactionsByType: new Map<ReactionType, number>() // Empty map
+      }
+    },
+
+
     // More comments can be added as needed
   ];
 

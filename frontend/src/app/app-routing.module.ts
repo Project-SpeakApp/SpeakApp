@@ -18,7 +18,6 @@ const routes: Routes = [
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent },
   { path: 'posts', component: PostFeedPageComponent},
-  {path: 'comment', component: CommentComponent},
   { path: '**', component: NotFoundPageComponent },
 ];
 

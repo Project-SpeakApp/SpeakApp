@@ -1,6 +1,29 @@
 <app-loading-spinner [isLoading]="isLoading()"></app-loading-spinner>
-<ul class="flex flex-col gap-4">
+<ul *ngIf="numberOfComments <= 3" class="flex flex-col gap-4">
   <li *ngFor="let comment of comments">
     <app-comment [comment] ="comment"></app-comment>
   </li>
+</ul>
+
+<ul *ngIf="numberOfComments > 3 && !showAll" class="flex flex-col gap-4">
+  <li *ngFor="let comment of comments | slice:0:3">
+    <app-comment [comment]="comment"></app-comment>
+  </li>
+  <div class="text-center" *ngIf="numberOfComments-3===1">
+    <p (click)="showAll = !showAll"  class="text-center text-xs cursor-pointer">Show {{numberOfComments-3}} more comment...</p>
+  </div>
+  <div class="text-center" *ngIf="numberOfComments-3 > 1">
+    <p (click)="showAll = !showAll"  class="text-xs cursor-pointer inline-block">
+      Show {{numberOfComments-3}} more comments...
+    </p>
+  </div>
+</ul>
+
+<ul *ngIf="numberOfComments > 3 && showAll" class="flex flex-col gap-4">
+  <li *ngFor="let comment of comments">
+    <app-comment [comment] ="comment"></app-comment>
+  </li>
+  <div class="text-center">
+    <p (click)="showAll = !showAll" class="inline-block text-xs cursor-pointer">Hide comments</p>
+  </div>
 </ul>
