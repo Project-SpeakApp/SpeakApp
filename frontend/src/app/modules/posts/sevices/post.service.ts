@@ -23,21 +23,25 @@ export class PostService {
 
   private postsSubject = new BehaviorSubject<PostGet[]>([]);
   posts$ = this.postsSubject.asObservable();
-  refreshPosts(userId: string): void {
-    this.getPosts(userId, 0, 5).subscribe(postsResponse => {
-      this.postsSubject.next(postsResponse.posts); // Update the BehaviorSubject with the new posts
-    });
-  }
 
-  updatePost(postId: string, model: AddPost, userId: string): Observable<void> {
+
+  updatePost(postId: string, model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingUpdate.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.put<void>(`http://localhost:8082/api/posts/${postId}`, model, { headers }).pipe(
+    return this.http.put<PostGet>(`http://localhost:8082/api/posts/${postId}`, model, { headers }).pipe(
       finalize( () => {
         this.isLoadingUpdate.set(false);
-        this.refreshPosts(userId);
         }
       ),
+      tap(updatedPost => {
+        const currentPosts = this.postsSubject.value;
+        const index = currentPosts.findIndex(p => p.postId === postId);
+        if (index !== -1) {
+          currentPosts[index] = updatedPost;
+          this.postsSubject.next(currentPosts);
+        }
+      }),
+
       tap(
         (data) => console.log(data),
         (error)=> {this.alertService.showAlert('Something went wrong...', 'error'), console.log(error)}
@@ -60,14 +64,19 @@ export class PostService {
     );
   }
 
-  addPost(model: AddPost, userId: string): Observable<void> {
+  addPost(model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingAdd.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.post<void>('http://localhost:8082/api/posts', model, {headers}).pipe(
+    return this.http.post<PostGet>('http://localhost:8082/api/posts', model, {headers}).pipe(
       finalize( () => {
         this.isLoadingAdd.set(false);
-        this.refreshPosts(userId);
         }),
+      tap(
+        (newPost) => {
+          const currentPosts = this.postsSubject.value;
+          this.postsSubject.next([newPost, ...currentPosts]);
+        }
+      ),
       tap(
         (data) => {console.log(data);},
         (error) => {this.alertService.showAlert(error, 'error')},
@@ -86,7 +95,8 @@ export class PostService {
         this.isLoadingGet.set(false);
       }),
       tap(
-        (data) => {console.log(data);
+        (data) => {
+          this.postsSubject.next(data.posts);
         },
         (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
       )
