@@ -86,24 +86,14 @@ public class PostService {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> userPostsPage = postRepository.findAllByUserIdOrderByCreatedAtDesc(userIdOfProfileOwner, page);
 
-        List<PostGetDTO> postGetDTOS = userPostsPage.getContent().stream().map(post -> {
-            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
-            ReactionsGetDTO postReactions = getReactionsForThePost(post);
-            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+        return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
+    }
 
-            return postMapper.toGetDTO(
-                    post,
-                    postAuthor,
-                    postReactions,
-                    currentUserReactionType
-            );
-        }).toList();
+    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
 
-        return postPageMapper.toGetDTO(
-                postGetDTOS,
-                page,
-                userPostsPage.getTotalPages()
-        );
+        return createPostPageGetDTOFromPostPage(postsPage, userId, page);
     }
 
     public void deletePost(UUID userId, UUID postId){
@@ -183,5 +173,25 @@ public class PostService {
                 .build();
     }
 
+    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page){
+        List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
+            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
+            ReactionsGetDTO postReactions = getReactionsForThePost(post);
+            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+
+            return postMapper.toGetDTO(
+                post,
+                postAuthor,
+                postReactions,
+                currentUserReactionType
+            );
+        }).toList();
+
+        return postPageMapper.toGetDTO(
+            postGetDTOS,
+            page,
+            postsPage.getTotalPages()
+        );
+    }
 
 }
