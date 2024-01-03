@@ -2,7 +2,7 @@ import {Injectable, signal} from '@angular/core';
 import {finalize, Observable, tap} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AlertService} from "../../../shared/services/alert.service";
-import {CommentGet} from "../../../shared/types/posts/comment-get";
+import {CommentGetModel} from "../../../shared/types/posts/comment-get.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class CommentService {
   constructor(private http: HttpClient, private alertService: AlertService) { }
 
   isLoadingGet = signal(false);
-  getComments(postId: string, userId: string): Observable<CommentGet[]> {
+  getComments(postId: string, userId: string): Observable<CommentGetModel[]> {
     this.isLoadingGet.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams().set('postId', postId);

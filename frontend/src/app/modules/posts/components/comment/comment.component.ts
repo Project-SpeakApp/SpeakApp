@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CommentGet} from "../../../../shared/types/posts/comment-get";
+import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {DateFormatting} from "../../../../shared/util/DateFormatting";
 
 @Component({
@@ -8,7 +8,7 @@ import {DateFormatting} from "../../../../shared/util/DateFormatting";
   styleUrls: ['./comment.component.css']
 })
 export class CommentComponent implements OnInit{
-  @Input() comment: CommentGet = {} as CommentGet;
+  @Input() comment: CommentGetModel = {} as CommentGetModel;
 
   formattedDate: string = '';
 

@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
-import {CommentGet} from "../../../../shared/types/posts/comment-get";
+import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 
 @Component({
@@ -11,7 +11,7 @@ import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 })
 export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
-  comments: CommentGet[] = [];
+  comments: CommentGetModel[] = [];
 
   private getCommentsSubscription?: Subscription;
   constructor(private commentService: CommentService, private auth: AuthService) {
@@ -33,7 +33,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
     this.getCommentsSubscription?.unsubscribe();
   }
 
-  exampleComments: CommentGet[] = [
+  exampleComments: CommentGetModel[] = [
     {
       commentId: 'c1',
       content: 'This article is very informative and well-written.',
