@@ -13,7 +13,7 @@ import {AuthService} from "../../../../../shared/services/auth.service";
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy{
+export class PostListComponent implements OnInit{
 
   private addPostSubscription?: Subscription;
 
@@ -22,15 +22,17 @@ export class PostListComponent implements OnInit, OnDestroy{
   isLoading = this.postService.isLoadingGet;
 
   constructor(private postService: PostService, private authService: AuthService) { }
-  ngOnInit(): void {
-    this.addPostSubscription = this.postService.getPosts(this.authService.state().userId, 0, 7).subscribe((data: PostGetResponse) => {
-      this.posts = data.posts;
+  ngOnInit() {
+    this.postService.posts$.subscribe(updatedPosts => {
+      this.posts = updatedPosts;
     });
+    this.postService.refreshPosts(this.authService.state().userId); // Load initial posts
+
   }
 
-  ngOnDestroy(): void {
-    this.addPostSubscription?.unsubscribe();
-  }
+
+
+
 
 }
 

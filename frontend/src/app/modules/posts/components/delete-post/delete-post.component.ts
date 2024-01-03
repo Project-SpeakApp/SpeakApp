@@ -15,7 +15,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   @Input() authorId: string = "";
 
 
-  visible: boolean = true;
+  visible: boolean = false;
 
   isLoading = this.postService.isLoadingDelete;
   constructor(private postService: PostService, private authService: AuthService) {
