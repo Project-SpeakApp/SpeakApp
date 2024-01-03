@@ -16,8 +16,8 @@ const routes: Routes = [
     { path: 'info', component: UserProfileInfoPageComponent  },
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent },
-  { path: '**', component: NotFoundPageComponent },
   { path: 'posts', component: PostFeedPageComponent},
+  { path: '**', component: NotFoundPageComponent },
 ];
 
 @NgModule({

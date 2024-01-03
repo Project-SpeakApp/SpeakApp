@@ -5,7 +5,6 @@ import {DateFormatting} from "../../../../shared/util/DateFormatting";
 @Component({
   selector: 'app-post-bottom-bar',
   templateUrl: './post-bottom-bar.component.html',
-  styleUrls: ['./post-bottom-bar.component.css']
 })
 export class PostBottomBarComponent implements OnInit{
   ngOnInit(): void {

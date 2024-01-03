@@ -1,4 +1,17 @@
-<div class="flex flex-row justify-between mt-1">
-  <div></div>
+<div class="flex flex-row justify-between mt-1 p-2">
+  <div class="flex flex-row gap-4">
+    <div class="flex flex-row gap-2">
+      <div class="text-xl flex flex-row">
+        <p class="">👍</p>
+        <p class="-ml-2">👎</p>
+        <p class="-ml-2">👏</p>
+      </div>
+      <p class="text-lg font-semibold">2137</p>
+    </div>
+    <div class="flex flex-row gap-2">
+      <span class="material-symbols-outlined text-secondary my-auto">comment</span>
+      <p class="text-lg font-semibold">420</p>
+    </div>
+  </div>
   <div *ngIf="isVisible" style="font-size: 14px" class="italic">Edited {{formattedDate}}</div>
 </div>
