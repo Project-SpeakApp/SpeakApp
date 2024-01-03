@@ -46,7 +46,7 @@ public class PostController {
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 
-    @PostMapping("/reaction/{postId}")
+    @PostMapping("/reactions/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ReactionsGetDTO createUpdatePostReaction(@RequestParam ReactionType reactionType, @PathVariable UUID postId,
         @RequestHeader("UserId") UUID userId){
