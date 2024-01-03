@@ -6,7 +6,6 @@ import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.co
 import { UserProfileInfoPageComponent } from './modules/profiles/components/user-profile-info-page/user-profile-info-page.component';
 import { UserProfileSettingsPageComponent } from './modules/profiles/components/user-profile-settings-page/user-profile-settings-page.component';
 import {PostFeedPageComponent} from "./modules/posts/components/post-feed-page/post-feed-page.component";
-import {CommentComponent} from "./modules/posts/components/comment/comment.component";
 
 
 

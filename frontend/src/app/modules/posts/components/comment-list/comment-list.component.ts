@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
+import {CommentGetListModel} from "../../../../shared/types/posts/comment-get-list.model";
 
 @Component({
   selector: 'app-comment-list',
@@ -12,20 +13,32 @@ import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
   comments: CommentGetModel[] = [];
+  commentGetList: CommentGetListModel = {
+    comments: [],
+    currentPage: 0,
+    totalNumberOfComments: 0
+  };
 
   private getCommentsSubscription?: Subscription;
   constructor(private commentService: CommentService, private auth: AuthService) {
   }
   ngOnInit(): void {
-    /*this.getCommentsSubscription = this.commentService.getComments(this.postId, this.auth.state().userId ).subscribe((data: CommentListGet) => {
-      this.comments = data.comments;
-    })*/
+    this.commentGetList = this.commentService.getComments(this.postId, this.auth.state().userId, this.currentPage);
     this.comments = this.exampleComments;
     this.numberOfComments = this.comments.length;
   }
+
+  loadMoreComments(): void {
+    this.comments += this.commentService.getComments(this.postId, this.auth.state().userId, this.currentPage);
+  }
+
   isLoading = this.commentService.isLoadingGet;
 
   numberOfComments: number = 0;
+
+  totalNumberOfComments: number = 0;
+
+  currentPage: number = 0;
 
   showAll: boolean = false;
 
