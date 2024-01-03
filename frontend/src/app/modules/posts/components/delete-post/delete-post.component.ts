@@ -2,6 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {PostService} from "../../sevices/post.service";
 import {delay, Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {AlertService} from "../../../../shared/services/alert.service";
 
 @Component({
   selector: 'app-delete-post',
@@ -18,7 +19,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   visible: boolean = false;
 
   isLoading = this.postService.isLoadingDelete;
-  constructor(private postService: PostService, private authService: AuthService) {
+  constructor(private alertService: AlertService, private postService: PostService, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -39,6 +40,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
     this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe(
       () => {
         this.closeModal(modalId);
+        this.alertService.showAlert("Post deleted successfully", 'success');
       }
     );
   }

@@ -52,9 +52,13 @@ export class PostService {
   deletePost(postId: string, userId: string): Observable<void> {
     this.isLoadingDelete.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.delete<void>(`http://localhost:8080/api/posts/${postId}`, { headers }).pipe(
+    return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
       finalize( () => {
         this.isLoadingDelete.set(false);
+      }),
+      tap(() => {
+        const updatedPosts = this.postsSubject.value.filter(post => post.postId !== postId);
+        this.postsSubject.next(updatedPosts);
       }),
       tap(
         (data) => {console.log(data);},
