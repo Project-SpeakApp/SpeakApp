@@ -1,0 +1,9 @@
+### Post request
+POST http://localhost:8080/api/posts/comments
+Content-Type: application/json
+UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
+
+{
+  "content": "Krzysiek Misiek",
+  "postId": "6c84fbae-12c4-11ec-82a8-0242ac130003"
+}

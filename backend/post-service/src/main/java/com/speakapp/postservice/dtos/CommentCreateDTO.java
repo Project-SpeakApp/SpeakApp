@@ -1,6 +1,5 @@
 package com.speakapp.postservice.dtos;
 
-import com.speakapp.postservice.entities.ReactionType;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -10,15 +9,9 @@ import java.util.UUID;
 @Value
 @Builder
 @Jacksonized
-public class CommentGetDTO {
-
-    UUID commentId;
+public class CommentCreateDTO {
 
     String content;
 
-    UserGetDTO author;
-
-    ReactionsGetDTO reactionsGetDTO;
-
-    ReactionType currenUserReaction;
+    UUID postId;
 }

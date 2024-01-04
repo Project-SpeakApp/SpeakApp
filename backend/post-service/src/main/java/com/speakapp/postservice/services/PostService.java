@@ -58,6 +58,26 @@ public class PostService {
         );
     }
 
+    public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) {
+
+        Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
+        new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
+
+        Comment savedComment = commentRepository.save(commentMapper.toEntity(commentCreateDTO.getContent(),
+                postToBeCommented,
+                userId));
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
+
+        ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
+
+        return commentMapper.toGetDTO(savedComment,
+                author,
+                reactionsGetDTO,
+                null);
+
+    }
+
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
         Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found"));
@@ -111,7 +131,7 @@ public class PostService {
 
     // Keep the class implementation for migration to CommentService
     @NotNull
-    private List<CommentGetDTO> getAllCommentsForThePost(Post post) {
+    private List<CommentGetDTO> getAllCommentsForThePost(Post post, UUID userId) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
 
         List<CommentGetDTO> commentGetDTOS = new ArrayList<>();
@@ -119,11 +139,12 @@ public class PostService {
             // TODO: Performance bottleneck in future - consider getting users from user-service by batches
             UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
             ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(comment);
-
+            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
             CommentGetDTO commentGetDTO = commentMapper.toGetDTO(
                     comment,
                     commentAuthor,
-                    reactionsGetDTO
+                    reactionsGetDTO,
+                    currentUserReactionType
             );
 
             commentGetDTOS.add(commentGetDTO);
