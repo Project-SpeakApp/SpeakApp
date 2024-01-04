@@ -13,26 +13,30 @@ import {CommentGetListModel} from "../../../../shared/types/posts/comment-get-li
 export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
   comments: CommentGetModel[] = [];
-  commentGetList: CommentGetListModel = {
-    comments: [],
-    currentPage: 0,
-    totalNumberOfComments: 0
-  };
 
-  private getCommentsSubscription?: Subscription;
   constructor(private commentService: CommentService, private auth: AuthService) {
   }
   ngOnInit(): void {
-    this.commentGetList = this.commentService.getComments(this.postId, this.auth.state().userId, this.currentPage);
     this.comments = this.exampleComments;
+    //this.getComments();
+  }
+  private commentsSubscription?: Subscription;
+
+  getComments(): void {
+    this.isLoading = true;
+    this.commentService.getComments(this.postId, this.auth.state().userId, this.currentPage);
+    this.commentsSubscription?.unsubscribe();
+    this.commentsSubscription = this.commentService.comments$.subscribe(commentList => {
+      this.comments = commentList.comments;
+      this.currentPage = commentList.currentPage;
+      this.totalNumberOfComments = commentList.totalNumberOfComments;
+    })
     this.numberOfComments = this.comments.length;
+    this.isLoading = false;
   }
 
-  loadMoreComments(): void {
-    this.comments += this.commentService.getComments(this.postId, this.auth.state().userId, this.currentPage);
-  }
+  isLoading: boolean = false;
 
-  isLoading = this.commentService.isLoadingGet;
 
   numberOfComments: number = 0;
 
@@ -40,10 +44,8 @@ export class CommentListComponent implements OnInit, OnDestroy{
 
   currentPage: number = 0;
 
-  showAll: boolean = false;
-
   ngOnDestroy(): void {
-    this.getCommentsSubscription?.unsubscribe();
+    this.commentsSubscription?.unsubscribe();
   }
 
   exampleComments: CommentGetModel[] = [

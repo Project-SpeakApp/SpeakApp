@@ -1,5 +1,5 @@
 import {Injectable, signal} from '@angular/core';
-import {finalize, Observable, tap} from "rxjs";
+import {BehaviorSubject, finalize, Observable, tap} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AlertService} from "../../../shared/services/alert.service";
 import {CommentGetModel} from "../../../shared/types/posts/comment-get.model";
@@ -12,6 +12,14 @@ export class CommentService {
 
   constructor(private http: HttpClient, private alertService: AlertService) { }
 
+  private commentsSubject = new BehaviorSubject<CommentGetListModel>({
+    comments: [],
+    currentPage: 0,
+    totalNumberOfComments: 0
+  });
+
+  comments$ = this.commentsSubject.asObservable();
+
   isLoadingGet = signal(false);
   getComments(postId: string, userId: string, currentPage: number): Observable<CommentGetListModel> {
     this.isLoadingGet.set(true);
@@ -22,6 +30,16 @@ export class CommentService {
       finalize( () => {
         this.isLoadingGet.set(false);
       }),
+      tap(
+        commentGetList => {
+          const currentComments = this.commentsSubject.value;
+          this.commentsSubject.next({
+            comments: [...currentComments.comments, ...commentGetList.comments],
+            currentPage: currentPage,
+            totalNumberOfComments: commentGetList.totalNumberOfComments,
+          });
+        }
+      ),
       tap (
         (data) => {console.log(data);},
         (error) => {this.alertService.showAlert('Something went wrong...', 'error');},
