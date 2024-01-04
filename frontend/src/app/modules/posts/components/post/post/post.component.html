@@ -13,13 +13,13 @@
       </div>
       <div class="ml-auto" style="margin-right: -5px">
         <app-delete-post [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
-        <span (click)="enableEditing()" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Edit">
+        <span *ngIf="userId === post.author.userId" (click)="enableEditing()" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Edit">
           <span class="material-symbols-outlined relative -bottom-2 text-primary" [class.text-primary]="isEdited" >edit</span>
         </span>
       </div>
     </div>
     <p *ngIf="!isEdited" class="m-[1px]">{{post.content}}</p>
-    <app-edit-post class="-translate-y-[24px]"(contentUpdated)="updateContent()" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
+    <app-edit-post [authorId]="post.author.userId" class="-translate-y-[24px]"(contentUpdated)="updateContent()" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
     <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
     <app-post-bottom-bar [post]="post"></app-post-bottom-bar>
 

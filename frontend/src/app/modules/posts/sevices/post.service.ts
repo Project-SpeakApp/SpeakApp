@@ -2,8 +2,9 @@ import {Injectable, signal} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AddPost} from "../../../shared/types/posts/add-post.model";
 import {PostGetResponse} from "../../../shared/types/posts/post-get-response.model";
-import {finalize, Observable, tap} from "rxjs";
+import {BehaviorSubject, finalize, Observable, tap} from "rxjs";
 import {AlertService} from "../../../shared/services/alert.service";
+import {PostGet} from "../../../shared/types/posts/post-get.model";
 @Injectable({
   providedIn: 'root'
 })
@@ -13,20 +14,34 @@ export class PostService {
 
   }
 
+
   isLoadingAdd = signal(false);
   isLoadingGet = signal(false);
   isLoadingDelete = signal(false);
 
   isLoadingUpdate = signal(false);
 
-  updatePost(postId: string, model: AddPost, userId: string): Observable<void> {
+  private postsSubject = new BehaviorSubject<PostGet[]>([]);
+  posts$ = this.postsSubject.asObservable();
+
+
+  updatePost(postId: string, model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingUpdate.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.put<void>(`http://localhost:8082/api/posts/${postId}`, model, { headers }).pipe(
+    return this.http.put<PostGet>(`http://localhost:8082/api/posts/${postId}`, model, { headers }).pipe(
       finalize( () => {
         this.isLoadingUpdate.set(false);
         }
       ),
+      tap(updatedPost => {
+        const currentPosts = this.postsSubject.value;
+        const index = currentPosts.findIndex(p => p.postId === postId);
+        if (index !== -1) {
+          currentPosts[index] = updatedPost;
+          this.postsSubject.next(currentPosts);
+        }
+      }),
+
       tap(
         (data) => console.log(data),
         (error)=> {this.alertService.showAlert('Something went wrong...', 'error'), console.log(error)}
@@ -34,13 +49,38 @@ export class PostService {
     );
   }
 
-  addPost(model: AddPost, userId: string): Observable<void> {
+  deletePost(postId: string, userId: string): Observable<void> {
+    this.isLoadingDelete.set(true);
+    const headers = new HttpHeaders().set('UserId', userId);
+    return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
+      finalize( () => {
+        this.isLoadingDelete.set(false);
+      }),
+      tap(() => {
+        const updatedPosts = this.postsSubject.value.filter(post => post.postId !== postId);
+        this.postsSubject.next(updatedPosts);
+      }),
+      tap(
+        (data) => {console.log(data);},
+        (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
+      )
+
+    );
+  }
+
+  addPost(model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingAdd.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.post<void>('http://localhost:8082/api/posts', model, {headers}).pipe(
+    return this.http.post<PostGet>('http://localhost:8082/api/posts', model, {headers}).pipe(
       finalize( () => {
         this.isLoadingAdd.set(false);
         }),
+      tap(
+        (newPost) => {
+          const currentPosts = this.postsSubject.value;
+          this.postsSubject.next([newPost, ...currentPosts]);
+        }
+      ),
       tap(
         (data) => {console.log(data);},
         (error) => {this.alertService.showAlert(error, 'error')},
@@ -59,27 +99,16 @@ export class PostService {
         this.isLoadingGet.set(false);
       }),
       tap(
-        (data) => {console.log(data);},
+        (data) => {
+          this.postsSubject.next(data.posts);
+        },
         (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
       )
     );
 
   }
 
-  deletePost(postId: string, userId: string): Observable<void> {
-    this.isLoadingDelete.set(true);
-    const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
-      finalize( () => {
-        this.isLoadingDelete.set(false);
-      }),
-      tap(
-        (data) => {console.log(data);},
-        (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
-      )
 
-    );
-  }
 
 
 
