@@ -63,6 +63,12 @@ public class PostService {
         Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
         new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
 
+        int lengthOfContent = commentCreateDTO.getContent().length();
+
+        if(lengthOfContent > 500 || lengthOfContent == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
+        }
+
         Comment savedComment = commentRepository.save(commentMapper.toEntity(commentCreateDTO.getContent(),
                 postToBeCommented,
                 userId));
