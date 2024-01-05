@@ -69,11 +69,11 @@ public class PostService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
         }
 
+        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
+
         Comment savedComment = commentRepository.save(commentMapper.toEntity(commentCreateDTO.getContent(),
                 postToBeCommented,
                 userId));
-
-        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
         ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
 
