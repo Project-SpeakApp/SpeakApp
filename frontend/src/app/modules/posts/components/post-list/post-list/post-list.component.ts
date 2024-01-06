@@ -12,22 +12,38 @@ export class PostListComponent implements OnInit{
 
   posts: PostGet[] = [];
 
-  isLoading = this.postService.isLoadingGet;
+  isLoading = false;
 
   constructor(private postService: PostService, private authService: AuthService) { }
   ngOnInit() {
-
-    this.postService.posts$.subscribe(posts => {
-      this.posts = posts;
+    this.loadPosts();
+  }
+  loadPosts() {
+    this.isLoading = true;
+    const userId = this.authService.state().userId;
+    this.postService.getPosts(userId, 0, 5).subscribe({
+      next: (response) => {
+        this.posts = response.posts;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+      }
     });
-    this.postService.getPosts(this.authService.state().userId, 0, 5).subscribe();
+  }
 
+  addContent(newPost?: PostGet): void {
+    if(newPost) {
+      this.posts.unshift(newPost);
+    }
   }
 
 
-
-
-
+  handleDeletion(postToDelete: string) {
+    if(postToDelete) {
+      this.posts = this.posts.filter(post => post.postId !== postToDelete);
+    }
+  }
 }
 
 

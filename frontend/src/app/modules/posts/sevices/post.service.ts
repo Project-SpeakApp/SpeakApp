@@ -21,10 +21,6 @@ export class PostService {
 
   isLoadingUpdate = signal(false);
 
-  private postsSubject = new BehaviorSubject<PostGet[]>([]);
-  posts$ = this.postsSubject.asObservable();
-
-
   updatePost(postId: string, model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingUpdate.set(true);
     const headers = new HttpHeaders().set('UserId', userId);
@@ -33,15 +29,6 @@ export class PostService {
         this.isLoadingUpdate.set(false);
         }
       ),
-      tap(updatedPost => {
-        const currentPosts = this.postsSubject.value;
-        const index = currentPosts.findIndex(p => p.postId === postId);
-        if (index !== -1) {
-          currentPosts[index] = updatedPost;
-          this.postsSubject.next(currentPosts);
-        }
-      }),
-
       tap(
         (data) => console.log(data),
         (error)=> {this.alertService.showAlert('Something went wrong...', 'error'), console.log(error)}
@@ -55,10 +42,6 @@ export class PostService {
     return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
       finalize( () => {
         this.isLoadingDelete.set(false);
-      }),
-      tap(() => {
-        const updatedPosts = this.postsSubject.value.filter(post => post.postId !== postId);
-        this.postsSubject.next(updatedPosts);
       }),
       tap(
         (data) => {console.log(data);},
@@ -75,12 +58,6 @@ export class PostService {
       finalize( () => {
         this.isLoadingAdd.set(false);
         }),
-      tap(
-        (newPost) => {
-          const currentPosts = this.postsSubject.value;
-          this.postsSubject.next([newPost, ...currentPosts]);
-        }
-      ),
       tap(
         (data) => {console.log(data);},
         (error) => {this.alertService.showAlert(error, 'error')},
@@ -99,9 +76,6 @@ export class PostService {
         this.isLoadingGet.set(false);
       }),
       tap(
-        (data) => {
-          this.postsSubject.next(data.posts);
-        },
         (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
       )
     );

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
 import {DateFormatting} from "../../../../../shared/util/DateFormatting";
 import {AuthService} from "../../../../../shared/services/auth.service";
@@ -14,6 +14,10 @@ export class PostComponent implements OnChanges, OnInit{
   formattedDate: string = '';
   userId: string = '';
   isEdited: boolean = false;
+
+  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+
+  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['post'] && this.post && this.post.createdAt) {
@@ -33,8 +37,18 @@ export class PostComponent implements OnChanges, OnInit{
     else this.isEdited = true;
   }
 
-  updateContent(): void {
+  updateContent(updatedPost?: PostGet): void {
     this.isEdited = false;
+    if(updatedPost) {
+      this.post = updatedPost;
+    }
   }
+
+  handleDeletion(postId?: string): void {
+    if(postId) {
+      this.deleted.emit(postId);
+    }
+  }
+
 
 }

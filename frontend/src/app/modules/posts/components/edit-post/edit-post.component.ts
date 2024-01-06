@@ -5,6 +5,7 @@ import {PostService} from "../../sevices/post.service";
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {PostGet} from "../../../../shared/types/posts/post-get.model";
 
 @Component({
   selector: 'app-edit-post',
@@ -27,7 +28,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
 
   isLoading = this.postService.isLoadingUpdate;
 
-  @Output() contentUpdated: EventEmitter<void> = new EventEmitter<void>();
+  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
 
 
   model: AddPost;
@@ -49,7 +50,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
       this.currentContent = this.myForm.value.content;
       this.model.content = this.currentContent;
       this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model, this.authService.state().userId).subscribe(
-        () => { this.alertService.showAlert('Post updated successfully', 'success'), this.closeForm()}
+        (updatedPost) => { this.alertService.showAlert('Post updated successfully', 'success'), this.contentUpdated.emit(updatedPost)}
 
       );
     } else if (this.initContent === this.myForm.value.content) {
@@ -59,9 +60,11 @@ export class EditPostComponent implements OnInit, OnDestroy{
     }
   }
 
-  closeForm(): void{
+  closeForm() {
     this.contentUpdated.emit();
   }
+
+
 
   ngOnDestroy(): void {
     this.UpdatePostSubscription?.unsubscribe();

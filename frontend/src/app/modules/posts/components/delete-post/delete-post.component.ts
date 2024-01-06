@@ -1,8 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PostService} from "../../sevices/post.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {AlertService} from "../../../../shared/services/alert.service";
+import {PostGet} from "../../../../shared/types/posts/post-get.model";
 
 @Component({
   selector: 'app-delete-post',
@@ -14,7 +15,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
 
   @Input() postId: string = "";
   @Input() authorId: string = "";
-
+  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
 
   visible: boolean = false;
 
@@ -39,6 +40,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   onFormSubmit(modalId: string): void {
     this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe(
       () => {
+        this.deleted.emit(this.postId);
         this.closeModal(modalId);
         this.alertService.showAlert("Post deleted successfully", 'success');
       }

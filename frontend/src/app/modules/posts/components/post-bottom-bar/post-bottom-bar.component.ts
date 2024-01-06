@@ -1,4 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
 import {DateFormatting} from "../../../../shared/util/DateFormatting";
 
@@ -7,7 +16,7 @@ import {DateFormatting} from "../../../../shared/util/DateFormatting";
   templateUrl: './post-bottom-bar.component.html',
   styleUrls: ['./post-bottom-bar.component.css']
 })
-export class PostBottomBarComponent implements OnInit{
+export class PostBottomBarComponent implements OnInit, OnChanges{
   ngOnInit(): void {
     this.checkIfPostWasEdited();
   }
@@ -23,6 +32,14 @@ export class PostBottomBarComponent implements OnInit{
     else {
       this.isVisible = true;
       this.formattedDate = DateFormatting.formatDateTime(this.post.modifiedAt);
+    }
+  }
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['post']) {
+      this.changeDetectorRef.detectChanges();
+      this.checkIfPostWasEdited();
     }
   }
 }

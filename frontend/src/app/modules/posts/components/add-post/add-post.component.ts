@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../../sevices/post.service';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {PostGet} from "../../../../shared/types/posts/post-get.model";
 
 @Component({
   selector: 'app-add-post',
@@ -31,11 +32,14 @@ export class AddPostComponent implements OnInit, OnDestroy {
       content: ['', [Validators.required, Validators.minLength(1)]]
     });
   }
+  @Output() contentAdded: EventEmitter<PostGet> = new EventEmitter<PostGet>();
 
   onFormSubmit(): void {
     if (this.myForm.valid) {
       this.model.content = this.myForm.value.content;
-      this.addPostSubscription = this.postService.addPost(this.model, this.authService.state().userId).subscribe();
+      this.addPostSubscription = this.postService.addPost(this.model, this.authService.state().userId).subscribe(
+        (newPost) => this.contentAdded.emit(newPost)
+      );
     } else {
       this.alertService.showAlert('Type Content', 'error');
     }
