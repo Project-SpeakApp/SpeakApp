@@ -1,5 +1,6 @@
 package com.speakapp.postservice.controllers;
 
+import com.speakapp.postservice.dtos.CommentPageGetDTO;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
@@ -49,5 +50,15 @@ public class PostController {
     public PostPageGetDTO getLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
         @RequestParam(defaultValue = "5") int pageSize,  @RequestHeader("UserId") UUID userId ){
       return postService.getLatestPosts(pageNumber, pageSize, userId);
+    }
+
+    @GetMapping("/comments/")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentPageGetDTO getCommentsForPost(@RequestParam(defaultValue = "0") int pageNumber,
+                                                @RequestParam(defaultValue = "10") int pageSize,
+                                                @RequestParam(defaultValue = "0") int skip,
+                                                @RequestParam UUID postId,
+                                                @RequestHeader("UserId") UUID userId ){
+        return postService.getCommentsForPost(pageNumber, pageSize, skip, postId, userId);
     }
 }
