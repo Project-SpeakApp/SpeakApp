@@ -28,12 +28,24 @@ export class ReactionService {
     const headers = new HttpHeaders().set('UserId',this.authService.state().userId,);
 
     return this.http
-      .put<void>(`http://localhost:8082/api/posts/reactions/${postId}?reactionType=${reactionToSend}`,{}, {headers})
+      .put<void>(
+        `http://localhost:8082/api/posts/reactions/${postId}?${
+          reactionToSend ? 'reactionType=' + reactionToSend : ''
+        }`,
+        {},
+        { headers },
+      )
       .pipe(
-        finalize(() => { this.isLoading.set(false) }),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
         tap(
-          (data) => { console.log(data); },
-          (error) => { this.alertService.showAlert(error, 'error'); },
+          (data) => {
+            console.log(data);
+          },
+          (error) => {
+            this.alertService.showAlert(error, 'error');
+          },
         ),
       );
   }

@@ -42,7 +42,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy {
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
     this.reactionService.upsertReactionToPost(this.post.postId, reactionType, this.post.currentUserReaction)
-      .subscribe();
+      .subscribe(() => this.post.currentUserReaction = reactionType);
   }
 
   ngOnInit(): void {
