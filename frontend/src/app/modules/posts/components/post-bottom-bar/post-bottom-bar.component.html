@@ -1,17 +1,72 @@
-<div class="flex flex-row justify-between mt-1 p-2">
+<div class="flex flex-row justify-between p-1">
   <div class="flex flex-row gap-4">
-    <div class="flex flex-row gap-2">
+    <div
+      class="flex flex-row gap-2 bg-base-100 border-black border-[1px] rounded-xl pl-1 pr-2"
+    >
       <div class="text-xl flex flex-row">
-        <p class="">👍</p>
-        <p class="-ml-2">👎</p>
-        <p class="-ml-2">👏</p>
+        <div class="tooltip tooltip-top" data-tip="2000">
+          <p class="">👍</p>
+        </div>
+        <div class="tooltip tooltip-top" data-tip="136">
+          <p class="-ml-2">👎</p>
+        </div>
+        <div class="tooltip tooltip-top" data-tip="1">
+          <p class="-ml-2">👏</p>
+        </div>
       </div>
       <p class="text-lg font-semibold">2137</p>
     </div>
-    <div class="flex flex-row gap-2">
-      <span class="material-symbols-outlined text-secondary my-auto">comment</span>
+    <div
+      class="flex flex-row gap-2 bg-base-100 border-black border-[1px] rounded-xl px-2"
+    >
+      <span class="material-symbols-outlined text-secondary my-auto"
+        >comment</span
+      >
       <p class="text-lg font-semibold">420</p>
     </div>
   </div>
-  <div *ngIf="isVisible" style="font-size: 14px" class="italic">Edited {{formattedDate}}</div>
+  <div *ngIf="isVisible" style="font-size: 14px" class="italic">
+    Edited {{ formattedDate }}
+  </div>
+</div>
+<div class="flex flex-row justify-between font-semibold">
+  <button class="mytooltip w-1/3 py-2 hover:bg-base-300 rounded">
+    <div class="flex flex-row gap-2 justify-center">
+      <span class="material-symbols-outlined inline">thumb_up</span>
+      <p>Like</p>
+    </div>
+    <span class="tooltiptext bg-neutral flex flex-row text-xl">
+      <div class="flex flex-col gap-1">
+        <span class="p-1 h-9 transition hover:bg-base-300 rounded">👍</span>
+        <span class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="p-1 h-9 transition hover:bg-base-300 rounded">❤️</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="p-1 h-9 transition hover:bg-base-300 rounded">🤣</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="p-1 h-9 transition hover:bg-base-300 rounded">😮</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="p-1 h-9 transition hover:bg-base-300 rounded">😭</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="p-1 h-9 transition hover:bg-base-300 rounded">😡</span>
+      </div>
+    </span>
+  </button>
+  <button class="w-1/3 hover:bg-base-300 rounded">
+    <div class="flex flex-row gap-2 justify-center">
+      <span class="material-symbols-outlined inline">comment</span>
+      <p>Comment</p>
+    </div>
+  </button>
+  <button class="w-1/3 hover:bg-base-300 rounded">
+    <div class="flex flex-row gap-2 justify-center">
+      <span class="material-symbols-outlined inline">share</span>
+      <p>Share</p>
+    </div>
+  </button>
 </div>
