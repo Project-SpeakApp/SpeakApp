@@ -3,7 +3,6 @@ import {PostService} from "../../sevices/post.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {AlertService} from "../../../../shared/services/alert.service";
-import {PostGet} from "../../../../shared/types/posts/post-get.model";
 
 @Component({
   selector: 'app-delete-post',

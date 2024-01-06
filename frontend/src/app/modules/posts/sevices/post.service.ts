@@ -2,7 +2,7 @@ import {Injectable, signal} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AddPost} from "../../../shared/types/posts/add-post.model";
 import {PostGetResponse} from "../../../shared/types/posts/post-get-response.model";
-import {BehaviorSubject, finalize, Observable, tap} from "rxjs";
+import {finalize, Observable, tap} from "rxjs";
 import {AlertService} from "../../../shared/services/alert.service";
 import {PostGet} from "../../../shared/types/posts/post-get.model";
 @Injectable({

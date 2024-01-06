@@ -1,11 +1,9 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges
 } from '@angular/core';
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
