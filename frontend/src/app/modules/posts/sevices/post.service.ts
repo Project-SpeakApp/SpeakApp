@@ -76,7 +76,8 @@ export class PostService {
         this.isLoadingGet.set(false);
       }),
       tap(
-        (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
+        (data) => { console.log(data)},
+        (err) => {this.alertService.showAlert('Something went wrong due to getting posts', 'error');}
       )
     );
 

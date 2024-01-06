@@ -18,12 +18,19 @@ export class PostListComponent implements OnInit{
   ngOnInit() {
     this.loadPosts();
   }
+
+  onScroll() {
+    this.loadPosts();
+  }
+
+  pageNumber: number = 0;
   loadPosts() {
     this.isLoading = true;
     const userId = this.authService.state().userId;
-    this.postService.getPosts(userId, 0, 5).subscribe({
+    this.postService.getPosts(userId, this.pageNumber, 5).subscribe({
       next: (response) => {
-        this.posts = response.posts;
+        this.posts = [...this.posts, ...response.posts];
+        this.pageNumber = response.currentPage + 1;
         this.isLoading = false;
       },
       error: (error) => {

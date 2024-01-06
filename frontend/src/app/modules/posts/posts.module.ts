@@ -11,6 +11,7 @@ import {SharedModule} from "../../shared/shared.module";
 import { PostFeedPageComponent } from './components/post-feed-page/post-feed-page.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom-bar.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 
 
@@ -30,7 +31,8 @@ import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    InfiniteScrollModule,
 
   ],
   exports: [
