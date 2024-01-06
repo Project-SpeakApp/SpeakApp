@@ -27,7 +27,7 @@ export class PostListComponent implements OnInit{
   loadPosts() {
     this.isLoading = true;
     const userId = this.authService.state().userId;
-    this.postService.getPosts(userId, this.pageNumber, 5).subscribe({
+    this.postService.getPosts(userId, this.pageNumber, 10).subscribe({
       next: (response) => {
         this.posts = [...this.posts, ...response.posts];
         this.pageNumber = response.currentPage + 1;
