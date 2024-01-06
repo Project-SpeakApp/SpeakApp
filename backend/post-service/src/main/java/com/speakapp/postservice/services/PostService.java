@@ -88,6 +88,24 @@ public class PostService {
         return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
     }
 
+    public ReactionsGetDTO createUpdatePostReaction(ReactionType reactionType, UUID postId, UUID userId){
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
+        PostReaction postReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
+
+        if(postReaction != null) {
+            postReaction.setType(reactionType);
+        } else {
+            postReaction = PostReaction.builder()
+                .post(post)
+                .userId(userId)
+                .type(reactionType)
+                .build();
+        }
+        postReactionRepository.save(postReaction);
+
+        return getReactionsForThePost(post);
+    }
+
     public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
@@ -142,7 +160,6 @@ public class PostService {
 
         postRepository.delete(postToDelete);
     }
-
 
     // Keep the class implementation for migration to CommentService
     @NotNull
