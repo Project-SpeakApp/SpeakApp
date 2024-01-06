@@ -15,8 +15,12 @@ export class EditPostComponent implements OnInit, OnDestroy{
   @Input() currentContent: string = "";
 
   @Input() postId: string = "";
+
+  @Input() authorId: string = "";
   initContent: string = ""
   myForm!: FormGroup;
+
+  visible: boolean = false;
 
   private UpdatePostSubscription?: Subscription;
 
@@ -34,7 +38,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
   }
   ngOnInit(): void {
     this.initContent = this.currentContent;
-
+    if(this.authorId === this.authService.state().userId) this.visible = true;
     this.myForm = this.formBuilder.group({
       content: [this.currentContent, [Validators.required, Validators.minLength(1)]]
     });
