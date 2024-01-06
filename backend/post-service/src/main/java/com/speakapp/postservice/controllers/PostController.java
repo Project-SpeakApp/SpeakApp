@@ -2,6 +2,8 @@ package com.speakapp.postservice.controllers;
 
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
+import com.speakapp.postservice.dtos.ReactionsGetDTO;
+import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,13 @@ public class PostController {
     public PostPageGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
                                              @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
+    }
+
+    @PutMapping("/reactions/{postId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReactionsGetDTO createUpdatePostReaction(@RequestParam ReactionType reactionType, @PathVariable UUID postId,
+        @RequestHeader("UserId") UUID userId){
+        return postService.createUpdatePostReaction(reactionType, postId, userId);
     }
 
     @GetMapping
