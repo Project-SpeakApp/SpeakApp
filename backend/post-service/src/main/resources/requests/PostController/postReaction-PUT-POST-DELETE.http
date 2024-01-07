@@ -4,6 +4,11 @@ PUT http://localhost:8080/api/posts/reactions/
     reactionType=LIKE
 UserId: 6c84fb99-12c4-11ec-82a8-0242ac130003
 
+### DELETE request from not-post-owner user
+PUT http://localhost:8080/api/posts/reactions/
+    6c84fbae-12c4-11ec-82a8-0242ac130003
+UserId: 6c84fb99-12c4-11ec-82a8-0242ac130003
+
 ### PUT request from not-post-owner user
 PUT http://localhost:8080/api/posts/reactions/
     6c84fbae-12c4-11ec-82a8-0242ac130003?
@@ -14,4 +19,8 @@ UserId: 6c84fb99-12c4-11ec-82a8-0242ac130003
 PUT http://localhost:8080/api/posts/reactions/
     6c84fbae-12c4-11ec-82a8-0242ac130003?
     reactionType=LOVE
+UserId: 6c84fb96-12c4-11ec-82a8-0242ac130003
+
+### lmao
+GET http://localhost:8080/api/posts
 UserId: 6c84fb96-12c4-11ec-82a8-0242ac130003
