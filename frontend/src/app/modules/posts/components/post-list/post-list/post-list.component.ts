@@ -26,21 +26,28 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.loadPosts();
   }
 
+  private parsePosts(posts: PostGet[]) {
+    // i have suicide thoughts and this point
+    posts.forEach((post) => {
+      const keys = Object.keys(post.reactions.sumOfReactionsByType);
+
+      const value = Object.values(post.reactions.sumOfReactionsByType);
+
+      post.reactions.sumOfReactionsByType = new Map();
+
+      for (let i = 0; i < keys.length; i++) {
+        const reactionType: ReactionType = ReactionType[keys[i] as keyof typeof ReactionType];
+        post.reactions.sumOfReactionsByType.set(reactionType, value[i]);
+      }
+    })
+  }
+
   loadPosts() {
     this.isLoading = true;
     const userId = this.authService.state().userId;
     this.subscription = this.postService.getPosts(userId, this.pageNumber, 10).subscribe({
       next: (response) => {
-        // i have suicide thoughts and this point
-        response.posts.forEach((post) => {
-          const keys = Object.keys(post.reactions.sumOfReactionsByType);
-          const value = Object.values(post.reactions.sumOfReactionsByType);
-          post.reactions.sumOfReactionsByType = new Map();
-          for (let i = 0; i < keys.length; i++) {
-            const reactionType: ReactionType = ReactionType[keys[i] as keyof typeof ReactionType];
-            post.reactions.sumOfReactionsByType.set(reactionType, value[i]);
-          }
-        });
+        this.parsePosts(response.posts);
         this.posts = [...this.posts, ...response.posts];
         this.pageNumber = response.currentPage + 1;
         this.isLoading = false;
@@ -53,6 +60,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   addContent(newPost?: PostGet): void {
     if (newPost) {
+      this.parsePosts([newPost]);
       this.posts.unshift(newPost);
     }
   }
