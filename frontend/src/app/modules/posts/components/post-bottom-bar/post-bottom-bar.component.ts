@@ -15,6 +15,8 @@ export class PostBottomBarComponent implements OnInit, OnDestroy {
 
   formattedDate: string = '';
   isVisible: boolean = true;
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
 
   subscription: Subscription = new Subscription();
 
