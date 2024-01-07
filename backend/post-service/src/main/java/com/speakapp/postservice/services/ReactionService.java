@@ -1,6 +1,5 @@
 package com.speakapp.postservice.services;
 
-import com.speakapp.postservice.dtos.ReactionsGetDTO;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.PostReaction;
 import com.speakapp.postservice.entities.ReactionType;
@@ -14,27 +13,28 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ReactionService {
+    private final PostReactionRepository postReactionRepository;
+    private final PostRepository postRepository;
+    
+    public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId){
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
+        PostReaction oldReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 
-  private final PostReactionRepository postReactionRepository;
-  private final PostRepository postRepository;
-  public ReactionType createUpdatePostReaction(ReactionType reactionType, UUID postId, UUID userId){
-    Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
-    PostReaction postReactionInDb = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
-
-    if(postReactionInDb == null) {
-      postReactionInDb = PostReaction.builder()
-          .post(post)
-          .userId(userId)
-          .type(reactionType)
-          .build();
-    } else if(reactionType == null){
-      postReactionRepository.delete(postReactionInDb);
-    } else {
-      postReactionInDb.setType(reactionType);
+        if (oldReaction == null && newReaction != null) {
+            postReactionRepository.save(PostReaction.builder()
+              .post(post)
+              .userId(userId)
+              .type(newReaction)
+              .build());
+        }
+        if (oldReaction != null && newReaction == null) {
+            postReactionRepository.delete(oldReaction);
+        }
+        if (oldReaction != null && newReaction != null) {
+            oldReaction.setType(newReaction);
+            postReactionRepository.save(oldReaction);
+        }
+        return newReaction;
     }
-    postReactionRepository.save(postReactionInDb);
-
-    return postReactionInDb.getType();
-  }
 
 }
