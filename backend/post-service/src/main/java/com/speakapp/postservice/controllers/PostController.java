@@ -65,9 +65,8 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public CommentPageGetDTO getCommentsForPost(@RequestParam(defaultValue = "0") int pageNumber,
                                                 @RequestParam(defaultValue = "10") int pageSize,
-                                                @RequestParam(defaultValue = "0") int skip,
                                                 @RequestParam UUID postId,
                                                 @RequestHeader("UserId") UUID userId ){
-        return postService.getCommentsForPost(pageNumber, pageSize, skip, postId, userId);
+        return postService.getCommentsForPost(pageNumber, pageSize, postId, userId);
     }
 }
