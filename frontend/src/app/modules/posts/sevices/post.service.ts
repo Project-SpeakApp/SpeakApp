@@ -73,7 +73,7 @@ export class PostService {
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
-    return this.http.get<any>('http://localhost:8082/api/posts', {headers, params}).pipe(
+    return this.http.get<PostGetResponse>('http://localhost:8082/api/posts', {headers, params}).pipe(
       finalize( () => {
         this.isLoadingGet.set(false);
       }),
