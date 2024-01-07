@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
 import {DateFormatting} from "../../../../../shared/util/DateFormatting";
 import {AuthService} from "../../../../../shared/services/auth.service";
@@ -11,9 +11,41 @@ import {AuthService} from "../../../../../shared/services/auth.service";
 })
 export class PostComponent implements OnChanges, OnInit{
   @Input() post: PostGet = {} as PostGet;
+  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
+  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+
+
   formattedDate: string = '';
   userId: string = '';
   isEdited: boolean = false;
+
+
+  constructor(private authService: AuthService ) {
+
+  }
+
+
+  enableEditing(): void {
+    if(this.isEdited) this.isEdited = false;
+    else this.isEdited = true;
+  }
+
+  updateContent(updatedPost?: PostGet): void {
+    this.isEdited = false;
+    if(updatedPost) {
+      this.post = updatedPost;
+    }
+  }
+
+  handleDeletion(postId?: string): void {
+    if(postId) {
+      this.deleted.emit(postId);
+    }
+  }
+
+  ngOnInit() {
+    this.userId = this.authService.state().userId;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['post'] && this.post && this.post.createdAt) {
@@ -21,20 +53,5 @@ export class PostComponent implements OnChanges, OnInit{
     }
   }
 
-  constructor(private authService: AuthService ) {
-
-  }
-  ngOnInit() {
-    this.userId = this.authService.state().userId;
-  }
-
-  enableEditing(): void {
-    if(this.isEdited) this.isEdited = false;
-    else this.isEdited = true;
-  }
-
-  updateContent(): void {
-    this.isEdited = false;
-  }
 
 }

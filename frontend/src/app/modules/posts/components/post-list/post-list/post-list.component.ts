@@ -12,22 +12,49 @@ export class PostListComponent implements OnInit{
 
   posts: PostGet[] = [];
 
-  isLoading = this.postService.isLoadingGet;
+  isLoading = false;
+
+  pageNumber: number = 0;
+
 
   constructor(private postService: PostService, private authService: AuthService) { }
-  ngOnInit() {
 
-    this.postService.posts$.subscribe(posts => {
-      this.posts = posts;
+
+  onScroll() {
+    this.loadPosts();
+  }
+
+  loadPosts() {
+    this.isLoading = true;
+    const userId = this.authService.state().userId;
+    this.postService.getPosts(userId, this.pageNumber, 10).subscribe({
+      next: (response) => {
+        this.posts = [...this.posts, ...response.posts];
+        this.pageNumber = response.currentPage + 1;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+      }
     });
-    this.postService.getPosts(this.authService.state().userId, 0, 5).subscribe();
+  }
 
+  addContent(newPost?: PostGet): void {
+    if(newPost) {
+      this.posts.unshift(newPost);
+    }
   }
 
 
+  handleDeletion(postToDelete: string) {
+    if(postToDelete) {
+      this.posts = this.posts.filter(post => post.postId !== postToDelete);
+    }
+  }
 
-
-
+  ngOnInit() {
+    this.loadPosts();
+  }
 }
 
 
