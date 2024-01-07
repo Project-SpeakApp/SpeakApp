@@ -14,16 +14,16 @@ export class PostListComponent implements OnInit{
 
   isLoading = false;
 
+  pageNumber: number = 0;
+
+
   constructor(private postService: PostService, private authService: AuthService) { }
-  ngOnInit() {
-    this.loadPosts();
-  }
+
 
   onScroll() {
     this.loadPosts();
   }
 
-  pageNumber: number = 0;
   loadPosts() {
     this.isLoading = true;
     const userId = this.authService.state().userId;
@@ -50,6 +50,10 @@ export class PostListComponent implements OnInit{
     if(postToDelete) {
       this.posts = this.posts.filter(post => post.postId !== postToDelete);
     }
+  }
+
+  ngOnInit() {
+    this.loadPosts();
   }
 }
 

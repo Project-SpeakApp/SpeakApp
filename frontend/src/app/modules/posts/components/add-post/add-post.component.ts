@@ -13,9 +13,13 @@ import {PostGet} from "../../../../shared/types/posts/post-get.model";
   styleUrls: ['./add-post.component.css']
 })
 export class AddPostComponent implements OnInit, OnDestroy {
+  @Output() contentAdded: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+
   myForm!: FormGroup;
   private addPostSubscription?: Subscription;
   model: AddPost;
+  isLoading = this.postService.isLoadingAdd;
+
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
@@ -26,13 +30,6 @@ export class AddPostComponent implements OnInit, OnDestroy {
       content: ''
     };
   }
-    isLoading = this.postService.isLoadingAdd;
-  ngOnInit(): void {
-    this.myForm = this.formBuilder.group({
-      content: ['', [Validators.required, Validators.minLength(1)]]
-    });
-  }
-  @Output() contentAdded: EventEmitter<PostGet> = new EventEmitter<PostGet>();
 
   onFormSubmit(): void {
     if (this.myForm.valid) {
@@ -44,7 +41,11 @@ export class AddPostComponent implements OnInit, OnDestroy {
       this.alertService.showAlert('Type Content', 'error');
     }
   }
-
+  ngOnInit(): void {
+    this.myForm = this.formBuilder.group({
+      content: ['', [Validators.required, Validators.minLength(1)]]
+    });
+  }
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
   }

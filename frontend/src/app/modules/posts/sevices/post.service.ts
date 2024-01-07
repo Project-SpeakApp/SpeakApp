@@ -10,9 +10,7 @@ import {PostGet} from "../../../shared/types/posts/post-get.model";
 })
 export class PostService {
 
-  constructor(private http: HttpClient, private alertService: AlertService) {
 
-  }
 
 
   isLoadingAdd = signal(false);
@@ -20,6 +18,10 @@ export class PostService {
   isLoadingDelete = signal(false);
 
   isLoadingUpdate = signal(false);
+
+  constructor(private http: HttpClient, private alertService: AlertService) {
+
+  }
 
   updatePost(postId: string, model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingUpdate.set(true);
@@ -77,7 +79,7 @@ export class PostService {
       }),
       tap(
         (data) => { console.log(data)},
-        (err) => {this.alertService.showAlert('Something went wrong due to getting posts', 'error');}
+        (err) => {this.alertService.showAlert('Something went wrong while getting posts', 'error');}
       )
     );
 

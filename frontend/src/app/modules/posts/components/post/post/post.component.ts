@@ -11,26 +11,19 @@ import {AuthService} from "../../../../../shared/services/auth.service";
 })
 export class PostComponent implements OnChanges, OnInit{
   @Input() post: PostGet = {} as PostGet;
+  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
+  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+
+
   formattedDate: string = '';
   userId: string = '';
   isEdited: boolean = false;
 
-  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
-
-  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['post'] && this.post && this.post.createdAt) {
-      this.formattedDate = DateFormatting.formatDateTime(this.post.createdAt);
-    }
-  }
 
   constructor(private authService: AuthService ) {
 
   }
-  ngOnInit() {
-    this.userId = this.authService.state().userId;
-  }
+
 
   enableEditing(): void {
     if(this.isEdited) this.isEdited = false;
@@ -47,6 +40,16 @@ export class PostComponent implements OnChanges, OnInit{
   handleDeletion(postId?: string): void {
     if(postId) {
       this.deleted.emit(postId);
+    }
+  }
+
+  ngOnInit() {
+    this.userId = this.authService.state().userId;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['post'] && this.post && this.post.createdAt) {
+      this.formattedDate = DateFormatting.formatDateTime(this.post.createdAt);
     }
   }
 

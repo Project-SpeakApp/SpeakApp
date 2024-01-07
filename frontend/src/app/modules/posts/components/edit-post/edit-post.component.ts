@@ -18,32 +18,29 @@ export class EditPostComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
 
   @Input() authorId: string = "";
+
+  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+
   initContent: string = ""
   myForm!: FormGroup;
 
   visible: boolean = false;
 
   private UpdatePostSubscription?: Subscription;
+  model: AddPost;
+
 
 
   isLoading = this.postService.isLoadingUpdate;
 
-  @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
 
 
-  model: AddPost;
   constructor(private formBuilder: FormBuilder, private alertService: AlertService, private postService: PostService, private authService: AuthService) {
     this.model = {
       content: ''
     };
   }
-  ngOnInit(): void {
-    this.initContent = this.currentContent;
-    if(this.authorId === this.authService.state().userId) this.visible = true;
-    this.myForm = this.formBuilder.group({
-      content: [this.currentContent, [Validators.required, Validators.minLength(1)]]
-    });
-  }
+
 
   onFormSubmit(): void {
     if (this.myForm.valid && this.initContent !== this.myForm.value.content) {
@@ -64,6 +61,13 @@ export class EditPostComponent implements OnInit, OnDestroy{
     this.contentUpdated.emit();
   }
 
+  ngOnInit(): void {
+    this.initContent = this.currentContent;
+    if(this.authorId === this.authService.state().userId) this.visible = true;
+    this.myForm = this.formBuilder.group({
+      content: [this.currentContent, [Validators.required, Validators.minLength(1)]]
+    });
+  }
 
 
   ngOnDestroy(): void {

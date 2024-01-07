@@ -15,13 +15,13 @@ import {DateFormatting} from "../../../../shared/util/DateFormatting";
   styleUrls: ['./post-bottom-bar.component.css']
 })
 export class PostBottomBarComponent implements OnInit, OnChanges{
-  ngOnInit(): void {
-    this.checkIfPostWasEdited();
-  }
+
   @Input() post: PostGet = {} as PostGet;
 
   formattedDate: string = '';
   isVisible: boolean = true;
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
 
   checkIfPostWasEdited() {
     if(this.post.modifiedAt == null || (this.post.createdAt.valueOf() == this.post.modifiedAt.valueOf())) {
@@ -32,12 +32,15 @@ export class PostBottomBarComponent implements OnInit, OnChanges{
       this.formattedDate = DateFormatting.formatDateTime(this.post.modifiedAt);
     }
   }
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['post']) {
       this.changeDetectorRef.detectChanges();
       this.checkIfPostWasEdited();
     }
+  }
+
+  ngOnInit(): void {
+    this.checkIfPostWasEdited();
   }
 }
