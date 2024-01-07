@@ -5,6 +5,7 @@ import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.dtos.ReactionsGetDTO;
 import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
+import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,12 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     public PostGetDTO createPost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
         return postService.createPost(postCreateDTO, userId);
+    }
+
+    @PostMapping("/comments/")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentGetDTO createComment(@RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) {
+        return postService.createComment(commentCreateDTO, userId);
     }
 
 
