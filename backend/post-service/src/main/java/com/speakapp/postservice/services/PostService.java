@@ -8,6 +8,7 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -138,29 +139,29 @@ public class PostService {
     }
 
     // Keep the class implementation for migration to CommentService
-//@NotNull
-//    private List<CommentGetDTO> getAllCommentsForThePost(Post post, UUID userId) {
-//        List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
-//
-//        List<CommentGetDTO> commentGetDTOS = new ArrayList<>();
-//        for (Comment comment : comments) {
-//            // TODO: Performance bottleneck in future - consider getting users from user-service by batches
-//            UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
-//            ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(comment);
-//            ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
-//
-//            CommentGetDTO commentGetDTO = commentMapper.toGetDTO(
-//                    comment,
-//                    commentAuthor,
-//                    reactionsGetDTO,
-//                    currentUserReactionType
-//            );
-//
-//            commentGetDTOS.add(commentGetDTO);
-//        }
-//
-//        return commentGetDTOS;
-//    }
+@NotNull
+    private List<CommentGetDTO> getAllCommentsForThePost(Post post, UUID userId) {
+        List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
+
+        List<CommentGetDTO> commentGetDTOS = new ArrayList<>();
+        for (Comment comment : comments) {
+            // TODO: Performance bottleneck in future - consider getting users from user-service by batches
+            UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
+            ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(comment);
+            ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
+
+            CommentGetDTO commentGetDTO = commentMapper.toGetDTO(
+                    comment,
+                    commentAuthor,
+                    reactionsGetDTO,
+                    currentUserReactionType
+            );
+
+            commentGetDTOS.add(commentGetDTO);
+        }
+
+        return commentGetDTOS;
+    }
 
     // Keep the class implementation for migration to CommentService
     // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
