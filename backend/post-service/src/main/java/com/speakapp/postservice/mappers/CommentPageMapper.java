@@ -12,5 +12,8 @@ import java.util.List;
 public interface CommentPageMapper {
     @Mapping(target = "currentPage", source = "pageable.pageNumber")
     @Mapping(target = "pageSize", source = "pageable.pageSize")
-    CommentPageGetDTO toGetDTO(List<CommentGetDTO> commentGetDTOS, Pageable pageable, int totalPages);
+    CommentPageGetDTO toGetDTO(List<CommentGetDTO> commentGetDTOS,
+                               Pageable pageable,
+                               int totalPages,
+                               long totalComments);
 }

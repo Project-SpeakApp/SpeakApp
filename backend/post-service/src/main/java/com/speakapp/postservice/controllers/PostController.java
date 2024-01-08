@@ -60,13 +60,4 @@ public class PostController {
         @RequestParam(defaultValue = "5") int pageSize,  @RequestHeader("UserId") UUID userId ){
       return postService.getLatestPosts(pageNumber, pageSize, userId);
     }
-
-    @GetMapping("/comments/")
-    @ResponseStatus(HttpStatus.OK)
-    public CommentPageGetDTO getCommentsForPost(@RequestParam(defaultValue = "0") int pageNumber,
-                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                @RequestParam UUID postId,
-                                                @RequestHeader("UserId") UUID userId ){
-        return postService.getCommentsForPost(pageNumber, pageSize, postId, userId);
-    }
 }
