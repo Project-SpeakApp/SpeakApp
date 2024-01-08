@@ -2,16 +2,9 @@
   <li *ngFor="let comment of comments">
     <app-comment [comment]="comment"></app-comment>
   </li>
-  <div *ngIf="totalNumberOfComments - numberOfComments >= 10" class="text-center">
-    <p (click)="getComments()" class="text-xs cursor-pointer inline-block">Show 10 more comments...</p>
+  <div *ngIf="currentPage!==numberOfPages" class="text-center">
+    <p (click)="getComments(10)" class="text-xs cursor-pointer inline-block">Show more comments...</p>
   </div>
-  <div *ngIf="totalNumberOfComments - numberOfComments < 10 && totalNumberOfComments - numberOfComments > 1" class="text-center">
-    <p (click)="getComments()" class="text-xs cursor-pointer inline-block">Show {{totalNumberOfComments - numberOfComments}} more comments...</p>
-  </div>
-  <div *ngIf="totalNumberOfComments - numberOfComments === 1" class="text-center">
-    <p (click)="getComments()" class="text-xs cursor-pointer inline-block">Show 1 more comment...</p>
-  </div>
-
 </ul>
 <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
 
