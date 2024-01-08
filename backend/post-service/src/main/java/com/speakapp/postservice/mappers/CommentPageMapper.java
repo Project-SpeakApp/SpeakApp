@@ -15,5 +15,5 @@ public interface CommentPageMapper {
     CommentPageGetDTO toGetDTO(List<CommentGetDTO> commentGetDTOS,
                                Pageable pageable,
                                int totalPages,
-                               long totalComments);
+                               Long totalComments);
 }

@@ -11,7 +11,6 @@ import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
-import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostRepository;

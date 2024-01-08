@@ -1,6 +1,5 @@
 package com.speakapp.postservice.controllers;
 
-import com.speakapp.postservice.dtos.CommentPageGetDTO;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.dtos.ReactionsGetDTO;
