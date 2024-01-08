@@ -1,4 +1,14 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { PostGet } from '../../../../shared/types/posts/post-get.model';
 import { DateFormatting } from '../../../../shared/util/DateFormatting';
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
@@ -10,7 +20,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './post-bottom-bar.component.html',
   styleUrls: ['./post-bottom-bar.css'],
 })
-export class PostBottomBarComponent implements OnInit, OnDestroy {
+export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() post: PostGet = {} as PostGet;
   @Output() changeReaction: EventEmitter<ReactionType | null> = new EventEmitter<ReactionType | null>();
 
@@ -52,14 +62,22 @@ export class PostBottomBarComponent implements OnInit, OnDestroy {
       .subscribe(() => this.updateReaction(reactionType));
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['post']) {
+      this.postReactionTypesCount = this.post.reactions.sumOfReactionsByType.size;
+      this.sortedReactions = [...this.post.reactions.sumOfReactionsByType.entries()]
+        .filter((reaction) => reaction[1] > 0)
+        .sort((a, b) => b[1] - a[1]);
+    }
+    console.log(this.sortedReactions)
+  }
+
   ngOnInit(): void {
     this.checkIfPostWasEdited();
-    console.log(this.post.reactions.sumOfReactionsByType);
     this.postReactionTypesCount = this.post.reactions.sumOfReactionsByType.size;
-
-
-    //console.log([...this.post.reactions.sumOfReactionsByType.entries()].reduce((a, e ) => e[1] > a[1] ? e : a))
-    this.sortedReactions = [...this.post.reactions.sumOfReactionsByType.entries()].sort((a, b) => b[1] - a[1]);
+    this.sortedReactions = [...this.post.reactions.sumOfReactionsByType.entries()]
+      .filter((reaction) => reaction[1] > 0)
+      .sort((a, b) => b[1] - a[1]);
   }
 
   ngOnDestroy(): void {

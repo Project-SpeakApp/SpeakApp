@@ -30,7 +30,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     // i have suicide thoughts and this point
     posts.forEach((post) => {
       const keys = Object.keys(post.reactions.sumOfReactionsByType);
-
       const value = Object.values(post.reactions.sumOfReactionsByType);
 
       post.reactions.sumOfReactionsByType = new Map();
@@ -68,37 +67,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   handleDeletion(postToDelete: string) {
     if (postToDelete) {
       this.posts = this.posts.filter((post) => post.postId !== postToDelete);
-    }
-  }
-
-  changeReaction({ reaction, postId }: { reaction: ReactionType | null; postId: string }) {
-    const index = this.posts.findIndex((post) => post.postId === postId);
-    const oldReaction = this.posts[index].currentUserReaction;
-    this.posts[index].currentUserReaction = reaction;
-
-    // update overall count
-    if (oldReaction === null && reaction !== null) {
-      this.posts[index].reactions.sumOfReactions++;
-    } else if (oldReaction !== null && reaction === null) {
-      this.posts[index].reactions.sumOfReactions--;
-    }
-
-    // update reaction type count
-    if (oldReaction !== null) {
-      const currentCount = this.posts[index].reactions.sumOfReactionsByType.get(oldReaction);
-      console.log(currentCount);
-      this.posts[index].reactions.sumOfReactionsByType.set(
-        oldReaction,
-        this.posts[index].reactions.sumOfReactionsByType.get(oldReaction)! - 1,
-      );
-    }
-    if (reaction !== null) {
-      const currentCount = this.posts[index].reactions.sumOfReactionsByType.get(reaction);
-      if (currentCount) {
-        this.posts[index].reactions.sumOfReactionsByType.set(reaction, currentCount + 1);
-      } else {
-        this.posts[index].reactions.sumOfReactionsByType.set(reaction, 1);
-      }
     }
   }
 

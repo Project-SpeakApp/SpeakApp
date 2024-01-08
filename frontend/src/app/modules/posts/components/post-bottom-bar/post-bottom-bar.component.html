@@ -3,14 +3,15 @@
     <div class="flex flex-row gap-2 pl-1 pr-2">
       <div class="text-xl flex flex-row">
         <div class="tooltip tooltip-top" data-tip="2000">
-          <p *ngIf="sortedReactions && sortedReactions[0][0] === like" class="">👍</p>
-          <p *ngIf="sortedReactions && sortedReactions[0][0] === love" class="">❤️</p>
-          <p *ngIf="sortedReactions && sortedReactions[0][0] === haha" class="">🤣</p>
-          <p *ngIf="sortedReactions && sortedReactions[0][0] === wow" class="">😮</p>
-          <p *ngIf="sortedReactions && sortedReactions[0][0] === sad" class="">😭</p>
-          <p *ngIf="sortedReactions && sortedReactions[0][0] === wrr" class="">😡</p>
+          <p *ngIf="sortedReactions.length === 0" class="">👍</p>
+          <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === like" class="">👍</p>
+          <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === love" class="">❤️</p>
+          <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === haha" class="">🤣</p>
+          <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === wow" class="">😮</p>
+          <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === sad" class="">😭</p>
+          <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === wrr" class="">😡</p>
         </div>
-        <div *ngIf="postReactionTypesCount > 1" class="tooltip tooltip-top" data-tip="136">
+        <div *ngIf="sortedReactions.length > 1" class="tooltip tooltip-top" data-tip="136">
           <p *ngIf="sortedReactions[1][0] === like" class="-ml-2">👍</p>
           <p *ngIf="sortedReactions[1][0] === love" class="-ml-2">❤️</p>
           <p *ngIf="sortedReactions[1][0] === haha" class="-ml-2">🤣</p>
@@ -18,7 +19,7 @@
           <p *ngIf="sortedReactions[1][0] === sad" class="-ml-2">😭</p>
           <p *ngIf="sortedReactions[1][0] === wrr" class="-ml-2">😡</p>
         </div>
-        <div *ngIf="postReactionTypesCount > 2" class="tooltip tooltip-top" data-tip="1">
+        <div *ngIf="sortedReactions.length> 2" class="tooltip tooltip-top" data-tip="1">
           <p *ngIf="sortedReactions[2][0] === like" class="-ml-2">👍</p>
           <p *ngIf="sortedReactions[2][0] === love" class="-ml-2">❤️</p>
           <p *ngIf="sortedReactions[2][0] === haha" class="-ml-2">🤣</p>

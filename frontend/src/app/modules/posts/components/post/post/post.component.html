@@ -19,7 +19,7 @@
       </div>
     </div>
     <p *ngIf="!isEdited" class="m-[1px]">{{post.content}}</p>
-    <app-edit-post [authorId]="post.author.userId" class="-translate-y-[24px]"(contentUpdated)="updateContent($event)" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
+    <app-edit-post [authorId]="post.author.userId" class="-translate-y-[24px]" (contentUpdated)="updateContent($event)" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
     <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
     <app-post-bottom-bar [post]="post" (changeReaction)="changeReaction($event)"></app-post-bottom-bar>
 
