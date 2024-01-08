@@ -13,12 +13,16 @@ import {CommentGetListModel} from "../../../../shared/types/posts/comment-get-li
 export class CommentListComponent implements OnInit{
   @Input() postId: string = "";
   comments: CommentGetModel[] = [];
+  isLoading: boolean = false;
+
+  numberOfPages: number = 0;
+
+  currentPage: number = 0;
+
 
   constructor(private commentService: CommentService, private auth: AuthService) {
   }
-  ngOnInit(): void {
-    this.getComments(2);
-  }
+
 
   getComments(pageSize: number): void {
     this.isLoading = true;
@@ -39,11 +43,9 @@ export class CommentListComponent implements OnInit{
     this.isLoading = false;
   }
 
-  isLoading: boolean = false;
-
-  numberOfPages: number = 0;
-
-  currentPage: number = 0;
+  ngOnInit(): void {
+    this.getComments(2);
+  }
 
 
 }
