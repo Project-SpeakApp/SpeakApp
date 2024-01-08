@@ -1,0 +1,15 @@
+### GET request where current user reacted to a comment in a post
+GET http://localhost:8080/api/posts/comments/?postId=6c84fbae-12c4-11ec-82a8-0242ac130003
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
+
+### GET request with getting page different than 0
+GET http://localhost:8080/api/posts/comments/?postId=6c84fbad-12c4-11ec-82a8-0242ac130003&pageNumber=1
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
+
+### GET request with setting pageSize
+GET http://localhost:8080/api/posts/comments/?postId=6c84fbad-12c4-11ec-82a8-0242ac130003&pageSize=4
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
+
+### GET request with postId that doesnt exist (ERROR 400)
+GET http://localhost:8080/api/posts/comments/?postId=6c84fbad-12c9-11ec-82a8-0242ac130003&pageSize=4
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
