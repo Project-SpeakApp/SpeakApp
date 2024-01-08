@@ -14,6 +14,7 @@ import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom
 import { CommentComponent } from './components/comment/comment.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
 
 
 
@@ -28,6 +29,7 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     PostBottomBarComponent,
     CommentComponent,
     CommentListComponent,
+    AddCommentComponent,
   ],
   imports: [
     CommonModule,
