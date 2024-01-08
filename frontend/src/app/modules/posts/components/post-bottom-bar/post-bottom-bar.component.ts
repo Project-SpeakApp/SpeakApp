@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -40,7 +39,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   sad = ReactionType.SAD;
   wrr = ReactionType.WRR;
 
-  constructor(private reactionService: ReactionService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private reactionService: ReactionService) {}
 
   checkIfPostWasEdited() {
     if (this.post.modifiedAt == null || this.post.createdAt.valueOf() == this.post.modifiedAt.valueOf()) {

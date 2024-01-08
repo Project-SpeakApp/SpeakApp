@@ -49,14 +49,12 @@ export class PostComponent implements OnChanges, OnInit{
   }
 
   changeReaction(newReactionType: ReactionType | null): void {
-    // this.changeReactionEmitter.emit({reaction: newReactionType, postId: this.post.postId});
       const oldReaction = this.post.currentUserReaction;
       this.post.currentUserReaction = newReactionType;
 
       // update reaction type count
       if (oldReaction !== null) {
         const currentCount = this.post.reactions.sumOfReactionsByType.get(oldReaction);
-        console.log(currentCount);
         this.post.reactions.sumOfReactionsByType.set(
           oldReaction,
           this.post.reactions.sumOfReactionsByType.get(oldReaction)! - 1,
@@ -70,7 +68,6 @@ export class PostComponent implements OnChanges, OnInit{
           this.post.reactions.sumOfReactionsByType.set(newReactionType, 1);
         }
       }
-      console.log(this.post.reactions.sumOfReactionsByType);
 
       // update overall count
       if (oldReaction === null && newReactionType !== null) {
