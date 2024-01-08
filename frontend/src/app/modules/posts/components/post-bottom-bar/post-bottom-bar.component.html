@@ -11,7 +11,7 @@
           <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === wow" class="">😮</p>
           <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === sad" class="">😭</p>
           <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === wrr" class="">😡</p>
-          <span [ngClass]="{
+          <span *ngIf="sortedReactions.length > 0" [ngClass]="{
           'tooltiptext text-[14px] w-[25px] bg-neutral text-white': true,
            'w-[35px]': sortedReactions[0][1] > 9,
            'w-[45px]': sortedReactions[0][1] > 99,
@@ -26,7 +26,7 @@
           <p *ngIf="sortedReactions[1][0] === wow" class="-ml-2">😮</p>
           <p *ngIf="sortedReactions[1][0] === sad" class="-ml-2">😭</p>
           <p *ngIf="sortedReactions[1][0] === wrr" class="-ml-2">😡</p>
-          <span [ngClass]="{
+          <span *ngIf="sortedReactions.length > 1" [ngClass]="{
           'tooltiptext text-[14px] w-[25px] bg-neutral text-white -ml-2': true,
            'w-[35px]': sortedReactions[1][1] > 9,
            'w-[45px]': sortedReactions[1][1] > 99,
@@ -34,14 +34,14 @@
            }"
           >{{ sortedReactions[1][1] }}</span>
         </div>
-        <div *ngIf="sortedReactions.length> 2" class="mytooltip" data-tip="1">
+        <div *ngIf="sortedReactions.length > 2" class="mytooltip" data-tip="1">
           <p *ngIf="sortedReactions[2][0] === like" class="-ml-2">👍</p>
           <p *ngIf="sortedReactions[2][0] === love" class="-ml-2">❤️</p>
           <p *ngIf="sortedReactions[2][0] === haha" class="-ml-2">🤣</p>
           <p *ngIf="sortedReactions[2][0] === wow" class="-ml-2">😮</p>
           <p *ngIf="sortedReactions[2][0] === sad" class="-ml-2">😭</p>
           <p *ngIf="sortedReactions[2][0] === wrr" class="-ml-2">😡</p>
-          <span [ngClass]="{
+          <span *ngIf="sortedReactions.length > 2" [ngClass]="{
           'tooltiptext text-[14px] w-[25px] bg-neutral text-white -ml-2': true,
            'w-[35px]': sortedReactions[2][1] > 9,
            'w-[45px]': sortedReactions[2][1] > 99,
