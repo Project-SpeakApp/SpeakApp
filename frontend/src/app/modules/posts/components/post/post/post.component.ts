@@ -54,7 +54,6 @@ export class PostComponent implements OnChanges, OnInit{
 
       // update reaction type count
       if (oldReaction !== null) {
-        const currentCount = this.post.reactions.sumOfReactionsByType.get(oldReaction);
         this.post.reactions.sumOfReactionsByType.set(
           oldReaction,
           this.post.reactions.sumOfReactionsByType.get(oldReaction)! - 1,
