@@ -210,7 +210,7 @@ $$
         -- Reakcje dla post_id_4
         ('6c84fc06-12c4-11ec-82a8-0242ac130003'::uuid, post_id_4, user_id_1, 'LIKE'),
         ('6c84fc12-12c4-11ec-82a8-0242ac130003'::uuid, post_id_4, user_id_2, 'WOW'),
-        ('6c85fc12-12c4-11ec-82a8-0242ac130003'::uuid, post_id_4, user_id_2, 'SAD'),
+        ('6c85fc12-12c4-11ec-82a8-0242ac130003'::uuid, post_id_4, user_id_3, 'SAD'),
 
         -- Reakcje dla post_id_5
         ('6c84fc07-12c4-11ec-82a8-0242ac130003'::uuid, post_id_5, user_id_3, 'SAD'),

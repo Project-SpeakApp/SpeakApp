@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Value
@@ -17,6 +18,10 @@ public class CommentGetDTO {
     String content;
 
     UserGetDTO author;
+
+    Instant createdAt;
+
+    Instant modifiedAt;
 
     ReactionsGetDTO reactionsGetDTO;
 

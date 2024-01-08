@@ -17,4 +17,6 @@ public class CommentPageGetDTO {
     int pageSize;
 
     int totalPages;
+
+    Long totalComments;
 }
