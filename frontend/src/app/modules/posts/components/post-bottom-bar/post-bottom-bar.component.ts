@@ -31,6 +31,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
 
   postReactionTypesCount = 0;
   sortedReactions: [ReactionType, number][] = [];
+
   // musze tak bo nie działają enumy w htmlu
   like = ReactionType.LIKE;
   love = ReactionType.LOVE;
@@ -64,12 +65,8 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['post']) {
-      this.postReactionTypesCount = this.post.reactions.sumOfReactionsByType.size;
-      this.sortedReactions = [...this.post.reactions.sumOfReactionsByType.entries()]
-        .filter((reaction) => reaction[1] > 0)
-        .sort((a, b) => b[1] - a[1]);
+      this.ngOnInit();
     }
-    console.log(this.sortedReactions)
   }
 
   ngOnInit(): void {
