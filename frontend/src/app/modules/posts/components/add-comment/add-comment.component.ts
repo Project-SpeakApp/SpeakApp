@@ -11,7 +11,7 @@ import {AlertService} from "../../../../shared/services/alert.service";
   styleUrls: ['./add-comment.component.css']
 })
 export class AddCommentComponent implements OnInit{
-    isLoading: boolean = false;
+    isLoading: boolean = true;
     model: AddComment;
 
     myForm!: FormGroup;
@@ -22,9 +22,15 @@ export class AddCommentComponent implements OnInit{
       };
     }
 
+  onFormSubmit() {
+
+  }
+
   ngOnInit(): void {
       this.myForm = this.formBuilder.group({
         content: ['', [Validators.required, Validators.minLength(1)]]
       });
   }
+
+
 }

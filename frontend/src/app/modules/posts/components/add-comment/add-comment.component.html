@@ -1,11 +1,18 @@
-<div class="card w-96 pb-1">
-  <form [formGroup]="myForm" class="space-y-6">
-    <div>
-      <div class="mt-2">
-        <textarea>
-          
-        </textarea>
+<div class="card w-96 w-[480px] flex flex-nowrap">
+  <div class="flex items-center">
+    <div class="flex-none mt-1">
+      <div class="avatar">
+        <div class="w-10 rounded-full">
+          <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        </div>
       </div>
     </div>
-  </form>
+    <form [formGroup]="myForm" (ngSubmit)="onFormSubmit()">
+      <div [ngClass]="{'w-[455px]': !isLoading, 'w-[430px]': isLoading}" class="relative px-2 ml-2 flex flex-nowrap">
+        <textarea id="content" formControlName="content" class="text-black w-full" placeholder="Add a comment..." name="content" type="text"></textarea>
+        <button *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer absolute top-0 right-8 ">send</button>
+        <span *ngIf="isLoading" class="loading loading-spinner absolute right-4 top-2"></span>
+      </div>
+    </form>
+  </div>
 </div>
