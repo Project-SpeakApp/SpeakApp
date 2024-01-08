@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-post-bottom-bar',
   templateUrl: './post-bottom-bar.component.html',
-  styleUrls: ['./post-bottom-bar.css'],
+  styleUrls: ['./post-bottom-bar.component.css'],
 })
 export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() post: PostGet = {} as PostGet;
