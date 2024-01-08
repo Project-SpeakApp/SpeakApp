@@ -4,8 +4,6 @@ import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
 import com.speakapp.postservice.mappers.*;
-import com.speakapp.postservice.repositories.CommentReactionRepository;
-import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
