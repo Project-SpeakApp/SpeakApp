@@ -1,5 +1,6 @@
 package com.speakapp.postservice.dtos;
 
+import com.speakapp.postservice.entities.ReactionType;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -18,4 +19,6 @@ public class CommentGetDTO {
     UserGetDTO author;
 
     ReactionsGetDTO reactionsGetDTO;
+
+    ReactionType currentUserReactionType;
 }

@@ -1,6 +1,10 @@
-<app-loading-spinner [isLoading]="isLoading()"></app-loading-spinner>
+<app-add-post (contentAdded)="addContent($event)"></app-add-post>
+<div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.8">
 <ul class="flex flex-col gap-4">
   <li *ngFor="let post of posts">
-    <app-post [post]="post"></app-post>
+    <app-post (deleted)="handleDeletion($event)" [post]="post"></app-post>
   </li>
 </ul>
+</div>
+<app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
+

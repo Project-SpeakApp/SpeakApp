@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../../sevices/post.service';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {PostGet} from "../../../../shared/types/posts/post-get.model";
 
 @Component({
   selector: 'app-add-post',
@@ -11,35 +13,39 @@ import {AddPost} from "../../../../shared/types/posts/add-post.model";
   styleUrls: ['./add-post.component.css']
 })
 export class AddPostComponent implements OnInit, OnDestroy {
+  @Output() contentAdded: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+
   myForm!: FormGroup;
-  userId = '6c84fb95-12c4-11ec-82a8-0242ac130003'; // give or get later some userId
   private addPostSubscription?: Subscription;
   model: AddPost;
+  isLoading = this.postService.isLoadingAdd;
+
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService,
   ) {
     this.model = {
       content: ''
     };
   }
-    isLoading = this.postService.isLoadingAdd;
+
+  onFormSubmit(): void {
+    if (this.myForm.valid) {
+      this.model.content = this.myForm.value.content;
+      this.addPostSubscription = this.postService.addPost(this.model, this.authService.state().userId).subscribe(
+        (newPost) => this.contentAdded.emit(newPost)
+      );
+    } else {
+      this.alertService.showAlert('Type Content', 'error');
+    }
+  }
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       content: ['', [Validators.required, Validators.minLength(1)]]
     });
   }
-
-  onFormSubmit(): void {
-    if (this.myForm.valid) {
-      this.model.content = this.myForm.value.content;
-      this.addPostSubscription = this.postService.addPost(this.model, this.userId).subscribe();
-    } else {
-      this.alertService.showAlert('Type Content', 'error');
-    }
-  }
-
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
   }
