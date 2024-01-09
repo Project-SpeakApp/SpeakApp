@@ -2,7 +2,7 @@ import {Injectable, signal} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AddPost} from "../../../shared/types/posts/add-post.model";
 import {PostGetResponse} from "../../../shared/types/posts/post-get-response.model";
-import {BehaviorSubject, finalize, Observable, tap} from "rxjs";
+import {finalize, Observable, tap} from "rxjs";
 import {AlertService} from "../../../shared/services/alert.service";
 import {PostGet} from "../../../shared/types/posts/post-get.model";
 @Injectable({
@@ -10,9 +10,7 @@ import {PostGet} from "../../../shared/types/posts/post-get.model";
 })
 export class PostService {
 
-  constructor(private http: HttpClient, private alertService: AlertService) {
 
-  }
 
 
   isLoadingAdd = signal(false);
@@ -21,9 +19,9 @@ export class PostService {
 
   isLoadingUpdate = signal(false);
 
-  private postsSubject = new BehaviorSubject<PostGet[]>([]);
-  posts$ = this.postsSubject.asObservable();
+  constructor(private http: HttpClient, private alertService: AlertService) {
 
+  }
 
   updatePost(postId: string, model: AddPost, userId: string): Observable<PostGet> {
     this.isLoadingUpdate.set(true);
@@ -33,15 +31,6 @@ export class PostService {
         this.isLoadingUpdate.set(false);
         }
       ),
-      tap(updatedPost => {
-        const currentPosts = this.postsSubject.value;
-        const index = currentPosts.findIndex(p => p.postId === postId);
-        if (index !== -1) {
-          currentPosts[index] = updatedPost;
-          this.postsSubject.next(currentPosts);
-        }
-      }),
-
       tap(
         (data) => console.log(data),
         (error)=> {this.alertService.showAlert('Something went wrong...', 'error'), console.log(error)}
@@ -55,10 +44,6 @@ export class PostService {
     return this.http.delete<void>(`http://localhost:8082/api/posts/${postId}`, { headers }).pipe(
       finalize( () => {
         this.isLoadingDelete.set(false);
-      }),
-      tap(() => {
-        const updatedPosts = this.postsSubject.value.filter(post => post.postId !== postId);
-        this.postsSubject.next(updatedPosts);
       }),
       tap(
         (data) => {console.log(data);},
@@ -76,12 +61,6 @@ export class PostService {
         this.isLoadingAdd.set(false);
         }),
       tap(
-        (newPost) => {
-          const currentPosts = this.postsSubject.value;
-          this.postsSubject.next([newPost, ...currentPosts]);
-        }
-      ),
-      tap(
         (data) => {console.log(data);},
         (error) => {this.alertService.showAlert(error, 'error')},
       )
@@ -94,15 +73,13 @@ export class PostService {
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
-    return this.http.get<any>('http://localhost:8082/api/posts', {headers, params}).pipe(
+    return this.http.get<PostGetResponse>('http://localhost:8082/api/posts', {headers, params}).pipe(
       finalize( () => {
         this.isLoadingGet.set(false);
       }),
       tap(
-        (data) => {
-          this.postsSubject.next(data.posts);
-        },
-        (error) => {this.alertService.showAlert('Something went wrong...', 'error'); console.log(error)},
+        (data) => { console.log(data)},
+        (err) => {this.alertService.showAlert('Something went wrong while getting posts', 'error');}
       )
     );
 

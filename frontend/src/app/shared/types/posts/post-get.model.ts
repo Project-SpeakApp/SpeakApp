@@ -9,5 +9,5 @@ export interface PostGet {
   createdAt: Date;
   modifiedAt: Date | null;
   reactions: ReactionsGet;
-  currentUserReaction: ReactionType;
+  currentUserReaction: ReactionType | null;
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PostService} from "../../sevices/post.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
@@ -10,23 +10,20 @@ import {AlertService} from "../../../../shared/services/alert.service";
   styleUrls: ['./delete-post.component.css']
 })
 export class DeletePostComponent implements OnDestroy, OnInit{
-  private addPostSubscription?: Subscription;
 
   @Input() postId: string = "";
   @Input() authorId: string = "";
-
+  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
 
   visible: boolean = false;
+  private addPostSubscription?: Subscription;
+
 
   isLoading = this.postService.isLoadingDelete;
   constructor(private alertService: AlertService, private postService: PostService, private authService: AuthService) {
   }
 
-  ngOnInit() {
-    if (this.authService.state().userId === this.authorId) {
-      this.visible = true;
-    }
-  }
+
 
   openModal(modalId: string): void {
     const modal = document.getElementById(modalId) as HTMLDialogElement;
@@ -39,6 +36,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   onFormSubmit(modalId: string): void {
     this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe(
       () => {
+        this.deleted.emit(this.postId);
         this.closeModal(modalId);
         this.alertService.showAlert("Post deleted successfully", 'success');
       }
@@ -49,6 +47,12 @@ export class DeletePostComponent implements OnDestroy, OnInit{
     const modal = document.getElementById(modalId) as HTMLDialogElement;
     if (modal) {
       modal.close();
+    }
+  }
+
+  ngOnInit() {
+    if (this.authService.state().userId === this.authorId) {
+      this.visible = true;
     }
   }
   ngOnDestroy(): void {

@@ -3,16 +3,13 @@ package com.speakapp.postservice.services;
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
-import com.speakapp.postservice.mappers.CommentMapper;
-import com.speakapp.postservice.mappers.PostMapper;
-import com.speakapp.postservice.mappers.PostPageMapper;
-import com.speakapp.postservice.mappers.ReactionsMapper;
+import com.speakapp.postservice.mappers.*;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +34,8 @@ public class PostService {
     private final PostMapper postMapper;
 
     private final CommentMapper commentMapper;
+
+    private final CommentPageMapper commentPageMapper;
 
     private final ReactionsMapper reactionsMapper;
 
@@ -115,29 +114,24 @@ public class PostService {
         return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
     }
 
-    public ReactionsGetDTO createUpdatePostReaction(ReactionType reactionType, UUID postId, UUID userId){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
-        PostReaction postReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
-
-        if(postReaction != null) {
-            postReaction.setType(reactionType);
-        } else {
-            postReaction = PostReaction.builder()
-                .post(post)
-                .userId(userId)
-                .type(reactionType)
-                .build();
-        }
-        postReactionRepository.save(postReaction);
-
-        return getReactionsForThePost(post);
-    }
-
     public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
 
         return createPostPageGetDTOFromPostPage(postsPage, userId, page);
+    }
+
+    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if(postOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with id = " + postId + " was not found");
+        }
+
+        Post post = postOptional.get();
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Comment> commentsPage = commentRepository.findAllByPostOrderByCreatedAtDesc(post, page);
+
+        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
     }
 
     public void deletePost(UUID userId, UUID postId){
@@ -153,7 +147,7 @@ public class PostService {
     }
 
     // Keep the class implementation for migration to CommentService
-    @NotNull
+@NotNull
     private List<CommentGetDTO> getAllCommentsForThePost(Post post, UUID userId) {
         List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
 
@@ -162,7 +156,8 @@ public class PostService {
             // TODO: Performance bottleneck in future - consider getting users from user-service by batches
             UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
             ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(comment);
-            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+            ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
+
             CommentGetDTO commentGetDTO = commentMapper.toGetDTO(
                     comment,
                     commentAuthor,
@@ -237,5 +232,26 @@ public class PostService {
             postsPage.getTotalPages()
         );
     }
+
+private CommentPageGetDTO createCommentPageGetDTOFromCommentPage(Page<Comment> commentsPage, UUID userId, Pageable page){
+    List<CommentGetDTO> commentGetDTOS = commentsPage.getContent().stream().map(comment -> {
+        UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
+        ReactionsGetDTO commentReactions = getReactionsForTheComment(comment);
+        ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
+
+        return commentMapper.toGetDTO(
+                comment,
+                commentAuthor,
+                commentReactions,
+                currentUserReactionType
+        );
+    }).toList();
+
+    return commentPageMapper.toGetDTO(
+            commentGetDTOS,
+            page,
+            commentsPage.getTotalPages()
+    );
+}
 
 }

@@ -20,5 +20,5 @@ public class CommentGetDTO {
 
     ReactionsGetDTO reactionsGetDTO;
 
-    ReactionType currenUserReaction;
+    ReactionType currentUserReactionType;
 }

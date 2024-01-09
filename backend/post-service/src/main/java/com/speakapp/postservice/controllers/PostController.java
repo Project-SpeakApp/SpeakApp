@@ -1,9 +1,8 @@
 package com.speakapp.postservice.controllers;
 
+import com.speakapp.postservice.dtos.CommentPageGetDTO;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
-import com.speakapp.postservice.dtos.ReactionsGetDTO;
-import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.services.PostService;
@@ -53,17 +52,19 @@ public class PostController {
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 
-    @PutMapping("/reactions/{postId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ReactionsGetDTO createUpdatePostReaction(@RequestParam ReactionType reactionType, @PathVariable UUID postId,
-        @RequestHeader("UserId") UUID userId){
-        return postService.createUpdatePostReaction(reactionType, postId, userId);
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PostPageGetDTO getLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
         @RequestParam(defaultValue = "5") int pageSize,  @RequestHeader("UserId") UUID userId ){
       return postService.getLatestPosts(pageNumber, pageSize, userId);
+    }
+
+    @GetMapping("/comments/")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentPageGetDTO getCommentsForPost(@RequestParam(defaultValue = "0") int pageNumber,
+                                                @RequestParam(defaultValue = "10") int pageSize,
+                                                @RequestParam UUID postId,
+                                                @RequestHeader("UserId") UUID userId ){
+        return postService.getCommentsForPost(pageNumber, pageSize, postId, userId);
     }
 }
