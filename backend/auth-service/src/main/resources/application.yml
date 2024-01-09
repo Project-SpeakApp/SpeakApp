@@ -1,0 +1,40 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+    org.springframework.security: DEBUG
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: admin-cli
+            client-secret: 77P4n9OqHJUujZC5EE9WtIwDxXAn8CXh
+            authorization-grant-type: authorization_code
+            redirect-uri: ${keycloak-client.server-url}/login/oauth2/code/keycloak
+            scope: openid
+        provider:
+          keycloak:
+            authorization-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/auth
+            token-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/token
+            user-info-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
+            user-name-attribute: name
+            user-info-authentication-method: header
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}/protocol/openid-connect/certs
+          issuer-uri: ${keycloak-client.server-url}/realms/SafeBankApp
+keycloak:
+  server-url: http://localhost:8443
+  realm: SpeakApp
+  admin: admin
+  admin-password: admin
+  client-id: admin-cli
+  client-secret: 77P4n9OqHJUujZC5EE9WtIwDxXAn8CXh

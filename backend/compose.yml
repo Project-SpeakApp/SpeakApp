@@ -79,12 +79,52 @@ services:
       - net-apiGw-userServ
       - net-apiGw-postServ
 
+  keycloak-service:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=keycloak-db
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+    volumes:
+      - ./keycloak-service/themes/custom:/opt/keycloak/themes/custom
+      - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    ports:
+      - '8443:8443'
+    networks:
+      - net-keycloakDB-keycloakServ
+    command:
+      - "start-dev"
+      - "--http-port=8443"
+      - "--import-realm"
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+
+  keycloak-db:
+    <<: *db
+    environment:
+      <<: *db-env
+      POSTGRES_DB: keycloak
+      PGPORT: 5432
+    # volumes:
+      #   - ./keycloak/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '5434:5432'
+    networks:
+      - net-keycloakDB-keycloakServ
+
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
   net-postServ-userServ:
   net-apiGw-userServ:
   net-apiGw-postServ:
+  net-keycloakDB-keycloakServ:
 
 volumes:
   vol-user-db:
