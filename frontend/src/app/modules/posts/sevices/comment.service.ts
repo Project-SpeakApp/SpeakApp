@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AlertService} from "../../../shared/services/alert.service";
 import {CommentGetModel} from "../../../shared/types/posts/comment-get.model";
 import {CommentGetListModel} from "../../../shared/types/posts/comment-get-list.model";
+import {AddComment} from "../../../shared/types/posts/add-comment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,19 @@ export class CommentService {
         (data) => {console.log(data);},
         (error) => {this.alertService.showAlert('Something went wrong...', 'error');},
 
+      )
+    );
+  }
+
+  addComment(model: AddComment, userId: string): Observable<CommentGetModel> {
+    const headers = new HttpHeaders().set('UserId', userId);
+    return this.http.post<CommentGetModel>('http://localhost:8082/api/comments', model, {headers}).pipe(
+      finalize( () => {
+
+      }),
+      tap(
+        (data)=> {console.log(data);},
+        (error) => {this.alertService.showAlert(error, 'error')},
       )
     );
   }

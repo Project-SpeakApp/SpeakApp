@@ -43,6 +43,12 @@ export class CommentListComponent implements OnInit{
     this.isLoading = false;
   }
 
+  addComment(newComment?: CommentGetModel): void {
+    if(newComment) {
+      this.comments.unshift(newComment);
+    }
+  }
+
   ngOnInit(): void {
     this.getComments(2);
   }
