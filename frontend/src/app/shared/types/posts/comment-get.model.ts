@@ -6,4 +6,8 @@ export interface CommentGetModel {
   content: string;
   author: UserGet;
   reactionsGetDTO: ReactionsGet;
+  createdAt: Date;
+  modifiedAt: Date | null;
+
+
 }

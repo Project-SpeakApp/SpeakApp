@@ -13,7 +13,7 @@ export class CommentComponent implements OnInit{
   formattedDate: string = '';
 
   ngOnInit(): void {
-    //this.formattedDate = DateFormatting.formatDateTime(this.comment.createdAt);
+    this.formattedDate = DateFormatting.formatDateTime(this.comment.createdAt);
   }
 
 }
