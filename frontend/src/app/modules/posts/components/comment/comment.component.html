@@ -11,6 +11,9 @@
       <h2 class="text-sm font-semibold">{{comment.author.fullName}}</h2>
       <p style="font-size:12px" class="italic">{{formattedDate}}</p>
     </div>
+    <div class="ml-auto" style="margin-right: -5px">
+      <app-comment-delete [commentId]="comment.commentId" [authorId]="comment.author.userId"></app-comment-delete>
+    </div>
 
 
   </div>
