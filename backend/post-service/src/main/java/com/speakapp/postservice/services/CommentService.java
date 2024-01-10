@@ -11,7 +11,6 @@ import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
-import com.speakapp.postservice.repositories.PostRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
     private final CommentRepository commentRepository;
     private final CommentReactionRepository commentReactionRepository;
     private final CommentMapper commentMapper;
@@ -42,7 +41,7 @@ public class CommentService {
     public CommentPageGetDTO getCommentsForPostByCreatedAt(int pageNumber, int pageSize,
                                                            UUID postId, UUID userId, String sort){
 
-        Post post = getPostById(postId);
+        Post post = postService.getPostById(postId);
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Comment> commentsPage;
 
@@ -58,7 +57,7 @@ public class CommentService {
     public CommentPageGetDTO getCommentsForPostByReactions(int pageNumber, int pageSize,
                                                            UUID postId, UUID userId, String sort){
 
-        Post post = getPostById(postId);
+        Post post = postService.getPostById(postId);
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Comment> commentsPage;
 
@@ -69,15 +68,6 @@ public class CommentService {
         }
 
         return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
-    }
-
-    private Post getPostById(UUID postId) {
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if(postOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with id = " + postId + " was not found");
-        }
-
-        return postOptional.get();
     }
 
     // Keep the class implementation for migration to CommentService
@@ -150,8 +140,7 @@ public class CommentService {
 
     public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) {
 
-        Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
+        Post postToBeCommented = postService.getPostById(commentCreateDTO.getPostId());
 
         int lengthOfContent = commentCreateDTO.getContent().length();
 
