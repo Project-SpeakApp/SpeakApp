@@ -78,6 +78,16 @@ services:
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
+      - net-apiGw-authServ
+
+  auth-service:
+    <<: *service
+    build: auth-service
+    ports:
+      - '8083:8083'
+    networks:
+      - net-apiGw-authServ
+      - net-authServ-keycloakServ
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
@@ -97,6 +107,7 @@ services:
       - '8443:8443'
     networks:
       - net-keycloakDB-keycloakServ
+      - net-authServ-keycloakServ
     command:
       - "start-dev"
       - "--http-port=8443"
@@ -111,12 +122,11 @@ services:
       <<: *db-env
       POSTGRES_DB: keycloak
       PGPORT: 5432
-    # volumes:
-      #   - ./keycloak/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '5434:5432'
     networks:
       - net-keycloakDB-keycloakServ
+      - net-authServ-keycloakServ
 
 networks:
   net-postDB-postServ:
@@ -125,6 +135,8 @@ networks:
   net-apiGw-userServ:
   net-apiGw-postServ:
   net-keycloakDB-keycloakServ:
+  net-apiGw-authServ:
+  net-authServ-keycloakServ:
 
 volumes:
   vol-user-db:
