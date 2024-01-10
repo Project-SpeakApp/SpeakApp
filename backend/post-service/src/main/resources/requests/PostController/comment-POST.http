@@ -1,5 +1,5 @@
 ### Post request
-POST http://localhost:8080/api/posts/comments/
+POST http://localhost:8080/api/comments
 Content-Type: application/json
 UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 
@@ -9,7 +9,7 @@ UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 }
 
 ### Post request with empty content (ERROR 400)
-POST http://localhost:8080/api/posts/comments/
+POST http://localhost:8080/api/comments
 Content-Type: application/json
 UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 
@@ -19,7 +19,7 @@ UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 }
 
 ### Post request with too long content > 500 characters (ERROR 400)
-POST http://localhost:8080/api/posts/comments/
+POST http://localhost:8080/api/comments
 Content-Type: application/json
 UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 
@@ -31,7 +31,7 @@ UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 
 
 ### Post request with postId that doesn't exist (ERROR 400)
-POST http://localhost:8080/api/posts/comments/
+POST http://localhost:8080/api/comments
 Content-Type: application/json
 UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
 

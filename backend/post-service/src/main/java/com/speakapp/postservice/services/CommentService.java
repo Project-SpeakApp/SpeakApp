@@ -1,16 +1,14 @@
 package com.speakapp.postservice.services;
 
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
-import com.speakapp.postservice.dtos.CommentGetDTO;
-import com.speakapp.postservice.dtos.CommentPageGetDTO;
-import com.speakapp.postservice.dtos.ReactionsGetDTO;
-import com.speakapp.postservice.dtos.UserGetDTO;
+import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.Comment;
 import com.speakapp.postservice.entities.CommentReaction;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
+import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostRepository;
@@ -34,6 +32,7 @@ public class CommentService {
     private final CommentReactionRepository commentReactionRepository;
     private final CommentMapper commentMapper;
     private final CommentPageMapper commentPageMapper;
+    private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
@@ -115,5 +114,31 @@ public class CommentService {
                 commentsPage.getTotalPages(),
                 commentsPage.getTotalElements()
         );
+    }
+
+    public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) {
+
+        Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
+
+        int lengthOfContent = commentCreateDTO.getContent().length();
+
+        if(lengthOfContent > 500 || lengthOfContent == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
+        }
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
+
+        Comment savedComment = commentRepository.save(commentMapper.toEntity(commentCreateDTO.getContent(),
+                postToBeCommented,
+                userId));
+
+        ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
+
+        return commentMapper.toGetDTO(savedComment,
+                author,
+                reactionsGetDTO,
+                null);
+
     }
 }

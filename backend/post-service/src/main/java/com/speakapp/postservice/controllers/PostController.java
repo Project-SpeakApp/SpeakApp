@@ -24,13 +24,6 @@ public class PostController {
         return postService.createPost(postCreateDTO, userId);
     }
 
-    @PostMapping("/comments/")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CommentGetDTO createComment(@RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) {
-        return postService.createComment(commentCreateDTO, userId);
-    }
-
-
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) {
