@@ -8,7 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 @Builder
 @Jacksonized
-public class UserLoginDTO {
+public class LoginPostDTO {
 
     @NotBlank
     String email;

@@ -1,7 +1,7 @@
 package com.speakapp.authservice.controllers;
 
 import com.speakapp.authservice.dtos.LoginResponseDTO;
-import com.speakapp.authservice.dtos.UserLoginDTO;
+import com.speakapp.authservice.dtos.LoginPostDTO;
 import com.speakapp.authservice.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class AuthController {
 
     @PostMapping(value = "/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponseDTO login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
-        return authService.login(userLoginDTO.getEmail(), userLoginDTO.getPassword());
+    public LoginResponseDTO login(@RequestBody @Valid LoginPostDTO loginPostDTO) {
+        return authService.login(loginPostDTO.getEmail(), loginPostDTO.getPassword());
     }
 }
