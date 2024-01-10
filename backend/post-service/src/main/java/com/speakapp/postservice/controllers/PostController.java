@@ -3,6 +3,7 @@ package com.speakapp.postservice.controllers;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
+import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,6 @@ public class PostController {
     public PostGetDTO createPost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
         return postService.createPost(postCreateDTO, userId);
     }
-
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
