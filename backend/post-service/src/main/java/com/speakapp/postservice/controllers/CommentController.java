@@ -3,6 +3,7 @@ package com.speakapp.postservice.controllers;
 import com.speakapp.postservice.dtos.CommentCreateDTO;
 import com.speakapp.postservice.dtos.CommentGetDTO;
 import com.speakapp.postservice.dtos.CommentPageGetDTO;
+import com.speakapp.postservice.dtos.CommentUpdateDTO;
 import com.speakapp.postservice.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,5 +32,11 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentGetDTO createComment(@RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) {
         return commentService.createComment(commentCreateDTO, userId);
+    }
+
+    @PutMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentGetDTO updateComment(@RequestBody CommentUpdateDTO commentUpdateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID commentId) {
+        return commentService.updateComment(commentUpdateDTO, commentId, userId);
     }
 }

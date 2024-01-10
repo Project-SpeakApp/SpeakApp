@@ -35,6 +35,36 @@ public class CommentService {
     private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
+    public CommentGetDTO updateComment(CommentUpdateDTO commentUpdateDTO, UUID commentId, UUID userId) {
+        Comment commentToUpdate = commentRepository.findById(commentId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + " was not found"));
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(commentToUpdate.getUserId());
+
+        if (!commentToUpdate.getUserId().equals(userId))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
+
+        int lengthOfContent = commentUpdateDTO.getContent().length();
+
+        if(lengthOfContent > 500 || lengthOfContent == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
+        }
+
+        commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
+
+        Comment commentUpdated = commentRepository.save(commentToUpdate);
+
+        ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(commentUpdated);
+
+        ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(commentUpdated, userId).orElse(null);
+
+
+        return commentMapper.toGetDTO(commentUpdated,
+                author,
+                reactionsGetDTO,
+                currentUserReactionType);
+    }
+
     public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
         Optional<Post> postOptional = postRepository.findById(postId);
         if(postOptional.isEmpty()){
