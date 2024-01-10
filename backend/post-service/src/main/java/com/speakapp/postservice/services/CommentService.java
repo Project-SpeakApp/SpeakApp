@@ -36,16 +36,48 @@ public class CommentService {
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
+        return getCommentsForPostByCreatedAt(pageNumber, pageSize, postId, userId, "desc");
+    }
+
+    public CommentPageGetDTO getCommentsForPostByCreatedAt(int pageNumber, int pageSize,
+                                                           UUID postId, UUID userId, String sort){
+
+        Post post = getPostById(postId);
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Comment> commentsPage;
+
+        if(sort.equalsIgnoreCase("asc")) {
+            commentsPage = commentRepository.findAllByPostOrderByCreatedAtAsc(post, page);
+        } else {
+            commentsPage = commentRepository.findAllByPostOrderByCreatedAtDesc(post, page);
+        }
+
+        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
+    }
+
+    public CommentPageGetDTO getCommentsForPostByReactions(int pageNumber, int pageSize,
+                                                           UUID postId, UUID userId, String sort){
+
+        Post post = getPostById(postId);
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Comment> commentsPage;
+
+        if(sort.equalsIgnoreCase("asc")) {
+            commentsPage = commentRepository.findAllByPostOrderByReactionsAsc(post, page);
+        } else {
+            commentsPage = commentRepository.findAllByPostOrderByReactionsDesc(post, page);
+        }
+
+        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
+    }
+
+    private Post getPostById(UUID postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
         if(postOptional.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with id = " + postId + " was not found");
         }
 
-        Post post = postOptional.get();
-        Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<Comment> commentsPage = commentRepository.findAllByPostOrderByCreatedAtDesc(post, page);
-
-        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
+        return postOptional.get();
     }
 
     // Keep the class implementation for migration to CommentService

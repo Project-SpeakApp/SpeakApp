@@ -26,6 +26,29 @@ public class CommentController {
         return commentService.getCommentsForPost(pageNumber, pageSize, postId, userId);
     }
 
+    @GetMapping("/by-created-at")
+    public CommentPageGetDTO getCommentsForPostByCreatedAtSorted(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam String sort,
+            @RequestParam UUID postId,
+            @RequestHeader("UserId") UUID userId) {
+
+        return commentService.getCommentsForPostByCreatedAt(
+                pageNumber, pageSize, postId, userId, sort);
+    }
+
+    @GetMapping("/by-reactions")
+    public CommentPageGetDTO getCommentsForPostByReactionsSorted(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam String sort,
+            @RequestParam UUID postId,
+            @RequestHeader("UserId") UUID userId) {
+
+        return commentService.getCommentsForPostByReactions(
+                pageNumber, pageSize, postId, userId, sort);
+    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
