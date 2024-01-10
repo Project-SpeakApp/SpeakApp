@@ -36,6 +36,7 @@ export class AddCommentComponent implements OnInit, OnDestroy{
       this.isLoading = true;
       if(this.myForm.valid) {
         this.model.content = this.myForm.value.content;
+        this.model.postId = this.postId;
         this.addCommentSubscription = this.commentService.addComment(this.model, this.authService.state().userId).subscribe(
           (newComment) => this.contentAdded.emit(newComment)
         );

@@ -15,7 +15,7 @@ export class CommentService {
   getComments(postId: string, userId: string, currentPage: number, pageSize: number): Observable<CommentGetListModel> {
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams().set('postId', postId).set('pageNumber', currentPage).set('pageSize', pageSize);
-    return this.http.get<CommentGetListModel>('http://localhost:8082/api/comments/', {headers, params}).pipe( //tez nie jestem pewny czy tak powinien wygladac endpoint
+    return this.http.get<CommentGetListModel>('http://localhost:8082/api/comments', {headers, params}).pipe( //tez nie jestem pewny czy tak powinien wygladac endpoint
       finalize( () => {
       }),
       tap (
