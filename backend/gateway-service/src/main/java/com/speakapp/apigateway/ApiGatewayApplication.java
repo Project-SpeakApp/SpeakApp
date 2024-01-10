@@ -15,7 +15,7 @@ public class ApiGatewayApplication {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("post-service", r -> r
-                        .path("/api/posts/**")
+                        .path("/api/posts/**", "/api/comments/**")
                         .uri("http://post-service:8082")
                 )
                 .route("user-service", r -> r
