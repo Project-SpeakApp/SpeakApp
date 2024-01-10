@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 @Configuration
 public class JwtConfig {
@@ -25,10 +24,5 @@ public class JwtConfig {
         jwtDecoder.setJwtValidator(validator);
 
         return jwtDecoder;
-    }
-
-    @Bean
-    public JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter() {
-        return new JwtGrantedAuthoritiesConverter();
     }
 }

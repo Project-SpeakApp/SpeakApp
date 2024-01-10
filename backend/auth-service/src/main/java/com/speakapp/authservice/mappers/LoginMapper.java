@@ -14,5 +14,5 @@ public interface LoginMapper {
     @Mapping(source = "tokenResponse.expiresIn", target = "expiresIn")
     @Mapping(source = "tokenResponse.refreshExpiresIn", target = "refreshExpiresIn")
     @Mapping(source = "tokenResponse.refreshToken", target = "refreshToken")
-    LoginResponseDTO mapToLoginResponse(UUID userId, String username, TokenResponseDTO tokenResponse);
+    LoginResponseDTO toLoginResponse(UUID userId, String username, TokenResponseDTO tokenResponse);
 }

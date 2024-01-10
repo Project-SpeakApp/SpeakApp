@@ -41,7 +41,7 @@ public class AuthService {
         String username = (String) jwt.getClaims().get("name");
         String userId = (String) jwt.getClaims().get("sub");
 
-        return loginMapper.mapToLoginResponse(UUID.fromString(userId), username, tokenResponse);
+        return loginMapper.toLoginResponse(UUID.fromString(userId), username, tokenResponse);
     }
 
     private TokenResponseDTO getTokenResponse(String email, String password) {
