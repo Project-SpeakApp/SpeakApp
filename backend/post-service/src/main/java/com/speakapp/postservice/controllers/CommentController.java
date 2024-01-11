@@ -32,4 +32,10 @@ public class CommentController {
     public CommentGetDTO createComment(@RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) {
         return commentService.createComment(commentCreateDTO, userId);
     }
+
+    @DeleteMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable UUID commentId, @RequestHeader("UserId") UUID userId) {
+        commentService.deleteComment(userId, commentId);
+    }
 }
