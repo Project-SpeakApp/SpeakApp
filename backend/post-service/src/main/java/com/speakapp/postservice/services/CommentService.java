@@ -44,12 +44,6 @@ public class CommentService {
         if (!commentToUpdate.getUserId().equals(userId))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
 
-        int lengthOfContent = commentUpdateDTO.getContent().length();
-
-        if(lengthOfContent > 500 || lengthOfContent == 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
-        }
-
         commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
 
         Comment commentUpdated = commentRepository.save(commentToUpdate);
@@ -150,12 +144,6 @@ public class CommentService {
 
         Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
-
-        int lengthOfContent = commentCreateDTO.getContent().length();
-
-        if(lengthOfContent > 500 || lengthOfContent == 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
-        }
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 

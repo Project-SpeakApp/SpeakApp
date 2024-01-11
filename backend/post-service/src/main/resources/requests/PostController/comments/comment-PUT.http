@@ -7,7 +7,7 @@ UserId: 6c84fb9a-12c4-11ec-82a8-0242ac130003
   "content": "pardon sikalafon"
 }
 
-### PUT request from not the uthor of comment
+### PUT request from not the uthor of comment(ERROR 403)
 PUT http://localhost:8080/api/comments/6c84fbbf-12c4-11ec-82a8-0242ac130004
 Content-Type: application/json
 UserId: 6c84fb9e-12c4-11ec-82a8-0242ac130003
