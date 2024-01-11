@@ -171,4 +171,19 @@ public class CommentService {
                 null);
 
     }
+
+    public void deleteComment(UUID userId, UUID commentId){
+
+        Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + "has not been found"));
+
+        Post commentedPost = commentToDelete.getPost();
+        UUID authorOfCommentedPost = commentedPost.getUserId();
+
+        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost)))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only author of the post or the comment can delete the comment");
+
+        commentRepository.delete(commentToDelete);
+    }
 }
