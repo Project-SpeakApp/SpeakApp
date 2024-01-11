@@ -1,0 +1,15 @@
+### DELETE request from author of comment
+DELETE http://localhost:8080/api/comments/6c84fbbf-12c4-11ec-82a8-0242ac130004
+UserId: 6c84fb9a-12c4-11ec-82a8-0242ac130003
+
+### DELETE request from author of post
+DELETE http://localhost:8080/api/comments/6c84fbc0-12c4-11ec-82a8-0242ac130004
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### DELETE request with commentId that doesn't exist (ERROR 404)
+DELETE http://localhost:8080/api/comments/6c84fbc0-02c4-11ec-82a8-0242ac130004
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### DELETE request from user that is neither author of comment nor author of post(ERROR 403)
+DELETE http://localhost:8080/api/comments/6c84fbc1-12c4-11ec-82a8-0242ac130004
+UserId: 6c84fb96-12c4-11ec-82a8-0242ac130003
