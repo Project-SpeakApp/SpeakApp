@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,39 +35,12 @@ public class CommentService {
     private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
-    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
-        return getCommentsForPostByCreatedAt(pageNumber, pageSize, postId, userId, "desc");
-    }
-
-    public CommentPageGetDTO getCommentsForPostByCreatedAt(int pageNumber, int pageSize,
-                                                           UUID postId, UUID userId, String sort){
+    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId,
+                                                String sortBy, Sort.Direction sortDirection){
 
         Post post = postService.getPostById(postId);
-        Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<Comment> commentsPage;
-
-        if(sort.equalsIgnoreCase("asc")) {
-            commentsPage = commentRepository.findAllByPostOrderByCreatedAtAsc(post, page);
-        } else {
-            commentsPage = commentRepository.findAllByPostOrderByCreatedAtDesc(post, page);
-        }
-
-        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
-    }
-
-    public CommentPageGetDTO getCommentsForPostByReactions(int pageNumber, int pageSize,
-                                                           UUID postId, UUID userId, String sort){
-
-        Post post = postService.getPostById(postId);
-        Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<Comment> commentsPage;
-
-        if(sort.equalsIgnoreCase("asc")) {
-            commentsPage = commentRepository.findAllByPostOrderByReactionsAsc(post, page);
-        } else {
-            commentsPage = commentRepository.findAllByPostOrderByReactionsDesc(post, page);
-        }
-
+        Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortBy));
+        Page<Comment> commentsPage = commentRepository.findAllByPost(post, page);
         return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
     }
 
