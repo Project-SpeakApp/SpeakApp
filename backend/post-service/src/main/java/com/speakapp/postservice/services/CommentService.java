@@ -41,15 +41,13 @@ public class CommentService {
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(commentToUpdate.getUserId());
 
-        if (!commentToUpdate.getUserId().equals(userId))
+        if (!commentToUpdate.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
+        }
 
         commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
-
         Comment commentUpdated = commentRepository.save(commentToUpdate);
-
         ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(commentUpdated);
-
         ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(commentUpdated, userId).orElse(null);
 
 
@@ -168,9 +166,10 @@ public class CommentService {
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
-        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost)))
+        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Only author of the post or the comment can delete the comment");
+        }
 
         commentRepository.delete(commentToDelete);
     }
