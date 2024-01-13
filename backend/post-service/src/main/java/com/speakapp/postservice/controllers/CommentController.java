@@ -5,6 +5,7 @@ import com.speakapp.postservice.dtos.CommentGetDTO;
 import com.speakapp.postservice.dtos.CommentPageGetDTO;
 import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class CommentController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentGetDTO createComment(@RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) throws ServiceLayerException {
+    public CommentGetDTO createComment(@Valid @RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) throws ServiceLayerException {
         return commentService.createComment(commentCreateDTO, userId);
     }
 

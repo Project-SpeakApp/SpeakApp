@@ -6,6 +6,7 @@ import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PostGetDTO createPost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
+    public PostGetDTO createPost(@Valid @RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId) {
         return postService.createPost(postCreateDTO, userId);
     }
 
@@ -33,7 +34,7 @@ public class PostController {
 
     @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) throws ServiceLayerException {
+    public PostGetDTO updatePost(@Valid @RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) throws ServiceLayerException {
         return postService.updatePost(postCreateDTO, postId, userId);
 
     }
