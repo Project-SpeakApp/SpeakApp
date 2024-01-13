@@ -1,6 +1,6 @@
 package com.speakapp.postservice.exceptions;
 
-public class AccessDeniedException extends Exception {
+public class AccessDeniedException extends ServiceException {
 
   private static final String DEFAULT_MESSAGE= "Unauthorized access: You do not have permission to access this resource!";
   public AccessDeniedException() {
