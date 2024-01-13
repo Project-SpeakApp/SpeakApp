@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -33,15 +34,20 @@ public class AuthService {
     private final LoginMapper loginMapper;
 
     public LoginResponseDTO login(String email, String password) {
+
+        Instant beforeRequest = Instant.now();
         TokenResponseDTO tokenResponse = getTokenResponse(email, password);
+
+        Instant jwtTokenExpiresIn = beforeRequest.plusSeconds(tokenResponse.getExpiresIn());
+        Instant refreshTokenExpiresIn = beforeRequest.plusSeconds(tokenResponse.getRefreshExpiresIn());
 
         String accessToken = tokenResponse.getAccessToken();
         Jwt jwt = jwtDecoder.decode(accessToken);
-
         String username = (String) jwt.getClaims().get("name");
         String userId = (String) jwt.getClaims().get("sub");
 
-        return loginMapper.toLoginResponse(UUID.fromString(userId), username, tokenResponse);
+        return loginMapper.toLoginResponse(UUID.fromString(userId), username,
+                jwtTokenExpiresIn, refreshTokenExpiresIn, tokenResponse);
     }
 
     private TokenResponseDTO getTokenResponse(String email, String password) {

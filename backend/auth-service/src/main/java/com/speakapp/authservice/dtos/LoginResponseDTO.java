@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Value
@@ -14,7 +15,7 @@ public class LoginResponseDTO {
     UUID userId;
     String username;
     String accessToken;
-    int expiresIn;
-    int refreshExpiresIn;
+    Instant expiresIn;
+    Instant refreshExpiresIn;
     String refreshToken;
 }
