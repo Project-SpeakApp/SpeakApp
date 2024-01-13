@@ -4,9 +4,15 @@ import java.util.UUID;
 
 public class CommentNotFoundException extends EntityNotFoundException {
 
-  private static final String ENTITY_TYPE = "Comment";
+  private static final String DEFAULT_MESSAGE= "Requested comment could not be found!";
 
   public CommentNotFoundException() {
-  super(ENTITY_TYPE);
+    super(DEFAULT_MESSAGE);
   }
+
+  public CommentNotFoundException(String message) {
+    super(message);
+  }
+
+
 }
