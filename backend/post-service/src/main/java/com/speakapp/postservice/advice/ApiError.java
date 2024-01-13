@@ -1,16 +1,12 @@
 package com.speakapp.postservice.advice;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
+import java.util.List;
 
 public class ApiError {
   private LocalDateTime timestamp;
   private String exceptionName;  // probably temporary, to ease testing
-
-  private String errorMessage;
-  private Map<String, String> subErrorsMessages;
+  private List<String> errorMessages;
 
   private String debugMessage;
 
@@ -18,11 +14,10 @@ public class ApiError {
     timestamp = LocalDateTime.now();
   }
 
-  ApiError(Throwable ex, String errorMessage, Map<String,String> subErrorsMessages) {
+  ApiError(Throwable ex, List<String> errorMessages) {
     this();
     this.exceptionName = ex.getClass().getName();
-    this.errorMessage = errorMessage;
-    this.subErrorsMessages = subErrorsMessages;
+    this.errorMessages = errorMessages;
     this.debugMessage = ex.getLocalizedMessage();
   }
 

@@ -1,6 +1,8 @@
 package com.speakapp.postservice.advice;
 
+import com.speakapp.postservice.exceptions.AccessDeniedException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,20 +18,37 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
   public ResponseEntity<ApiError> handleValidationError(MethodArgumentNotValidException ex){
-    String errorMessage = "Validation error";
-    return new ResponseEntity<>(new ApiError(ex, errorMessage, buildFieldValidationMap(ex)), HttpStatus.BAD_REQUEST);
+    String errorMessage = "Data validation error";
+    return new ResponseEntity<>(new ApiError(ex, buildValidationErrorsMap(ex, errorMessage)), HttpStatus.BAD_REQUEST);
   }
 
-  private Map<String, String> buildFieldValidationMap(MethodArgumentNotValidException ex){
+  @ExceptionHandler(value = AccessDeniedException.class)
+  public ResponseEntity<ApiError> handleValidationError(AccessDeniedException ex){
+    return new ResponseEntity<>(new ApiError(ex, buildErrorsMap(ex)), HttpStatus.FORBIDDEN);
+  }
+
+  private List<String> buildErrorsMap(Exception ex){
+    List<String> errorsList = new ArrayList<>();
+    errorsList.add(ex.getMessage());
+    return errorsList;
+  }
+
+  private List<String> buildValidationErrorsMap(MethodArgumentNotValidException ex, String errorMessage){
+    List<String> errorsList = new ArrayList<>();
+    errorsList.add(errorMessage);
+
     List<FieldError> fieldErrors = ex.getFieldErrors();
-    Map<String, String> subErrorsMap = new HashMap<>();
 
     for(FieldError fieldError : fieldErrors){
-      subErrorsMap.put(fieldError.getField(),
-          "Rejected value " + fieldError.getRejectedValue() + ", " + fieldError.getDefaultMessage());
+      errorsList.add("Error in field "
+          + fieldError.getField() +
+          ", rejected value "
+          + fieldError.getRejectedValue() +
+          ", "
+          + fieldError.getDefaultMessage());
     }
 
-    return subErrorsMap;
+    return errorsList;
   }
 
 }
