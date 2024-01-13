@@ -1,6 +1,7 @@
 package com.speakapp.postservice.advice;
 
 import com.speakapp.postservice.exceptions.AccessDeniedException;
+import com.speakapp.postservice.exceptions.ServiceLayerException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(new ApiError(ex, buildValidationErrorsMap(ex, errorMessage)), HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(value = AccessDeniedException.class)
-  public ResponseEntity<ApiError> handleValidationError(AccessDeniedException ex){
+  @ExceptionHandler(value = ServiceLayerException.class)
+  public ResponseEntity<ApiError> handleServiceLayerError(AccessDeniedException ex){
     return new ResponseEntity<>(new ApiError(ex, buildErrorsMap(ex)), HttpStatus.FORBIDDEN);
   }
 
