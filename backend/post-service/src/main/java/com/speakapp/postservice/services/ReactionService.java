@@ -3,6 +3,8 @@ package com.speakapp.postservice.services;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.PostReaction;
 import com.speakapp.postservice.entities.ReactionType;
+import com.speakapp.postservice.exceptions.PostNotFoundException;
+import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import java.util.NoSuchElementException;
@@ -16,8 +18,8 @@ public class ReactionService {
     private final PostReactionRepository postReactionRepository;
     private final PostRepository postRepository;
     
-    public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
+    public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId) throws ServiceLayerException {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post with provided id does not exist"));
         PostReaction oldReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 
         if (oldReaction == null && newReaction != null) {

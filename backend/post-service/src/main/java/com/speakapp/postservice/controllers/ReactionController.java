@@ -1,6 +1,7 @@
 package com.speakapp.postservice.controllers;
 
 import com.speakapp.postservice.entities.ReactionType;
+import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.ReactionService;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class ReactionController {
   @PutMapping("/{postId}")
   @ResponseStatus(HttpStatus.CREATED)
   public ReactionType createUpdatePostReaction(@RequestParam(required = false) ReactionType reactionType, @PathVariable UUID postId,
-                                               @RequestHeader("UserId") UUID userId){
+                                               @RequestHeader("UserId") UUID userId) throws ServiceLayerException {
     return reactionService.createUpdatePostReaction(reactionType, postId, userId);
   }
 

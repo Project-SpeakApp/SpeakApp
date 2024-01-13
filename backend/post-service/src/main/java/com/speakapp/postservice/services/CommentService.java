@@ -6,6 +6,10 @@ import com.speakapp.postservice.entities.Comment;
 import com.speakapp.postservice.entities.CommentReaction;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
+import com.speakapp.postservice.exceptions.AccessDeniedException;
+import com.speakapp.postservice.exceptions.CommentNotFoundException;
+import com.speakapp.postservice.exceptions.PostNotFoundException;
+import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
@@ -35,10 +39,10 @@ public class CommentService {
     private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
-    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
+    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId) throws ServiceLayerException {
         Optional<Post> postOptional = postRepository.findById(postId);
         if(postOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with id = " + postId + " was not found");
+            throw new PostNotFoundException("Post with id = " + postId + " was not found");
         }
 
         Post post = postOptional.get();
@@ -116,15 +120,16 @@ public class CommentService {
         );
     }
 
-    public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) {
+    public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) throws ServiceLayerException{
 
         Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
+                new PostNotFoundException("Post with id = " + commentCreateDTO.getPostId() + " was not found"));
 
         int lengthOfContent = commentCreateDTO.getContent().length();
 
+        // TODO: Move this part to dto, service layer should not be responsible for this type of data validation
         if(lengthOfContent > 500 || lengthOfContent == 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
+            throw new ServiceLayerException("Your comment can't be empty and can have maximally 500 characters");
         }
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
@@ -142,17 +147,16 @@ public class CommentService {
 
     }
 
-    public void deleteComment(UUID userId, UUID commentId){
+    public void deleteComment(UUID userId, UUID commentId) throws ServiceLayerException{
 
         Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + "has not been found"));
+                new CommentNotFoundException("Comment with id = " + commentId + "has not been found"));
 
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
         if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost)))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only author of the post or the comment can delete the comment");
+            throw new AccessDeniedException("Only author of the post or the comment can delete the comment");
 
         commentRepository.delete(commentToDelete);
     }

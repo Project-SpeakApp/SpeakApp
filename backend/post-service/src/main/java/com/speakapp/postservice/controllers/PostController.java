@@ -27,7 +27,7 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) {
+    public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) throws ServiceLayerException{
         postService.deletePost(userId, postId);
     }
 

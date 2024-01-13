@@ -86,7 +86,7 @@ public class PostService {
         return createPostPageGetDTOFromPostPage(postsPage, userId, page);
     }
 
-    public void deletePost(UUID userId, UUID postId){
+    public void deletePost(UUID userId, UUID postId) throws ServiceLayerException{
 
         Post postToDelete = postRepository.findById(postId).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + "has not been found"));
