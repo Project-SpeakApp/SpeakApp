@@ -4,6 +4,7 @@ import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
 import com.speakapp.postservice.dtos.*;
+import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class PostController {
 
     @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) {
+    public PostGetDTO updatePost(@RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) throws ServiceLayerException {
         return postService.updatePost(postCreateDTO, postId, userId);
 
     }
