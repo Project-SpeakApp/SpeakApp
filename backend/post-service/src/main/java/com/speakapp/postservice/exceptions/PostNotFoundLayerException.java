@@ -1,15 +1,13 @@
 package com.speakapp.postservice.exceptions;
 
-import lombok.NoArgsConstructor;
-
-public class PostNotFoundException extends EntityNotFoundException {
+public class PostNotFoundLayerException extends EntityNotFoundLayerException {
 
   private static final String DEFAULT_MESSAGE = "Requested post could not be found!";
-  public PostNotFoundException() {
+  public PostNotFoundLayerException() {
     super(DEFAULT_MESSAGE);
   }
 
-  public PostNotFoundException(String message){
+  public PostNotFoundLayerException(String message){
     super(message);
   }
 }

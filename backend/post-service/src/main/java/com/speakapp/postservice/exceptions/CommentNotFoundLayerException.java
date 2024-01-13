@@ -1,16 +1,14 @@
 package com.speakapp.postservice.exceptions;
 
-import java.util.UUID;
-
-public class CommentNotFoundException extends EntityNotFoundException {
+public class CommentNotFoundLayerException extends EntityNotFoundLayerException {
 
   private static final String DEFAULT_MESSAGE= "Requested comment could not be found!";
 
-  public CommentNotFoundException() {
+  public CommentNotFoundLayerException() {
     super(DEFAULT_MESSAGE);
   }
 
-  public CommentNotFoundException(String message) {
+  public CommentNotFoundLayerException(String message) {
     super(message);
   }
 

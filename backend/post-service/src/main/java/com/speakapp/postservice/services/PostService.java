@@ -3,7 +3,8 @@ package com.speakapp.postservice.services;
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
-import com.speakapp.postservice.exceptions.PostNotFoundException;
+import com.speakapp.postservice.exceptions.PostNotFoundLayerException;
+import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.mappers.*;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
@@ -47,9 +48,9 @@ public class PostService {
         );
     }
 
-    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) throws {
+    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) throws ServiceLayerException {
         Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
-                new PostNotFoundException("Post with id = " + postId + " was not found"));
+                new PostNotFoundLayerException("Post with id = " + postId + " was not found"));
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
