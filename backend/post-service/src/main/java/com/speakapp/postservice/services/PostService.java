@@ -3,6 +3,7 @@ package com.speakapp.postservice.services;
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
+import com.speakapp.postservice.exceptions.AccessDeniedException;
 import com.speakapp.postservice.exceptions.PostNotFoundException;
 import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.mappers.*;
@@ -89,11 +90,11 @@ public class PostService {
     public void deletePost(UUID userId, UUID postId) throws ServiceLayerException{
 
         Post postToDelete = postRepository.findById(postId).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + "has not been found"));
+                new PostNotFoundException("Post with id = " + postId + "has not been found"));
 
 
         if(!userId.equals(postToDelete.getUserId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
+            throw new AccessDeniedException("Only author of the post can delete it");
 
         postRepository.delete(postToDelete);
     }
