@@ -1,5 +1,7 @@
 package com.speakapp.postservice.exception_handler;
 
+import com.speakapp.postservice.exceptions.AccessDeniedException;
+import com.speakapp.postservice.exceptions.EntityNotFoundException;
 import com.speakapp.postservice.exceptions.ServiceLayerException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,22 +16,34 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
-  public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+  public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
     String mainErrorMessage = "Data validation error";
+
     return new ResponseEntity<>(
         new ApiError(ex, buildValidationErrorMessagesArray(ex.getFieldErrors(), mainErrorMessage)),
         HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(value = ServiceLayerException.class)
-  public ResponseEntity<ApiError> handleServiceLayerError(ServiceLayerException ex) {
+  public ResponseEntity<ApiError> handleServiceLayerExceptionException(ServiceLayerException ex) {
+    HttpStatus httpStatus;
+
+    if (ex instanceof AccessDeniedException) {
+      httpStatus = HttpStatus.FORBIDDEN;
+    } else if (ex instanceof EntityNotFoundException) {
+      httpStatus = HttpStatus.NOT_FOUND;
+    } else {
+      httpStatus = HttpStatus.BAD_REQUEST;
+    }
+
     return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(ex.getMessage())),
-        HttpStatus.FORBIDDEN);
+        httpStatus);
   }
 
   @ExceptionHandler(value = Exception.class)
   public ResponseEntity<ApiError> handleUnexpectedException(Exception ex) {
     String mainErrorMessage = "Unexpected error";
+
     return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(mainErrorMessage)),
         HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -37,6 +51,7 @@ public class GlobalExceptionHandler {
   private String[] buildErrorMessagesArray(String mainErrorMessage) {
     List<String> errorMessagesList = new ArrayList<>();
     errorMessagesList.add(mainErrorMessage);
+
     return errorMessagesList.toArray(new String[0]);
   }
 
