@@ -28,13 +28,13 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) throws ServiceLayerException{
+    public void deletePost(@PathVariable UUID postId, @RequestHeader("UserId") UUID userId) {
         postService.deletePost(userId, postId);
     }
 
     @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public PostGetDTO updatePost(@Valid @RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) throws ServiceLayerException {
+    public PostGetDTO updatePost(@Valid @RequestBody PostCreateDTO postCreateDTO, @RequestHeader("UserId") UUID userId, @PathVariable UUID postId) {
         return postService.updatePost(postCreateDTO, postId, userId);
 
     }
@@ -42,14 +42,14 @@ public class PostController {
     @GetMapping("/by-user/{userIdOfProfileOwner}")
     @ResponseStatus(HttpStatus.OK)
     public PostPageGetDTO getUserLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
-                                             @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ){
+                                             @RequestParam(defaultValue = "5") int pageSize, @PathVariable UUID userIdOfProfileOwner, @RequestHeader("UserId") UUID userId ) {
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PostPageGetDTO getLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
-        @RequestParam(defaultValue = "5") int pageSize,  @RequestHeader("UserId") UUID userId ){
+        @RequestParam(defaultValue = "5") int pageSize,  @RequestHeader("UserId") UUID userId ) {
       return postService.getLatestPosts(pageNumber, pageSize, userId);
     }
 }

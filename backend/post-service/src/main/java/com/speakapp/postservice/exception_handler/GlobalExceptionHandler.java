@@ -26,18 +26,8 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(value = ServiceLayerException.class)
   public ResponseEntity<ApiError> handleServiceLayerExceptionException(ServiceLayerException ex) {
-    HttpStatus httpStatus;
-
-    if (ex instanceof AccessDeniedException) {
-      httpStatus = HttpStatus.FORBIDDEN;
-    } else if (ex instanceof EntityNotFoundException) {
-      httpStatus = HttpStatus.NOT_FOUND;
-    } else {
-      httpStatus = HttpStatus.BAD_REQUEST;
-    }
-
     return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(ex.getMessage())),
-        httpStatus);
+        ex.getHttpStatus());
   }
 
   @ExceptionHandler(value = Exception.class)

@@ -26,7 +26,7 @@ public class ReactionController {
   @PutMapping("/{postId}")
   @ResponseStatus(HttpStatus.CREATED)
   public ReactionType createUpdatePostReaction(@RequestParam(required = false) ReactionType reactionType, @PathVariable UUID postId,
-                                               @RequestHeader("UserId") UUID userId) throws ServiceLayerException {
+                                               @RequestHeader("UserId") UUID userId) {
     return reactionService.createUpdatePostReaction(reactionType, postId, userId);
   }
 

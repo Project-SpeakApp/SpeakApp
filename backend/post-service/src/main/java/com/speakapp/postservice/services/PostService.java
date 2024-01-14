@@ -49,14 +49,14 @@ public class PostService {
         );
     }
 
-    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) throws ServiceLayerException {
+    public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
         Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
                 new PostNotFoundException("Post with id = " + postId + " was not found"));
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
         if (!postToUpdate.getUserId().equals(userId))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of post can update it");
+            throw new AccessDeniedException("Only author of post can update it");
 
         postMapper.updatePostFromPostCreateDTO(postCreateDTO, postToUpdate);
 
@@ -80,14 +80,14 @@ public class PostService {
         return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
     }
 
-    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
+    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
 
         return createPostPageGetDTOFromPostPage(postsPage, userId, page);
     }
 
-    public void deletePost(UUID userId, UUID postId) throws ServiceLayerException{
+    public void deletePost(UUID userId, UUID postId) {
 
         Post postToDelete = postRepository.findById(postId).orElseThrow(()->
                 new PostNotFoundException("Post with id = " + postId + "has not been found"));
@@ -119,7 +119,7 @@ public class PostService {
                 .build();
     }
 
-    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page){
+    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
         List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
             ReactionsGetDTO postReactions = getReactionsForThePost(post);

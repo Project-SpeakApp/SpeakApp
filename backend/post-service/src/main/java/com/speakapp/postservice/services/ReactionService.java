@@ -18,7 +18,7 @@ public class ReactionService {
     private final PostReactionRepository postReactionRepository;
     private final PostRepository postRepository;
     
-    public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId) throws ServiceLayerException {
+    public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post with provided id does not exist"));
         PostReaction oldReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 

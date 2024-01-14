@@ -24,20 +24,20 @@ public class CommentController {
     public CommentPageGetDTO getCommentsForPost(@RequestParam(defaultValue = "0") int pageNumber,
                                                 @RequestParam(defaultValue = "10") int pageSize,
                                                 @RequestParam UUID postId,
-                                                @RequestHeader("UserId") UUID userId ) throws ServiceLayerException {
+                                                @RequestHeader("UserId") UUID userId ) {
         return commentService.getCommentsForPost(pageNumber, pageSize, postId, userId);
     }
 
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentGetDTO createComment(@Valid @RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) throws ServiceLayerException {
+    public CommentGetDTO createComment(@Valid @RequestBody CommentCreateDTO commentCreateDTO, @RequestHeader("UserId") UUID userId) {
         return commentService.createComment(commentCreateDTO, userId);
     }
 
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteComment(@PathVariable UUID commentId, @RequestHeader("UserId") UUID userId) throws ServiceLayerException {
+    public void deleteComment(@PathVariable UUID commentId, @RequestHeader("UserId") UUID userId) {
         commentService.deleteComment(userId, commentId);
     }
 }
