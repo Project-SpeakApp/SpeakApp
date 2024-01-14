@@ -1,24 +1,24 @@
 package com.speakapp.postservice.advice;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
-import java.util.List;
+import lombok.Data;
 
+@Data
 public class ApiError {
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private LocalDateTime timestamp;
-  private String exceptionName;  // probably temporary, to ease testing
-  private List<String> errorMessages;
-
-  private String debugMessage;
+  private String exceptionClassName;
+  private String [] errorMessages;
 
   private ApiError() {
     timestamp = LocalDateTime.now();
   }
 
-  ApiError(Throwable ex, List<String> errorMessages) {
+  ApiError(Throwable ex, String [] errorMessages) {
     this();
-    this.exceptionName = ex.getClass().getName();
+    this.exceptionClassName = ex.getClass().getName();
     this.errorMessages = errorMessages;
-    this.debugMessage = ex.getLocalizedMessage();
   }
 
 
