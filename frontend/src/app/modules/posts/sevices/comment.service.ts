@@ -15,7 +15,7 @@ export class CommentService {
   getComments(postId: string, userId: string, currentPage: number, pageSize: number): Observable<CommentGetListModel> {
     const headers = new HttpHeaders().set('UserId', userId);
     let params = new HttpParams().set('postId', postId).set('pageNumber', currentPage).set('pageSize', pageSize);
-    return this.http.get<CommentGetListModel>('http://localhost:8082/api/comments', {headers, params}).pipe( 
+    return this.http.get<CommentGetListModel>('http://localhost:8080/api/comments', {headers, params}).pipe(
       finalize( () => {
       }),
       tap (
@@ -28,7 +28,7 @@ export class CommentService {
 
   addComment(model: AddComment, userId: string): Observable<CommentGetModel> {
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.post<CommentGetModel>('http://localhost:8082/api/comments', model, {headers}).pipe(
+    return this.http.post<CommentGetModel>('http://localhost:8080/api/comments', model, {headers}).pipe(
       finalize( () => {
 
       }),
