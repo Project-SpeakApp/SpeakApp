@@ -43,7 +43,7 @@ public class ReactionService {
 
     public ReactionType createUpdateCommentReaction(ReactionType newReaction, UUID commentId, UUID userId){
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Comment with provided commentId" + commentId + "does not exist"));
+                "Comment with provided commentId " + commentId + " does not exist"));
         CommentReaction oldReaction = commentReactionRepository.findCommentReactionByCommentAndUserId(comment, userId);
 
         if (oldReaction == null && newReaction != null) {
