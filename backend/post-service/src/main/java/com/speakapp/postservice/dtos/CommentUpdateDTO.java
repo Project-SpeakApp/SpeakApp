@@ -7,18 +7,14 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.UUID;
-
 @Value
 @Builder
 @Jacksonized
-public class CommentCreateDTO {
+public class CommentUpdateDTO {
 
     @NotBlank
     @NotNull
     @Size(min = 1, max = 500, message = "Your comment can't be empty and can have maximally 500 characters")
     String content;
 
-    @NotNull
-    UUID postId;
 }
