@@ -6,8 +6,7 @@ import {CommentService} from "../../sevices/comment.service";
 
 @Component({
   selector: 'app-comment-delete',
-  templateUrl: './comment-delete.component.html',
-  styleUrls: ['./comment-delete.component.css']
+  templateUrl: './comment-delete.component.html'
 })
 export class CommentDeleteComponent implements OnDestroy, OnInit{
 
