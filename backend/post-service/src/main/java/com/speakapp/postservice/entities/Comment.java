@@ -36,6 +36,8 @@ public class Comment extends Auditable {
     @Column(length = 500)
     private String content;
 
+    private int numberOfReactions;
+
     //   TODO Media service for photos, audio, video
     //    @Lob
     //    private byte[] media;

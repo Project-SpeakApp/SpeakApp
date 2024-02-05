@@ -5,7 +5,6 @@ import {DateFormatting} from "../../../../shared/util/DateFormatting";
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.css']
 })
 export class CommentComponent implements OnInit{
   @Input() comment: CommentGetModel = {} as CommentGetModel;

@@ -1,24 +1,22 @@
 package com.speakapp.postservice.services;
 
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
-import com.speakapp.postservice.dtos.CommentGetDTO;
-import com.speakapp.postservice.dtos.CommentPageGetDTO;
-import com.speakapp.postservice.dtos.ReactionsGetDTO;
-import com.speakapp.postservice.dtos.UserGetDTO;
+import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.Comment;
 import com.speakapp.postservice.entities.CommentReaction;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
+import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
-import com.speakapp.postservice.repositories.PostRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,23 +27,20 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
     private final CommentRepository commentRepository;
     private final CommentReactionRepository commentReactionRepository;
     private final CommentMapper commentMapper;
     private final CommentPageMapper commentPageMapper;
+    private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
-    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if(postOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with id = " + postId + " was not found");
-        }
+    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId,
+                                                String sortBy, Sort.Direction sortDirection){
 
-        Post post = postOptional.get();
-        Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<Comment> commentsPage = commentRepository.findAllByPostOrderByCreatedAtDesc(post, page);
-
+        Post post = postService.getPostById(postId);
+        Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortBy));
+        Page<Comment> commentsPage = commentRepository.findAllByPost(post, page);
         return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
     }
 
@@ -115,5 +110,45 @@ public class CommentService {
                 commentsPage.getTotalPages(),
                 commentsPage.getTotalElements()
         );
+    }
+
+    public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) {
+
+        Post postToBeCommented = postService.getPostById(commentCreateDTO.getPostId());
+
+        int lengthOfContent = commentCreateDTO.getContent().length();
+
+        if(lengthOfContent > 500 || lengthOfContent == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
+        }
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
+
+        Comment savedComment = commentRepository.save(commentMapper.toEntity(commentCreateDTO.getContent(),
+                postToBeCommented,
+                userId));
+
+        ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
+
+        return commentMapper.toGetDTO(savedComment,
+                author,
+                reactionsGetDTO,
+                null);
+
+    }
+
+    public void deleteComment(UUID userId, UUID commentId){
+
+        Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + "has not been found"));
+
+        Post commentedPost = commentToDelete.getPost();
+        UUID authorOfCommentedPost = commentedPost.getUserId();
+
+        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost)))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only author of the post or the comment can delete the comment");
+
+        commentRepository.delete(commentToDelete);
     }
 }

@@ -1,0 +1,41 @@
+### Post request
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
+
+{
+  "content": "Krzysiek Misiek",
+  "postId": "6c84fbae-12c4-11ec-82a8-0242ac130003"
+}
+
+### Post request with empty content (ERROR 400)
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
+
+{
+  "content": "",
+  "postId": "6c84fbae-12c4-11ec-82a8-0242ac130003"
+}
+
+### Post request with too long content > 500 characters (ERROR 400)
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
+
+{
+  "content": "Była sobie mała wioska, gdzie mieszkał chłopiec o imieniu Marcin. Jego rodzice prowadzili skromne gospodarstwo rolne, a życie nie zawsze było łatwe. Pewnego dnia Marcin znalazł tajemniczą kopertę w starej szafie. Kiedy otworzył ją, zobaczył w środku 500 złotych.Mimo że suma była znacząca dla rodziny, Marcin zdecydował się niezwłocznie zorganizować niespodziankę dla swoich rodziców. Postanowił, że przeznaczy te pieniądze na ulepszenie gospodarstwa, by ułatwić im życie.Zaczął od remontu stodoły, która była w złym stanie. Zainwestował także w nowe narzędzia rolnicze, które pomogły rodzicom w ich codziennej pracy. Po pewnym czasie gospodarstwo zaczęło przynosić lepsze plony, a finanse rodziny poprawiły się.Jednak Marcin nie zapomniał o tym, skąd pochodziła ta niespodziewana pomoc. Postanowił także podzielić się częścią pieniędzy z sąsiadami, którzy również potrzebowali wsparcia. Kupił kilka worków nawozu dla sąsiada rolnika, a dla starszej pary zorganizował zakupy spożywcze.Jego dobroczynność zaczęła rozprzestrzeniać się po wiosce, inspirując innych do działania. Wkrótce lokalna społeczność zjednoczyła się, aby wspólnie poprawić warunki życia dla wszystkich.To niewielkie znalezisko w starej szafie stało się katalizatorem dla pozytywnych zmian, a Marcin na zawsze pozostał w pamięci wioski jako chłopiec, który wykorzystał swoją niespodziewaną fortunę do dobra wspólnoty.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "postId": "6c84fbae-12c4-11ec-82a8-0242ac130003"
+}
+
+
+
+### Post request with postId that doesn't exist (ERROR 400)
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+UserId: 6c84fb97-12c4-11ec-82a8-0242ac130003
+
+{
+  "content": "Krzysiek Misiek",
+  "postId": "6c84fbae-12c4-11ec-82ag-0242ac130003"
+}
