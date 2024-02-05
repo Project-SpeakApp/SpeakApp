@@ -20,17 +20,18 @@ export class CommentDeleteComponent implements OnDestroy, OnInit{
   isLoading: boolean = false;
   private deleteCommentSubscription?: Subscription;
 
-  isLoadingDelete = signal(false);
-
   constructor(private alertService: AlertService, private authService: AuthService, private commentService: CommentService) {
   }
 
   onFormSubmit(modalId: string): void {
+    this.isLoading = true;
     this.deleteCommentSubscription = this.commentService.deleteComment( this.commentId, this.authService.state().userId).subscribe(
       () => {
         this.deleted.emit(this.commentId);
         this.closeModal(modalId);
         this.alertService.showAlert("Comment deleted successfully", 'success');
+        this.isLoading = false;
+
       }
     );
   }

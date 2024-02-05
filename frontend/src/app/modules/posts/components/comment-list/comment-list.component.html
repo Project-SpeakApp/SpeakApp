@@ -1,8 +1,8 @@
 <ul class="flex flex-col gap-4">
   <li *ngFor="let comment of comments">
-    <app-comment [comment]="comment"></app-comment>
+    <app-comment (deleted)="handleDeletion($event)" [comment]="comment"></app-comment>
   </li>
-  <div *ngIf="currentPage!==numberOfPages" class="text-center">
+  <div *ngIf="totalComments !== currentComments" class="text-center">
     <p (click)="getComments(10)" class="text-xs cursor-pointer inline-block">Show more comments...</p>
   </div>
 </ul>
