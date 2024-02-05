@@ -28,7 +28,7 @@ export class ReactionService {
     const headers = new HttpHeaders().set('UserId',this.authService.state().userId,);
     return this.http
       .put<ReactionType | null>(
-        `http://localhost:8082/api/posts/reactions/${postId}?${
+        `http://localhost:8080/api/posts/reactions/${postId}?${
           reactionToSend ? 'reactionType=' + reactionToSend : ''
         }`,
         {},

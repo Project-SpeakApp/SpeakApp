@@ -7,6 +7,7 @@ import com.speakapp.postservice.dtos.CommentUpdateDTO;
 import com.speakapp.postservice.services.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +19,18 @@ import java.util.UUID;
 public class CommentController {
 
     private final CommentService commentService;
-
     @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    public CommentPageGetDTO getCommentsForPost(@RequestParam(defaultValue = "0") int pageNumber,
-                                                @RequestParam(defaultValue = "10") int pageSize,
-                                                @RequestParam UUID postId,
-                                                @RequestHeader("UserId") UUID userId ){
-        return commentService.getCommentsForPost(pageNumber, pageSize, postId, userId);
-    }
+    public CommentPageGetDTO getCommentsForPostByCreatedAtSorted(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
+            @RequestParam UUID postId,
+            @RequestHeader("UserId") UUID userId) {
 
+        return commentService.getCommentsForPost(
+                pageNumber, pageSize, postId, userId, sortBy, sortDirection);
+    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
