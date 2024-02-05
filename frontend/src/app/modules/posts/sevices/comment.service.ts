@@ -27,7 +27,7 @@ export class CommentService {
 
   deleteComment(commentId: string, userId: string): Observable<void> {
     const headers = new HttpHeaders().set('UserId', userId);
-    return this.http.delete<void>('http://localhost:8082/api/comments/${commentId}', {headers} ).pipe(
+    return this.http.delete<void>(`http://localhost:8082/api/comments/${commentId}`, {headers} ).pipe(
       finalize( ()=> {
 
       }),
