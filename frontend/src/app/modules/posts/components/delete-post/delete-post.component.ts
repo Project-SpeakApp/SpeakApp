@@ -7,7 +7,6 @@ import {AlertService} from "../../../../shared/services/alert.service";
 @Component({
   selector: 'app-delete-post',
   templateUrl: './delete-post.component.html',
-  styleUrls: ['./delete-post.component.css']
 })
 export class DeletePostComponent implements OnDestroy, OnInit{
 
