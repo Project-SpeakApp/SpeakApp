@@ -2,13 +2,10 @@ FROM eclipse-temurin:17-jdk-alpine AS builder
 
 WORKDIR app
 
-COPY settings.xml /root/.m2/settings.xml
-
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 RUN dos2unix mvnw
-
 RUN ./mvnw dependency:go-offline
 
 COPY src src
