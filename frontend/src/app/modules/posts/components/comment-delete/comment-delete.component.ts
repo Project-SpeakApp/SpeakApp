@@ -30,7 +30,9 @@ export class CommentDeleteComponent implements OnDestroy, OnInit{
         this.closeModal(modalId);
         this.alertService.showAlert("Comment deleted successfully", 'success');
         this.isLoading = false;
-
+      },
+      (error) => {
+        this.isLoading = false;
       }
     );
   }

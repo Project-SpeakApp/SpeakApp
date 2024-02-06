@@ -1,28 +1,13 @@
 <div *ngIf="visible" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Delete">
-  <span class="material-symbols-outlined relative -bottom-2" (click)="openModal('modal_'+commentId)" >
+  <span class="material-symbols-outlined relative -bottom-2" (click)="openModal('modalComment_'+commentId)" >
     delete
   </span>
 </div>
-<dialog id="modal_{{commentId}}" class="modal">
-
-  <div class="modal-box">
-    <h1 class="font-bold text-lg text-center" style="font-size: 22px">Do you really want to delete your comment?</h1>
-    <p class="py-4 text-center text-accent" style="font-size: 16px">The comment data will be lost forever!</p>
-    <div class="modal-action justify-between">
-      <form method="dialog" class="form1">
-        <button class="btn">CANCEL</button>
-      </form>
-      <form (ngSubmit)="onFormSubmit('modal_'+commentId)" class="form2">
-        <button [disabled]="isLoading" class="btn btn-primary">
-          <span *ngIf="isLoading" class="loading loading-spinner"></span>
-          <ng-container *ngIf="!isLoading">
-            DELETE
-          </ng-container>
-        </button>
-      </form>
-    </div>
-  </div>
-  <form method="dialog" class="modal-backdrop" style="cursor: auto !important;">
-    <a (click)="closeModal('modal_'+commentId)">close</a>
-  </form>
-</dialog>
+<app-delete-modal
+  [modalId]="'modal_' + commentId"
+  [title]="'Delete Comment'"
+  [message]="'Do you really want to delete your comment? The comment data will be lost forever!'"
+  [isLoading]="isLoading"
+  (confirm)="onFormSubmit('modalComment_' + commentId)"
+  (cancel)="closeModal('modalComment_' + commentId)"
+></app-delete-modal>

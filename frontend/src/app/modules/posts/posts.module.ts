@@ -15,6 +15,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import { CommentDeleteComponent } from './components/comment-delete/comment-delete.component';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 
 
 
@@ -30,6 +31,7 @@ import { CommentDeleteComponent } from './components/comment-delete/comment-dele
     CommentComponent,
     CommentListComponent,
     CommentDeleteComponent,
+    DeleteModalComponent,
   ],
   imports: [
     CommonModule,
