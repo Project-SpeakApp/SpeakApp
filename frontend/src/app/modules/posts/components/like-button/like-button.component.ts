@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 
 @Component({
   selector: 'app-like-button',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./like-button.component.css']
 })
 export class LikeButtonComponent {
+  @Input() currentUserReaction: ReactionType | null = null;
 
+  @Output() changeReaction: EventEmitter<ReactionType> = new EventEmitter<ReactionType>();
+
+  // musze tak bo nie działają enumy w htmlu
+  like = ReactionType.LIKE;
+  love = ReactionType.LOVE;
+  haha = ReactionType.HA_HA;
+  wow = ReactionType.WOW;
+  sad = ReactionType.SAD;
+  wrr = ReactionType.WRR;
 }

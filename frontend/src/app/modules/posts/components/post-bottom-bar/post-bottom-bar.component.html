@@ -9,69 +9,14 @@
   </div>
 </div>
 <div class="flex flex-row justify-between font-semibold">
-  <button class="mytooltip w-1/3 py-2 hover:bg-base-200 rounded">
-    <div [ngClass]="{ 'flex flex-row gap-2 justify-center': true, 'text-secondary': post.currentUserReaction }">
-      <span *ngIf="!post.currentUserReaction" class="material-symbols-outlined inline">thumb_up</span>
-      <div *ngIf="post.currentUserReaction === like" class="flex flex-row gap-2">
-        <p>👍</p>
-        <p>Like</p>
-      </div>
-      <div *ngIf="post.currentUserReaction === love" class="flex flex-row gap-2">
-        <p>❤️</p>
-        <p>Love</p>
-      </div>
-      <div *ngIf="post.currentUserReaction === haha" class="flex flex-row gap-2">
-        <p>🤣</p>
-        <p>Haha</p>
-      </div>
-      <div *ngIf="post.currentUserReaction === wow" class="flex flex-row gap-2">
-        <p>😮</p>
-        <p>Wow</p>
-      </div>
-      <div *ngIf="post.currentUserReaction === sad" class="flex flex-row gap-2">
-        <p>😭</p>
-        <p>Sad</p>
-      </div>
-      <div *ngIf="post.currentUserReaction === wrr" class="flex flex-row gap-2">
-        <p>😡</p>
-        <p>Wrr</p>
-      </div>
-      <p *ngIf="!post.currentUserReaction">Like</p>
-    </div>
-    <span class="tooltiptext bg-base-300 border-black border-2 flex flex-row text-xl">
-      <div class="flex flex-col gap-1" (click)="upsertReaction(like)">
-        <span class="p-1 h-9 transition hover:bg-base-100 rounded">👍</span>
-        <span *ngIf="post.currentUserReaction === like" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
-      </div>
-      <div class="flex flex-col gap-1" (click)="upsertReaction(love)">
-        <span class="p-1 h-9 transition hover:bg-base-100 rounded">❤️</span>
-        <span *ngIf="post.currentUserReaction === love" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
-      </div>
-      <div class="flex flex-col gap-1" (click)="upsertReaction(haha)">
-        <span class="p-1 h-9 transition hover:bg-base-100 rounded">🤣</span>
-        <span *ngIf="post.currentUserReaction === haha" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
-      </div>
-      <div class="flex flex-col gap-1" (click)="upsertReaction(wow)">
-        <span class="p-1 h-9 transition hover:bg-base-100 rounded">😮</span>
-        <span *ngIf="post.currentUserReaction === wow" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
-      </div>
-      <div class="flex flex-col gap-1" (click)="upsertReaction(sad)">
-        <span class="p-1 h-9 transition hover:bg-base-100 rounded">😭</span>
-        <span *ngIf="post.currentUserReaction === sad" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
-      </div>
-      <div class="flex flex-col gap-1" (click)="upsertReaction(wrr)">
-        <span class="p-1 h-9 transition hover:bg-base-100 rounded">😡</span>
-        <span *ngIf="post.currentUserReaction === wrr" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
-      </div>
-    </span>
-  </button>
-  <button class="w-1/3 hover:bg-base-200 rounded">
+  <app-like-button [currentUserReaction]="post.currentUserReaction" (changeReaction)="upsertReaction($event)"></app-like-button>
+  <button class="w-[calc(470px/3)] hover:bg-base-200 rounded">
     <div class="flex flex-row gap-2 justify-center">
       <span class="material-symbols-outlined inline">comment</span>
       <p>Comment</p>
     </div>
   </button>
-  <button class="w-1/3 hover:bg-base-200 rounded">
+  <button class="w-[calc(470px/3)] hover:bg-base-200 rounded">
     <div class="flex flex-row gap-2 justify-center">
       <span class="material-symbols-outlined inline">share</span>
       <p>Share</p>
