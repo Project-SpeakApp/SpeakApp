@@ -13,9 +13,9 @@ delete
         <button class="btn">CANCEL</button>
       </form>
       <form (ngSubmit)="onFormSubmit('modal_'+postId)" class="form2">
-        <button [disabled]="isLoading()" class="btn btn-primary">
-          <span *ngIf="isLoading()" class="loading loading-spinner"></span>
-          <ng-container *ngIf="!isLoading()">
+        <button [disabled]="isLoading" class="btn btn-primary">
+          <span *ngIf="isLoading" class="loading loading-spinner"></span>
+          <ng-container *ngIf="!isLoading">
             DELETE
           </ng-container>
         </button>

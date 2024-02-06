@@ -1,9 +1,7 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {PostService} from "../../sevices/post.service";
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import { FormControl, Validators} from "@angular/forms";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {AddComment} from "../../../../shared/types/posts/add-comment.model";
-import {AlertService} from "../../../../shared/services/alert.service";
 import {Subscription} from "rxjs";
 import {CommentService} from "../../sevices/comment.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
@@ -13,19 +11,20 @@ import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model"
   templateUrl: './add-comment.component.html',
   styleUrls: ['./add-comment.component.css']
 })
-export class AddCommentComponent implements OnInit, OnDestroy{
+export class AddCommentComponent implements OnDestroy{
 
   @Input() postId: string = "";
 
   @Output() contentAdded: EventEmitter<CommentGetModel> = new EventEmitter<CommentGetModel>();
 
+  contentControl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+
+
   isLoading: boolean = false;
     model: AddComment;
     private addCommentSubscription?: Subscription;
 
-  myForm!: FormGroup;
-    constructor(private formBuilder: FormBuilder, private commentService: CommentService,
-                private authService: AuthService, private alertService: AlertService) {
+    constructor(private commentService: CommentService, private authService: AuthService) {
       this.model = {
         content: '',
         postId: this.postId,
@@ -33,24 +32,19 @@ export class AddCommentComponent implements OnInit, OnDestroy{
     }
 
   onFormSubmit(): void {
-      this.isLoading = true;
-      if(this.myForm.valid) {
-        this.model.content = this.myForm.value.content;
+      if(this.contentControl.valid && this.contentControl.value != null) {
+        this.isLoading = true;
+        this.model.content = this.contentControl.value;
         this.model.postId = this.postId;
         this.addCommentSubscription = this.commentService.addComment(this.model, this.authService.state().userId).subscribe(
-          (newComment) => this.contentAdded.emit(newComment)
+          (newComment) => {
+            this.contentAdded.emit(newComment);
+            this.contentControl.reset();
+            this.isLoading = false;
+          }
         );
-      } else {
-        this.alertService.showAlert('Type Comment', 'error');
       }
-      this.isLoading = false;
 
-  }
-
-  ngOnInit(): void {
-      this.myForm = this.formBuilder.group({
-        content: ['', [Validators.required, Validators.minLength(1)]]
-      });
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { PostService } from '../../sevices/post.service';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../../../shared/services/alert.service';
@@ -14,11 +14,12 @@ import {PostGet} from "../../../../shared/types/posts/post-get.model";
 })
 export class AddPostComponent implements OnInit, OnDestroy {
   @Output() contentAdded: EventEmitter<PostGet> = new EventEmitter<PostGet>();
-
-  myForm!: FormGroup;
   private addPostSubscription?: Subscription;
   model: AddPost;
-  isLoading = this.postService.isLoadingAdd;
+  isLoading: boolean = false;
+
+  myForm!: FormGroup;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,14 +34,20 @@ export class AddPostComponent implements OnInit, OnDestroy {
 
   onFormSubmit(): void {
     if (this.myForm.valid) {
+      this.isLoading = true;
       this.model.content = this.myForm.value.content;
       this.addPostSubscription = this.postService.addPost(this.model, this.authService.state().userId).subscribe(
-        (newPost) => this.contentAdded.emit(newPost)
+        (newPost) => {
+          this.contentAdded.emit(newPost);
+          this.isLoading = false;
+          this.myForm.reset();
+        }
       );
     } else {
       this.alertService.showAlert('Type Content', 'error');
     }
   }
+
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       content: ['', [Validators.required, Validators.minLength(1)]]
