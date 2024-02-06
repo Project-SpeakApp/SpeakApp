@@ -24,7 +24,7 @@ export class ProfilesService {
   public getProfile(userId: string) {
     this.isLoading.set(true);
     return this.http
-      .get<ProfileGetDTO>(`http://localhost:8081/api/users/${userId}`)
+      .get<ProfileGetDTO>(`http://localhost:8080/api/users/${userId}`)
       .pipe(
         finalize(() => this.isLoading.set(false)),
         tap(
@@ -37,7 +37,7 @@ export class ProfilesService {
   public updateProfile(profile: ProfileUpdateDTO) {
     this.profileUpdateLoading.set(true);
     return this.http
-      .put<ProfileGetDTO>(`http://localhost:8081/api/users`, profile, {
+      .put<ProfileGetDTO>(`http://localhost:8080/api/users`, profile, {
         headers: { UserId: this.authService.state().userId },
       })
       .pipe(

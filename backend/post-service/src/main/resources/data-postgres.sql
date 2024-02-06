@@ -63,101 +63,101 @@ $$
                (post_id_14, user_id_4, 'Celebrating a personal milestone today. Grateful for the journey!', '2023-01-20 12:00:00', '2023-01-20 12:00:00', false),
                (post_id_15, user_id_5, 'Movie night with friends. Any movie recommendations?', '2023-01-21 12:00:00', '2023-01-21 12:00:00', false);
         
-        INSERT INTO comment (comment_id, post_id, user_id, content, created_at, modified_at, is_deleted)
+        INSERT INTO comment (comment_id, post_id, user_id, content, created_at, modified_at, is_deleted, number_of_reactions)
         VALUES
          -- Komentarze dla post_id_1
-            ('6c84fbbf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_6, 'Great post!', timestamp_earlier, timestamp_earlier, false),
-            ('6c84fbc0-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_7, 'I love the content!', timestamp_later, timestamp_later, false),
-            ('6c84fbc1-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_8, 'Looking forward to more!', timestamp_later, timestamp_later, false),
-         ('6c84fbc2-12c4-11ec-82a8-0242ac130016'::uuid, post_id_1, user_id_1, 'Excellent post!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc3-12c4-11ec-82a8-0242ac130017'::uuid, post_id_1, user_id_2, 'This is so interesting!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc4-12c4-11ec-82a8-0242ac130018'::uuid, post_id_1, user_id_3, 'Can''t wait for the next one!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc5-12c4-11ec-82a8-0242ac130019'::uuid, post_id_1, user_id_4, 'Your posts are always amazing!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc6-12c4-11ec-82a8-0242ac130020'::uuid, post_id_1, user_id_5, 'I learned something new today, thanks to your post!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc7-12c4-11ec-82a8-0242ac130021'::uuid, post_id_1, user_id_6, 'Great content as always!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc8-12c4-11ec-82a8-0242ac130022'::uuid, post_id_1, user_id_7, 'You''re doing fantastic work!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbc9-12c4-11ec-82a8-0242ac130023'::uuid, post_id_1, user_id_8, 'Keep it up!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbca-12c4-11ec-82a8-0242ac130024'::uuid, post_id_1, user_id_9, 'I look forward to reading more from you!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbcb-12c4-11ec-82a8-0242ac130025'::uuid, post_id_1, user_id_10, 'Impressive work!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbcc-12c4-11ec-82a8-0242ac130026'::uuid, post_id_1, user_id_1, 'Absolutely loved it!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbcd-12c4-11ec-82a8-0242ac130027'::uuid, post_id_1, user_id_2, 'Your insights are valuable!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbce-12c4-11ec-82a8-0242ac130028'::uuid, post_id_1, user_id_3, 'Looking forward to more content from you!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbcf-12c4-11ec-82a8-0242ac130029'::uuid, post_id_1, user_id_4, 'You''re making a positive impact!', timestamp_earlier, timestamp_earlier, false),
+            ('6c84fbbf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_6, 'Great post!', timestamp_earlier, timestamp_earlier, false, 3),
+            ('6c84fbc0-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_7, 'I love the content!', timestamp_later, timestamp_later, false, 2),
+            ('6c84fbc1-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_8, 'Looking forward to more!', timestamp_later, timestamp_later, false, 2),
+         ('6c84fbc2-12c4-11ec-82a8-0242ac130016'::uuid, post_id_1, user_id_1, 'Excellent post!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc3-12c4-11ec-82a8-0242ac130017'::uuid, post_id_1, user_id_2, 'This is so interesting!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc4-12c4-11ec-82a8-0242ac130018'::uuid, post_id_1, user_id_3, 'Can''t wait for the next one!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc5-12c4-11ec-82a8-0242ac130019'::uuid, post_id_1, user_id_4, 'Your posts are always amazing!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc6-12c4-11ec-82a8-0242ac130020'::uuid, post_id_1, user_id_5, 'I learned something new today, thanks to your post!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc7-12c4-11ec-82a8-0242ac130021'::uuid, post_id_1, user_id_6, 'Great content as always!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc8-12c4-11ec-82a8-0242ac130022'::uuid, post_id_1, user_id_7, 'You''re doing fantastic work!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbc9-12c4-11ec-82a8-0242ac130023'::uuid, post_id_1, user_id_8, 'Keep it up!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbca-12c4-11ec-82a8-0242ac130024'::uuid, post_id_1, user_id_9, 'I look forward to reading more from you!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbcb-12c4-11ec-82a8-0242ac130025'::uuid, post_id_1, user_id_10, 'Impressive work!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbcc-12c4-11ec-82a8-0242ac130026'::uuid, post_id_1, user_id_1, 'Absolutely loved it!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbcd-12c4-11ec-82a8-0242ac130027'::uuid, post_id_1, user_id_2, 'Your insights are valuable!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbce-12c4-11ec-82a8-0242ac130028'::uuid, post_id_1, user_id_3, 'Looking forward to more content from you!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbcf-12c4-11ec-82a8-0242ac130029'::uuid, post_id_1, user_id_4, 'You''re making a positive impact!', timestamp_earlier, timestamp_earlier, false, 0),
 
             -- Komentarze dla post_id_2
-            ('6c84fbc2-12c4-11ec-82a8-0242ac130004'::uuid, post_id_2, user_id_9, 'Well done!', timestamp_earlier, timestamp_earlier, false),
-            ('6c84fbc3-12c4-11ec-82a8-0242ac130004'::uuid, post_id_2, user_id_10, 'Impressive!', timestamp_later, timestamp_later, false),
-            ('6c84fbc4-12c4-11ec-82a8-0242ac130004'::uuid, post_id_2, user_id_1, 'Great content!', timestamp_later, timestamp_later, false),
+            ('6c84fbc2-12c4-11ec-82a8-0242ac130004'::uuid, post_id_2, user_id_9, 'Well done!', timestamp_earlier, timestamp_earlier, false, 2),
+            ('6c84fbc3-12c4-11ec-82a8-0242ac130004'::uuid, post_id_2, user_id_10, 'Impressive!', timestamp_later, timestamp_later, false, 2),
+            ('6c84fbc4-12c4-11ec-82a8-0242ac130004'::uuid, post_id_2, user_id_1, 'Great content!', timestamp_later, timestamp_later, false, 2),
 
             -- Komentarze dla post_id_3
-            ('6c84fbc5-12c4-11ec-82a8-0242ac130004'::uuid, post_id_3, user_id_2, 'Nice insights!', timestamp_earlier, timestamp_earlier, false),
-            ('6c84fbc6-12c4-11ec-82a8-0242ac130004'::uuid, post_id_3, user_id_3, 'I appreciate your thoughts.', timestamp_later, timestamp_later, false),
-            ('6c84fbc7-12c4-11ec-82a8-0242ac130004'::uuid, post_id_3, user_id_4, 'Well written!', timestamp_later, timestamp_later, false),
+            ('6c84fbc5-12c4-11ec-82a8-0242ac130004'::uuid, post_id_3, user_id_2, 'Nice insights!', timestamp_earlier, timestamp_earlier, false, 2),
+            ('6c84fbc6-12c4-11ec-82a8-0242ac130004'::uuid, post_id_3, user_id_3, 'I appreciate your thoughts.', timestamp_later, timestamp_later, false, 2),
+            ('6c84fbc7-12c4-11ec-82a8-0242ac130004'::uuid, post_id_3, user_id_4, 'Well written!', timestamp_later, timestamp_later, false, 2),
 
             -- Komentarze dla post_id_4
-            ('6c84fbc8-12c4-11ec-82a8-0242ac130004'::uuid, post_id_4, user_id_5, 'Im glad I discovered this post.', timestamp_earlier, timestamp_earlier, false),
-            ('6c84fbc9-12c4-11ec-82a8-0242ac130004'::uuid, post_id_4, user_id_6, 'Looking forward to your next one!', timestamp_later, timestamp_later, false),
-            ('6c84fbca-12c4-11ec-82a8-0242ac130004'::uuid, post_id_4, user_id_7, 'Your content is amazing!', timestamp_later, timestamp_later, false),
+            ('6c84fbc8-12c4-11ec-82a8-0242ac130004'::uuid, post_id_4, user_id_5, 'Im glad I discovered this post.', timestamp_earlier, timestamp_earlier, false, 0),
+            ('6c84fbc9-12c4-11ec-82a8-0242ac130004'::uuid, post_id_4, user_id_6, 'Looking forward to your next one!', timestamp_later, timestamp_later, false, 0),
+            ('6c84fbca-12c4-11ec-82a8-0242ac130004'::uuid, post_id_4, user_id_7, 'Your content is amazing!', timestamp_later, timestamp_later, false, 0),
         
 
         -- Komentarze dla post_id_5
-        ('6c84fbcb-12c4-11ec-82a8-0242ac130004'::uuid, post_id_5, user_id_8, 'Interesting post!', timestamp_earlier, timestamp_earlier, false),
-        ('6c84fbcc-12c4-11ec-82a8-0242ac130004'::uuid, post_id_5, user_id_9, 'I enjoyed reading this.', timestamp_later, timestamp_later, false),
-        ('6c84fbcd-12c4-11ec-82a8-0242ac130004'::uuid, post_id_5, user_id_10, 'Well articulated.', timestamp_later, timestamp_later, false),
+        ('6c84fbcb-12c4-11ec-82a8-0242ac130004'::uuid, post_id_5, user_id_8, 'Interesting post!', timestamp_earlier, timestamp_earlier, false, 0),
+        ('6c84fbcc-12c4-11ec-82a8-0242ac130004'::uuid, post_id_5, user_id_9, 'I enjoyed reading this.', timestamp_later, timestamp_later, false, 0),
+        ('6c84fbcd-12c4-11ec-82a8-0242ac130004'::uuid, post_id_5, user_id_10, 'Well articulated.', timestamp_later, timestamp_later, false, 0),
 
         -- Komentarze dla post_id_6
-        ('6c84fbce-12c4-11ec-82a8-0242ac130004'::uuid, post_id_6, user_id_1, 'Great insights!', timestamp_earlier, timestamp_earlier, false),
-        ('6c84fbcf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_6, user_id_2, 'I appreciate your perspective.', timestamp_later, timestamp_later, false),
-        ('6c84fbd0-12c4-11ec-82a8-0242ac130004'::uuid, post_id_6, user_id_3, 'Looking forward to more content.', timestamp_later, timestamp_later, false),
+        ('6c84fbce-12c4-11ec-82a8-0242ac130004'::uuid, post_id_6, user_id_1, 'Great insights!', timestamp_earlier, timestamp_earlier, false, 0),
+        ('6c84fbcf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_6, user_id_2, 'I appreciate your perspective.', timestamp_later, timestamp_later, false, 0),
+        ('6c84fbd0-12c4-11ec-82a8-0242ac130004'::uuid, post_id_6, user_id_3, 'Looking forward to more content.', timestamp_later, timestamp_later, false, 0),
 
         -- Komentarze dla post_id_7
-        ('6c84fbd1-12c4-11ec-82a8-0242ac130004'::uuid, post_id_7, user_id_4, 'Impressive post!', timestamp_earlier, timestamp_earlier, false),
-        ('6c84fbd2-12c4-11ec-82a8-0242ac130004'::uuid, post_id_7, user_id_5, 'Well done!', timestamp_later, timestamp_later, false),
-        ('6c84fbd3-12c4-11ec-82a8-0242ac130004'::uuid, post_id_7, user_id_6, 'Your insights are valuable.', timestamp_later, timestamp_later, false),
+        ('6c84fbd1-12c4-11ec-82a8-0242ac130004'::uuid, post_id_7, user_id_4, 'Impressive post!', timestamp_earlier, timestamp_earlier, false, 0),
+        ('6c84fbd2-12c4-11ec-82a8-0242ac130004'::uuid, post_id_7, user_id_5, 'Well done!', timestamp_later, timestamp_later, false, 0),
+        ('6c84fbd3-12c4-11ec-82a8-0242ac130004'::uuid, post_id_7, user_id_6, 'Your insights are valuable.', timestamp_later, timestamp_later, false, 0),
 
          -- Komentarze dla post_id_8
-         ('6c84fbd4-12c4-11ec-82a8-0242ac130004'::uuid, post_id_8, user_id_7, 'Great post!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbd5-12c4-11ec-82a8-0242ac130004'::uuid, post_id_8, user_id_8, 'I love the content!', timestamp_later, timestamp_later, false),
-         ('6c84fbd6-12c4-11ec-82a8-0242ac130004'::uuid, post_id_8, user_id_9, 'Looking forward to more!', timestamp_later, timestamp_later, false),
+         ('6c84fbd4-12c4-11ec-82a8-0242ac130004'::uuid, post_id_8, user_id_7, 'Great post!', timestamp_earlier, timestamp_earlier, false, 1),
+         ('6c84fbd5-12c4-11ec-82a8-0242ac130004'::uuid, post_id_8, user_id_8, 'I love the content!', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbd6-12c4-11ec-82a8-0242ac130004'::uuid, post_id_8, user_id_9, 'Looking forward to more!', timestamp_later, timestamp_later, false, 0),
 
          -- Komentarze dla post_id_9
-         ('6c84fbd7-12c4-11ec-82a8-0242ac130004'::uuid, post_id_9, user_id_10, 'Well done!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbd8-12c4-11ec-82a8-0242ac130004'::uuid, post_id_9, user_id_1, 'Impressive!', timestamp_later, timestamp_later, false),
-         ('6c84fbd9-12c4-11ec-82a8-0242ac130004'::uuid, post_id_9, user_id_2, 'Great content!', timestamp_later, timestamp_later, false),
+         ('6c84fbd7-12c4-11ec-82a8-0242ac130004'::uuid, post_id_9, user_id_10, 'Well done!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbd8-12c4-11ec-82a8-0242ac130004'::uuid, post_id_9, user_id_1, 'Impressive!', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbd9-12c4-11ec-82a8-0242ac130004'::uuid, post_id_9, user_id_2, 'Great content!', timestamp_later, timestamp_later, false, 0),
 
          -- Komentarze dla post_id_10
-         ('6c84fbda-12c4-11ec-82a8-0242ac130004'::uuid, post_id_10, user_id_3, 'Nice insights!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbdb-12c4-11ec-82a8-0242ac130004'::uuid, post_id_10, user_id_4, 'I appreciate your thoughts.', timestamp_later, timestamp_later, false),
-         ('6c84fbdc-12c4-11ec-82a8-0242ac130004'::uuid, post_id_10, user_id_5, 'Well written!', timestamp_later, timestamp_later, false),
+         ('6c84fbda-12c4-11ec-82a8-0242ac130004'::uuid, post_id_10, user_id_3, 'Nice insights!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbdb-12c4-11ec-82a8-0242ac130004'::uuid, post_id_10, user_id_4, 'I appreciate your thoughts.', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbdc-12c4-11ec-82a8-0242ac130004'::uuid, post_id_10, user_id_5, 'Well written!', timestamp_later, timestamp_later, false, 0),
 
          -- Komentarze dla post_id_11
-         ('6c84fbdd-12c4-11ec-82a8-0242ac130004'::uuid, post_id_11, user_id_6, 'Under the starlit sky, the village embraced the hush of night. Amelia, with a canvas in hand, captured the moonlit serenity.String lights adorned the marketplace, casting a warm glow on families preparing for festivities. The night unfolded with music, laughter, and the crackling bonfire. Amidst the celebration, the mystical tales of the hidden grove added a touch of enchantment to the village''s timeless charm.', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbde-12c4-11ec-82a8-0242ac130004'::uuid, post_id_11, user_id_7, 'Looking forward to your next one!', timestamp_later, timestamp_later, false),
-         ('6c84fbdf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_11, user_id_8, 'Your content is amazing!', timestamp_later, timestamp_later, false),
+         ('6c84fbdd-12c4-11ec-82a8-0242ac130004'::uuid, post_id_11, user_id_6, 'Under the starlit sky, the village embraced the hush of night. Amelia, with a canvas in hand, captured the moonlit serenity.String lights adorned the marketplace, casting a warm glow on families preparing for festivities. The night unfolded with music, laughter, and the crackling bonfire. Amidst the celebration, the mystical tales of the hidden grove added a touch of enchantment to the village''s timeless charm.', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbde-12c4-11ec-82a8-0242ac130004'::uuid, post_id_11, user_id_7, 'Looking forward to your next one!', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbdf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_11, user_id_8, 'Your content is amazing!', timestamp_later, timestamp_later, false, 0),
 
          -- Kontynuacja uzupełniania komentarzy dla pozostałych postów...
 
          -- Komentarze dla post_id_12
-         ('6c84fbe0-12c4-11ec-82a8-0242ac130004'::uuid, post_id_12, user_id_9, 'Interesting post!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbe1-12c4-11ec-82a8-0242ac130004'::uuid, post_id_12, user_id_10, 'I enjoyed reading this.', timestamp_later, timestamp_later, false),
-         ('6c84fbe2-12c4-11ec-82a8-0242ac130004'::uuid, post_id_12, user_id_1, 'Well articulated.', timestamp_later, timestamp_later, false),
+         ('6c84fbe0-12c4-11ec-82a8-0242ac130004'::uuid, post_id_12, user_id_9, 'Interesting post!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbe1-12c4-11ec-82a8-0242ac130004'::uuid, post_id_12, user_id_10, 'I enjoyed reading this.', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbe2-12c4-11ec-82a8-0242ac130004'::uuid, post_id_12, user_id_1, 'Well articulated.', timestamp_later, timestamp_later, false, 0),
 
          -- Komentarze dla post_id_13
-         ('6c84fbe3-12c4-11ec-82a8-0242ac130004'::uuid, post_id_13, user_id_2, 'Great insights!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbe4-12c4-11ec-82a8-0242ac130004'::uuid, post_id_13, user_id_3, 'I appreciate your perspective.', timestamp_later, timestamp_later, false),
-         ('6c84fbe5-12c4-11ec-82a8-0242ac130004'::uuid, post_id_13, user_id_4, 'Looking forward to more content.', timestamp_later, timestamp_later, false),
+         ('6c84fbe3-12c4-11ec-82a8-0242ac130004'::uuid, post_id_13, user_id_2, 'Great insights!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbe4-12c4-11ec-82a8-0242ac130004'::uuid, post_id_13, user_id_3, 'I appreciate your perspective.', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbe5-12c4-11ec-82a8-0242ac130004'::uuid, post_id_13, user_id_4, 'Looking forward to more content.', timestamp_later, timestamp_later, false, 0),
 
          -- Kontynuacja uzupełniania komentarzy dla pozostałych postów...
 
          -- Komentarze dla post_id_14
-         ('6c84fbe6-12c4-11ec-82a8-0242ac130004'::uuid, post_id_14, user_id_5, 'Impressive post!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbe7-12c4-11ec-82a8-0242ac130004'::uuid, post_id_14, user_id_6, 'Well done!', timestamp_later, timestamp_later, false),
-         ('6c84fbe8-12c4-11ec-82a8-0242ac130004'::uuid, post_id_14, user_id_7, 'Your insights are valuable.', timestamp_later, timestamp_later, false),
+         ('6c84fbe6-12c4-11ec-82a8-0242ac130004'::uuid, post_id_14, user_id_5, 'Impressive post!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbe7-12c4-11ec-82a8-0242ac130004'::uuid, post_id_14, user_id_6, 'Well done!', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbe8-12c4-11ec-82a8-0242ac130004'::uuid, post_id_14, user_id_7, 'Your insights are valuable.', timestamp_later, timestamp_later, false, 0),
 
          -- Komentarze dla post_id_15
-         ('6c84fbe9-12c4-11ec-82a8-0242ac130004'::uuid, post_id_15, user_id_8, 'Great post!', timestamp_earlier, timestamp_earlier, false),
-         ('6c84fbea-12c4-11ec-82a8-0242ac130004'::uuid, post_id_15, user_id_9, 'I love the content!', timestamp_later, timestamp_later, false),
-         ('6c84fbeb-12c4-11ec-82a8-0242ac130004'::uuid, post_id_15, user_id_10, 'Looking forward to more!', timestamp_later, timestamp_later, false);
+         ('6c84fbe9-12c4-11ec-82a8-0242ac130004'::uuid, post_id_15, user_id_8, 'Great post!', timestamp_earlier, timestamp_earlier, false, 0),
+         ('6c84fbea-12c4-11ec-82a8-0242ac130004'::uuid, post_id_15, user_id_9, 'I love the content!', timestamp_later, timestamp_later, false, 0),
+         ('6c84fbeb-12c4-11ec-82a8-0242ac130004'::uuid, post_id_15, user_id_10, 'Looking forward to more!', timestamp_later, timestamp_later, false, 0);
 
         INSERT INTO comment_reaction (reaction_id, comment_id, user_id, type)
         VALUES

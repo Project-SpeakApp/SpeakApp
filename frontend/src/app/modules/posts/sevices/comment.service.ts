@@ -1,8 +1,7 @@
-import {Injectable, signal} from '@angular/core';
-import {BehaviorSubject, finalize, Observable, tap} from "rxjs";
+import {Injectable} from '@angular/core';
+import {finalize, Observable, tap} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AlertService} from "../../../shared/services/alert.service";
-import {CommentGetModel} from "../../../shared/types/posts/comment-get.model";
 import {CommentGetListModel} from "../../../shared/types/posts/comment-get-list.model";
 import {AddComment} from "../../../shared/types/posts/add-comment.model";
 
