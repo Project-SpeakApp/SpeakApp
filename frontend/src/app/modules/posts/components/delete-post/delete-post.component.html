@@ -7,9 +7,10 @@ delete
   [modalId]="'modal_' + postId"
   [title]="'Delete Post'"
   [message]="'Do you really want to delete your post? The post data will be lost forever!'"
-  [isLoading]="isLoading()"
+  [isLoading]="isLoading"
   (confirm)="onFormSubmit('modalPost_' + postId)"
   (cancel)="closeModal('modalPost_' + postId)"
 ></app-delete-modal>
+
 
 

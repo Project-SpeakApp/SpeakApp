@@ -35,6 +35,28 @@ public class CommentService {
     private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
+    public CommentGetDTO updateComment(CommentUpdateDTO commentUpdateDTO, UUID commentId, UUID userId) {
+        Comment commentToUpdate = commentRepository.findById(commentId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + " was not found"));
+
+        UserGetDTO author = userServiceCommunicationClient.getUserById(commentToUpdate.getUserId());
+
+        if (!commentToUpdate.getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
+        }
+
+        commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
+        Comment commentUpdated = commentRepository.save(commentToUpdate);
+        ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(commentUpdated);
+        ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(commentUpdated, userId).orElse(null);
+
+
+        return commentMapper.toGetDTO(commentUpdated,
+                author,
+                reactionsGetDTO,
+                currentUserReactionType);
+    }
+
     public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId,
                                                 String sortBy, Sort.Direction sortDirection){
 
@@ -116,12 +138,6 @@ public class CommentService {
 
         Post postToBeCommented = postService.getPostById(commentCreateDTO.getPostId());
 
-        int lengthOfContent = commentCreateDTO.getContent().length();
-
-        if(lengthOfContent > 500 || lengthOfContent == 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your comment can't be empty and can have maximally 500 characters");
-        }
-
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
         Comment savedComment = commentRepository.save(commentMapper.toEntity(commentCreateDTO.getContent(),
@@ -145,9 +161,10 @@ public class CommentService {
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
-        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost)))
+        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Only author of the post or the comment can delete the comment");
+        }
 
         commentRepository.delete(commentToDelete);
     }

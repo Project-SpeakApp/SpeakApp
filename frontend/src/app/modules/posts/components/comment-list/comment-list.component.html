@@ -7,4 +7,5 @@
   </div>
 </ul>
 <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
-
+<br *ngIf="!isLoading" />
+<app-add-comment (contentAdded)="addComment($event)" [postId]="postId"></app-add-comment>

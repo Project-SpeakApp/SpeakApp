@@ -1,8 +1,6 @@
 package com.speakapp.postservice.repositories;
 
-import com.speakapp.postservice.entities.Comment;
-import com.speakapp.postservice.entities.CommentReaction;
-import com.speakapp.postservice.entities.ReactionType;
+import com.speakapp.postservice.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,6 +16,8 @@ public interface CommentReactionRepository extends JpaRepository<CommentReaction
 
     @Query("SELECT cr.type FROM CommentReaction cr WHERE cr.comment = :comment AND cr.userId = :userId")
     Optional<ReactionType> findTypeByCommentAndUserId(Comment comment, UUID userId);
+
+    CommentReaction findCommentReactionByCommentAndUserId(Comment comment, UUID userId);
 
 
 }

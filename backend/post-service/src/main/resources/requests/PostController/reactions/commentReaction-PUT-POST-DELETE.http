@@ -1,0 +1,28 @@
+### PUT request when commentId doesn't exist
+PUT http://localhost:8080/api/comments/reactions/
+    6c84fbbf-12c4-11ec-82a8-0242ac130012?
+    reactionType=HA_HA
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### PUT request when current user already reacted to the comment
+PUT http://localhost:8080/api/comments/reactions/
+    6c84fbbf-12c4-11ec-82a8-0242ac130004?
+    reactionType=HA_HA
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### PUT request when current user has not already reacted to the comment (we can say it is POST request)
+PUT http://localhost:8080/api/comments/reactions/
+    6c84fbbf-12c4-11ec-82a8-0242ac130004?
+    reactionType=LOVE
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### DELETE request when current user already reacted to the comment
+PUT http://localhost:8080/api/comments/reactions/
+    6c84fbbf-12c4-11ec-82a8-0242ac130004
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### DELETE request when current user has not already reacted to the comment (generally should never happen, but still works)
+PUT http://localhost:8080/api/comments/reactions/
+    6c84fbc2-12c4-11ec-82a8-0242ac130004
+UserId: 6c84fb99-12c4-11ec-82a8-0242ac130003
+
