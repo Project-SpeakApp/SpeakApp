@@ -15,6 +15,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   isLoading = false;
   pageNumber: number = 0;
 
+  totalPages: number = 0;
+
   subscription = new Subscription();
 
   constructor(
@@ -42,6 +44,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   loadPosts() {
+    if(this.totalPages === this.pageNumber && this.pageNumber !== 0) return;
     this.isLoading = true;
     const userId = this.authService.state().userId;
     this.subscription = this.postService.getPosts(userId, this.pageNumber, 10).subscribe({
@@ -50,6 +53,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.posts = [...this.posts, ...response.posts];
         this.pageNumber = response.currentPage + 1;
         this.isLoading = false;
+        this.totalPages = response.totalPages;
       },
       error: (error) => {
         this.isLoading = false;
