@@ -1,0 +1,21 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+    org.springframework.security: DEBUG
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak.server-url}/realms/${keycloak.realm}/protocol/openid-connect/certs
+          issuer-uri: ${keycloak.server-url}/realms/${keycloak.realm}
+keycloak:
+  server-url: http://keycloak-service:8443
+  realm: SpeakApp
+  client-id: admin-cli
+  client-secret: 77P4n9OqHJUujZC5EE9WtIwDxXAn8CXh
