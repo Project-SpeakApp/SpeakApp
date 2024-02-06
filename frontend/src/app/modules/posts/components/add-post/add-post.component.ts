@@ -41,6 +41,9 @@ export class AddPostComponent implements OnInit, OnDestroy {
           this.contentAdded.emit(newPost);
           this.isLoading = false;
           this.myForm.reset();
+        },
+        (error) => {
+          this.isLoading = false;
         }
       );
     } else {

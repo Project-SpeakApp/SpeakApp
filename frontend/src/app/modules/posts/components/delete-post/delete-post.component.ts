@@ -41,7 +41,8 @@ export class DeletePostComponent implements OnDestroy, OnInit{
         this.closeModal(modalId);
         this.isLoading = false;
         this.alertService.showAlert("Post deleted successfully", 'success');
-      }
+      },
+      (error) => {this.isLoading = false;}
     );
   }
 
