@@ -14,6 +14,8 @@ import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom
 import { CommentComponent } from './components/comment/comment.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { LikeButtonComponent } from './components/like-button/like-button.component';
+import { ReactionsDisplayComponent } from './components/reactions-display/reactions-display.component';
 
 
 
@@ -28,6 +30,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     PostBottomBarComponent,
     CommentComponent,
     CommentListComponent,
+    LikeButtonComponent,
+    ReactionsDisplayComponent,
   ],
   imports: [
     CommonModule,

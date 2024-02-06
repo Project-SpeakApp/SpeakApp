@@ -17,7 +17,6 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-post-bottom-bar',
   templateUrl: './post-bottom-bar.component.html',
-  styleUrls: ['./post-bottom-bar.component.css'],
 })
 export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() post: PostGet = {} as PostGet;
@@ -29,7 +28,6 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   subscription: Subscription = new Subscription();
 
   postReactionTypesCount = 0;
-  sortedReactions: [ReactionType, number][] = [];
 
   // musze tak bo nie działają enumy w htmlu
   like = ReactionType.LIKE;
@@ -71,9 +69,6 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.checkIfPostWasEdited();
     this.postReactionTypesCount = this.post.reactions.sumOfReactionsByType.size;
-    this.sortedReactions = [...this.post.reactions.sumOfReactionsByType.entries()]
-      .filter((reaction) => reaction[1] > 0)
-      .sort((a, b) => b[1] - a[1]);
   }
 
   ngOnDestroy(): void {
