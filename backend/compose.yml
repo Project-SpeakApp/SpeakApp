@@ -101,7 +101,7 @@ services:
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=postgres
     volumes:
-      - ./keycloak-service/themes/custom:/opt/keycloak/themes/custom
+      - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
     ports:
       - '8443:8443'

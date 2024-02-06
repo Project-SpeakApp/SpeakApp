@@ -781,7 +781,8 @@
       "protocol": "openid-connect",
       "attributes": {
         "post.logout.redirect.uris": "+",
-        "pkce.code.challenge.method": "S256"
+        "pkce.code.challenge.method": "S256",
+        "login_theme": "keywind"
       },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
