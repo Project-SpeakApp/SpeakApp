@@ -1,8 +1,5 @@
-package com.speakapp.postservice.exception_handler;
+package com.speakapp.springexceptionhandler;
 
-import com.speakapp.postservice.exceptions.AccessDeniedException;
-import com.speakapp.postservice.exceptions.EntityNotFoundException;
-import com.speakapp.postservice.exceptions.ServiceLayerException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,7 @@
 package com.speakapp.postservice.exceptions;
 
 import org.springframework.http.HttpStatus;
+import com.speakapp.springexceptionhandler.ServiceLayerException;
 
 public class AccessDeniedException extends ServiceLayerException {
 

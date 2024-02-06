@@ -1,10 +1,8 @@
 package com.speakapp.postservice.controllers;
 
 import com.speakapp.postservice.entities.ReactionType;
-import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.ReactionService;
 
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

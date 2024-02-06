@@ -5,7 +5,6 @@ import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
 import com.speakapp.postservice.exceptions.AccessDeniedException;
 import com.speakapp.postservice.exceptions.PostNotFoundException;
-import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.mappers.*;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
@@ -13,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 

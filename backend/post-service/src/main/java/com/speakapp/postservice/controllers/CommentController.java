@@ -3,7 +3,6 @@ package com.speakapp.postservice.controllers;
 import com.speakapp.postservice.dtos.CommentCreateDTO;
 import com.speakapp.postservice.dtos.CommentGetDTO;
 import com.speakapp.postservice.dtos.CommentPageGetDTO;
-import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

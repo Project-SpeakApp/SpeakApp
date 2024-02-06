@@ -9,7 +9,6 @@ import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.exceptions.AccessDeniedException;
 import com.speakapp.postservice.exceptions.CommentNotFoundException;
 import com.speakapp.postservice.exceptions.PostNotFoundException;
-import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
@@ -21,9 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 

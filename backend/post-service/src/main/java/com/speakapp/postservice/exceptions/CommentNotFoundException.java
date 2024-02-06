@@ -1,6 +1,5 @@
 package com.speakapp.postservice.exceptions;
 
-
 public class CommentNotFoundException extends EntityNotFoundException {
 
   private static final String DEFAULT_MESSAGE = "Requested comment could not be found!";

@@ -3,8 +3,6 @@ package com.speakapp.postservice.controllers;
 import com.speakapp.postservice.dtos.PostCreateDTO;
 import com.speakapp.postservice.dtos.PostGetDTO;
 import com.speakapp.postservice.dtos.PostPageGetDTO;
-import com.speakapp.postservice.dtos.*;
-import com.speakapp.postservice.exceptions.ServiceLayerException;
 import com.speakapp.postservice.services.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
