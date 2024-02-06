@@ -16,4 +16,6 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     Page<Comment> findAllByPost(Post post, Pageable pageable);
 
     List<Comment> findAllByPostOrderByCreatedAtDesc(Post post);
+
+    Long countAllByPost(Post post);
 }

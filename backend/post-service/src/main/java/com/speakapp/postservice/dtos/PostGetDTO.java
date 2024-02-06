@@ -6,7 +6,6 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -27,4 +26,6 @@ public class PostGetDTO {
     ReactionsGetDTO reactions;
 
     ReactionType currentUserReaction;
+
+    Long totalNumberOfComments;
 }

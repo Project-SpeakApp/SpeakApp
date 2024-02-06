@@ -4,6 +4,7 @@ import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
 import com.speakapp.postservice.mappers.*;
+import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    private final CommentRepository commentRepository;
+
     private final PostReactionRepository postReactionRepository;
 
     private final PostMapper postMapper;
@@ -39,9 +42,11 @@ public class PostService {
 
         ReactionsGetDTO reactionsGetDTO = reactionsMapper.toGetDTO(Collections.emptyMap());
 
+
         return postMapper.toGetDTO(savedPost,
                 author,
                 reactionsGetDTO,
+                null,
                 null
         );
     }
@@ -63,11 +68,13 @@ public class PostService {
 
         ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(postUpdated, userId).orElse(null);
 
+        Long totalNumberOfComments = commentRepository.countAllByPost(postUpdated);
 
         return postMapper.toGetDTO(postUpdated,
                 author,
                 reactionsGetDTO,
-                currentUserReactionType);
+                currentUserReactionType,
+                totalNumberOfComments);
     }
 
     public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId) {
@@ -121,12 +128,14 @@ public class PostService {
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
             ReactionsGetDTO postReactions = getReactionsForThePost(post);
             ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
+            Long totalNumberOfComments = commentRepository.countAllByPost(post);
 
             return postMapper.toGetDTO(
                 post,
                 postAuthor,
                 postReactions,
-                currentUserReactionType
+                currentUserReactionType,
+                totalNumberOfComments
             );
         }).toList();
 

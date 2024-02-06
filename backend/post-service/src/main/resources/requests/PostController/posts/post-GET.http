@@ -1,6 +1,12 @@
 ### GET request from owner of the profile
-GET http://localhost:8080/api/posts/
+GET http://localhost:8080/api/posts/by-user/
     6c84fb95-12c4-11ec-82a8-0242ac130003?
+    pageNumber=0&
+    pageSize=5
+UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
+
+### GET latest posts
+GET http://localhost:8080/api/posts?
     pageNumber=0&
     pageSize=5
 UserId: 6c84fb95-12c4-11ec-82a8-0242ac130003
