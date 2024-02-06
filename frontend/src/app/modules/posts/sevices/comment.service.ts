@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AlertService} from "../../../shared/services/alert.service";
 import {CommentGetListModel} from "../../../shared/types/posts/comment-get-list.model";
 import {AddComment} from "../../../shared/types/posts/add-comment.model";
+import {CommentGetModel} from "../../../shared/types/posts/comment-get.model";
 
 @Injectable({
   providedIn: 'root'
