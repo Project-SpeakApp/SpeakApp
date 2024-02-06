@@ -3,6 +3,7 @@ package com.speakapp.postservice.controllers;
 import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.services.ReactionService;
 
+
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,17 +16,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/posts/reactions")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ReactionController {
 
   private final ReactionService reactionService;
 
-  @PutMapping("/{postId}")
+  @PutMapping("/posts/reactions/{postId}")
   @ResponseStatus(HttpStatus.CREATED)
   public ReactionType createUpdatePostReaction(@RequestParam(required = false) ReactionType reactionType, @PathVariable UUID postId,
-                                               @RequestHeader("UserId") UUID userId) {
+                                               @RequestHeader("UserId") UUID userId){
     return reactionService.createUpdatePostReaction(reactionType, postId, userId);
+  }
+
+  @PutMapping("/comments/reactions/{commentId}")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ReactionType createUpdateCommentReaction(@RequestParam(required = false) ReactionType reactionType, @PathVariable UUID commentId,
+                                               @RequestHeader("UserId") UUID userId){
+    return reactionService.createUpdateCommentReaction(reactionType, commentId, userId);
   }
 
 }

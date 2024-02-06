@@ -1,0 +1,16 @@
+//needs updated, doesn't work now
+
+GET http://localhost:8080/api/comments/by-created-at?postId=6c84fbae-12c4-11ec-82a8-0242ac130003&sort=asc
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
+
+### GET request with getting page different than 0
+GET http://localhost:8080/api/comments/by-created-at?postId=6c84fbad-12c4-11ec-82a8-0242ac130003&sort=desc
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
+
+### GET request with setting pageSize
+GET http://localhost:8080/api/comments/by-reactions?postId=6c84fbad-12c4-11ec-82a8-0242ac130003&sort=asc
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003
+
+### GET request with postId that doesnt exist (ERROR 400)
+GET http://localhost:8080/api/comments/by-reactions?postId=6c84fbad-12c4-11ec-82a8-0242ac130003&sort=desc
+UserId: 6c84fb9b-12c4-11ec-82a8-0242ac130003

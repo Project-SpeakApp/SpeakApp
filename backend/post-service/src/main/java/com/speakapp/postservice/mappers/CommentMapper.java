@@ -1,13 +1,10 @@
 package com.speakapp.postservice.mappers;
 
-import com.speakapp.postservice.dtos.CommentGetDTO;
-import com.speakapp.postservice.dtos.ReactionsGetDTO;
-import com.speakapp.postservice.dtos.UserGetDTO;
+import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.Comment;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.UUID;
 
@@ -24,5 +21,8 @@ public interface CommentMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     Comment toEntity(String content, Post post, UUID userId);
+
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    void updateCommentFromCommentUpdateDTO(CommentUpdateDTO commentUpdateDTO, @MappingTarget Comment comment);
 
 }
