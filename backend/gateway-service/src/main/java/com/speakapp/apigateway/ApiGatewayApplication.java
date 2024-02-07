@@ -22,10 +22,6 @@ public class ApiGatewayApplication {
                         .path("/api/users/**")
                         .uri("http://user-service:8081")
                 )
-                .route("auth-service", r -> r
-                        .path("/api/auth/**")
-                        .uri("http://auth-service:8083")
-                )
                 .build();
     }
 }

@@ -78,17 +78,7 @@ services:
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
-      - net-apiGw-authServ
       - net-keycloak-apiGw
-
-  auth-service:
-    <<: *service
-    build: auth-service
-    ports:
-      - '8083:8083'
-    networks:
-      - net-apiGw-authServ
-      - net-authServ-keycloakServ
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
@@ -130,7 +120,6 @@ services:
       - '5434:5432'
     networks:
       - net-keycloakDB-keycloakServ
-      - net-authServ-keycloakServ
 
 networks:
   net-postDB-postServ:
@@ -139,10 +128,9 @@ networks:
   net-apiGw-userServ:
   net-apiGw-postServ:
   net-keycloakDB-keycloakServ:
-  net-apiGw-authServ:
-  net-authServ-keycloakServ:
   net-keycloak-apiGw:
 
 volumes:
   vol-user-db:
   vol-post-db:
+  
