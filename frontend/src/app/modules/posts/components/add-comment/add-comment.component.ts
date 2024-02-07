@@ -41,7 +41,8 @@ export class AddCommentComponent implements OnDestroy{
             this.contentAdded.emit(newComment);
             this.contentControl.reset();
             this.isLoading = false;
-          }
+          },
+          (error) => {this.isLoading= false}
         );
       }
 
