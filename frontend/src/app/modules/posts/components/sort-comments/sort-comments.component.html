@@ -1,0 +1,10 @@
+<div class="flex justify-between -mt-4 mb-3">
+  <div class="dropdown dropdown-hover">
+    <p tabindex="0">Sort by: {{ sortByTitle }}</p>
+    <ul tabindex="0" class="dropdown-content border-b-black border-solid z-[1] menu p-2 shadow bg-base-300  rounded-box">
+      <li><a (click)="changeParameter('date')">Date</a></li>
+      <li><a (click)="changeParameter('reactions')">Reactions</a></li>
+    </ul>
+  </div>
+  <p (click)="changeOrder()" class="cursor-pointer">{{ sortOrderTitle }}</p>
+</div>

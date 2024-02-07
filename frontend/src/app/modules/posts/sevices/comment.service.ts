@@ -12,9 +12,9 @@ import {CommentGetModel} from "../../../shared/types/posts/comment-get.model";
 export class CommentService {
 
   constructor(private http: HttpClient, private alertService: AlertService) { }
-  getComments(postId: string, userId: string, currentPage: number, pageSize: number): Observable<CommentGetListModel> {
+  getComments(postId: string, userId: string, currentPage: number, pageSize: number, sortBy: string, sortDirection: string): Observable<CommentGetListModel> {
     const headers = new HttpHeaders().set('UserId', userId);
-    let params = new HttpParams().set('postId', postId).set('pageNumber', currentPage).set('pageSize', pageSize);
+    let params = new HttpParams().set('postId', postId).set('pageNumber', currentPage).set('pageSize', pageSize).set('sortBy', sortBy ).set('sortDirection', sortDirection);
     return this.http.get<CommentGetListModel>('http://localhost:8080/api/comments', {headers, params}).pipe(
       finalize( () => {
       }),
