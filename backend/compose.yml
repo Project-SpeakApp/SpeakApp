@@ -79,6 +79,7 @@ services:
       - net-apiGw-userServ
       - net-apiGw-postServ
       - net-apiGw-authServ
+      - net-keycloak-apiGw
 
   auth-service:
     <<: *service
@@ -110,6 +111,7 @@ services:
     networks:
       - net-keycloakDB-keycloakServ
       - net-authServ-keycloakServ
+      - net-keycloak-apiGw
     command:
       - "start-dev"
       - "--http-port=8443"
@@ -139,6 +141,7 @@ networks:
   net-keycloakDB-keycloakServ:
   net-apiGw-authServ:
   net-authServ-keycloakServ:
+  net-keycloak-apiGw:
 
 volumes:
   vol-user-db:
