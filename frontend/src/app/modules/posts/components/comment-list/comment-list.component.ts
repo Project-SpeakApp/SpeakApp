@@ -19,13 +19,21 @@ export class CommentListComponent implements OnInit, OnDestroy{
 
   currentPage: number = 0;
 
+  totalComments: number = 0;
+
+  currentComments: number = 0;
+
   subscription = new Subscription();
 
 
   constructor(private commentService: CommentService, private auth: AuthService) {
   }
 
-
+  handleDeletion(commentToDelete: string) {
+    if (commentToDelete) {
+      this.comments = this.comments.filter((comment) => comment.commentId !== commentToDelete);
+    }
+  }
   getComments(pageSize: number): void {
     this.isLoading = true;
     this.subscription = this.commentService.getComments(this.postId, this.auth.state().userId, this.currentPage, pageSize).subscribe({
@@ -36,7 +44,9 @@ export class CommentListComponent implements OnInit, OnDestroy{
         else this.comments = [...this.comments, ...response.commentGetDTOS];
         if(pageSize != 2) this.currentPage = response.currentPage+1;
         this.numberOfPages = response.totalPages;
+        this.totalComments = response.totalComments;
         this.isLoading = false;
+        this.currentComments  = this.comments.length;
 
       },
       error: (error) => {
@@ -46,6 +56,12 @@ export class CommentListComponent implements OnInit, OnDestroy{
       }
     });
 
+  }
+
+  addComment(newComment?: CommentGetModel): void {
+    if(newComment) {
+      this.comments.unshift(newComment);
+    }
   }
 
   ngOnInit(): void {

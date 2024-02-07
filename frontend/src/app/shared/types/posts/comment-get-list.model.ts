@@ -5,4 +5,5 @@ export interface CommentGetListModel {
   currentPage: number;
   pageSize: number;
   totalPages: number;
+  totalComments: number;
 }

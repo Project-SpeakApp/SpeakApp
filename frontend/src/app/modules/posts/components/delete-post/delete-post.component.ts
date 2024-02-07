@@ -7,7 +7,6 @@ import {AlertService} from "../../../../shared/services/alert.service";
 @Component({
   selector: 'app-delete-post',
   templateUrl: './delete-post.component.html',
-  styleUrls: ['./delete-post.component.css']
 })
 export class DeletePostComponent implements OnDestroy, OnInit{
 
@@ -19,7 +18,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   private addPostSubscription?: Subscription;
 
 
-  isLoading = this.postService.isLoadingDelete;
+  isLoading: boolean = false;
   constructor(private alertService: AlertService, private postService: PostService, private authService: AuthService) {
   }
 
@@ -34,12 +33,15 @@ export class DeletePostComponent implements OnDestroy, OnInit{
 
 
   onFormSubmit(modalId: string): void {
+    this.isLoading = true;
     this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe(
       () => {
         this.deleted.emit(this.postId);
         this.closeModal(modalId);
+        this.isLoading = false;
         this.alertService.showAlert("Post deleted successfully", 'success');
-      }
+      },
+      (error) => {this.isLoading = false;}
     );
   }
 
