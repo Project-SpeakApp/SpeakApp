@@ -12,22 +12,20 @@
 
     <groupId>com.speakapp</groupId>
     <artifactId>keycloak-register-event-listener</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version> <!-- Use the latest version -->
+            <scope>provided</scope> <!-- Lombok is provided at compile-time only -->
+        </dependency>
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
             <scope>provided</scope>
             <version>23.0.6</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-services -->
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-services</artifactId>
@@ -63,14 +61,15 @@
     </dependencies>
 
     <build>
-        <finalName>custom-event-listener</finalName>
+        <finalName>keycloak-register-event-listener</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <release>17</release>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -82,5 +81,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

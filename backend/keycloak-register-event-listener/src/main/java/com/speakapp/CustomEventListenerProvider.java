@@ -1,5 +1,6 @@
 package com.speakapp;
 
+import com.speakapp.dtos.AppUserDTO;
 import org.jboss.logging.Logger;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
@@ -28,34 +29,24 @@ public class CustomEventListenerProvider implements EventListenerProvider {
     @Override
     public void onEvent(Event event) {
 
-        log.debugf("New %s Event", event.getType());
-        log.debugf("onEvent-> %s", toString(event));
-
         if (EventType.REGISTER.equals(event.getType())) {
-
-            event.getDetails().forEach((key, value) -> log.debugf("%s : %s",key, value));
-
             RealmModel realm = this.model.getRealm(event.getRealmId());
             UserModel user = this.session.users().getUserById(realm, event.getUserId());
-            log.debugf("user -> %s", user.toString());
-            //send the user
+            AppUserDTO appUserDTO = AppUserDTO.fromUserModel(user);
+            Client.postService(appUserDTO);
         }
 
     }
 
     @Override
     public void onEvent(AdminEvent adminEvent, boolean b) {
-        log.debug("onEvent(AdminEvent)");
-        log.debugf("Resource path: %s", adminEvent.getResourcePath());
-        log.debugf("Resource type: %s", adminEvent.getResourceType());
-        log.debugf("Operation type: %s", adminEvent.getOperationType());
-        log.debugf("AdminEvent.toString(): %s", toString(adminEvent));
+
         if (ResourceType.USER.equals(adminEvent.getResourceType())
                 && OperationType.CREATE.equals(adminEvent.getOperationType())) {
             RealmModel realm = this.model.getRealm(adminEvent.getRealmId());
             UserModel user = this.session.users().getUserById(realm, adminEvent.getResourcePath().substring(6));
-            log.debugf("user -> %s", user.toString());
-            //send data
+            AppUserDTO appUserDTO = AppUserDTO.fromUserModel(user);
+            Client.postService(appUserDTO);
         }
     }
 
