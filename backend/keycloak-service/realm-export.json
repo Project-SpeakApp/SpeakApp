@@ -1631,7 +1631,8 @@
   "smtpServer": {},
   "eventsEnabled": false,
   "eventsListeners": [
-    "jboss-logging"
+    "jboss-logging",
+    "custom-event-listener"
   ],
   "enabledEventTypes": [],
   "adminEventsEnabled": false,

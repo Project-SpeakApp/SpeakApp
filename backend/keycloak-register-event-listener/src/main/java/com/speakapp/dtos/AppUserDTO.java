@@ -7,12 +7,14 @@ import org.keycloak.models.UserModel;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 @Value
 @Builder
 @Jacksonized
 public class AppUserDTO {
 
+    UUID userId;
     String firstName;
     String lastName;
     String email;
@@ -23,6 +25,7 @@ public class AppUserDTO {
         String date = userModel.getFirstAttribute("dateOfBirth");
 
         return new AppUserDTO(
+                UUID.fromString(userModel.getId()),
                 userModel.getFirstName(),
                 userModel.getLastName(),
                 userModel.getEmail(),
