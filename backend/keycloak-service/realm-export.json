@@ -782,7 +782,7 @@
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
-        "post.logout.redirect.uris": "+",
+        "post.logout.redirect.uris": "http://localhost:4200",
         "pkce.code.challenge.method": "S256",
         "login_theme": "keywind"
       },
