@@ -100,7 +100,6 @@ services:
       - '8443:8443'
     networks:
       - net-keycloakDB-keycloakServ
-      - net-authServ-keycloakServ
       - net-keycloak-apiGw
     command:
       - "start-dev"
@@ -133,4 +132,3 @@ networks:
 volumes:
   vol-user-db:
   vol-post-db:
-  
