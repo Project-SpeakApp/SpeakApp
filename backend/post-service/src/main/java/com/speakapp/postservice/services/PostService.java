@@ -47,7 +47,7 @@ public class PostService {
                 author,
                 reactionsGetDTO,
                 null,
-                null
+                0L
         );
     }
 
