@@ -2,8 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-sort-comments',
-  templateUrl: './sort-comments.component.html',
-  styleUrls: ['./sort-comments.component.css']
+  templateUrl: './sort-comments.component.html'
 })
 export class SortCommentsComponent {
   @Output() sort: EventEmitter<{ sortBy: string; sortOrder: string }> = new EventEmitter<{ sortBy: string; sortOrder: string }>();
@@ -26,5 +25,12 @@ export class SortCommentsComponent {
     else if(parameter === 'date') this.sortByTitle = parameter, this.sortBy = "createdAt";
     else if(parameter === 'reactions') this.sortByTitle = parameter, this.sortBy = "numberOfReactions";
     this.sort.emit({ sortBy: this.sortBy, sortOrder: this.sortOrder });
+  }
+
+  removeFocus() {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    if (dropdownMenu) {
+      dropdownMenu.blur();
+    }
   }
 }
