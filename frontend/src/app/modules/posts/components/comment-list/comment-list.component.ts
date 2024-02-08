@@ -3,8 +3,6 @@ import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
-import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
-import {CommentGetListModel} from "../../../../shared/types/posts/comment-get-list.model";
 
 @Component({
   selector: 'app-comment-list',
