@@ -13,8 +13,7 @@ import java.util.UUID;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
 
-    Page<Comment> findAllByPostOrderByCreatedAtDesc(Post post, Pageable pageable);
+    Page<Comment> findAllByPost(Post post, Pageable pageable);
 
     List<Comment> findAllByPostOrderByCreatedAtDesc(Post post);
-
 }

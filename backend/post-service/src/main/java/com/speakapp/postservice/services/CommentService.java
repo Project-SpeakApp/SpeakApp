@@ -11,12 +11,12 @@ import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
-import com.speakapp.postservice.repositories.PostRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,7 +27,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
     private final CommentRepository commentRepository;
     private final CommentReactionRepository commentReactionRepository;
     private final CommentMapper commentMapper;
@@ -41,15 +41,13 @@ public class CommentService {
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(commentToUpdate.getUserId());
 
-        if (!commentToUpdate.getUserId().equals(userId))
+        if (!commentToUpdate.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
+        }
 
         commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
-
         Comment commentUpdated = commentRepository.save(commentToUpdate);
-
         ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(commentUpdated);
-
         ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(commentUpdated, userId).orElse(null);
 
 
@@ -59,16 +57,12 @@ public class CommentService {
                 currentUserReactionType);
     }
 
-    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId){
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if(postOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with id = " + postId + " was not found");
-        }
+    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId,
+                                                String sortBy, Sort.Direction sortDirection){
 
-        Post post = postOptional.get();
-        Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<Comment> commentsPage = commentRepository.findAllByPostOrderByCreatedAtDesc(post, page);
-
+        Post post = postService.getPostById(postId);
+        Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortBy));
+        Page<Comment> commentsPage = commentRepository.findAllByPost(post, page);
         return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
     }
 
@@ -142,8 +136,7 @@ public class CommentService {
 
     public CommentGetDTO createComment(CommentCreateDTO commentCreateDTO, UUID userId) {
 
-        Post postToBeCommented = postRepository.findById(commentCreateDTO.getPostId()).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + commentCreateDTO.getPostId() + " was not found"));
+        Post postToBeCommented = postService.getPostById(commentCreateDTO.getPostId());
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(userId);
 
@@ -168,9 +161,10 @@ public class CommentService {
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
-        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost)))
+        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Only author of the post or the comment can delete the comment");
+        }
 
         commentRepository.delete(commentToDelete);
     }

@@ -28,11 +28,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
 
   private UpdatePostSubscription?: Subscription;
   model: AddPost;
-
-
-
-  isLoading = this.postService.isLoadingUpdate;
-
+  isLoading: boolean = false;
 
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertService, private postService: PostService, private authService: AuthService) {
@@ -44,10 +40,12 @@ export class EditPostComponent implements OnInit, OnDestroy{
 
   onFormSubmit(): void {
     if (this.myForm.valid && this.initContent !== this.myForm.value.content) {
+      this.isLoading = true;
       this.currentContent = this.myForm.value.content;
       this.model.content = this.currentContent;
       this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model, this.authService.state().userId).subscribe(
-        (updatedPost) => { this.alertService.showAlert('Post updated successfully', 'success'), this.contentUpdated.emit(updatedPost)}
+        (updatedPost) => { this.alertService.showAlert('Post updated successfully', 'success'), this.contentUpdated.emit(updatedPost), this.isLoading = false;},
+        (error) => {this.isLoading =false;}
 
       );
     } else if (this.initContent === this.myForm.value.content) {

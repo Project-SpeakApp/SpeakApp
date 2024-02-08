@@ -1,0 +1,22 @@
+<dialog class="modal" id="{{modalId}}">
+    <div class="modal-box">
+        <h1 class="font-bold text-lg text-center" style="font-size: 22px">{{ title }}</h1>
+        <p class="py-4 text-center text-accent" style="font-size: 16px">{{ message }}</p>
+        <div class="modal-action justify-between">
+            <form method="dialog" class="form1">
+                <button (click)="onCancel()" class="btn">CANCEL</button>
+            </form>
+            <form (ngSubmit)="onConfirm()" class="form2">
+                <button [disabled]="isLoading" class="btn btn-primary">
+                    <span *ngIf="isLoading" class="loading loading-spinner"></span>
+                    <ng-container *ngIf="!isLoading">
+                        DELETE
+                    </ng-container>
+                </button>
+            </form>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop" style="cursor: auto !important;">
+        <a (click)="onCancel()">close</a>
+    </form>
+</dialog>

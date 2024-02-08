@@ -1,0 +1,13 @@
+<div *ngIf="visible" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Delete">
+  <span class="material-symbols-outlined relative -bottom-2" (click)="openModal('modalComment_'+commentId)" >
+    delete
+  </span>
+</div>
+<app-delete-modal
+  [modalId]="'modalComment_' + commentId"
+  [title]="'Delete Comment'"
+  [message]="'Do you really want to delete your comment? The comment data will be lost forever!'"
+  [isLoading]="isLoading"
+  (confirm)="onFormSubmit('modalComment_' + commentId)"
+  (cancel)="closeModal('modalComment_' + commentId)"
+></app-delete-modal>

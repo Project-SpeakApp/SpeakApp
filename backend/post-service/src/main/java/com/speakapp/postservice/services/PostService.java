@@ -137,4 +137,13 @@ public class PostService {
         );
     }
 
+    public Post getPostById(UUID postId) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if(postOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found");
+        }
+
+        return postOptional.get();
+    }
+
 }
