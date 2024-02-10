@@ -1,13 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 
 @Component({
   selector: 'app-reactions-display',
   templateUrl: './reactions-display.component.html'
 })
-export class ReactionsDisplayComponent implements OnInit {
-  @Input() reactions: ReactionsGet = {} as ReactionsGet;
+export class ReactionsDisplayComponent implements OnInit, OnChanges {
+  @Input() sortedReactions: [ReactionType, number][] = [];
+  @Input() sumOfReactions: number = 0;
   @Input() isComment?: boolean = false;
 
   // musze tak bo nie działają enumy w htmlu
@@ -18,11 +18,14 @@ export class ReactionsDisplayComponent implements OnInit {
   sad = ReactionType.SAD;
   wrr = ReactionType.WRR;
 
-  sortedReactions: [ReactionType, number][] = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes) {
+      this.ngOnInit();
+    }
+  }
 
   ngOnInit() {
-    this.sortedReactions = [...this.reactions.sumOfReactionsByType.entries()]
-      .filter((reaction) => reaction[1] > 0)
-      .sort((a, b) => b[1] - a[1]);
+    console.log(this.sortedReactions)
   }
 }

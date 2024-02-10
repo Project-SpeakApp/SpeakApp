@@ -13,6 +13,7 @@ import { DateFormatting } from '../../../../shared/util/DateFormatting';
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 import { ReactionService } from '../../sevices/reaction.service';
 import { Subscription } from 'rxjs';
+import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
 
 @Component({
   selector: 'app-post-bottom-bar',
@@ -26,6 +27,9 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   isVisible: boolean = true;
 
   subscription: Subscription = new Subscription();
+
+  reactions: ReactionsGet = {} as ReactionsGet;
+  sortedReactions: [ReactionType, number][] = [];
 
   postReactionTypesCount = 0;
 
@@ -67,8 +71,17 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+    this.reactions = this.post.reactions;
     this.checkIfPostWasEdited();
     this.postReactionTypesCount = this.post.reactions.sumOfReactionsByType.size;
+    if (this.reactions.sumOfReactionsByType && this.reactions.sumOfReactionsByType.size > 0) {
+      this.sortedReactions = [...this.reactions.sumOfReactionsByType.entries()]
+        .filter((reaction) => reaction[1] > 0)
+        .sort((a, b) => b[1] - a[1]);
+    }
+    else {
+      this.sortedReactions = [];
+    }
   }
 
   ngOnDestroy(): void {
