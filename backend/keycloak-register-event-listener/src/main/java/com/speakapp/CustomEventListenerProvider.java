@@ -1,7 +1,6 @@
 package com.speakapp;
 
 import com.speakapp.dtos.AppUserDTO;
-import org.jboss.logging.Logger;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
@@ -12,8 +11,6 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.RealmProvider;
 import org.keycloak.models.UserModel;
-
-import java.util.Map;
 
 public class CustomEventListenerProvider implements EventListenerProvider {
 
@@ -44,7 +41,7 @@ public class CustomEventListenerProvider implements EventListenerProvider {
                 && OperationType.CREATE.equals(adminEvent.getOperationType())) {
             RealmModel realm = this.model.getRealm(adminEvent.getRealmId());
             UserModel user = this.session.users().getUserById(realm, adminEvent.getResourcePath().substring(6));
-            AppUserDTO appUserDTO = AppUserDTO.fromUserModel(user);
+            AppUserDTO appUserDTO = AppUserDTO.fromAdminUserModel(user);
             Client.postService(appUserDTO);
         }
     }
