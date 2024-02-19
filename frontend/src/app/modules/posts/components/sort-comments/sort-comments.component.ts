@@ -1,22 +1,23 @@
 import {Component, EventEmitter, Output} from '@angular/core';
+import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
 
 @Component({
   selector: 'app-sort-comments',
   templateUrl: './sort-comments.component.html'
 })
 export class SortCommentsComponent {
-  @Output() sort: EventEmitter<{ sortBy: string; sortOrder: string }> = new EventEmitter<{ sortBy: string; sortOrder: string }>();
+  @Output() sort: EventEmitter<{ sortBy: string; sortOrder: SortOrder }> = new EventEmitter<{ sortBy: string; sortOrder: SortOrder }>();
   sortOrderTitle: string = "Descending ⮟";
   sortByTitle: string = "date";
   sortBy: string = "createdAt";
-  sortOrder: string = "DESC";
+  sortOrder: SortOrder = SortOrder.DESC;
 
   changeOrder() : void {
     if(this.sortOrderTitle == "Descending ⮟") {
       this.sortOrderTitle = "Ascending ⮝";
-      this.sortOrder = "ASC";
+      this.sortOrder = SortOrder.ASC;
     }
-    else this.sortOrderTitle = "Descending ⮟", this.sortOrder = "DESC";
+    else this.sortOrderTitle = "Descending ⮟", this.sortOrder = SortOrder.DESC;
     this.sort.emit({ sortBy: this.sortBy, sortOrder: this.sortOrder });
   }
 

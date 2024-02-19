@@ -3,6 +3,7 @@ import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
+import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
 
 @Component({
   selector: 'app-comment-list',
@@ -24,7 +25,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
   subscription = new Subscription();
 
   sortBy: string = "createdAt";
-  sortDirection: string = "DESC";
+  sortDirection: SortOrder = SortOrder.DESC;
 
 
   constructor(private commentService: CommentService, private auth: AuthService) {
@@ -59,8 +60,8 @@ export class CommentListComponent implements OnInit, OnDestroy{
     });
   }
 
-  handleSorting(sortBy: string, sortOrder: string) : void {
-    if(this.totalComments == 0) return;
+  handleSorting(sortBy: string, sortOrder: SortOrder) : void {
+    if(this.totalComments === 0) return;
     this.comments = [];
     this.totalComments = 0;
     this.sortBy = sortBy;
