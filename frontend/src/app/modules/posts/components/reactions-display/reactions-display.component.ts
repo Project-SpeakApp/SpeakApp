@@ -26,6 +26,6 @@ export class ReactionsDisplayComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.sortedReactions)
+    if (this.isComment) console.log(this.sortedReactions);
   }
 }
