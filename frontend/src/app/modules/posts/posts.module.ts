@@ -16,6 +16,11 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import { LikeButtonComponent } from './components/like-button/like-button.component';
 import { ReactionsDisplayComponent } from './components/reactions-display/reactions-display.component';
+import { CommentDeleteComponent } from './components/comment-delete/comment-delete.component';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { SortCommentsComponent } from './components/sort-comments/sort-comments.component';
+
 
 
 
@@ -32,6 +37,10 @@ import { ReactionsDisplayComponent } from './components/reactions-display/reacti
     CommentListComponent,
     LikeButtonComponent,
     ReactionsDisplayComponent,
+    CommentDeleteComponent,
+    DeleteModalComponent,
+    AddCommentComponent,
+    SortCommentsComponent,
   ],
   imports: [
     CommonModule,

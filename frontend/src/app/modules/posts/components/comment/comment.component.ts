@@ -1,4 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, OnDestroy, Output} from '@angular/core';
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {DateFormatting} from "../../../../shared/util/DateFormatting";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
@@ -12,6 +13,8 @@ import {Subscription} from "rxjs";
 })
 export class CommentComponent implements OnInit, OnDestroy{
   @Input() comment: CommentGetModel = {} as CommentGetModel;
+  @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
+
 
   formattedDate: string = '';
   reactions: ReactionsGet = {} as ReactionsGet;
@@ -62,6 +65,13 @@ export class CommentComponent implements OnInit, OnDestroy{
     // rerender component
     this.comment = {...this.comment};
   }
+
+  handleDeletion(commentId?: string): void {
+    if(commentId) {
+      this.deleted.emit(commentId);
+    }
+  }
+
   ngOnInit(): void {
     this.formattedDate = DateFormatting.formatDateTime(this.comment.createdAt);
     this.reactions = this.comment.reactionsGetDTO;

@@ -2,8 +2,8 @@
 <div class="flex">
   <div class="flex flex-row justify-end w-full">
     <span class="material-symbols-outlined cursor-pointer" (click)="closeForm()">close</span>
-    <span *ngIf="!isLoading()" class="material-symbols-outlined cursor-pointer" (click)="onFormSubmit()">done</span>
-    <div *ngIf="isLoading()" class="w-[24px] h-[24px]">
+    <span *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer" (click)="onFormSubmit()">done</span>
+    <div *ngIf="isLoading" class="w-[24px] h-[24px]">
     <span class="loading loading-spinner loading-sm mt-[2px] ml-[2px]"></span>
     </div>
   </div>

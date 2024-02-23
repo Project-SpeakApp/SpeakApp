@@ -1,10 +1,12 @@
+<app-sort-comments (sort)="handleSorting($event.sortBy, $event.sortOrder)"></app-sort-comments>
 <ul class="flex flex-col gap-5">
   <li *ngFor="let comment of comments">
-    <app-comment [comment]="comment"></app-comment>
+    <app-comment (deleted)="handleDeletion($event)" [comment]="comment"></app-comment>
   </li>
-  <div *ngIf="currentPage!==numberOfPages" class="text-center">
-    <p (click)="getComments(10)" class="text-xs cursor-pointer inline-block">Show more comments...</p>
+  <div *ngIf="totalComments !== currentComments" class="text-center">
+    <p (click)="getComments(10, currentPage)" class="text-xs cursor-pointer inline-block">Show more comments...</p>
   </div>
 </ul>
 <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
-
+<br *ngIf="!isLoading" />
+<app-add-comment (contentAdded)="addComment($event)" [postId]="postId"></app-add-comment>
