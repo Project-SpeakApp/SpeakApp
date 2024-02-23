@@ -17,10 +17,48 @@ export class CommentComponent implements OnInit{
   sortedReactions: [ReactionType, number][] = [];
 
   postReactionTypesCount = 0;
+  currentUserReactionType: ReactionType | null = null;
 
+  upsertReaction(reactionType: ReactionType) {
+      this.changeReaction(reactionType === this.comment.currentUserReactionType ? null : reactionType);
+      this.ngOnInit();
+      console.log(this.comment.currentUserReactionType);
+  }
+
+  changeReaction(newReactionType: ReactionType | null): void {
+    const oldReaction = this.comment.currentUserReactionType;
+    this.comment.currentUserReactionType = newReactionType;
+
+    // update reaction type count
+    if (oldReaction !== null) {
+      this.comment.reactionsGetDTO.sumOfReactionsByType.set(
+        oldReaction,
+        this.comment.reactionsGetDTO.sumOfReactionsByType.get(oldReaction)! - 1,
+      );
+    }
+    if (newReactionType !== null) {
+      const currentCount = this.comment.reactionsGetDTO.sumOfReactionsByType.get(newReactionType);
+      if (currentCount) {
+        this.comment.reactionsGetDTO.sumOfReactionsByType.set(newReactionType, currentCount + 1);
+      } else {
+        this.comment.reactionsGetDTO.sumOfReactionsByType.set(newReactionType, 1);
+      }
+    }
+
+    // update overall count
+    if (oldReaction === null && newReactionType !== null) {
+      this.comment.reactionsGetDTO.sumOfReactions++;
+    } else if (oldReaction !== null && newReactionType === null) {
+      this.comment.reactionsGetDTO.sumOfReactions--;
+    }
+
+    // rerender component
+    this.comment = {...this.comment};
+  }
   ngOnInit(): void {
     this.formattedDate = DateFormatting.formatDateTime(this.comment.createdAt);
     this.reactions = this.comment.reactionsGetDTO;
+    this.currentUserReactionType = this.comment.currentUserReactionType;
     this.postReactionTypesCount = this.comment.reactionsGetDTO.sumOfReactionsByType.size;
     if (this.reactions.sumOfReactionsByType && this.reactions.sumOfReactionsByType.size > 0) {
       this.sortedReactions = [...this.reactions.sumOfReactionsByType.entries()]

@@ -8,6 +8,7 @@ import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 })
 export class LikeButtonComponent {
   @Input() currentUserReaction: ReactionType | null = null;
+  @Input() isComment?: boolean = false;
 
   @Output() changeReaction: EventEmitter<ReactionType> = new EventEmitter<ReactionType>();
 
