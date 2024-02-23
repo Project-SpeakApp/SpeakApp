@@ -1,4 +1,3 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Component, EventEmitter, Input, OnInit, OnDestroy, Output} from '@angular/core';
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {DateFormatting} from "../../../../shared/util/DateFormatting";
