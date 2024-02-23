@@ -1,6 +1,14 @@
-<button class="mytooltip w-[calc(470px/3)] py-2 hover:bg-base-200 rounded">
-  <div [ngClass]="{ 'flex flex-row gap-2 justify-center': true, 'text-secondary': currentUserReaction }">
-    <span *ngIf="!currentUserReaction" class="material-symbols-outlined inline">thumb_up</span>
+<button [ngClass]="{
+  'mytooltip hover:bg-base-200 rounded py-1': true,
+  'w-[calc(470px/3)]': !isComment,
+  'text-sm bg-stone-400 px-3': isComment
+ }">
+  <div [ngClass]="{
+  'flex flex-row gap-2 justify-center': true,
+  'text-secondary': currentUserReaction && !isComment,
+  'text-white': currentUserReaction && isComment,
+  }">
+    <span *ngIf="!currentUserReaction" [ngClass]="{'material-symbols-outlined inline': true, 'text-sm': isComment}">thumb_up</span>
     <div *ngIf="currentUserReaction === like" class="flex flex-row gap-2">
       <p>👍</p>
       <p>Like</p>

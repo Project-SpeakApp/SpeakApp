@@ -4,7 +4,6 @@ import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 @Component({
   selector: 'app-like-button',
   templateUrl: './like-button.component.html',
-  styleUrls: ['./like-button.component.css']
 })
 export class LikeButtonComponent {
   @Input() currentUserReaction: ReactionType | null = null;
