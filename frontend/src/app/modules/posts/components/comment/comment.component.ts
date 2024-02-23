@@ -14,17 +14,13 @@ export class CommentComponent implements OnInit, OnDestroy{
   @Input() comment: CommentGetModel = {} as CommentGetModel;
 
   formattedDate: string = '';
-
   reactions: ReactionsGet = {} as ReactionsGet;
   sortedReactions: [ReactionType, number][] = [];
-
   postReactionTypesCount = 0;
   currentUserReactionType: ReactionType | null = null;
-
   subscription = new Subscription();
 
   constructor(private reactionService: ReactionService) {}
-
 
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
@@ -71,6 +67,7 @@ export class CommentComponent implements OnInit, OnDestroy{
     this.reactions = this.comment.reactionsGetDTO;
     this.currentUserReactionType = this.comment.currentUserReactionType;
     this.postReactionTypesCount = this.comment.reactionsGetDTO.sumOfReactionsByType.size;
+
     if (this.reactions.sumOfReactionsByType && this.reactions.sumOfReactionsByType.size > 0) {
       this.sortedReactions = [...this.reactions.sumOfReactionsByType.entries()]
         .filter((reaction) => reaction[1] > 0)
@@ -84,5 +81,4 @@ export class CommentComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

@@ -22,7 +22,6 @@ export class CommentListComponent implements OnInit, OnDestroy{
 
   subscription = new Subscription();
 
-
   constructor(private commentService: CommentService, private auth: AuthService) {
   }
 
