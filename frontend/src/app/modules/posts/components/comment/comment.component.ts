@@ -1,14 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {DateFormatting} from "../../../../shared/util/DateFormatting";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
+import {ReactionService} from "../../sevices/reaction.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
 })
-export class CommentComponent implements OnInit{
+export class CommentComponent implements OnInit, OnDestroy{
   @Input() comment: CommentGetModel = {} as CommentGetModel;
 
   formattedDate: string = '';
@@ -19,10 +21,19 @@ export class CommentComponent implements OnInit{
   postReactionTypesCount = 0;
   currentUserReactionType: ReactionType | null = null;
 
+  subscription = new Subscription();
+
+  constructor(private reactionService: ReactionService) {}
+
+
   upsertReaction(reactionType: ReactionType) {
-      this.changeReaction(reactionType === this.comment.currentUserReactionType ? null : reactionType);
-      this.ngOnInit();
-      console.log(this.comment.currentUserReactionType);
+    if (this.reactionService.isLoading()) return;
+    this.subscription = this.reactionService
+      .upsertReaction(this.comment.commentId, reactionType, this.comment.currentUserReactionType, 'comment')
+      .subscribe(() => {
+        this.changeReaction(reactionType === this.comment.currentUserReactionType ? null : reactionType)
+        this.ngOnInit();
+      });
   }
 
   changeReaction(newReactionType: ReactionType | null): void {
@@ -68,6 +79,10 @@ export class CommentComponent implements OnInit{
     else {
       this.sortedReactions = [];
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

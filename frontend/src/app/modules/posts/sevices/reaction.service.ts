@@ -17,10 +17,11 @@ export class ReactionService {
 
   isLoading = signal(false);
 
-  public upsertReactionToPost(
-    postId: string,
+  public upsertReaction(
+    contentId: string,
     reactionType: ReactionType,
     currentReactionType: ReactionType | null,
+    contentType: string = 'post'
   ) {
     this.isLoading.set(true);
 
@@ -28,7 +29,7 @@ export class ReactionService {
     const headers = new HttpHeaders().set('UserId',this.authService.state().userId,);
     return this.http
       .put<ReactionType | null>(
-        `http://localhost:8080/api/posts/reactions/${postId}?${
+        `http://localhost:8080/api/${contentType}s/reactions/${contentId}?${
           reactionToSend ? 'reactionType=' + reactionToSend : ''
         }`,
         {},

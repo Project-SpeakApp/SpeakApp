@@ -60,7 +60,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
     this.subscription = this.reactionService
-      .upsertReactionToPost(this.post.postId, reactionType, this.post.currentUserReaction)
+      .upsertReaction(this.post.postId, reactionType, this.post.currentUserReaction)
       .subscribe(() => this.updateReaction(reactionType));
   }
 
