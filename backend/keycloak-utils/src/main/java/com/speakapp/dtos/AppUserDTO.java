@@ -32,4 +32,15 @@ public class AppUserDTO {
                 LocalDate.parse(date)
         );
     }
+
+    public static AppUserDTO fromAdminUserModel(UserModel userModel) {
+
+        return new AppUserDTO(
+                UUID.fromString(userModel.getId()),
+                userModel.getFirstName(),
+                userModel.getLastName(),
+                userModel.getEmail(),
+                LocalDate.now().minusYears(20L)
+        );
+    }
 }

@@ -41,7 +41,7 @@ public class RegisterEventListenerProvider implements EventListenerProvider {
                 && OperationType.CREATE.equals(adminEvent.getOperationType())) {
             RealmModel realm = this.model.getRealm(adminEvent.getRealmId());
             UserModel user = this.session.users().getUserById(realm, adminEvent.getResourcePath().substring(6));
-            AppUserDTO appUserDTO = AppUserDTO.fromUserModel(user);
+            AppUserDTO appUserDTO = AppUserDTO.fromAdminUserModel(user);
             Client.postService(appUserDTO);
         }
     }
