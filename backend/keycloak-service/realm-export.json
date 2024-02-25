@@ -3,7 +3,7 @@
   "realm": "SpeakApp",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
-  "revokeRefreshToken": false,
+  "revokeRefreshToken": true,
   "refreshTokenMaxReuse": 0,
   "accessTokenLifespan": 300,
   "accessTokenLifespanForImplicitFlow": 900,
@@ -43,6 +43,7 @@
   "quickLoginCheckMilliSeconds": 1000,
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
+  "passwordPolicy": "length(8) and specialChars(1) and lowerCase(1) and upperCase(1) and digits(1) and maxLength(64) and hashAlgorithm(pbkdf2-sha256) and hashIterations(600000) and passwordHistory(3)",
   "users": [
     {
       "id": "6c84fb95-12c4-11ec-82a8-0242ac130003",
@@ -58,7 +59,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -79,7 +80,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -100,7 +101,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -121,7 +122,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -142,7 +143,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -163,7 +164,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -184,7 +185,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -205,7 +206,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -226,7 +227,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -247,7 +248,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "password"
+          "value": "Password1!"
         }
       ],
       "realmRoles": [
@@ -1695,6 +1696,18 @@
   "identityProviders": [],
   "identityProviderMappers": [],
   "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "id": "68322864-211d-4cf7-9a19-46291aac58fd",
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"dateOfBirth\",\"displayName\":\"Date of birth\",\"validations\":{\"date-of-birth-attribute\":{}},\"annotations\":{\"inputType\":\"html5-date\"},\"permissions\":{\"edit\":[\"admin\",\"user\"],\"view\":[\"user\"]},\"required\":{\"roles\":[\"user\"]},\"group\":null}],\"groups\":[]}"
+          ]
+        }
+      }
+    ],
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
       {
         "id": "da8ed9ef-a8d7-4aee-8410-bb1336a16b67",
@@ -2476,6 +2489,7 @@
   "clientAuthenticationFlow": "clients",
   "dockerAuthenticationFlow": "docker auth",
   "attributes": {
+    "userProfileEnabled": "true",
     "cibaBackchannelTokenDeliveryMode": "poll",
     "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",

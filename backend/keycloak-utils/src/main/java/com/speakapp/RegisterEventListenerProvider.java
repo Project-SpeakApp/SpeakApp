@@ -1,7 +1,6 @@
 package com.speakapp;
 
 import com.speakapp.dtos.AppUserDTO;
-import org.jboss.logging.Logger;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
@@ -13,14 +12,12 @@ import org.keycloak.models.RealmModel;
 import org.keycloak.models.RealmProvider;
 import org.keycloak.models.UserModel;
 
-import java.util.Map;
-
-public class CustomEventListenerProvider implements EventListenerProvider {
+public class RegisterEventListenerProvider implements EventListenerProvider {
 
     private final KeycloakSession session;
     private final RealmProvider model;
 
-    public CustomEventListenerProvider(KeycloakSession session) {
+    public RegisterEventListenerProvider(KeycloakSession session) {
         this.session = session;
         this.model = session.realms();
     }

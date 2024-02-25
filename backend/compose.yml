@@ -94,7 +94,7 @@ services:
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
-      - ./keycloak-register-event-listener/target/keycloak-register-event-listener.jar:/opt/keycloak/providers/keycloak-register-event-listener.jar
+      - ./keycloak-utils/jar/keycloak-utils.jar:/opt/keycloak/providers/keycloak-utils.jar
     ports:
       - '8443:8443'
     networks:
@@ -104,6 +104,7 @@ services:
       - "start-dev"
       - "--http-port=8443"
       - "--import-realm"
+      - "--features=declarative-user-profile"
     depends_on:
       keycloak-db:
         condition: service_healthy
