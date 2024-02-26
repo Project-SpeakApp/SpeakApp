@@ -1,6 +1,5 @@
 package com.speakapp.postservice.exceptions;
 
-import com.speakapp.springexceptionhandler.ServiceLayerException;
 import org.springframework.http.HttpStatus;
 
 public class EntityNotFoundException extends ServiceLayerException {

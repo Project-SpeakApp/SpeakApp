@@ -1,4 +1,4 @@
-package com.speakapp.springexceptionhandler;
+package com.speakapp.postservice.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,5 +9,4 @@ import org.springframework.http.HttpStatus;
 public class ServiceLayerException extends RuntimeException {
   private final String message;
   private final HttpStatus httpStatus;
-
 }

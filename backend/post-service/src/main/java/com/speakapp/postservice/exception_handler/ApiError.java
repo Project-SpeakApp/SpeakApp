@@ -1,4 +1,4 @@
-package com.speakapp.springexceptionhandler;
+package com.speakapp.postservice.exception_handler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
@@ -21,5 +21,6 @@ public class ApiError {
     this.exceptionClassName = ex.getClass().getName();
     this.errorMessages = errorMessages;
   }
+
 
 }
