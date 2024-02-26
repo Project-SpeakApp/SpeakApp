@@ -32,7 +32,6 @@ export class CommentListComponent implements OnInit, OnDestroy{
   }
 
   private parseComments(comments: CommentGetModel[]) {
-    // i have suicide thoughts at this point
     comments.forEach((comment) => {
       const keys = Object.keys(comment.reactionsGetDTO.sumOfReactionsByType);
       const value = Object.values(comment.reactionsGetDTO.sumOfReactionsByType);
@@ -56,7 +55,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
       this.currentComments--;
     }
   }
-  
+
   getComments(pageSize: number, pageNumber: number): void {
     this.isLoading = true;
     this.subscription = this.commentService.getComments(this.postId, this.auth.state().userId, pageNumber, pageSize, this.sortBy, this.sortDirection).subscribe({

@@ -20,7 +20,7 @@
 </div>
 <div class="absolute flex flex-row justify-between w-[470px] -mt-3 px-4">
   <app-like-button [isComment]="true" [currentUserReaction]="comment.currentUserReactionType" (changeReaction)="upsertReaction($event)"></app-like-button>
-  <div class="rounded px-2 bg-stone-400">
+  <div class="rounded-full px-2 bg-stone-400">
     <app-reactions-display [sortedReactions]="sortedReactions" [sumOfReactions]="comment.reactionsGetDTO.sumOfReactions" [isComment]="true"></app-reactions-display>
   </div>
 </div>
