@@ -1,6 +1,6 @@
 package com.speakapp.userservice.exception_handler;
 
-import com.speakapp.springexceptionhandler.ServiceLayerException;
+import com.speakapp.userservice.exceptions.ServiceLayerException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
