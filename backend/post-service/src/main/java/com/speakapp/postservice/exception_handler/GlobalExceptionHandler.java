@@ -4,7 +4,6 @@ import com.speakapp.postservice.exceptions.ServiceLayerException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
