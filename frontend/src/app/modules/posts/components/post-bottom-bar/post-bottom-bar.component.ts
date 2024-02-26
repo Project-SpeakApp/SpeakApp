@@ -13,11 +13,11 @@ import { DateFormatting } from '../../../../shared/util/DateFormatting';
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 import { ReactionService } from '../../sevices/reaction.service';
 import { Subscription } from 'rxjs';
+import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
 
 @Component({
   selector: 'app-post-bottom-bar',
   templateUrl: './post-bottom-bar.component.html',
-  styleUrls: ['./post-bottom-bar.component.css'],
 })
 export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() post: PostGet = {} as PostGet;
@@ -28,8 +28,10 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
 
   subscription: Subscription = new Subscription();
 
-  postReactionTypesCount = 0;
+  reactions: ReactionsGet = {} as ReactionsGet;
   sortedReactions: [ReactionType, number][] = [];
+
+  postReactionTypesCount = 0;
 
   // musze tak bo nie działają enumy w htmlu
   like = ReactionType.LIKE;
@@ -58,7 +60,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
     this.subscription = this.reactionService
-      .upsertReactionToPost(this.post.postId, reactionType, this.post.currentUserReaction)
+      .upsertReaction(this.post.postId, reactionType, this.post.currentUserReaction)
       .subscribe(() => this.updateReaction(reactionType));
   }
 
@@ -69,11 +71,17 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+    this.reactions = this.post.reactions;
     this.checkIfPostWasEdited();
     this.postReactionTypesCount = this.post.reactions.sumOfReactionsByType.size;
-    this.sortedReactions = [...this.post.reactions.sumOfReactionsByType.entries()]
-      .filter((reaction) => reaction[1] > 0)
-      .sort((a, b) => b[1] - a[1]);
+    if (this.reactions.sumOfReactionsByType && this.reactions.sumOfReactionsByType.size > 0) {
+      this.sortedReactions = [...this.reactions.sumOfReactionsByType.entries()]
+        .filter((reaction) => reaction[1] > 0)
+        .sort((a, b) => b[1] - a[1]);
+    }
+    else {
+      this.sortedReactions = [];
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-<div class="card bg-[#EBEBEB] py-2 px-2 w-[470px]  bg-base-100 shadow-xl " >
+<div class="card py-2 px-2 w-[470px] bg-base-100 shadow-xl " >
   <div class="flex items-center">
     <div class="w-1/8">
       <div class="avatar m-1">
@@ -7,14 +7,20 @@
         </div>
       </div>
     </div>
-    <div style="padding-left:2px; margin-top: -8px ">
+    <div class="pl-[2px] -mt-[8px]">
       <h2 class="text-sm font-semibold">{{comment.author.fullName}}</h2>
-      <p style="font-size:12px" class="italic">{{formattedDate}}</p>
+      <p class="italic text-[12px]">{{formattedDate}}</p>
     </div>
     <div class="ml-auto">
       <app-comment-delete (deleted)="handleDeletion($event)" [commentId]="comment.commentId" [authorId]="comment.author.userId"></app-comment-delete>
     </div>
   </div>
-  <p class="m-[1px] pl-1 text-sm">{{comment.content}}</p>
+  <p class="m-[1px] mb-2 pl-1 text-sm">{{comment.content}}</p>
 
+</div>
+<div class="absolute flex flex-row justify-between w-[470px] -mt-3 px-4">
+  <app-like-button [isComment]="true" [currentUserReaction]="comment.currentUserReactionType" (changeReaction)="upsertReaction($event)"></app-like-button>
+  <div class="rounded-full px-2 bg-stone-400">
+    <app-reactions-display [sortedReactions]="sortedReactions" [sumOfReactions]="comment.reactionsGetDTO.sumOfReactions" [isComment]="true"></app-reactions-display>
+  </div>
 </div>

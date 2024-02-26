@@ -1,0 +1,51 @@
+<div class="flex flex-row gap-2 pl-1 pr-2">
+  <div [ngClass]="{'text-xl': !isComment}">
+    <div class="mytooltip my-auto">
+      <p *ngIf="sortedReactions.length === 0" class="">👍</p>
+      <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === like" class="">👍</p>
+      <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === love" class="">❤️</p>
+      <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === haha" class="">🤣</p>
+      <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === wow" class="">😮</p>
+      <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === sad" class="">😭</p>
+      <p *ngIf="sortedReactions.length > 0 && sortedReactions[0][0] === wrr" class="">😡</p>
+      <span *ngIf="sortedReactions.length > 0" [ngClass]="{
+          'tooltiptext text-[14px] w-[25px] bg-neutral text-white': true,
+           'w-[35px]': sortedReactions[0][1] > 9,
+           'w-[45px]': sortedReactions[0][1] > 99,
+           'w-[55px]': sortedReactions[0][1] > 999,
+           }"
+      >{{ sortedReactions[0][1] }}</span>
+    </div>
+    <div *ngIf="sortedReactions.length > 1" class="mytooltip" data-tip="136">
+      <p *ngIf="sortedReactions[1][0] === like" class="-ml-2">👍</p>
+      <p *ngIf="sortedReactions[1][0] === love" class="-ml-2">❤️</p>
+      <p *ngIf="sortedReactions[1][0] === haha" class="-ml-2">🤣</p>
+      <p *ngIf="sortedReactions[1][0] === wow" class="-ml-2">😮</p>
+      <p *ngIf="sortedReactions[1][0] === sad" class="-ml-2">😭</p>
+      <p *ngIf="sortedReactions[1][0] === wrr" class="-ml-2">😡</p>
+      <span *ngIf="sortedReactions.length > 1" [ngClass]="{
+          'tooltiptext text-[14px] w-[25px] bg-neutral text-white -ml-2': true,
+           'w-[35px]': sortedReactions[1][1] > 9,
+           'w-[45px]': sortedReactions[1][1] > 99,
+           'w-[55px]': sortedReactions[1][1] > 999,
+           }"
+      >{{ sortedReactions[1][1] }}</span>
+    </div>
+    <div *ngIf="sortedReactions.length > 2" class="mytooltip" data-tip="1">
+      <p *ngIf="sortedReactions[2][0] === like" class="-ml-2">👍</p>
+      <p *ngIf="sortedReactions[2][0] === love" class="-ml-2">❤️</p>
+      <p *ngIf="sortedReactions[2][0] === haha" class="-ml-2">🤣</p>
+      <p *ngIf="sortedReactions[2][0] === wow" class="-ml-2">😮</p>
+      <p *ngIf="sortedReactions[2][0] === sad" class="-ml-2">😭</p>
+      <p *ngIf="sortedReactions[2][0] === wrr" class="-ml-2">😡</p>
+      <span *ngIf="sortedReactions.length > 2" [ngClass]="{
+          'tooltiptext text-[14px] w-[25px] bg-neutral text-white -ml-2': true,
+           'w-[35px]': sortedReactions[2][1] > 9,
+           'w-[45px]': sortedReactions[2][1] > 99,
+           'w-[55px]': sortedReactions[2][1] > 999,
+           }"
+      >{{ sortedReactions[2][1] }}</span>
+    </div>
+  </div>
+  <p class="text-lg font-semibold">{{ sumOfReactions }}</p>
+</div>

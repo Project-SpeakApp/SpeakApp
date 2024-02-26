@@ -14,10 +14,13 @@ import { PostBottomBarComponent } from './components/post-bottom-bar/post-bottom
 import { CommentComponent } from './components/comment/comment.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { LikeButtonComponent } from './components/like-button/like-button.component';
+import { ReactionsDisplayComponent } from './components/reactions-display/reactions-display.component';
 import { CommentDeleteComponent } from './components/comment-delete/comment-delete.component';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { SortCommentsComponent } from './components/sort-comments/sort-comments.component';
+
 
 
 
@@ -32,6 +35,8 @@ import { SortCommentsComponent } from './components/sort-comments/sort-comments.
     PostBottomBarComponent,
     CommentComponent,
     CommentListComponent,
+    LikeButtonComponent,
+    ReactionsDisplayComponent,
     CommentDeleteComponent,
     DeleteModalComponent,
     AddCommentComponent,

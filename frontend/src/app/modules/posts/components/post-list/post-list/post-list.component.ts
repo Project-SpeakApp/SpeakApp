@@ -29,7 +29,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   private parsePosts(posts: PostGet[]) {
-    // i have suicide thoughts and this point
     posts.forEach((post) => {
       const keys = Object.keys(post.reactions.sumOfReactionsByType);
       const value = Object.values(post.reactions.sumOfReactionsByType);

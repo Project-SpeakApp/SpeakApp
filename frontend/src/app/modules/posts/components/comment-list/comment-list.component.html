@@ -1,5 +1,5 @@
 <app-sort-comments (sort)="handleSorting($event.sortBy, $event.sortOrder)"></app-sort-comments>
-<ul class="flex flex-col gap-4">
+<ul class="flex flex-col gap-5">
   <li *ngFor="let comment of comments">
     <app-comment (deleted)="handleDeletion($event)" [comment]="comment"></app-comment>
   </li>

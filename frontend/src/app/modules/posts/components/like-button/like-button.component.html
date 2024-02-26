@@ -1,0 +1,64 @@
+<button [ngClass]="{
+  'mytooltip hover:bg-base-200 py-1': true,
+  'w-[calc(470px/3)] rounded': !isComment,
+  'text-sm bg-stone-400 px-3 rounded-full': isComment
+ }">
+  <div [ngClass]="{
+  'flex flex-row gap-2 justify-center': true,
+  'text-secondary': currentUserReaction && !isComment,
+  'text-white': currentUserReaction && isComment,
+  }">
+    <span *ngIf="!currentUserReaction" [ngClass]="{'material-symbols-outlined inline': true, 'text-sm': isComment}">thumb_up</span>
+    <div *ngIf="currentUserReaction === like" class="flex flex-row gap-2">
+      <p>👍</p>
+      <p>Like</p>
+    </div>
+    <div *ngIf="currentUserReaction === love" class="flex flex-row gap-2">
+      <p>❤️</p>
+      <p>Love</p>
+    </div>
+    <div *ngIf="currentUserReaction === haha" class="flex flex-row gap-2">
+      <p>🤣</p>
+      <p>Haha</p>
+    </div>
+    <div *ngIf="currentUserReaction === wow" class="flex flex-row gap-2">
+      <p>😮</p>
+      <p>Wow</p>
+    </div>
+    <div *ngIf="currentUserReaction === sad" class="flex flex-row gap-2">
+      <p>😭</p>
+      <p>Sad</p>
+    </div>
+    <div *ngIf="currentUserReaction === wrr" class="flex flex-row gap-2">
+      <p>😡</p>
+      <p>Wrr</p>
+    </div>
+    <p *ngIf="!currentUserReaction">Like</p>
+  </div>
+  <span class="tooltiptext bg-base-300 border-black border-2 flex flex-row text-xl">
+      <div class="flex flex-col gap-1" (click)="changeReaction.emit(like)">
+        <span class="p-1 h-9 transition hover:bg-base-100 rounded">👍</span>
+        <span *ngIf="currentUserReaction === like" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+      <div class="flex flex-col gap-1" (click)="changeReaction.emit(love)">
+        <span class="p-1 h-9 transition hover:bg-base-100 rounded">❤️</span>
+        <span *ngIf="currentUserReaction === love" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+      <div class="flex flex-col gap-1" (click)="changeReaction.emit(haha)">
+        <span class="p-1 h-9 transition hover:bg-base-100 rounded">🤣</span>
+        <span *ngIf="currentUserReaction === haha" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+      <div class="flex flex-col gap-1" (click)="changeReaction.emit(wow)">
+        <span class="p-1 h-9 transition hover:bg-base-100 rounded">😮</span>
+        <span *ngIf="currentUserReaction === wow" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+      <div class="flex flex-col gap-1" (click)="changeReaction.emit(sad)">
+        <span class="p-1 h-9 transition hover:bg-base-100 rounded">😭</span>
+        <span *ngIf="currentUserReaction === sad" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+      <div class="flex flex-col gap-1" (click)="changeReaction.emit(wrr)">
+        <span class="p-1 h-9 transition hover:bg-base-100 rounded">😡</span>
+        <span *ngIf="currentUserReaction === wrr" class="w-1 h-1 rounded-full bg-sky-500 mx-auto"></span>
+      </div>
+    </span>
+</button>
