@@ -89,7 +89,7 @@ public class PostService {
     public void deletePost(UUID userId, UUID postId) {
 
         Post postToDelete = postRepository.findById(postId).orElseThrow(()->
-                new PostNotFoundException("Post with id = " + postId + "has not been found"));
+                new PostNotFoundException("Post with id = " + postId + " has not been found"));
 
 
         if(!userId.equals(postToDelete.getUserId()))
@@ -142,7 +142,7 @@ public class PostService {
     public Post getPostById(UUID postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
         if(postOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found");
+            throw new PostNotFoundException("Post with id = " + postId + " was not found");
         }
 
         return postOptional.get();
