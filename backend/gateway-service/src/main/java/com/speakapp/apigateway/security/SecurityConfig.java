@@ -25,6 +25,8 @@ public class SecurityConfig {
         return serverHttpSecurity
                 .authorizeExchange(authorizeExchangeSpec ->
                         authorizeExchangeSpec
+                                .pathMatchers("/api/internal/**")
+                                .denyAll()
                                 .anyExchange()
                                 .authenticated()
                 )
