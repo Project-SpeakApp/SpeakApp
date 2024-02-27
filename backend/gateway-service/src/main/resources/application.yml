@@ -4,50 +4,21 @@ logging:
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
     org.springframework.cloud.gateway: TRACE
 
+app:
+  cors:
+    allowed-origins: http://localhost:4200
+  jwt:
+    keycloak: http://keycloak:8443
+    realm: users-realm
+    issuer-uri: http://localhost:8443/realms/${app.jwt.realm}
+    resource-client-id: frontend-web
+
 spring:
-  cloud:
-    gateway:
-      globalcors:
-        corsConfigurations:
-          '[/api/users/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "UserId"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            maxAge: 3600
-          '[/api/posts/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "UserId"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            maxAge: 3600
-          '[/api/comments/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "UserId"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            maxAge: 3600
+  main:
+    web-application-type: reactive
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: ${app.jwt.issuer-uri}
+          jwk-set-uri: ${app.jwt.keycloak}/realms/${app.jwt.realm}/protocol/openid-connect/certs
