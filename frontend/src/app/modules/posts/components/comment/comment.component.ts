@@ -5,6 +5,7 @@ import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
 import {ReactionService} from "../../sevices/reaction.service";
 import {Subscription} from "rxjs";
+import {AuthService} from "../../../../shared/services/auth.service";
 
 @Component({
   selector: 'app-comment',
@@ -21,8 +22,10 @@ export class CommentComponent implements OnInit, OnDestroy{
   postReactionTypesCount = 0;
   currentUserReactionType: ReactionType | null = null;
   subscription = new Subscription();
+  isEdited: boolean = false;
+  userId: string = '';
 
-  constructor(private reactionService: ReactionService) {}
+  constructor(private reactionService: ReactionService, private authService: AuthService) {}
 
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
@@ -71,6 +74,17 @@ export class CommentComponent implements OnInit, OnDestroy{
     }
   }
 
+  enableEditing(): void {
+    this.isEdited = !this.isEdited;
+  }
+
+  updateComment(updatedComment?: CommentGetModel) : void {
+    this.isEdited = false;
+    if(updatedComment) {
+      this.comment = updatedComment;
+    }
+  }
+
   ngOnInit(): void {
     this.formattedDate = DateFormatting.formatDateTime(this.comment.createdAt);
     this.reactions = this.comment.reactionsGetDTO;
@@ -85,6 +99,8 @@ export class CommentComponent implements OnInit, OnDestroy{
     else {
       this.sortedReactions = [];
     }
+    this.userId = this.authService.state().userId;
+
   }
 
   ngOnDestroy(): void {

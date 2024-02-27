@@ -26,8 +26,7 @@ export class PostComponent implements OnChanges, OnInit{
 
 
   enableEditing(): void {
-    if(this.isEdited) this.isEdited = false;
-    else this.isEdited = true;
+    this.isEdited = !this.isEdited;
   }
 
   updateContent(updatedPost?: PostGet): void {

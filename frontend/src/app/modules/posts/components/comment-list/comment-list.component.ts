@@ -59,7 +59,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
     }
   }
 
-  getComments(pageSize: number, pageNumber: number): void {
+  getComments(pageSize: number, pageNumber: number, sort: boolean): void {
     this.isLoading = true;
     this.subscription = this.commentService.getComments(this.postId, this.auth.state().userId, pageNumber, pageSize, this.sortBy, this.sortDirection).subscribe({
       next: (response) => {
@@ -67,7 +67,8 @@ export class CommentListComponent implements OnInit, OnDestroy{
           this.comments = response.commentGetDTOS;
         }
         else this.comments = [...this.comments, ...response.commentGetDTOS];
-        if(pageSize != 2) this.currentPage = response.currentPage+1;
+        if(pageSize != 2 && !sort) this.currentPage = response.currentPage+1;
+        else if(pageSize != 2 && sort) this.currentPage = this.comments.length / pageSize;
         this.numberOfPages = response.totalPages;
         this.parseComments(this.comments);
         this.totalComments = response.totalComments;
@@ -87,7 +88,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
     this.totalComments = 0;
     this.sortBy = sortBy;
     this.sortDirection = sortOrder;
-    this.getComments(this.currentComments, 0);
+    this.getComments(this.currentComments, 0, true);
   }
 
   addComment(newComment?: CommentGetModel): void {
@@ -100,7 +101,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.getComments(2, 0);
+    this.getComments(2, 0, false);
   }
 
   ngOnDestroy(): void {
