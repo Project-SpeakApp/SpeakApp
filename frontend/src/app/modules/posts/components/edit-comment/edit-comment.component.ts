@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PostGet} from "../../../../shared/types/posts/post-get.model";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../../shared/services/alert.service";
-import {PostService} from "../../sevices/post.service";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {UpdateCommentModel} from "../../../../shared/types/posts/update-comment.model";
 import {Subscription} from "rxjs";

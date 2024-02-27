@@ -4,8 +4,6 @@ import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
-import {CommentGetListModel} from "../../../../shared/types/posts/comment-get-list.model";
-import {PostGet} from "../../../../shared/types/posts/post-get.model";
 import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
 
 
