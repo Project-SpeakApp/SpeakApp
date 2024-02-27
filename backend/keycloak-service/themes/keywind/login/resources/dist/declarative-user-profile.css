@@ -1,0 +1,54 @@
+.pf-c-form-control {
+    display: block;
+    background-color: rgb(232, 240, 254);
+    margin-top: 0.25rem; /* Adjust as needed */
+    border-radius: 0.375rem; /* Adjust as needed */
+    border-color: rgb(229 231 235);
+    width: 100%;
+    outline: 0;
+}
+
+.pf-c-form-control:focus {
+    background-color: rgb(232, 240, 254);
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Adjust color and size as needed */
+}
+
+@media (min-width: 640px) {
+    .pf-c-form-control {
+        font-size: 0.875rem; /* Adjust as needed */
+    }
+}
+
+#kc-form-buttons > .pf-c-button {
+    background-color: #2563eb; /* Adjust to match your primary color */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    position: relative;
+    border-radius: 0.5rem; /* Adjust as needed */
+    width: 100%;
+    outline: none;
+}
+
+.pf-c-button:hover {
+    background-color: #4338ca; /* Darker shade of primary color on hover */
+}
+
+.pf-c-button:focus {
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5), 0 0 0 4px rgba(79, 70, 229, 0.6); /* Adjust to match your primary color */
+}
+
+#kc-form-options {
+    padding: 10;
+}
+
+#kc-form-options a {
+    color: rgb(37 99 235); /* Adjust to match your primary color */
+}
+
+.pf-m-error {
+    color: rgb(220 38 38);
+}

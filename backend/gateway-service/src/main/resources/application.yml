@@ -12,6 +12,7 @@ spring:
           '[/api/users/**]':
             allowedOrigins:
               - "http://localhost:4200"
+              - "http://keycloak-service:8443"
             allowedHeaders:
               - "Authorization"
               - "Content-Type"

@@ -6,7 +6,7 @@ import org.mapstruct.*;
 
 @Mapper
 public interface AppUserMapper {
-    @Mapping(target = "userId", ignore = true)
+
     @Mapping(target = "profilePhotoUrl", constant = "")
     @Mapping(target = "lastOnline", expression = "java(java.time.Instant.now())")
     @Mapping(target = "bgPhotoUrl", constant = "")
