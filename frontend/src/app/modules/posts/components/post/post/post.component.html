@@ -25,6 +25,6 @@
 
     <app-post-bottom-bar [post]="post" (changeReaction)="changeReaction($event)"></app-post-bottom-bar>
   <br/>
-  <app-comment-list [postId]="post.postId"></app-comment-list>
+  <app-comment-list (contentDeleted)="handleCommentDeletion()" (contentAdded)="handleCommentAdding()" [postId]="post.postId"></app-comment-list>
 
 </div>

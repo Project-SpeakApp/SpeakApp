@@ -20,6 +20,7 @@ export class PostComponent implements OnChanges, OnInit{
   isEdited: boolean = false;
 
 
+
   constructor(private authService: AuthService ) {
   }
 
@@ -77,6 +78,14 @@ export class PostComponent implements OnChanges, OnInit{
 
       // rerender component
       this.post = {...this.post};
+  }
+
+  handleCommentAdding() {
+    this.post.totalNumberOfComments++;
+  }
+
+  handleCommentDeletion() {
+    this.post.totalNumberOfComments--;
   }
 
   ngOnInit() {

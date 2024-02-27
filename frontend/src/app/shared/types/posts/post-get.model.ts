@@ -10,4 +10,5 @@ export interface PostGet {
   modifiedAt: Date | null;
   reactions: ReactionsGet;
   currentUserReaction: ReactionType | null;
+  totalNumberOfComments: number;
 }

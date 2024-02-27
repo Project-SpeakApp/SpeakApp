@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
@@ -15,6 +15,8 @@ import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
 })
 export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
+  @Output() contentAdded: EventEmitter<any> = new EventEmitter<any>();
+  @Output() contentDeleted: EventEmitter<any> = new EventEmitter<any>();
   comments: CommentGetModel[] = [];
   isLoading: boolean = false;
 
@@ -53,6 +55,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
       this.comments = this.comments.filter((comment) => comment.commentId !== commentToDelete);
       this.totalComments--;
       this.currentComments--;
+      this.contentDeleted.emit();
     }
   }
 
@@ -92,6 +95,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
       this.comments.unshift(newComment);
       this.currentComments += 1;
       this.totalComments += 1;
+      this.contentAdded.emit();
     }
   }
 
