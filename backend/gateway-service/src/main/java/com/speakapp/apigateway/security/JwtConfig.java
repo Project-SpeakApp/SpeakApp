@@ -20,12 +20,12 @@ public class JwtConfig {
 
     @Bean
     public ReactiveJwtDecoder jwtDecoder() {
-        log.info("Initialize JwtDecoder with {}", jwkSetUri);
+        log.debug("Initialize JwtDecoder with {}", jwkSetUri);
         NimbusReactiveJwtDecoder jwtDecoder = NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri)
                 .build();
 
 
-        log.info("Initialize JwtDecoder with {}", issuerUri);
+        log.debug("Initialize JwtDecoder with {}", issuerUri);
         OAuth2TokenValidator<Jwt> validator = JwtValidators.createDefaultWithIssuer(issuerUri);
 
         jwtDecoder.setJwtValidator(validator);
