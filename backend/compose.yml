@@ -91,6 +91,7 @@ services:
       - KC_DB_URL_DATABASE=keycloak
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=postgres
+      - KC_DB_URL_PORT=5434
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
