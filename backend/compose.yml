@@ -114,9 +114,9 @@ services:
     environment:
       <<: *db-env
       POSTGRES_DB: keycloak
-      PGPORT: 5432
+      PGPORT: 5434
     ports:
-      - '5434:5432'
+      - '5434:5434'
     networks:
       - net-keycloakDB-keycloakServ
 
