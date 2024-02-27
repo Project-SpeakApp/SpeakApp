@@ -11,7 +11,7 @@ app:
     keycloak: http://keycloak-service:8443
     realm: users-realm
     issuer-uri: http://localhost:8443/realms/${app.jwt.realm}
-    resource-client-id: frontend-web
+    resource-client-id: SpeakAppClient
 
 spring:
   main:
