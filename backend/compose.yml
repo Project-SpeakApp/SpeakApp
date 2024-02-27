@@ -120,6 +120,8 @@ services:
       - '5434:5434'
     networks:
       - net-keycloakDB-keycloakServ
+    volumes:
+      - vol-keycloak-db:/var/lib/postgresql/data
 
 networks:
   net-postDB-postServ:
@@ -133,3 +135,4 @@ networks:
 volumes:
   vol-user-db:
   vol-post-db:
+  vol-keycloak-db:
