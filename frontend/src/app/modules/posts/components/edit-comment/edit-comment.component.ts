@@ -10,7 +10,7 @@ import {CommentService} from "../../sevices/comment.service";
 @Component({
   selector: 'app-edit-comment',
   templateUrl: './edit-comment.component.html',
-  styleUrls: ['./edit-comment.component.css']
+  styleUrls: ['../../css-files/edit-style-sheet.component.css']
 })
 export class EditCommentComponent implements OnInit, OnDestroy{
   @Input() currentContent: string = "";

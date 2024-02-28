@@ -66,7 +66,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
         }
         else this.comments = [...this.comments, ...response.commentGetDTOS];
         if(pageSize != 2 && !sort) this.currentPage = response.currentPage+1;
-        else if(pageSize != 2 && sort) this.currentPage = this.comments.length / pageSize;
+        else if(pageSize != 2 && sort) this.currentPage = Math.floor(this.comments.length / 10);
         this.numberOfPages = response.totalPages;
         this.parseComments(this.comments);
         this.totalComments = response.totalComments;

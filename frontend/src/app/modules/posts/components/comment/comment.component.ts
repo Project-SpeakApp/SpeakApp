@@ -24,6 +24,7 @@ export class CommentComponent implements OnInit, OnDestroy{
   subscription = new Subscription();
   isEdited: boolean = false;
   userId: string = '';
+  formattedDateOfEditing: string = '';
 
   constructor(private reactionService: ReactionService, private authService: AuthService) {}
 
@@ -82,11 +83,13 @@ export class CommentComponent implements OnInit, OnDestroy{
     this.isEdited = false;
     if(updatedComment) {
       this.comment = updatedComment;
+      if(this.comment.modifiedAt) this.formattedDateOfEditing = DateFormatting.formatDateTime(this.comment.modifiedAt);
     }
   }
 
   ngOnInit(): void {
     this.formattedDate = DateFormatting.formatDateTime(this.comment.createdAt);
+    if(this.comment.modifiedAt) this.formattedDateOfEditing = DateFormatting.formatDateTime(this.comment.modifiedAt);
     this.reactions = this.comment.reactionsGetDTO;
     this.currentUserReactionType = this.comment.currentUserReactionType;
     this.postReactionTypesCount = this.comment.reactionsGetDTO.sumOfReactionsByType.size;

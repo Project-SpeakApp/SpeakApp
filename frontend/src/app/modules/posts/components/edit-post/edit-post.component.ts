@@ -10,7 +10,7 @@ import {PostGet} from "../../../../shared/types/posts/post-get.model";
 @Component({
   selector: 'app-edit-post',
   templateUrl: './edit-post.component.html',
-  styleUrls: ['./edit-post.component.css']
+  styleUrls: ['../../css-files/edit-style-sheet.component.css']
 })
 export class EditPostComponent implements OnInit, OnDestroy{
   @Input() currentContent: string = "";
