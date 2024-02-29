@@ -1,10 +1,8 @@
-package com.speakapp.postservice.exception_handler;
+package com.speakapp.userservice.exception_handler;
 
-import com.speakapp.postservice.exceptions.ServiceLayerException;
+import com.speakapp.userservice.exceptions.ServiceLayerException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -36,14 +34,6 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(mainErrorMessage)),
         HttpStatus.INTERNAL_SERVER_ERROR);
-  }
-
-  @ExceptionHandler(value = PropertyReferenceException.class)
-  public ResponseEntity<ApiError> handleInvalidDataAccessException(
-          PropertyReferenceException ex) {
-
-    return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(ex.getMessage())),
-            HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   private String[] buildErrorMessagesArray(String mainErrorMessage) {
