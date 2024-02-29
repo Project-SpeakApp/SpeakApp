@@ -1,6 +1,7 @@
 package com.speakapp.postservice.communication;
 
 import com.speakapp.postservice.dtos.UserGetDTO;
+import com.speakapp.postservice.exceptions.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class UserServiceCommunicationClient {
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     return clientResponse.bodyToMono(String.class)
                             .flatMap(errorBody -> Mono.error(
-                                    new ResponseStatusException(clientResponse.statusCode(), errorBody)
+                                    new UserNotFoundException()
                             ));
                 })
                 .bodyToMono(UserGetDTO.class)

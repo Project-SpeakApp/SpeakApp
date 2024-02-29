@@ -3,6 +3,8 @@ package com.speakapp.postservice.services;
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
 import com.speakapp.postservice.entities.*;
+import com.speakapp.postservice.exceptions.AccessDeniedException;
+import com.speakapp.postservice.exceptions.PostNotFoundException;
 import com.speakapp.postservice.mappers.*;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
@@ -13,9 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -53,12 +55,12 @@ public class PostService {
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
         Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found"));
+                new PostNotFoundException("Post with id = " + postId + " was not found"));
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
         if (!postToUpdate.getUserId().equals(userId))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of post can update it");
+            throw new AccessDeniedException("Only author of post can update it");
 
         postMapper.updatePostFromPostCreateDTO(postCreateDTO, postToUpdate);
 
@@ -84,21 +86,21 @@ public class PostService {
         return createPostPageGetDTOFromPostPage(userPostsPage, userId, page);
     }
 
-    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId){
+    public PostPageGetDTO getLatestPosts(int pageNumber, int pageSize, UUID userId) {
         Pageable page = PageRequest.of(pageNumber, pageSize);
         Page<Post> postsPage = postRepository.findAllByOrderByCreatedAtDesc(page);
 
         return createPostPageGetDTOFromPostPage(postsPage, userId, page);
     }
 
-    public void deletePost(UUID userId, UUID postId){
+    public void deletePost(UUID userId, UUID postId) {
 
         Post postToDelete = postRepository.findById(postId).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + "has not been found"));
+                new PostNotFoundException("Post with id = " + postId + " has not been found"));
 
 
         if(!userId.equals(postToDelete.getUserId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of the post can delete it");
+            throw new AccessDeniedException("Only author of the post can delete it");
 
         postRepository.delete(postToDelete);
     }
@@ -123,7 +125,7 @@ public class PostService {
                 .build();
     }
 
-    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page){
+    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
         List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
             ReactionsGetDTO postReactions = getReactionsForThePost(post);
@@ -149,7 +151,7 @@ public class PostService {
     public Post getPostById(UUID postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
         if(postOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post with id = " + postId + " was not found");
+            throw new PostNotFoundException("Post with id = " + postId + " was not found");
         }
 
         return postOptional.get();

@@ -6,6 +6,8 @@ import com.speakapp.postservice.entities.Comment;
 import com.speakapp.postservice.entities.CommentReaction;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
+import com.speakapp.postservice.exceptions.AccessDeniedException;
+import com.speakapp.postservice.exceptions.CommentNotFoundException;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
@@ -37,12 +39,12 @@ public class CommentService {
 
     public CommentGetDTO updateComment(CommentUpdateDTO commentUpdateDTO, UUID commentId, UUID userId) {
         Comment commentToUpdate = commentRepository.findById(commentId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + " was not found"));
+                new CommentNotFoundException("Comment with id = " + commentId + " was not found"));
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(commentToUpdate.getUserId());
 
         if (!commentToUpdate.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
+            throw new AccessDeniedException("Only author of comment can update it");
         }
 
         commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
@@ -156,14 +158,13 @@ public class CommentService {
     public void deleteComment(UUID userId, UUID commentId){
 
         Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + "has not been found"));
+                new CommentNotFoundException("Comment with id = " + commentId + " has not been found"));
 
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
         if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only author of the post or the comment can delete the comment");
+            throw new AccessDeniedException("Only author of the post or the comment can delete the comment");
         }
 
         commentRepository.delete(commentToDelete);
