@@ -9,7 +9,7 @@ app:
     allowed-origins: http://localhost:4200
   jwt:
     keycloak: http://keycloak-service:8443
-    realm: users-realm
+    realm: SpeakApp
     issuer-uri: http://localhost:8443/realms/${app.jwt.realm}
     resource-client-id: SpeakAppClient
 
