@@ -1,0 +1,62 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+
+---
+
+spring:
+  application:
+    name: chat-service
+  config:
+    activate:
+      on-profile: local
+
+  mvc:
+    log-request-details: true # for debugging
+
+  datasource:
+    url: jdbc:h2:mem:db
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      separator: "^^^ END OF SCRIPT ^^^"
+
+  mvc:
+    log-request-details: true # for debugging
+
+  datasource:
+    url: jdbc:postgresql://message-db-service:5435/message_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true # Very important to include - otherwise loading data.sql file will cause error
