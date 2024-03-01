@@ -70,6 +70,31 @@ services:
     networks:
       - net-postDB-postServ
 
+  chat-service:
+    <<: *service
+    build: chat-service
+    ports:
+      - '8083:8083'
+    networks:
+      - net-messageDB-chatServ
+      - net-apiGw-chatServ
+    depends_on:
+      message-db-service:
+        condition: service_healthy
+
+  message-db-service:
+    <<: *db
+    environment:
+      <<: *db-env
+      POSTGRES_DB: message_db
+      PGPORT: 5435
+    volumes:
+      - vol-message-db:/var/lib/postgresql/data
+    ports:
+      - '5435:5435'
+    networks:
+      - net-messageDB-chatServ
+
   api-gateway:
     <<: *service
     build: gateway-service
@@ -78,14 +103,18 @@ services:
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
+      - net-apiGw-chatServ
 
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
+  net-messageDB-chatServ:
   net-postServ-userServ:
   net-apiGw-userServ:
   net-apiGw-postServ:
+  net-apiGw-chatServ:
 
 volumes:
   vol-user-db:
   vol-post-db:
+  vol-message-db:
