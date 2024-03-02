@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -7,6 +7,8 @@ import { ProfilesModule } from './modules/profiles/profiles.module';
 import {PostsModule} from "./modules/posts/posts.module";
 import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component';
 import { SharedModule } from './shared/shared.module';
+import {initializeKeycloak} from "./init/keycloak-init.factory";
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 
 @NgModule({
   declarations: [
@@ -19,10 +21,18 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     ProfilesModule,
     PostsModule,
-    SharedModule
+    SharedModule,
+    KeycloakAngularModule
   ],
   exports: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
