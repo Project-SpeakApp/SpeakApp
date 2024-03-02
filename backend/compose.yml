@@ -106,6 +106,7 @@ services:
       - "--http-port=8443"
       - "--import-realm"
       - "--features=declarative-user-profile"
+      - "--spi-theme-cache-themes=true"
     depends_on:
       keycloak-db:
         condition: service_healthy
