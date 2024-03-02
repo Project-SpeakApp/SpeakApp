@@ -6,11 +6,12 @@ export function initializeKeycloak(
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8433' + '/auth',
+        url: 'http://localhost:8443',
         realm: 'SpeakApp',
-        clientId: 'SpeakApp',
+        clientId: 'SpeakAppClient',
       },
       initOptions: {
         checkLoginIframe: false,
+        pkceMethod: 'S256',
     }});
 }
