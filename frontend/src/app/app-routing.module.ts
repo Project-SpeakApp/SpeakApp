@@ -6,17 +6,18 @@ import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.co
 import { UserProfileInfoPageComponent } from './modules/profiles/components/user-profile-info-page/user-profile-info-page.component';
 import { UserProfileSettingsPageComponent } from './modules/profiles/components/user-profile-settings-page/user-profile-settings-page.component';
 import {PostFeedPageComponent} from "./modules/posts/components/post-feed-page/post-feed-page.component";
+import {AuthGuard} from "./guard/auth.guard";
 
 
 
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
-  { path: 'profiles/:id', component: UserProfilePageComponent, children: [
+  { path: 'profiles/:id', component: UserProfilePageComponent, canActivate: [AuthGuard], children: [
     { path: 'info', component: UserProfileInfoPageComponent  },
   ]},
-  { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent },
-  { path: 'posts', component: PostFeedPageComponent},
+  { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent, canActivate: [AuthGuard] },
+  { path: 'posts', component: PostFeedPageComponent, canActivate: [AuthGuard]},
   { path: '**', component: NotFoundPageComponent },
 
 ];

@@ -106,6 +106,7 @@ services:
       - "--http-port=8443"
       - "--import-realm"
       - "--features=declarative-user-profile"
+      - "--spi-theme-cache-themes=true"
     depends_on:
       keycloak-db:
         condition: service_healthy
@@ -120,6 +121,8 @@ services:
       - '5434:5434'
     networks:
       - net-keycloakDB-keycloakServ
+    volumes:
+      - vol-keycloak-db:/var/lib/postgresql/data
 
 networks:
   net-postDB-postServ:
@@ -133,3 +136,4 @@ networks:
 volumes:
   vol-user-db:
   vol-post-db:
+  vol-keycloak-db:
