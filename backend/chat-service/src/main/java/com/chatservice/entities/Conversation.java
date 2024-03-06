@@ -18,7 +18,7 @@ public class Conversation {
 
     @Id
     @GeneratedValue
-    private UUID conversation_id;
+    private UUID conversationId;
 
     @Column(name = "conversation_name")
     private String conversationName;
