@@ -1,0 +1,5 @@
+spring:
+  cloud:
+    config:
+      name: post-service
+      uri: ${SPRING_CLOUD_CONFIG_URI:http://config-server:8888}

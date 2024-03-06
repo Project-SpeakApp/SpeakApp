@@ -1,6 +1,23 @@
 server:
   port: 8082
 
+spring:
+  application:
+    name: post-service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka # value will get overriden if passed from external config
+# This is to expose all the endpoints for debugging
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "*"
 logging:
   level:
     org.springframework.web: DEBUG
