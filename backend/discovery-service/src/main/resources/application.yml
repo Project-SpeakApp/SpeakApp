@@ -1,11 +1,13 @@
+server:
+  port: 8761
+
 spring:
   application:
     name: eureka-server
 
-server:
-  port: 8761
-
 eureka:
+  instance:
+    hostname: ${DOCKER_HOST:localhost}
   client:
     register-with-eureka: false
     fetch-registry: false
