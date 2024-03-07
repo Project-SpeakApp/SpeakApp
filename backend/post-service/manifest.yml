@@ -1,5 +1,0 @@
----
-applications:
-  - name: post-service
-    memory: 1024M
-    buildpack: java_buildpack
