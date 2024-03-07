@@ -22,5 +22,5 @@ COPY --from=builder ${EXTRACTED}/dependencies/ ./
 COPY --from=builder ${EXTRACTED}/spring-boot-loader/ ./
 COPY --from=builder ${EXTRACTED}/snapshot-dependencies/ ./
 COPY --from=builder ${EXTRACTED}/application/ ./
-
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+RUN apk add --no-cache curl
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
