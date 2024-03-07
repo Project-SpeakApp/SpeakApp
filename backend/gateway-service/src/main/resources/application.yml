@@ -1,3 +1,13 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
 logging:
   level:
     root: INFO
@@ -22,4 +32,7 @@ spring:
         jwt:
           issuer-uri: ${app.jwt.issuer-uri}
           jwk-set-uri: ${app.jwt.keycloak}/realms/${app.jwt.realm}/protocol/openid-connect/certs
+  application:
+    name: gateway-service
+
 
