@@ -105,6 +105,20 @@ services:
       - post-service
       - keycloak-service
 
+  angular-client:
+    container_name: angular-client
+    build:
+      context: ../frontend
+    ports:
+      - '4200:80'
+      - '443:443'
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./ssl:/etc/nginx/ssl
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
