@@ -110,8 +110,8 @@ services:
     build:
       context: ../frontend
     ports:
-      - '4200:80'
-      - '443:443'
+      - '4200:4200'
+#      - '443:443' # Uncomment this line if you want to use SSL
     depends_on:
       - api-gateway
     volumes:
