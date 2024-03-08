@@ -2,6 +2,8 @@ package com.chatservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -26,5 +28,12 @@ public class Message extends Auditable{
 
     @Column(nullable = false)
     private String type;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "conversationId")
+    private Conversation conversation;
+
+    private UUID responseToMessageId;
 
 }
