@@ -10,7 +10,7 @@
   </div>
   <form [formGroup]="myForm" (ngSubmit)="onFormSubmit()" class="">
     <div class="grow-wrap">
-      <textarea id="content" (keydown.enter)="onFormSubmit()" rows="1" formControlName="content" name="content" class="resize-none bg-[#D9D9D9] border-black border-[1px] w-full rounded max-h-screen max-w-full" onInput="this.parentNode.dataset.replicatedValue = this.value">{{currentContent}}</textarea>
+      <textarea id="content" (keydown.enter)="onFormSubmit()" rows="{{numberOfRows}}" formControlName="content" name="content" class="resize-none bg-[#D9D9D9] border-black border-[1px] w-full rounded max-h-screen max-w-full" onInput="this.parentNode.dataset.replicatedValue = this.value">{{currentContent}}</textarea>
     </div>
   </form>
 </div>

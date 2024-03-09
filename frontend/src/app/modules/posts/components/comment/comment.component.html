@@ -18,9 +18,9 @@
         </span>
     </div>
   </div>
-  <p *ngIf="!isEdited" class="m-[1px] mb-2 pl-1 text-sm break-words">{{comment.content}}</p>
+  <p *ngIf="!isEdited" class="m-[1px] mb-2 pl-1 text-sm break-words whitespace-pre-line">{{comment.content}}</p>
   <app-edit-comment class="-translate-y-[24px] m-[1px] mb-1.5 pl-1 text-sm break-words" (contentUpdated)="updateComment($event)" *ngIf="isEdited" [authorId]="comment.author.userId" [commentId]="comment.commentId" [currentContent]="comment.content" ></app-edit-comment>
-  <div *ngIf="formattedDateOfEditing != formattedDate" class="italic -mt-4 pb-1 pr-1 text-[12px] text-right">Edited {{ formattedDateOfEditing }}</div>
+  <div *ngIf="formattedDateOfEditing != formattedDate" class="italic -mt-2 pb-1 pr-1 text-[12px] text-right">Edited {{ formattedDateOfEditing }}</div>
 
 </div>
 

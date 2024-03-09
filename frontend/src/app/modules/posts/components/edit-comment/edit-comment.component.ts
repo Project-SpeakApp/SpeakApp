@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../../shared/services/alert.service";
@@ -6,6 +6,7 @@ import {AuthService} from "../../../../shared/services/auth.service";
 import {UpdateCommentModel} from "../../../../shared/types/posts/update-comment.model";
 import {Subscription} from "rxjs";
 import {CommentService} from "../../sevices/comment.service";
+import {CalculateNumberOfRows} from "../../../../shared/util/CalculateNumberOfRows";
 
 @Component({
   selector: 'app-edit-comment',
@@ -22,7 +23,7 @@ export class EditCommentComponent implements OnInit, OnDestroy{
   @Output() contentUpdated: EventEmitter<CommentGetModel> = new EventEmitter<CommentGetModel>();
   initContent: string = ""
   model: UpdateCommentModel;
-
+  numberOfRows: number = 0;
 
   visible: boolean = false;
   isLoading: boolean = false;
@@ -34,7 +35,6 @@ export class EditCommentComponent implements OnInit, OnDestroy{
       content: ''
     };
   }
-
   onFormSubmit(): void {
     if (this.myForm.valid && this.initContent !== this.myForm.value.commentContent) {
       this.isLoading = true;
@@ -62,8 +62,10 @@ export class EditCommentComponent implements OnInit, OnDestroy{
     this.myForm = this.formBuilder.group({
       commentContent: [this.currentContent, [Validators.required, Validators.minLength(1)]]
     });
+    this.numberOfRows = CalculateNumberOfRows.calculateNumberOfRows(this.currentContent);
   }
   ngOnDestroy(): void {
     this.UpdateCommentSubscription?.unsubscribe();
   }
+
 }

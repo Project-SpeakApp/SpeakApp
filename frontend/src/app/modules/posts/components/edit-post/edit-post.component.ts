@@ -6,6 +6,7 @@ import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
+import {CalculateNumberOfRows} from "../../../../shared/util/CalculateNumberOfRows";
 
 @Component({
   selector: 'app-edit-post',
@@ -29,6 +30,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
   private UpdatePostSubscription?: Subscription;
   model: AddPost;
   isLoading: boolean = false;
+  numberOfRows: number = 0;
 
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertService, private postService: PostService, private authService: AuthService) {
@@ -36,7 +38,6 @@ export class EditPostComponent implements OnInit, OnDestroy{
       content: ''
     };
   }
-
 
   onFormSubmit(): void {
     if (this.myForm.valid && this.initContent !== this.myForm.value.content) {
@@ -65,6 +66,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
     this.myForm = this.formBuilder.group({
       content: [this.currentContent, [Validators.required, Validators.minLength(1)]]
     });
+    this.numberOfRows = CalculateNumberOfRows.calculateNumberOfRows(this.currentContent);
   }
 
 
