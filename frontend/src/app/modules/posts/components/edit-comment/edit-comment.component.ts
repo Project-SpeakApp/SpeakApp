@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../../shared/services/alert.service";
