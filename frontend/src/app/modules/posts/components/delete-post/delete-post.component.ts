@@ -3,6 +3,7 @@ import {PostService} from "../../sevices/post.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {AlertService} from "../../../../shared/services/alert.service";
+import {ModalManagement} from "../../../../shared/util/ModalManagement";
 
 @Component({
   selector: 'app-delete-post',
@@ -22,13 +23,8 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   constructor(private alertService: AlertService, private postService: PostService, private authService: AuthService) {
   }
 
-
-
   openModal(modalId: string): void {
-    const modal = document.getElementById(modalId) as HTMLDialogElement;
-    if (modal) {
-      modal.showModal();
-    }
+    ModalManagement.open(modalId);
   }
 
 
@@ -46,10 +42,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
   }
 
   closeModal(modalId: string): void {
-    const modal = document.getElementById(modalId) as HTMLDialogElement;
-    if (modal) {
-      modal.close();
-    }
+    ModalManagement.close(modalId);
   }
 
   ngOnInit() {
