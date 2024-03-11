@@ -24,6 +24,14 @@ export class HeaderComponent implements OnInit {
     await this.keycloak.logout('http://localhost:4200/');
   }
 
+  async loginUser() {
+    await this.keycloak.login();
+  }
+
+  async registerUser() {
+    await this.keycloak.register();
+  }
+
   ngOnInit(): void {
 
   }

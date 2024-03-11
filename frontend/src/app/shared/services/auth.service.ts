@@ -8,7 +8,7 @@ export class AuthService {
   constructor() { }
 
   defaultState: AuthState = {
-    isLoggedIn: true,
+    isLoggedIn: false,
     firstName: 'Christopher',
     lastName: 'Bear',
     userId: '6c84fb97-12c4-11ec-82a8-0242ac130003'
