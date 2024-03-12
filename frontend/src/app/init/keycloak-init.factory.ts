@@ -13,5 +13,6 @@ export function initializeKeycloak(
       initOptions: {
         checkLoginIframe: false,
         pkceMethod: 'S256',
-    }});
+      },
+    });
 }

@@ -1,11 +1,12 @@
 import { Injectable, signal } from '@angular/core';
+import {KeycloakService} from "keycloak-angular";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private keycloak: KeycloakService) { }
 
   defaultState: AuthState = {
     isLoggedIn: false,
@@ -17,6 +18,7 @@ export class AuthService {
   state = signal(this.defaultState);
 
   public updateState(firstName: string, lastName: string) {
+    this.keycloak.loadUserProfile().then(profile => console.log(profile));
     this.state.set({
       ...this.state(),
       firstName,
