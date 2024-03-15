@@ -9,7 +9,7 @@ import {KeycloakService} from "keycloak-angular";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private authService: AuthService, private themeService: ThemeService, private keycloak: KeycloakService) { }
+  constructor(private authService: AuthService, private themeService: ThemeService) { }
 
   authState = this.authService.state;
 
@@ -21,15 +21,15 @@ export class HeaderComponent implements OnInit {
   }
 
   async logoutUser() {
-    await this.keycloak.logout('http://localhost:4200/');
+    await this.authService.logout('http://localhost:4200/');
   }
 
   async loginUser() {
-    await this.keycloak.login();
+    await this.authService.login();
   }
 
   async registerUser() {
-    await this.keycloak.register();
+    await this.authService.register();
   }
 
   ngOnInit(): void {

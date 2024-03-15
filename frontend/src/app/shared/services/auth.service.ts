@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
+import {ProfilesService} from "../../modules/profiles/services/profiles.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,35 @@ export class AuthService {
 
   state = signal(this.defaultState);
 
-  public updateState(firstName: string, lastName: string) {
-    this.keycloak.loadUserProfile().then(profile => console.log(profile));
-    this.state.set({
-      ...this.state(),
-      firstName,
-      lastName,
-    });
+  public updateState() {
+    try {
+      this.keycloak.loadUserProfile().then(x => {
+        this.state.set({
+          isLoggedIn: true,
+          firstName: x.firstName!,
+          lastName: x.lastName!,
+          userId: x.id!
+        });
+      });
+    }
+    catch (_) {
+      this.state.set(this.defaultState);
+    }
+  }
+
+  public async login(options?: Keycloak.KeycloakLoginOptions) {
+    await this.keycloak.login(options);
+    this.updateState();
+  }
+
+  public async logout(redirectUri?: string) {
+    await this.keycloak.logout(redirectUri);
+    this.updateState();
+  }
+
+  public async register(options?: Keycloak.KeycloakLoginOptions) {
+    await this.keycloak.register();
+    this.updateState();
   }
 }
 

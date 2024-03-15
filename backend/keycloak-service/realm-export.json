@@ -45,6 +45,218 @@
   "quickLoginCheckMilliSeconds": 1000,
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
+  "users": [
+    {
+      "id": "6c84fb95-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp":"1701385200000",
+      "firstName": "John",
+      "lastName": "Doe",
+      "username": "johndoe@gmail.com",
+      "email": "johndoe@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1990-01-01"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb96-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp":"1702249200000",
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "username": "alicejohnson@gmail.com",
+      "email": "alicejohnson@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1985-05-15"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb97-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp": "1702076400000",
+      "firstName": "Christopher",
+      "lastName": "Bear",
+      "username": "christopherbear@gmail.com",
+      "email": "christopherbear@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1998-07-20"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb98-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp":"1701730800000",
+      "firstName": "Emily",
+      "lastName": "Smith",
+      "username": "emilysmith@gmail.com",
+      "email": "emilysmith@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1992-04-18"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb99-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp":"1702854000000",
+      "firstName": "Michael",
+      "lastName": "Williams",
+      "username": "michaelwilliams@gmail.com",
+      "email": "michaelwilliams@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1987-09-30"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb9a-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp": "1703199600000",
+      "firstName": "Sophia",
+      "lastName": "Brown",
+      "username": "sophiabrown@gmail.com",
+      "email": "sophiabrown@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1995-12-12"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb9b-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp": "1701471600000",
+      "firstName": "William",
+      "lastName": "Jones",
+      "username": "williamjones@gmail.com",
+      "email": "williamjones@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1990-08-25"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb9c-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp": "1702508400000",
+      "firstName": "Olivia",
+      "lastName": "Davis",
+      "username": "oliviadavis@gmail.com",
+      "email": "oliviadavis@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1983-03-08"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb9d-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp": "1702162800000",
+      "firstName": "Ethan",
+      "lastName": "Miller",
+      "username": "ethanmiller@gmail.com",
+      "email": "ethanmiller@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1997-06-22"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    },
+    {
+      "id": "6c84fb9e-12c4-11ec-82a8-0242ac130003",
+      "enabled":true,
+      "createdTimestamp": "1701990000000",
+      "firstName": "Ava",
+      "lastName": "Wilson",
+      "username": "avawilson@gmail.com",
+      "email": "avawilson@gmail.com",
+      "attributes" : {
+        "dateOfBirth": "1991-10-10"
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password1!"
+        }
+      ],
+      "realmRoles": [
+        "USER", "default-roles-speakapp"
+      ]
+    }
+  ],
   "roles": {
     "realm": [
       {

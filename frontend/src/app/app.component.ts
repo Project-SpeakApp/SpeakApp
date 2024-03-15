@@ -21,6 +21,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.themeService.loadTheme();
-    this.authService.updateState('Christopher', 'Bear');
+    this.authService.updateState();
   }
 }

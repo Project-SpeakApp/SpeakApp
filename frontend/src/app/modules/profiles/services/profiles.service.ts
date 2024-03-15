@@ -45,7 +45,6 @@ export class ProfilesService {
         tap(
           () => {
             this.alertService.showAlert('Profile updated', 'success');
-            this.authService.updateState
             this.router.navigate(['/profiles', this.authService.state().userId]);
           },
           () =>
