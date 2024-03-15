@@ -5,7 +5,7 @@ spring:
   application:
     name: user-service
   config:
-    import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://localhost:8888/user-service}
+    import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-server:8888/user-service}
 
 logging:
   level:
