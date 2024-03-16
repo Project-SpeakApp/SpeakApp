@@ -124,6 +124,33 @@ services:
     volumes:
       - vol-keycloak-db:/var/lib/postgresql/data
 
+  blob-service:
+    <<: *service
+    build: blob-service
+    container_name: blob-service
+    ports:
+      - '8083:8083'
+    networks:
+      - net-apiGw-blobServ
+      - net-blobServ-azurite
+    depends_on:
+      azurite:
+        condition: service_healthy
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - '10000:10000'
+      - '10001:10001'
+      - '10002:10002'
+    networks:
+      - net-blobServ-azurite
+    healthcheck:
+      test: nc 127.0.0.1 10000 -z
+      interval: 1s
+      retries: 30
+
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
@@ -132,6 +159,8 @@ networks:
   net-apiGw-postServ:
   net-keycloakDB-keycloakServ:
   net-keycloak-apiGw:
+  net-apiGw-blobServ:
+  net-blobServ-azurite:
 
 volumes:
   vol-user-db:
