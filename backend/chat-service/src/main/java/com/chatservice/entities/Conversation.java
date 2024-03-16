@@ -23,4 +23,7 @@ public class Conversation {
     @Column(name = "conversation_name")
     private String conversationName;
 
+    @Column(nullable = false)
+    private boolean isGroupConversation;
+
 }

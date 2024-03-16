@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Mapper
 public interface MessageMapper {
-    Message toEntity(String content, UUID fromUser, String type);
+
 }

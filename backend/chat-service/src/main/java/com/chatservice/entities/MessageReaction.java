@@ -22,7 +22,7 @@ public class MessageReaction {
 
     @Id
     @GeneratedValue
-    private UUID reactionId;
+    private UUID messageReactionId;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

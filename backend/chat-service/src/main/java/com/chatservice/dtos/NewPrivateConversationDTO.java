@@ -1,6 +1,5 @@
 package com.chatservice.dtos;
 
-import com.chatservice.entities.MessageType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
@@ -11,15 +10,10 @@ import java.util.UUID;
 @Value
 @Builder
 @Jacksonized
-public class MessageDTO {
+public class NewPrivateConversationDTO {
 
-    UUID fromUser;
+    UUID conversationCreatorUser;
 
-    UUID toUser;
+    UUID conversationMemberUser;
 
-    String content;
-
-    MessageType type;
-
-    UUID conversationId;
 }

@@ -22,7 +22,7 @@ public class GroupMember {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private UUID groupMemberId;
 
     @Column(nullable = false)
     private UUID userId;
@@ -35,9 +35,6 @@ public class GroupMember {
     @CreatedDate
     @Column(updatable = false)
     private Instant joinedDatetime;
-
-    @Column(nullable = false)
-    private boolean isGroupChat;
 
     private Instant leftDatetime;
 
