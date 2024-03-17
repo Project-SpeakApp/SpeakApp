@@ -8,10 +8,8 @@ RUN npm run build --prod
 
 FROM nginx:alpine
 COPY default.conf /etc/nginx/conf.d/default.conf
-COPY ./ssl/localhost.crt /etc/nginx/ssl/localhost.crt
-COPY ./ssl/localhost.key /etc/nginx/ssl/localhost.key
 COPY --from=build-step /app/dist/frontend /usr/share/nginx/html
 
-EXPOSE 80 443
+EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
 
