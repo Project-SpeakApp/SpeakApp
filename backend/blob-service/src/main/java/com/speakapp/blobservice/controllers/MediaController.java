@@ -1,5 +1,7 @@
 package com.speakapp.blobservice.controllers;
 
+import com.speakapp.blobservice.dtos.BlobFileDTO;
+import com.speakapp.blobservice.dtos.BlobMetadataDTO;
 import com.speakapp.blobservice.entities.TypeMedia;
 import com.speakapp.blobservice.services.MediaService;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +23,16 @@ public class MediaController {
         private final MediaService mediaService;
         @GetMapping("/{mediaId}")
         @ResponseStatus(HttpStatus.OK)
-        public ResponseEntity<byte[]> downloadMedia(@RequestParam TypeMedia typeMedia, @PathVariable UUID mediaId) throws IOException {
-            byte [] content = mediaService.downloadMediaByUUID(mediaId, typeMedia);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(content);
+        public ResponseEntity<byte[]> downloadMedia(@PathVariable UUID mediaId) {
+            BlobFileDTO file = mediaService.downloadMediaByUUID(mediaId);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(file.getContent());
         }
         @PostMapping("/upload")
         @ResponseStatus(HttpStatus.CREATED)
         public ResponseEntity<String> uploadMedia(@RequestParam TypeMedia type, @RequestBody MultipartFile file, @RequestHeader("UserId") UUID userId) throws IOException {
-            String blobUrl = mediaService.uploadMedia(file, type, userId);
-            return ResponseEntity.ok(blobUrl);
+            BlobMetadataDTO blobMetadataDTO = mediaService.uploadMedia(file, type, userId);
+            String mediaId = blobMetadataDTO.getMediaId();
+            return ResponseEntity.ok(mediaId);
         }
 
 

@@ -9,7 +9,10 @@ public class BlobMetadataDTO {
     private UUID userId;
     private TypeMedia typeMedia;
     private Long size;
-    private String blobUrl;
     private String fileName;
+    private byte[] content;
 
+    public String getMediaId() {
+        return mediaId.toString();
+    }
 }
