@@ -1,11 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
-import {CommentGetListModel} from "../../../../shared/types/posts/comment-get-list.model";
-import {PostGet} from "../../../../shared/types/posts/post-get.model";
 import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
 
 
@@ -15,6 +13,8 @@ import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
 })
 export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
+  @Output() contentAdded: EventEmitter<any> = new EventEmitter<any>();
+  @Output() contentDeleted: EventEmitter<any> = new EventEmitter<any>();
   comments: CommentGetModel[] = [];
   isLoading: boolean = false;
 
@@ -53,10 +53,11 @@ export class CommentListComponent implements OnInit, OnDestroy{
       this.comments = this.comments.filter((comment) => comment.commentId !== commentToDelete);
       this.totalComments--;
       this.currentComments--;
+      this.contentDeleted.emit();
     }
   }
 
-  getComments(pageSize: number, pageNumber: number): void {
+  getComments(pageSize: number, pageNumber: number, sort: boolean): void {
     this.isLoading = true;
     this.subscription = this.commentService.getComments(this.postId, this.auth.state().userId, pageNumber, pageSize, this.sortBy, this.sortDirection).subscribe({
       next: (response) => {
@@ -64,7 +65,8 @@ export class CommentListComponent implements OnInit, OnDestroy{
           this.comments = response.commentGetDTOS;
         }
         else this.comments = [...this.comments, ...response.commentGetDTOS];
-        if(pageSize != 2) this.currentPage = response.currentPage+1;
+        if(pageSize != 2 && !sort) this.currentPage = response.currentPage+1;
+        else if(pageSize != 2 && sort) this.currentPage = Math.floor(this.comments.length / 10);
         this.numberOfPages = response.totalPages;
         this.parseComments(this.comments);
         this.totalComments = response.totalComments;
@@ -84,7 +86,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
     this.totalComments = 0;
     this.sortBy = sortBy;
     this.sortDirection = sortOrder;
-    this.getComments(this.currentComments, 0);
+    this.getComments(this.currentComments, 0, true);
   }
 
   addComment(newComment?: CommentGetModel): void {
@@ -92,11 +94,12 @@ export class CommentListComponent implements OnInit, OnDestroy{
       this.comments.unshift(newComment);
       this.currentComments += 1;
       this.totalComments += 1;
+      this.contentAdded.emit();
     }
   }
 
   ngOnInit(): void {
-    this.getComments(2, 0);
+    this.getComments(2, 0, false);
   }
 
   ngOnDestroy(): void {

@@ -18,13 +18,11 @@
         </span>
       </div>
     </div>
-    <p *ngIf="!isEdited" style="max-width: 100%" class="m-[1px] break-words">{{post.content}}</p>
+    <p *ngIf="!isEdited" style="max-width: 100%" class="m-[1px] break-words whitespace-pre-line">{{post.content}}</p>
     <app-edit-post [authorId]="post.author.userId" class="-translate-y-[24px]" (contentUpdated)="updateContent($event)" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
     <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-
-
     <app-post-bottom-bar [post]="post" (changeReaction)="changeReaction($event)"></app-post-bottom-bar>
   <br/>
-  <app-comment-list [postId]="post.postId"></app-comment-list>
+  <app-comment-list (contentDeleted)="handleCommentDeletion()" (contentAdded)="handleCommentAdding()" [postId]="post.postId"></app-comment-list>
 
 </div>

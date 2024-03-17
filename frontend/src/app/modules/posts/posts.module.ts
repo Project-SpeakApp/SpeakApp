@@ -20,6 +20,7 @@ import { CommentDeleteComponent } from './components/comment-delete/comment-dele
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { SortCommentsComponent } from './components/sort-comments/sort-comments.component';
+import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
 
 
 
@@ -41,6 +42,7 @@ import { SortCommentsComponent } from './components/sort-comments/sort-comments.
     DeleteModalComponent,
     AddCommentComponent,
     SortCommentsComponent,
+    EditCommentComponent,
   ],
   imports: [
     CommonModule,

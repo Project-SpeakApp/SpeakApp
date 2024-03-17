@@ -13,7 +13,6 @@ export class DeleteModalComponent {
   @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
 
-
   onConfirm(): void {
     this.confirm.emit();
   }
@@ -21,5 +20,6 @@ export class DeleteModalComponent {
   onCancel(): void {
     this.cancel.emit();
   }
+
 
 }
