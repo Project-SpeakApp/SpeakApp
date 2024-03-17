@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
-import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-header',
