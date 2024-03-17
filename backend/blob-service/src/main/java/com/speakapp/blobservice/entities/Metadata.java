@@ -5,14 +5,14 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.util.UUID;
 
-@Entity(name = "meta_info")
+@Entity(name = "metadata")
 @Data
 @SuperBuilder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class MetaInfo extends Auditable {
+public class Metadata extends Auditable {
 
     @Id
     @GeneratedValue
@@ -23,12 +23,15 @@ public class MetaInfo extends Auditable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private MediaType mediaType;
+    private TypeMedia typeMedia;
 
     @Column(nullable = false)
-    private int size;
+    private Long size;
 
     @Column(nullable = false)
-    private String mediaUrl;
+    private String blobUrl;
+
+    @Column(nullable = false)
+    private String fileName;
 
 }

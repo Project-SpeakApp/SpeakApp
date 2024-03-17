@@ -1,5 +1,5 @@
 package com.speakapp.blobservice.entities;
 
-public enum MediaType {
+public enum TypeMedia {
     IMAGE, AVATAR
 }
