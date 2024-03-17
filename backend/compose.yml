@@ -136,6 +136,21 @@ services:
     depends_on:
       azurite:
         condition: service_healthy
+      metadata-db:
+        condition: service_healthy
+
+  metadata-db:
+    <<: *db
+    environment:
+      <<: *db-env
+      POSTGRES_DB: metadata_db
+      PGPORT: 5435
+    ports:
+      - '5435:5435'
+    networks:
+      - net-blobServ-azurite
+    volumes:
+      - vol-metadata-db:/var/lib/postgresql/data
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite
@@ -166,3 +181,4 @@ volumes:
   vol-user-db:
   vol-post-db:
   vol-keycloak-db:
+  vol-metadata-db:
