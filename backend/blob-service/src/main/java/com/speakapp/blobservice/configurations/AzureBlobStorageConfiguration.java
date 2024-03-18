@@ -27,6 +27,10 @@ public class AzureBlobStorageConfiguration {
 
     @Bean
     public BlobContainerClient blobContainerClient() {
-        return getBlobServiceClient().getBlobContainerClient(containerName);
+        BlobContainerClient containerClient = getBlobServiceClient().getBlobContainerClient(containerName);
+        if (!containerClient.exists()) {
+            containerClient.create();
+        }
+        return containerClient;
     }
 }

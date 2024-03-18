@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -44,6 +45,9 @@ public class MediaService {
         metadata.setTypeMedia(typeMedia);
         metadata.setSize(file.getSize());
         metadata.setFileName(fileName);
+        metadata.setUserId(userId);
+        metadata.setBlobUrl(blobClient.getBlobUrl());
+        metadata.setCreatedAt(Instant.now());
         Metadata savedMetadata = mediaMetadataRepository.save(metadata);
         return blobMapper.toDTO(savedMetadata, userId);
     }

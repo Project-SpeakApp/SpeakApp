@@ -30,12 +30,15 @@ public class MediaController {
         @PostMapping("/upload")
         @ResponseStatus(HttpStatus.CREATED)
         public ResponseEntity<String> uploadMedia(@RequestParam TypeMedia type,
-                                                  @RequestParam("file") MultipartFile file,
+                                                  @RequestBody MultipartFile file,
                                                   @RequestHeader("UserId") UUID userId) throws IOException {
-
             if (file.isEmpty()) {
 
-                return new ResponseEntity<>("No file has been uploaded", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("No file has been uploaded", HttpStatus.BAD_REQUEST);
+            }
+            if (!isValidFileFormat(file.getOriginalFilename())) {
+                return new ResponseEntity<>("Invalid file format Only JPEG, JPG, PNG files are allowed", HttpStatus.BAD_REQUEST);
+
             }
             BlobMetadataDTO blobMetadataDTO = mediaService.uploadMedia(file, type, userId);
             String mediaId = blobMetadataDTO.getMediaId();
@@ -43,7 +46,14 @@ public class MediaController {
 
         }
 
-
-
-
+        private boolean isValidFileFormat(String fileName) {
+            String[] validFileFormats = {"jpeg", "jpg", "png"};
+            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            for (String validFileFormat : validFileFormats) {
+                if (fileExtension.equalsIgnoreCase(validFileFormat)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 }

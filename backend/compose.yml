@@ -121,11 +121,13 @@ services:
       - net-apiGw-postServ
       - net-keycloak-apiGw
       - net-eureka-config
+      - net-apiGw-blobServ
     depends_on:
       - config-server
       - eureka-server
       - user-service
       - post-service
+      - blob-service
       - keycloak-service
 
   angular-client:
