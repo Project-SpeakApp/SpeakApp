@@ -1,9 +1,15 @@
 package com.speakapp.blobservice.dtos;
 
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
+
+@Value
+@Builder
+@Jacksonized
 public class BlobFileDTO {
-    private byte[] content;
 
-
+    byte[] content;
     public byte[] getContent() {
         return content;
     }

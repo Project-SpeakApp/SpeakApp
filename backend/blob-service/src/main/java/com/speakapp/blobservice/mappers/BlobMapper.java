@@ -10,9 +10,7 @@ import java.util.UUID;
 @Mapper
 public interface BlobMapper {
 
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "modifiedAt", ignore = true)
-    @Mapping(target = "mediaId", source = "mediaId")
+    @Mapping(target = "mediaId", source = "metadata.mediaId")
     BlobMetadataDTO toDTO(Metadata metadata, UUID userId);
 
     @Mapping(target = "content", source = "content")
