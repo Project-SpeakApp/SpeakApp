@@ -28,7 +28,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
 
   subscription = new Subscription();
 
-  constructor(private commentService: CommentService, private auth: AuthService) {
+  constructor(private commentService: CommentService) {
   }
 
   private parseComments(comments: CommentGetModel[]) {
@@ -59,7 +59,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
 
   getComments(pageSize: number, pageNumber: number, sort: boolean): void {
     this.isLoading = true;
-    this.subscription = this.commentService.getComments(this.postId, this.auth.state().userId, pageNumber, pageSize, this.sortBy, this.sortDirection).subscribe({
+    this.subscription = this.commentService.getComments(this.postId, pageNumber, pageSize, this.sortBy, this.sortDirection).subscribe({
       next: (response) => {
         if(this.currentPage == 0 && pageSize != 2) {
           this.comments = response.commentGetDTOS;

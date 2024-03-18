@@ -44,7 +44,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
       this.isLoading = true;
       this.currentContent = this.myForm.value.content;
       this.model.content = this.currentContent;
-      this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model, this.authService.state().userId).subscribe(
+      this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model).subscribe(
         (updatedPost) => { this.alertService.showAlert('Post updated successfully', 'success'), this.contentUpdated.emit(updatedPost), this.isLoading = false;},
         (error) => {this.isLoading =false;}
 

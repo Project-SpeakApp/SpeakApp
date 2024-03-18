@@ -26,7 +26,7 @@ export class CommentDeleteComponent implements OnDestroy, OnInit{
 
   onFormSubmit(modalId: string): void {
     this.isLoading = true;
-    this.deleteCommentSubscription = this.commentService.deleteComment( this.commentId, this.authService.state().userId).subscribe(
+    this.deleteCommentSubscription = this.commentService.deleteComment( this.commentId).subscribe(
       () => {
         this.deleted.emit(this.commentId);
         this.closeModal(modalId);

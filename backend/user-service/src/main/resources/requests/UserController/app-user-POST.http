@@ -1,7 +1,8 @@
-POST http://localhost:8080/api/users
+POST http://localhost:8081/api/users
 Content-Type: application/json
 
 {
+  "userId": "6c84fb95-12c4-11ec-82a8-0242ac130039",
   "firstName": "Michael",
   "lastName": "Jordan",
   "email": "mj@gmail.com",

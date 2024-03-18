@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,6 +35,13 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(mainErrorMessage)),
         HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(value = MissingRequestHeaderException.class)
+  public ResponseEntity<ApiError> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
+
+    return new ResponseEntity<>(new ApiError(ex, buildErrorMessagesArray(ex.getMessage())),
+            HttpStatus.BAD_REQUEST);
   }
 
   private String[] buildErrorMessagesArray(String mainErrorMessage) {
