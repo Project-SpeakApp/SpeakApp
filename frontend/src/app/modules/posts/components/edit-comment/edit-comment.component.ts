@@ -40,7 +40,7 @@ export class EditCommentComponent implements OnInit, OnDestroy{
       this.isLoading = true;
       this.currentContent = this.myForm.value.commentContent;
       this.model.content = this.currentContent;
-      this.UpdateCommentSubscription = this.commentService.updateComment(this.model, this.authService.state().userId, this.commentId).subscribe(
+      this.UpdateCommentSubscription = this.commentService.updateComment(this.model, this.commentId).subscribe(
         (updatedPost) => { this.alertService.showAlert('Comment updated successfully', 'success'), this.contentUpdated.emit(updatedPost), this.isLoading = false;},
         (error) => {this.isLoading =false;}
 

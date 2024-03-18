@@ -25,7 +25,6 @@ export class AddPostComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private postService: PostService,
     private alertService: AlertService,
-    private authService: AuthService,
   ) {
     this.model = {
       content: ''
@@ -36,7 +35,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     if (this.myForm.valid) {
       this.isLoading = true;
       this.model.content = this.myForm.value.content;
-      this.addPostSubscription = this.postService.addPost(this.model, this.authService.state().userId).subscribe(
+      this.addPostSubscription = this.postService.addPost(this.model).subscribe(
         (newPost) => {
           this.contentAdded.emit(newPost);
           this.isLoading = false;

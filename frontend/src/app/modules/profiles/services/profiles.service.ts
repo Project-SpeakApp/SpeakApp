@@ -38,7 +38,6 @@ export class ProfilesService {
     this.profileUpdateLoading.set(true);
     return this.http
       .put<ProfileGetDTO>(`http://localhost:8080/api/users`, profile, {
-        headers: { UserId: this.authService.state().userId },
       })
       .pipe(
         finalize(() => this.profileUpdateLoading.set(false)),
