@@ -30,7 +30,7 @@ export class DeletePostComponent implements OnDestroy, OnInit{
 
   onFormSubmit(modalId: string): void {
     this.isLoading = true;
-    this.addPostSubscription = this.postService.deletePost( this.postId, this.authService.state().userId).subscribe(
+    this.addPostSubscription = this.postService.deletePost(this.postId).subscribe(
       () => {
         this.deleted.emit(this.postId);
         this.closeModal(modalId);

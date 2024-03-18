@@ -5,6 +5,9 @@ import com.speakapp.postservice.services.ReactionService;
 
 
 import java.util.UUID;
+
+import com.speakapp.postservice.utils.JwtDecoder;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,23 +20,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class ReactionController {
 
-  private final ReactionService reactionService;
+    private final ReactionService reactionService;
+    private final JwtDecoder jwtDecoder;
+    private static final String AUTH_HEADER_PREFIX = "Bearer ";
 
-  @PutMapping("/posts/reactions/{postId}")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ReactionType createUpdatePostReaction(@RequestParam(required = false) ReactionType reactionType, @PathVariable UUID postId,
-                                               @RequestHeader("UserId") UUID userId){
-    return reactionService.createUpdatePostReaction(reactionType, postId, userId);
-  }
+    @PutMapping("/posts/reactions/{postId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReactionType createUpdatePostReaction(@RequestParam(required = false) ReactionType reactionType,
+                                                 @PathVariable UUID postId,
+                                                 @RequestHeader("Authorization") String authHeader){
+        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        return reactionService.createUpdatePostReaction(reactionType, postId, userId);
+    }
 
-  @PutMapping("/comments/reactions/{commentId}")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ReactionType createUpdateCommentReaction(@RequestParam(required = false) ReactionType reactionType, @PathVariable UUID commentId,
-                                               @RequestHeader("UserId") UUID userId){
-    return reactionService.createUpdateCommentReaction(reactionType, commentId, userId);
-  }
+    @PutMapping("/comments/reactions/{commentId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReactionType createUpdateCommentReaction(@RequestParam(required = false) ReactionType reactionType,
+                                                    @PathVariable UUID commentId,
+                                                    @RequestHeader("Authorization") String authHeader){
+        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        return reactionService.createUpdateCommentReaction(reactionType, commentId, userId);
+    }
 
 }

@@ -11,10 +11,16 @@
       <div class="flex flex-col justify-end w-full">
         <div class="flex flex-row justify-between">
           <h1 class="text-3xl font-semibold">{{ profile.firstName + " " + profile.lastName }}</h1>
-          <button class="flex flex-row gap-2 app-btn btn-primary" routerLink="settings">
-            <h2 class="">Settings</h2>
-            <span class="material-symbols-outlined">settings</span>
-          </button>
+          <div class="flex flex-row gap-2">
+            <button class="flex flex-row gap-2 app-btn btn-primary" (click)="changePassword()">
+              <h2 class="">Manage Account</h2>
+              <span class="material-symbols-outlined">manage_accounts</span>
+            </button>
+            <button class="flex flex-row gap-2 app-btn btn-primary" routerLink="settings">
+              <h2 class="">Preferences</h2>
+              <span class="material-symbols-outlined">settings</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

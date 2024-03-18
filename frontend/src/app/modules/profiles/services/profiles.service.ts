@@ -38,14 +38,12 @@ export class ProfilesService {
     this.profileUpdateLoading.set(true);
     return this.http
       .put<ProfileGetDTO>(`http://localhost:8080/api/users`, profile, {
-        headers: { UserId: this.authService.state().userId },
       })
       .pipe(
         finalize(() => this.profileUpdateLoading.set(false)),
         tap(
           () => {
             this.alertService.showAlert('Profile updated', 'success');
-            this.authService.updateState
             this.router.navigate(['/profiles', this.authService.state().userId]);
           },
           () =>
