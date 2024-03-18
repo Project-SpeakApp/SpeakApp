@@ -29,10 +29,15 @@ public class MediaController {
         }
         @PostMapping("/upload")
         @ResponseStatus(HttpStatus.CREATED)
-        public ResponseEntity<String> uploadMedia(@RequestParam TypeMedia type, @RequestBody MultipartFile file, @RequestHeader("UserId") UUID userId) throws IOException {
+        public ResponseEntity<String> uploadMedia(@RequestParam TypeMedia type, @RequestParam("file") MultipartFile file, @RequestHeader("UserId") UUID userId) throws IOException {
+            if (file.isEmpty()) {
+
+                return new ResponseEntity<String>("No file has been uploaded", HttpStatus.NOT_FOUND);
+            }
             BlobMetadataDTO blobMetadataDTO = mediaService.uploadMedia(file, type, userId);
             String mediaId = blobMetadataDTO.getMediaId();
             return ResponseEntity.ok(mediaId);
+
         }
 
 
