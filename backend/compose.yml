@@ -21,6 +21,7 @@ x-db-env: &db-env
 
 services:
   config-server:
+    container_name: config-server
     build: config-server
     ports:
       - '8888:8888'
@@ -31,7 +32,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+      
   eureka-server:
+    container_name: discovery-service
     build: discovery-service
     ports:
       - '8761:8761'
@@ -42,9 +45,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
     depends_on:
       - config-server
+      
   user-service:
     <<: *service
     container_name: user-service
@@ -95,7 +98,6 @@ services:
       eureka-server:
         condition: service_healthy
 
-
   post-db-service:
     <<: *db
     environment:
@@ -108,7 +110,6 @@ services:
       - '5433:5433'
     networks:
       - net-postDB-postServ
-
 
   api-gateway:
     <<: *service
@@ -125,9 +126,6 @@ services:
     depends_on:
       - config-server
       - eureka-server
-      - user-service
-      - post-service
-      - blob-service
       - keycloak-service
 
   angular-client:
@@ -140,8 +138,6 @@ services:
       - api-gateway
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
-
-
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
@@ -196,10 +192,15 @@ services:
     networks:
       - net-apiGw-blobServ
       - net-blobServ-azurite
+      - net-eureka-config
     depends_on:
       azurite:
         condition: service_healthy
       metadata-db:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
 
   metadata-db:
