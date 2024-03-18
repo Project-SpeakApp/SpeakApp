@@ -3,6 +3,7 @@ package com.speakapp.apigateway.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -23,6 +24,8 @@ public class SecurityConfig {
                         authorizeExchangeSpec
                                 .pathMatchers("/api/internal/**")
                                 .denyAll()
+                                .pathMatchers(HttpMethod.POST, "/api/users")
+                                .permitAll()
                                 .anyExchange()
                                 .authenticated()
                 )

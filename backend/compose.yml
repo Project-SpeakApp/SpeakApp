@@ -3,6 +3,8 @@ version: '3.8'
 x-service: &service
   environment:
     - SPRING_PROFILES_ACTIVE=dev
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
 
 x-db: &db
   image: postgres:16.0-alpine
@@ -18,8 +20,34 @@ x-db-env: &db-env
   POSTGRES_PASSWORD: postgres
 
 services:
+  config-server:
+    build: config-server
+    ports:
+      - '8888:8888'
+    networks:
+      - net-eureka-config
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  eureka-server:
+    build: discovery-service
+    ports:
+      - '8761:8761'
+    networks:
+      - net-eureka-config
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    depends_on:
+      - config-server
   user-service:
     <<: *service
+    container_name: user-service
     build: user-service
     ports:
       - '8081:8081'
@@ -27,7 +55,12 @@ services:
       - net-userDB-userServ
       - net-postServ-userServ
       - net-apiGw-userServ
+      - net-eureka-config
     depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
       user-db-service:
         condition: service_healthy
 
@@ -45,15 +78,21 @@ services:
 
   post-service:
     <<: *service
+    container_name: post-service
     build: post-service
     ports:
       - '8082:8082'
     networks:
-      - net-postDB-postServ
       - net-postServ-userServ
+      - net-postDB-postServ
       - net-apiGw-postServ
+      - net-eureka-config
     depends_on:
       post-db-service:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
 
 
@@ -70,8 +109,10 @@ services:
     networks:
       - net-postDB-postServ
 
+
   api-gateway:
     <<: *service
+    container_name: api-gateway
     build: gateway-service
     ports:
       - '8080:8080'
@@ -79,6 +120,26 @@ services:
       - net-apiGw-userServ
       - net-apiGw-postServ
       - net-keycloak-apiGw
+      - net-eureka-config
+    depends_on:
+      - config-server
+      - eureka-server
+      - user-service
+      - post-service
+      - keycloak-service
+
+  angular-client:
+    container_name: angular-client
+    build:
+      context: ../frontend
+    ports:
+      - '4200:4200'
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
@@ -132,6 +193,7 @@ networks:
   net-apiGw-postServ:
   net-keycloakDB-keycloakServ:
   net-keycloak-apiGw:
+  net-eureka-config:
 
 volumes:
   vol-user-db:

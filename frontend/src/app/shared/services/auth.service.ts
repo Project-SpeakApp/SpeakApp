@@ -1,14 +1,17 @@
 import { Injectable, signal } from '@angular/core';
+import {KeycloakService} from "keycloak-angular";
+import {ProfilesService} from "../../modules/profiles/services/profiles.service";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private keycloak: KeycloakService, private router: Router) { }
 
   defaultState: AuthState = {
-    isLoggedIn: true,
+    isLoggedIn: false,
     firstName: 'Christopher',
     lastName: 'Bear',
     userId: '6c84fb97-12c4-11ec-82a8-0242ac130003'
@@ -16,12 +19,39 @@ export class AuthService {
 
   state = signal(this.defaultState);
 
-  public updateState(firstName: string, lastName: string) {
-    this.state.set({
-      ...this.state(),
-      firstName,
-      lastName,
-    });
+  public updateState() {
+    try {
+      this.keycloak.loadUserProfile().then(x => {
+        this.state.set({
+          isLoggedIn: true,
+          firstName: x.firstName!,
+          lastName: x.lastName!,
+          userId: x.id!
+        });
+      });
+    }
+    catch (_) {
+      this.state.set(this.defaultState);
+    }
+  }
+
+  public async login(options?: Keycloak.KeycloakLoginOptions) {
+    await this.keycloak.login(options);
+    this.updateState();
+  }
+
+  public async logout(redirectUri?: string) {
+    await this.keycloak.logout(redirectUri);
+    this.updateState();
+  }
+
+  public async register(options?: Keycloak.KeycloakLoginOptions) {
+    await this.keycloak.register();
+    this.updateState();
+  }
+
+  public manageAccount() {
+    window.location.href = 'http://localhost:8443/realms/SpeakApp/account/#/security/signingin';
   }
 }
 

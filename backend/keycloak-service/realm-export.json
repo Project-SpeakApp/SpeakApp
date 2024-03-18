@@ -1,6 +1,8 @@
 {
   "id": "72aa961a-bbaa-4102-bbba-38f2ee5caffe",
   "realm": "SpeakApp",
+  "displayName": "",
+  "displayNameHtml": "",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": true,
@@ -43,7 +45,6 @@
   "quickLoginCheckMilliSeconds": 1000,
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
-  "passwordPolicy": "length(8) and specialChars(1) and lowerCase(1) and upperCase(1) and digits(1) and maxLength(64) and hashAlgorithm(pbkdf2-sha256) and hashIterations(600000) and passwordHistory(3)",
   "users": [
     {
       "id": "6c84fb95-12c4-11ec-82a8-0242ac130003",
@@ -63,7 +64,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -84,7 +85,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -105,7 +106,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -126,7 +127,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -147,7 +148,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -168,7 +169,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -189,7 +190,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -210,7 +211,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -231,7 +232,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     },
     {
@@ -252,7 +253,7 @@
         }
       ],
       "realmRoles": [
-        "USER"
+        "USER", "default-roles-speakapp"
       ]
     }
   ],
@@ -305,7 +306,11 @@
         "composite": false,
         "clientRole": false,
         "containerId": "72aa961a-bbaa-4102-bbba-38f2ee5caffe",
-        "attributes": {}
+        "attributes": {
+          "zs": [
+            "zs"
+          ]
+        }
       },
       {
         "id": "8ca2e6e6-fa40-4260-a6fc-7915d5c35881",
@@ -532,6 +537,7 @@
       ],
       "security-admin-console": [],
       "admin-cli": [],
+      "SpeakAppClient": [],
       "account-console": [],
       "broker": [
         {
@@ -634,7 +640,17 @@
       ]
     }
   },
-  "groups": [],
+  "groups": [
+    {
+      "id": "2c529982-005f-4653-8b22-4af37f95d726",
+      "name": "xddddddddd",
+      "path": "/xddddddddd",
+      "subGroups": [],
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {}
+    }
+  ],
   "defaultRole": {
     "id": "4cf551fe-bc1b-49bd-afc6-6ec5a5267516",
     "name": "default-roles-speakapp",
@@ -646,6 +662,7 @@
   "requiredCredentials": [
     "password"
   ],
+  "passwordPolicy": "length(8) and specialChars(1) and lowerCase(1) and upperCase(1) and digits(1) and maxLength(64) and hashAlgorithm(pbkdf2-sha256) and hashIterations(600000) and passwordHistory(3)",
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
@@ -725,7 +742,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:4200/*"
+        "http://localhost:4200/*",
+        "http://localhost:4200"
       ],
       "webOrigins": [
         "+"
@@ -741,7 +759,8 @@
       "frontchannelLogout": true,
       "protocol": "openid-connect",
       "attributes": {
-        "post.logout.redirect.uris": "http://localhost:4200/*",
+        "login_theme": "keywind",
+        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4200",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "use.refresh.tokens": "true",
@@ -753,8 +772,7 @@
         "tls.client.certificate.bound.access.tokens": "false",
         "display.on.consent.screen": "false",
         "pkce.code.challenge.method": "S256",
-        "token.response.type.bearer.lower-case": "false",
-        "login_theme": "keywind"
+        "token.response.type.bearer.lower-case": "false"
       },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
@@ -828,8 +846,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-         "http://localhost:8443/*"
-        ],
+        "http://localhost:8443/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -842,6 +860,7 @@
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
+        "post.logout.redirect.uris": "+",
         "login_theme": "keywind"
       },
       "authenticationFlowBindingOverrides": {},
@@ -882,6 +901,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "*"
       ],
@@ -1691,8 +1711,8 @@
   "smtpServer": {},
   "eventsEnabled": false,
   "eventsListeners": [
-    "jboss-logging",
-    "custom-event-listener"
+    "custom-event-listener",
+    "jboss-logging"
   ],
   "enabledEventTypes": [],
   "adminEventsEnabled": false,
@@ -1700,18 +1720,6 @@
   "identityProviders": [],
   "identityProviderMappers": [],
   "components": {
-    "org.keycloak.userprofile.UserProfileProvider": [
-      {
-        "id": "68322864-211d-4cf7-9a19-46291aac58fd",
-        "providerId": "declarative-user-profile",
-        "subComponents": {},
-        "config": {
-          "kc.user.profile.config": [
-            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"dateOfBirth\",\"displayName\":\"Date of birth\",\"validations\":{\"date-of-birth-attribute\":{}},\"annotations\":{\"inputType\":\"html5-date\"},\"permissions\":{\"edit\":[\"admin\",\"user\"],\"view\":[\"user\"]},\"required\":{\"roles\":[\"user\"]},\"group\":null}],\"groups\":[]}"
-          ]
-        }
-      }
-    ],
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
       {
         "id": "da8ed9ef-a8d7-4aee-8410-bb1336a16b67",
@@ -1742,13 +1750,13 @@
         "config": {
           "allowed-protocol-mapper-types": [
             "oidc-address-mapper",
-            "saml-role-list-mapper",
             "oidc-usermodel-property-mapper",
             "oidc-full-name-mapper",
-            "saml-user-attribute-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-property-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "saml-user-attribute-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "saml-role-list-mapper",
+            "saml-user-property-mapper"
           ]
         }
       },
@@ -1760,14 +1768,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
+            "saml-user-attribute-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-property-mapper",
             "saml-role-list-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-attribute-mapper",
             "oidc-address-mapper",
             "oidc-full-name-mapper",
-            "saml-user-property-mapper"
+            "saml-user-property-mapper",
+            "oidc-usermodel-attribute-mapper"
           ]
         }
       },
@@ -1815,6 +1823,18 @@
         "config": {
           "allow-default-scopes": [
             "true"
+          ]
+        }
+      }
+    ],
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "id": "68322864-211d-4cf7-9a19-46291aac58fd",
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]}},{\"name\":\"dateOfBirth\",\"displayName\":\"Date of birth\",\"validations\":{\"date-of-birth-attribute\":{}},\"annotations\":{\"inputType\":\"html5-date\"},\"permissions\":{\"edit\":[\"admin\",\"user\"],\"view\":[\"user\"]},\"required\":{\"roles\":[\"user\"]},\"group\":null}],\"groups\":[]}"
           ]
         }
       }
@@ -2493,22 +2513,24 @@
   "clientAuthenticationFlow": "clients",
   "dockerAuthenticationFlow": "docker auth",
   "attributes": {
-    "userProfileEnabled": "true",
     "cibaBackchannelTokenDeliveryMode": "poll",
-    "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",
-    "oauth2DeviceCodeLifespan": "600",
     "clientOfflineSessionMaxLifespan": "0",
     "oauth2DevicePollingInterval": "5",
     "clientSessionIdleTimeout": "0",
-    "parRequestUriLifespan": "60",
-    "clientSessionMaxLifespan": "0",
+    "userProfileEnabled": "true",
     "clientOfflineSessionIdleTimeout": "0",
     "cibaInterval": "5",
-    "realmReusableOtpCode": "false"
+    "realmReusableOtpCode": "false",
+    "cibaExpiresIn": "120",
+    "oauth2DeviceCodeLifespan": "600",
+    "parRequestUriLifespan": "60",
+    "clientSessionMaxLifespan": "0",
+    "frontendUrl": "",
+    "acr.loa.map": "{}"
   },
-  "keycloakVersion": "23.0.4",
-  "userManagedAccessAllowed": false,
+  "keycloakVersion": "23.0.7",
+  "userManagedAccessAllowed": true,
   "clientProfiles": {
     "profiles": []
   },
