@@ -1,13 +1,14 @@
 import { Injectable, signal } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
 import {ProfilesService} from "../../modules/profiles/services/profiles.service";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private keycloak: KeycloakService) { }
+  constructor(private keycloak: KeycloakService, private router: Router) { }
 
   defaultState: AuthState = {
     isLoggedIn: false,
@@ -47,6 +48,10 @@ export class AuthService {
   public async register(options?: Keycloak.KeycloakLoginOptions) {
     await this.keycloak.register();
     this.updateState();
+  }
+
+  public manageAccount() {
+    window.location.href = 'http://localhost:8443/realms/SpeakApp/account/#/security/signingin';
   }
 }
 
