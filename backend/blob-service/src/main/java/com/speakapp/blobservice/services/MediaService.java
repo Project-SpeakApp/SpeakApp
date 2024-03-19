@@ -61,22 +61,4 @@ public class MediaService {
         blobClient.delete();
         mediaMetadataRepository.delete(metadata);
     }
-
-
-    public BlobMetadataDTO updateMedia(MultipartFile file, UUID mediaId, UUID userId) throws IOException {
-        // TODO Finish implementing this method after consulting with frontend team
-        Metadata metadata = mediaMetadataRepository.findByMediaId(mediaId);
-        if (!metadata.getUserId().equals(userId)) {
-            throw new AccessDeniedException("User with id = " + userId + " is not allowed to update media with id = " + mediaId);
-        }
-        BlobClient blobClient = blobContainerClient.getBlobClient(metadata.getFileName());
-        blobClient.upload(file.getInputStream(), true);
-        metadata.setSize(file.getSize());
-        metadata.setModifiedAt(Instant.now());
-        Metadata savedMetadata = mediaMetadataRepository.save(metadata);
-        return blobMapper.toDTO(savedMetadata, userId);
-    }
-
-
-
 }

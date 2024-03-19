@@ -51,15 +51,4 @@ public class MediaController {
             mediaService.deleteMedia(userId, mediaId);
         }
 
-        @PutMapping("/{mediaId}")
-        @ResponseStatus(HttpStatus.OK)
-        public ResponseEntity<String> updateMedia(@PathVariable UUID mediaId,
-                                                  @RequestBody MultipartFile file,
-                                                  @RequestHeader("Authorization") String authHeader) throws IOException {
-            String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-            UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
-            BlobMetadataDTO blobMetadataDTO = mediaService.updateMedia(file, mediaId, userId);
-            return ResponseEntity.ok(blobMetadataDTO.getMediaId());
-        }
-
 }
