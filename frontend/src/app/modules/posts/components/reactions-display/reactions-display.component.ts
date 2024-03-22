@@ -1,11 +1,11 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 
 @Component({
   selector: 'app-reactions-display',
   templateUrl: './reactions-display.component.html'
 })
-export class ReactionsDisplayComponent implements OnInit, OnChanges {
+export class ReactionsDisplayComponent {
   @Input() sortedReactions: [ReactionType, number][] = [];
   @Input() sumOfReactions: number = 0;
   @Input() isComment?: boolean = false;
@@ -18,14 +18,4 @@ export class ReactionsDisplayComponent implements OnInit, OnChanges {
   sad = ReactionType.SAD;
   wrr = ReactionType.WRR;
 
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes) {
-      this.ngOnInit();
-    }
-  }
-
-  ngOnInit() {
-    if (this.isComment) console.log(this.sortedReactions);
-  }
 }
