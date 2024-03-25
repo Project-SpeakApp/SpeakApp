@@ -1,5 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-import { AlertService } from 'src/app/shared/services/alert.service';
 import { HttpClient } from '@angular/common/http';
 import ProfileGetDTO from '../types/ProfileGetDTO';
 import { finalize, tap } from 'rxjs';
@@ -12,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class ProfilesService {
   constructor(
-    private alertService: AlertService,
     private http: HttpClient,
     private authService: AuthService,
     private router: Router,
@@ -27,10 +25,6 @@ export class ProfilesService {
       .get<ProfileGetDTO>(`http://localhost:8080/api/users/${userId}`)
       .pipe(
         finalize(() => this.isLoading.set(false)),
-        tap(
-          (r) => {console.log(r)},
-          () => this.alertService.showAlert('Failed to load profile', 'error'),
-        ),
       );
   }
 
@@ -43,11 +37,8 @@ export class ProfilesService {
         finalize(() => this.profileUpdateLoading.set(false)),
         tap(
           () => {
-            this.alertService.showAlert('Profile updated', 'success');
             this.router.navigate(['/profiles', this.authService.state().userId]);
           },
-          () =>
-            this.alertService.showAlert('Failed to update profile', 'error'),
         ),
       );
   }
