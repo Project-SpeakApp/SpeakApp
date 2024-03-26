@@ -7,6 +7,15 @@ spring:
   config:
     import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-server:8888/user-service}
 
+  kafka:
+    bootstrap-servers: kafka:9092
+#    consumer:
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: com.speakapp.userservice.utils.AppUserCreateDTOSerializer
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: com.speakapp.userservice.utils.AppUserCreateDTOSerializer
+
 logging:
   level:
     org.springframework.web: DEBUG
