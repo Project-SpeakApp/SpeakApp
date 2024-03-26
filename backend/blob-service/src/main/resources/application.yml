@@ -1,0 +1,73 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: blob-service
+  config:
+    import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-server:8888/blob-service}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+azure:
+  storage:
+    container:
+      name: blob
+    connection:
+      string: AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://blob-container:10000/devstoreaccount1;QueueEndpoint=http://blob-container:10001/devstoreaccount1;TableEndpoint=http://blob-container:10002/devstoreaccount1;
+
+---
+
+spring:
+  application:
+    name: blob-service
+  config:
+    activate:
+      on-profile: local
+  mvc:
+    log-request-details: true # for debugging
+
+  datasource:
+    url: jdbc:h2:mem:db
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      separator: "^^^ END OF SCRIPT ^^^"
+
+  mvc:
+    log-request-details: true # for debugging
+
+  datasource:
+    url: jdbc:postgresql://metadata-db:5435/metadata_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true # Very important to include - otherwise loading data.sql file will cause error
+

@@ -22,6 +22,10 @@ public class ApiGatewayApplication {
                 .route("user-service", r -> r
                         .path("/api/users/**")
                         .uri("http://user-service:8081")) // in future uri(lb:USER-SERVICE)
+                .route("media-service", r -> r
+                        .path("/api/media/**")
+                        .uri("http://blob-service:8083")
+                )
                 .build();
     }
 }
