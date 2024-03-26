@@ -28,10 +28,8 @@ public class Metadata extends Auditable {
     @Column(nullable = false)
     private Long size;
 
-    @Column(nullable = false)
     private String blobUrl;
 
-    @Column(nullable = false)
     private String fileName;
 
 }

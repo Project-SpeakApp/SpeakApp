@@ -9,9 +9,12 @@ import com.speakapp.blobservice.entities.TypeMedia;
 import com.speakapp.blobservice.exceptions.AccessDeniedException;
 import com.speakapp.blobservice.mappers.BlobMapper;
 import com.speakapp.blobservice.repositories.MediaMetadataRepository;
+import com.speakapp.blobservice.utils.MultipartFileValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.boot.MetadataBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -33,21 +36,30 @@ public class MediaService {
         return blobMapper.toFileDTO(metadata, content);
     }
 
+    @Transactional
     public BlobMetadataDTO uploadMedia(MultipartFile file, TypeMedia typeMedia, UUID userId) throws IOException {
-        UUID mediaId = UUID.randomUUID();
-        String fileName = typeMedia.name() + File.separator + mediaId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+
+        MultipartFileValidator.validateMultipartFile(file);
+
+        Metadata metadata = Metadata.builder()
+                .typeMedia(typeMedia)
+                .userId(userId)
+                .createdAt(Instant.now())
+                .size(file.getSize())
+                .build();
+
+        Metadata savedMetadata = mediaMetadataRepository.save(metadata);
+
+        UUID mediaId = savedMetadata.getMediaId();
+
+        String fileName = typeMedia.name() + File.separator + mediaId + "."
+                + FilenameUtils.getExtension(file.getOriginalFilename());
         BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
         blobClient.upload(file.getInputStream());
-        // TODO: Add more sophisticated logic for setting metadata
-        Metadata metadata = new Metadata();
-        metadata.setMediaId(mediaId);
-        metadata.setTypeMedia(typeMedia);
-        metadata.setSize(file.getSize());
-        metadata.setFileName(fileName);
-        metadata.setUserId(userId);
-        metadata.setBlobUrl(blobClient.getBlobUrl());
-        metadata.setCreatedAt(Instant.now());
-        Metadata savedMetadata = mediaMetadataRepository.save(metadata);
+
+        savedMetadata.setFileName(fileName);
+        savedMetadata.setBlobUrl(blobClient.getBlobUrl());
+
         return blobMapper.toDTO(savedMetadata, userId);
     }
 

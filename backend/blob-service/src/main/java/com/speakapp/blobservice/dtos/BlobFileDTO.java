@@ -10,7 +10,4 @@ import lombok.extern.jackson.Jacksonized;
 public class BlobFileDTO {
 
     byte[] content;
-    public byte[] getContent() {
-        return content;
-    }
 }

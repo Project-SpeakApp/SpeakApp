@@ -48,68 +48,68 @@ services:
     depends_on:
       - config-server
       
-  user-service:
-    <<: *service
-    container_name: user-service
-    build: user-service
-    ports:
-      - '8081:8081'
-    networks:
-      - net-userDB-userServ
-      - net-postServ-userServ
-      - net-apiGw-userServ
-      - net-eureka-config
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      user-db-service:
-        condition: service_healthy
+  # user-service:
+  #   <<: *service
+  #   container_name: user-service
+  #   build: user-service
+  #   ports:
+  #     - '8081:8081'
+  #   networks:
+  #     - net-userDB-userServ
+  #     - net-postServ-userServ
+  #     - net-apiGw-userServ
+  #     - net-eureka-config
+  #   depends_on:
+  #     config-server:
+  #       condition: service_healthy
+  #     eureka-server:
+  #       condition: service_healthy
+  #     user-db-service:
+  #       condition: service_healthy
 
-  user-db-service:
-    <<: *db
-    environment:
-      <<: *db-env
-      POSTGRES_DB: user_db
-    volumes:
-      - vol-user-db:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
-    networks:
-      - net-userDB-userServ
+  # user-db-service:
+  #   <<: *db
+  #   environment:
+  #     <<: *db-env
+  #     POSTGRES_DB: user_db
+  #   volumes:
+  #     - vol-user-db:/var/lib/postgresql/data
+  #   ports:
+  #     - '5432:5432'
+  #   networks:
+  #     - net-userDB-userServ
 
-  post-service:
-    <<: *service
-    container_name: post-service
-    build: post-service
-    ports:
-      - '8082:8082'
-    networks:
-      - net-postServ-userServ
-      - net-postDB-postServ
-      - net-apiGw-postServ
-      - net-eureka-config
-    depends_on:
-      post-db-service:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
+  # post-service:
+  #   <<: *service
+  #   container_name: post-service
+  #   build: post-service
+  #   ports:
+  #     - '8082:8082'
+  #   networks:
+  #     - net-postServ-userServ
+  #     - net-postDB-postServ
+  #     - net-apiGw-postServ
+  #     - net-eureka-config
+  #   depends_on:
+  #     post-db-service:
+  #       condition: service_healthy
+  #     config-server:
+  #       condition: service_healthy
+  #     eureka-server:
+  #       condition: service_healthy
 
-  post-db-service:
-    <<: *db
-    environment:
-      <<: *db-env
-      POSTGRES_DB: post_db
-      PGPORT: 5433
-    volumes:
-      - vol-post-db:/var/lib/postgresql/data
-    ports:
-      - '5433:5433'
-    networks:
-      - net-postDB-postServ
+  # post-db-service:
+  #   <<: *db
+  #   environment:
+  #     <<: *db-env
+  #     POSTGRES_DB: post_db
+  #     PGPORT: 5433
+  #   volumes:
+  #     - vol-post-db:/var/lib/postgresql/data
+  #   ports:
+  #     - '5433:5433'
+  #   networks:
+  #     - net-postDB-postServ
 
   api-gateway:
     <<: *service
