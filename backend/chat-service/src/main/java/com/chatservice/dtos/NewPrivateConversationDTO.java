@@ -12,8 +12,6 @@ import java.util.UUID;
 @Jacksonized
 public class NewPrivateConversationDTO {
 
-    UUID conversationCreatorUser;
-
     UUID conversationMemberUser;
 
 }

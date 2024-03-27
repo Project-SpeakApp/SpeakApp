@@ -26,10 +26,11 @@ public class ChatService {
 
     private final ConversationMapper conversationMapper;
 
-    public Conversation createPrivateConversation(NewPrivateConversationDTO newPrivateConversationDTO){
+    public Conversation createPrivateConversation(NewPrivateConversationDTO newPrivateConversationDTO,
+                                                  UUID conversationCreatorUser){
 
         List<GroupMember> usersGroupMembership = groupMemberRepository.findGroupMemberByUserIdsAndConversationIsPrivate(
-                newPrivateConversationDTO.getConversationCreatorUser(),
+                conversationCreatorUser,
                 newPrivateConversationDTO.getConversationMemberUser()
         );
 
@@ -48,7 +49,19 @@ public class ChatService {
             }
         }
 
-        return conversationRepository.save(conversationMapper.toEntity(false));
+        Conversation createdConversation = conversationRepository.save(conversationMapper.toEntity(false));
+
+        groupMemberRepository.save(GroupMember.builder()
+                .conversation(createdConversation)
+                .userId(conversationCreatorUser)
+                .build());
+
+        groupMemberRepository.save(GroupMember.builder()
+                .conversation(createdConversation)
+                .userId(newPrivateConversationDTO.getConversationMemberUser())
+                .build());
+
+        return createdConversation;
 
     }
 
