@@ -34,6 +34,8 @@ public class Message extends Auditable{
     @JoinColumn(name = "conversationId")
     private Conversation conversation;
 
-    private UUID responseToMessageId;
+    @OneToOne
+    @JoinColumn(name = "messageId")
+    private Message responseToMessageId;
 
 }
