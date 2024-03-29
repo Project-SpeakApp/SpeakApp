@@ -91,7 +91,7 @@ public class ChatService {
     }
 
     Pageable page = PageRequest.of(pageNumber, pageSize);
-    Page<Message> messagesPage = messageRepository.findAllByConversation(conversation, page);
+    Page<Message> messagesPage = messageRepository.findAllByConversationOrderByDeliveredAtDesc(conversation, page);
 
     return messagesPage.getContent().stream().map(message -> {
       return MessageDTO.builder()
