@@ -33,6 +33,7 @@ public class ChatController {
     //TODO: save message to repo, get userId from messageDTO or maybe try to connect user id with websocket session during handshake and get userId from websocketsession?
   }
 
+  //TODO: consider extracting http endpoints to another controller
   @PostMapping("/api/chat")
   @ResponseStatus(HttpStatus.CREATED)
   public Conversation createPrivateConversation(@RequestHeader("Authorization") String authHeader,
@@ -44,7 +45,6 @@ public class ChatController {
   }
 
   @GetMapping("/api/chat/{conversationId}")
-  //TODO: extract these 2 endpoints to another controller
   @ResponseStatus(HttpStatus.OK)
   public List<MessageDTO> getConversationHistory(@RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize,
