@@ -6,6 +6,8 @@ import com.chatservice.entities.Conversation;
 import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
 import com.chatservice.entities.MessageType;
+import com.chatservice.exceptions.AccessDeniedException;
+import com.chatservice.exceptions.ConversationNotFound;
 import com.chatservice.mappers.ConversationMapper;
 import com.chatservice.mappers.MessageMapper;
 import com.chatservice.repositories.ConversationRepository;
@@ -82,10 +84,10 @@ public class ChatService {
   public List<MessageDTO> getConversationHistory(int pageNumber, int pageSize, UUID conversationId,
       UUID userId) {
     Conversation conversation = conversationRepository.findByConversationId(conversationId)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        .orElseThrow(ConversationNotFound::new);
 
     if (!groupMemberRepository.existsGroupMemberByConversationAndAndUserId(conversation, userId)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      throw new AccessDeniedException();
     }
 
     Pageable page = PageRequest.of(pageNumber, pageSize);
