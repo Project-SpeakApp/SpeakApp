@@ -6,6 +6,7 @@ import com.chatservice.entities.Conversation;
 import com.chatservice.services.ChatService;
 import com.chatservice.utils.JwtDecoder;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,24 +22,37 @@ import java.util.UUID;
 @SecurityRequirement(name = "bearerAuth")
 public class ChatController {
 
-    private final ChatService chatService;
-    private final SimpMessagingTemplate messagingTemplate;
-    private final JwtDecoder jwtDecoder;
-    private static final String AUTH_HEADER_PREFIX = "Bearer ";
+  private final ChatService chatService;
+  private final SimpMessagingTemplate messagingTemplate;
+  private final JwtDecoder jwtDecoder;
+  private static final String AUTH_HEADER_PREFIX = "Bearer ";
 
-    @MessageMapping("/chat.sendMessage")
-    public void sendMessage(@Payload MessageDTO messageDTO){
-        messagingTemplate.convertAndSend("/chat/" + messageDTO.getConversationId(), messageDTO);
-    }
+  @MessageMapping("/chat.sendMessage")
+  public void sendMessage(@Payload MessageDTO messageDTO) {
+    messagingTemplate.convertAndSend("/chat/" + messageDTO.getConversationId(), messageDTO);
+    //TODO: save message to repo, get userId from messageDTO or maybe try to connect user id with websocket session during handshake and get userId from websocketsession?
+  }
 
-    @PostMapping("/api/chat")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Conversation createPrivateConversation(@RequestHeader("Authorization") String authHeader,
-                                                  @RequestBody NewPrivateConversationDTO newPrivateConversationDTO){
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+  @PostMapping("/api/chat")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Conversation createPrivateConversation(@RequestHeader("Authorization") String authHeader,
+      @RequestBody NewPrivateConversationDTO newPrivateConversationDTO) {
+    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
 
-        return chatService.createPrivateConversation(newPrivateConversationDTO, userId);
-    }
+    return chatService.createPrivateConversation(newPrivateConversationDTO, userId);
+  }
 
+  @GetMapping("/api/chat/{conversationId}")
+  //TODO: extract these 2 endpoints to another controller
+  @ResponseStatus(HttpStatus.OK)
+  public List<MessageDTO> getConversationHistory(@RequestParam(defaultValue = "0") int pageNumber,
+      @RequestParam(defaultValue = "5") int pageSize,
+      @PathVariable UUID conversationId,
+      @RequestHeader("Authorization") String authHeader) {
+    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+
+    return chatService.getConversationHistory(pageNumber, pageSize, conversationId, userId);
+  }
 }
