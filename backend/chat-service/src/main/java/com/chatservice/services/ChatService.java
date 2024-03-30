@@ -104,4 +104,17 @@ public class ChatService {
     }).toList();
   }
 
+  public void saveMessage(MessageDTO messageDTO){
+    Conversation conversation = conversationRepository.findByConversationId(messageDTO.getConversationId())
+        .orElseThrow(ConversationNotFound::new);
+
+    messageRepository.save(Message.builder()
+            .fromUser(messageDTO.getFromUser())
+            .content(messageDTO.getContent())
+            .type(messageDTO.getType().toString())
+            .conversation(conversation)
+            .responseToMessageId(null) //not implemented
+        .build());
+  }
+
 }

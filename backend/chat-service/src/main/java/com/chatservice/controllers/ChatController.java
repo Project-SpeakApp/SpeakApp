@@ -30,7 +30,7 @@ public class ChatController {
   @MessageMapping("/chat.sendMessage")
   public void sendMessage(@Payload MessageDTO messageDTO) {
     messagingTemplate.convertAndSend("/chat/" + messageDTO.getConversationId(), messageDTO);
-    //TODO: save message to repo, get userId from messageDTO or maybe try to connect user id with websocket session during handshake and get userId from websocketsession?
+    chatService.saveMessage(messageDTO);
   }
 
   //TODO: consider extracting http endpoints to another controller
