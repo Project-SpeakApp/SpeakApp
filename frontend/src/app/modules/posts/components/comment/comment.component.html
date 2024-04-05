@@ -1,16 +1,6 @@
 <div class="card py-2 px-2 w-[470px] bg-base-100 shadow-xl " >
   <div class="flex items-center">
-    <div class="w-1/8">
-      <div class="avatar m-1">
-        <div class="w-10 rounded-full">
-          <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-        </div>
-      </div>
-    </div>
-    <div class="pl-[2px] -mt-[8px]">
-      <h2 class="text-sm font-semibold">{{comment.author.fullName}}</h2>
-      <p class="italic text-[12px]">{{formattedDate}}</p>
-    </div>
+    <app-author-preview [fullName]="comment.author.fullName" [formattedDate]="formattedDate" [isComment]="true"></app-author-preview>
     <div class="ml-auto">
       <app-comment-delete  (deleted)="handleDeletion($event)" [commentId]="comment.commentId" [authorId]="comment.author.userId"></app-comment-delete>
       <span *ngIf="userId === comment.author.userId" (click)="enableEditing()" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Edit">

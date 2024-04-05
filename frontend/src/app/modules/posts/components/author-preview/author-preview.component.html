@@ -1,0 +1,13 @@
+<div class="flex flex-row">
+  <div [ngClass]="{'w-1/8': true, }">
+    <div class="avatar">
+      <div [ngClass]="{'rounded-full': true, 'w-12': !isComment, 'w-10': isComment}">
+        <img alt="profile-picture" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+      </div>
+    </div>
+  </div>
+  <div class="pl-[10px]" >
+    <h2 [ngClass]="{'font-semibold': true, 'text-xl': !isComment, 'text-sm': isComment}">{{fullName}}</h2>
+    <p class="text-[12px] italic">{{formattedDate}}</p>
+  </div>
+</div>

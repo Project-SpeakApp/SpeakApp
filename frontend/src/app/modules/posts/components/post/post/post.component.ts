@@ -19,11 +19,8 @@ export class PostComponent implements OnChanges, OnInit{
   userId: string = '';
   isEdited: boolean = false;
 
-
-
   constructor(private authService: AuthService ) {
   }
-
 
   enableEditing(): void {
     this.isEdited = !this.isEdited;

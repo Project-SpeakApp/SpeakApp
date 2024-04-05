@@ -21,6 +21,7 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { SortCommentsComponent } from './components/sort-comments/sort-comments.component';
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
+import { AuthorPreviewComponent } from './components/author-preview/author-preview.component';
 
 
 
@@ -43,6 +44,7 @@ import { EditCommentComponent } from './components/edit-comment/edit-comment.com
     AddCommentComponent,
     SortCommentsComponent,
     EditCommentComponent,
+    AuthorPreviewComponent,
   ],
   imports: [
     CommonModule,
