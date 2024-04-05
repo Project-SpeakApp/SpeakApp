@@ -5,6 +5,7 @@ import com.speakapp.postservice.entities.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     Page<Comment> findAllByPost(Post post, Pageable pageable);
 
     List<Comment> findAllByPostOrderByCreatedAtDesc(Post post);
+    @Query("SELECT c FROM Comment c WHERE c.post = :post ")
+    List<Comment> findAllByPost(Post post);
 
     Long countAllByPost(Post post);
 }

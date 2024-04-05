@@ -15,10 +15,6 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -57,13 +53,24 @@ public class CommentService {
                 currentUserReactionType);
     }
 
-    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId,
-                                                String sortBy, Sort.Direction sortDirection){
+    public CommentPageGetDTO getCommentsForPost(int firstComment, int lastComment, UUID postId, UUID userId,
+                                                String sortBy, String sortDirection){
 
         Post post = postService.getPostById(postId);
-        Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortBy));
-        Page<Comment> commentsPage = commentRepository.findAllByPost(post, page);
-        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
+        List<Comment> sortedPostComments = sortComments(commentRepository.findAllByPost(post), sortBy, sortDirection);
+
+        if(firstComment > sortedPostComments.size()) {
+            firstComment = sortedPostComments.size();
+        }
+
+        if(lastComment > sortedPostComments.size()) {
+            lastComment = sortedPostComments.size();
+        }
+
+        List<Comment> commentsToGet = sortedPostComments.subList(firstComment, lastComment);
+
+        return createCommentPageGetDTOFromCommentPage(commentsToGet, userId, firstComment, lastComment, (long) sortedPostComments.size());
+
     }
 
     // Keep the class implementation for migration to CommentService
@@ -112,8 +119,9 @@ public class CommentService {
                 .build();
     }
 
-    private CommentPageGetDTO createCommentPageGetDTOFromCommentPage(Page<Comment> commentsPage, UUID userId, Pageable page){
-        List<CommentGetDTO> commentGetDTOS = commentsPage.getContent().stream().map(comment -> {
+    private CommentPageGetDTO createCommentPageGetDTOFromCommentPage(List<Comment> commentsToGet, UUID userId,
+                                                                     int firstComment, int lastComment, Long totalComments){
+        List<CommentGetDTO> commentGetDTOS = commentsToGet.stream().map(comment -> {
             UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
             ReactionsGetDTO commentReactions = getReactionsForTheComment(comment);
             ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
@@ -128,9 +136,9 @@ public class CommentService {
 
         return commentPageMapper.toGetDTO(
                 commentGetDTOS,
-                page,
-                commentsPage.getTotalPages(),
-                commentsPage.getTotalElements()
+                firstComment,
+                lastComment,
+                totalComments
         );
     }
 
@@ -167,4 +175,28 @@ public class CommentService {
 
         commentRepository.delete(commentToDelete);
     }
+
+    private List<Comment> sortComments(List<Comment> allPostComments, String sortBy, String sortDirection){
+        Comparator<Comment> ascCreatedAtComparator = Comparator.comparing(Comment::getCreatedAt);
+        Comparator<Comment> ascNumberOfReactionsComparator = Comparator.comparing(Comment::getNumberOfReactions);
+
+        if(Objects.equals(sortBy, "createdAt")){
+            if(Objects.equals(sortDirection, "ASC")){
+                allPostComments.sort(ascCreatedAtComparator);
+            }
+            else {
+                allPostComments.sort(ascCreatedAtComparator.reversed());
+            }
+        } else{
+            if(Objects.equals(sortDirection, "ASC")){
+                allPostComments.sort(ascNumberOfReactionsComparator);
+            }
+            else {
+                allPostComments.sort(ascNumberOfReactionsComparator.reversed());
+            }
+        }
+
+        return allPostComments;
+    }
+
 }
