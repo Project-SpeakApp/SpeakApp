@@ -9,6 +9,9 @@ import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.co
 import { SharedModule } from './shared/shared.module';
 import {initializeKeycloak} from "./init/keycloak-init.factory";
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HttpErrorHandler} from "./http-interceptor/http-error-handler";
+import {AlertService} from "./shared/services/alert.service";
 
 @NgModule({
   declarations: [
@@ -31,6 +34,12 @@ import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorHandler,
+      multi: true,
+      deps: [AlertService]
     }
   ],
   bootstrap: [AppComponent]

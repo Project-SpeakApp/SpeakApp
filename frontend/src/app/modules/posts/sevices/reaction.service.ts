@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { finalize, tap } from 'rxjs';
-import { AlertService } from 'src/app/shared/services/alert.service';
+import { finalize } from 'rxjs';
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 
 @Injectable({
@@ -10,7 +9,6 @@ import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 export class ReactionService {
   constructor(
     private http: HttpClient,
-    private alertService: AlertService,
   ) {}
 
   isLoading = signal(false);
@@ -33,14 +31,6 @@ export class ReactionService {
         finalize(() => {
           this.isLoading.set(false);
         }),
-        tap(
-          (data) => {
-            console.log(data);
-          },
-          (error) => {
-            this.alertService.showAlert(error, 'error');
-          },
-        ),
       );
   }
 }
