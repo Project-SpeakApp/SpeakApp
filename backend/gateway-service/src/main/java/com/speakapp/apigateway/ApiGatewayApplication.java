@@ -18,16 +18,13 @@ public class ApiGatewayApplication {
         return builder.routes()
                 .route("post-service", r -> r
                         .path("/api/posts/**", "/api/comments/**")
-                        .uri("lb://POST-SERVICE"))
-//                        .uri("http://post-service:8082")) // in future uri(lb:POST-SERVICE)
+                        .uri("http://post-service:8082"))
                 .route("user-service", r -> r
                         .path("/api/users/**")
-                        .uri("lb://USER-SERVICE"))
-//                        .uri("http://user-service:8081")) // in future uri(lb:USER-SERVICE)
+                        .uri("http://user-service:8081"))
                 .route("media-service", r -> r
                         .path("/api/media/**")
-                        .uri("lb://BLOB-SERVICE")
-//                        .uri("http://blob-service:8083")
+                        .uri("http://blob-service:8083")
                 )
                 .build();
     }
