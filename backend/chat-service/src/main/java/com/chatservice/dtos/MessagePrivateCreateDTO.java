@@ -2,7 +2,6 @@ package com.chatservice.dtos;
 
 import com.chatservice.entities.MessageType;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
@@ -11,7 +10,8 @@ import java.util.UUID;
 @Value
 @Builder
 @Jacksonized
-public class MessageDTO {
+//TODO: for group chats we might have to create DTO with 'toUser' -> 'toConversation'
+public class MessagePrivateCreateDTO {
 
     UUID fromUser;
 
@@ -22,4 +22,5 @@ public class MessageDTO {
     MessageType type;
 
     UUID conversationId;
+
 }

@@ -27,7 +27,8 @@ public class Message extends Auditable{
     private String content;
 
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private MessageType type;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -35,7 +36,9 @@ public class Message extends Auditable{
     private Conversation conversation;
 
     @OneToOne
-    @JoinColumn(name = "messageId")
+    @JoinColumn(name = "response_to_message_id")
     private Message responseToMessageId;
+
+    private boolean isDeleted;
 
 }

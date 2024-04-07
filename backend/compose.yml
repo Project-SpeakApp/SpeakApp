@@ -27,6 +27,7 @@ services:
       - net-userDB-userServ
       - net-postServ-userServ
       - net-apiGw-userServ
+      - net-userServ-chatServ
     depends_on:
       user-db-service:
         condition: service_healthy
@@ -78,6 +79,7 @@ services:
     networks:
       - net-messageDB-chatServ
       - net-apiGw-chatServ
+      - net-userServ-chatServ
     depends_on:
       message-db-service:
         condition: service_healthy
@@ -110,6 +112,7 @@ networks:
   net-userDB-userServ:
   net-messageDB-chatServ:
   net-postServ-userServ:
+  net-userServ-chatServ:
   net-apiGw-userServ:
   net-apiGw-postServ:
   net-apiGw-chatServ:

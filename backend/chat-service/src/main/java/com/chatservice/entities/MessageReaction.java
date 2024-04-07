@@ -40,4 +40,5 @@ public class MessageReaction {
     @Enumerated(EnumType.STRING)
     private ReactionType type;
 
+
 }

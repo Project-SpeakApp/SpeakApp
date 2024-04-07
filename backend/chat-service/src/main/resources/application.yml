@@ -7,14 +7,12 @@ logging:
     org.hibernate: ERROR
 
 ---
-
 spring:
   application:
     name: chat-service
   config:
     activate:
       on-profile: local
-
   mvc:
     log-request-details: true # for debugging
 
@@ -22,18 +20,17 @@ spring:
     url: jdbc:h2:mem:db
     username: sa
     password: sa
-    driverClassName: org.h2.Driver
-
+    driver-class-name: org.h2.Driver # Dodaj właściwość driver-class-name
   h2:
     console:
       enabled: true
       path: /h2-console
-
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     show-sql: true
+
 
 ---
 
