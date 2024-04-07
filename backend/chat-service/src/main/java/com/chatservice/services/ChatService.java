@@ -102,6 +102,8 @@ public class ChatService {
                 .conversationName(getConversationForMessage.getConversationName())
                 .isGroupConversation(getConversationForMessage.isGroupConversation())
                 .build();
+
+
         UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUser());
 
         MessageGetDTO messageGetDTO = MessageGetDTO.builder()

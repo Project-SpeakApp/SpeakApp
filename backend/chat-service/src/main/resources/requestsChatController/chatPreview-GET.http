@@ -1,0 +1,11 @@
+### No Parameters request
+GET http://localhost:8083/api/chat/chatpreview
+Authorization: Bearer Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Yzg0ZmI5NS0xMmM0LTExZWMtODJhOC0wMjQyYWMxMzAwMDMiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.k3sedckyNF1v0i3QTgGyh3MrxzgqMDVs043zB5X34pY
+
+### with parameters
+GET http://localhost:8083/api/chat/chatpreview?pageNumber=0&pageSize=1
+Authorization: Bearer Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Yzg0ZmI5NS0xMmM0LTExZWMtODJhOC0wMjQyYWMxMzAwMDMiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.k3sedckyNF1v0i3QTgGyh3MrxzgqMDVs043zB5X34pY
+
+### Empty
+GET http://localhost:8083/api/chat/chatpreview
+Authorization: Bearer Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Yzg0ZmI5ZS0xMmM0LTExZWMtODJhOC0wMjQyYWMxMzAwMDMiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.UFTwUnFd71_bqgU6XxZxTZmK-uvCZBAJwOYPTgmJdYk
