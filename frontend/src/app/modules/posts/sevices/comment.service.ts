@@ -13,8 +13,8 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  getComments(postId: string, currentPage: number, pageSize: number, sortBy: string, sortDirection: string): Observable<CommentGetListModel> {
-    let params = new HttpParams().set('postId', postId).set('pageNumber', currentPage).set('pageSize', pageSize).set('sortBy', sortBy ).set('sortDirection', sortDirection);
+  getComments(postId: string, firstComment: number, lastComment: number, sortBy: string, sortDirection: string): Observable<CommentGetListModel> {
+    let params = new HttpParams().set('postId', postId).set('firstComment', firstComment).set('lastComment', lastComment).set('sortBy', sortBy ).set('sortDirection', sortDirection);
     return this.http.get<CommentGetListModel>('http://localhost:8080/api/comments', {params});
   }
 

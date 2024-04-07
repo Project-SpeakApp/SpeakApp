@@ -4,7 +4,7 @@
     <app-comment (deleted)="handleDeletion($event)" [comment]="comment"></app-comment>
   </li>
   <div *ngIf="totalComments !== currentComments" class="text-center">
-    <p (click)="getComments(10, currentPage, false)" class="text-xs cursor-pointer inline-block">Show more comments...</p>
+    <p (click)="getComments(currentComments, currentComments+10, false)" class="text-xs cursor-pointer inline-block">Show more comments...</p>
   </div>
 </ul>
 <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
