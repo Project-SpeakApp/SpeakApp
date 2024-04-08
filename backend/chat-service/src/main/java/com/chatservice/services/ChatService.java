@@ -3,7 +3,6 @@ package com.chatservice.services;
 import com.chatservice.communication.UserServiceCommunicationClient;
 import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
-import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
 import com.chatservice.mappers.ConversationMapper;
 import com.chatservice.mappers.GroupMemberMapper;
@@ -18,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,24 +43,13 @@ public class ChatService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserId's must be different to create a conversation");
         }
 
-        List<GroupMember> usersGroupMembership = groupMemberRepository.findGroupMemberByUserIdsAndConversationIsPrivate(
-                conversationCreatorUser,
-                newPrivateConversationDTO.getConversationMemberUser()
-        );
+        List<UUID> checkIfPrivateConversationExists = conversationRepository.findPrivateConversationForTwoUsers
+                (newPrivateConversationDTO.getConversationMemberUser(),
+                conversationCreatorUser);
 
-        if(!usersGroupMembership.isEmpty()) {
-            List<UUID> uniqueConversationsIds = new ArrayList<>();
-
-            for(GroupMember groupMember : usersGroupMembership){
-                UUID conversationIdToCheck = groupMember.getConversation().getConversationId();
-
-                if(!uniqueConversationsIds.contains(conversationIdToCheck)){
-                    uniqueConversationsIds.add(conversationIdToCheck);
-                } else {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser() + " already exists");
-                }
-            }
+        if(!checkIfPrivateConversationExists.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser() + " already exists");
         }
 
         Conversation createdConversation = conversationRepository.save(conversationMapper.toEntity(false));

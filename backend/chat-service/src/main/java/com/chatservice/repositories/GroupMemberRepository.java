@@ -11,8 +11,6 @@ import java.util.UUID;
 @Repository
 public interface GroupMemberRepository extends JpaRepository<GroupMember, UUID> {
 
-    @Query("SELECT gr FROM group_member gr WHERE gr.conversation.isGroupConversation = false AND (gr.userId = :userId1 OR gr.userId = :userId2)")
-    List<GroupMember> findGroupMemberByUserIdsAndConversationIsPrivate(UUID userId1, UUID userId2);
 
     @Query("SELECT DISTINCT gr.conversation.conversationId FROM group_member gr WHERE gr.userId = :userId")
     List<UUID> findConversationsByGroupMember(UUID userId);
