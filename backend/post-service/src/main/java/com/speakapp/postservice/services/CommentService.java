@@ -13,6 +13,8 @@ import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class CommentService {
     private final CommentPageMapper commentPageMapper;
     private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
+    private final EntityManager entityManager;
 
     public CommentGetDTO updateComment(CommentUpdateDTO commentUpdateDTO, UUID commentId, UUID userId) {
         Comment commentToUpdate = commentRepository.findById(commentId).orElseThrow(() ->
@@ -57,7 +60,7 @@ public class CommentService {
                                                 String sortBy, String sortDirection){
 
         Post post = postService.getPostById(postId);
-        List<Comment> sortedPostComments = sortComments(commentRepository.findAllByPost(post), sortBy, sortDirection);
+        List<Comment> sortedPostComments = findCommentPageByPostSorted(post,firstComment, lastComment,sortBy, sortDirection);
 
         if(firstComment > sortedPostComments.size()) {
             firstComment = sortedPostComments.size();
@@ -69,7 +72,7 @@ public class CommentService {
 
         List<Comment> commentsToGet = sortedPostComments.subList(firstComment, lastComment);
 
-        return createCommentPageGetDTOFromCommentPage(commentsToGet, userId, firstComment, lastComment, (long) sortedPostComments.size());
+        return createCommentPageGetDTOFromCommentPage(commentsToGet, userId, firstComment, lastComment, countCommentsByPost(post));
 
     }
 
@@ -176,27 +179,24 @@ public class CommentService {
         commentRepository.delete(commentToDelete);
     }
 
-    private List<Comment> sortComments(List<Comment> allPostComments, String sortBy, String sortDirection){
-        Comparator<Comment> ascCreatedAtComparator = Comparator.comparing(Comment::getCreatedAt);
-        Comparator<Comment> ascNumberOfReactionsComparator = Comparator.comparing(Comment::getNumberOfReactions);
+    private List<Comment> findCommentPageByPostSorted(Post post,int firstComment, int lastComment, String sortBy, String sortOrder) {
+        String jpqlQuery = "SELECT c FROM Comment c WHERE c.post = :post ORDER BY";
 
-        if(Objects.equals(sortBy, "createdAt")){
-            if(Objects.equals(sortDirection, "ASC")){
-                allPostComments.sort(ascCreatedAtComparator);
-            }
-            else {
-                allPostComments.sort(ascCreatedAtComparator.reversed());
-            }
-        } else{
-            if(Objects.equals(sortDirection, "ASC")){
-                allPostComments.sort(ascNumberOfReactionsComparator);
-            }
-            else {
-                allPostComments.sort(ascNumberOfReactionsComparator.reversed());
-            }
-        }
+        jpqlQuery += " c." + sortBy + " " + sortOrder;
 
-        return allPostComments;
+        Query query = entityManager.createQuery(jpqlQuery);
+        query.setParameter("post", post);
+        query.setFirstResult(firstComment);
+        query.setMaxResults(lastComment);
+
+        return query.getResultList();
+    }
+
+    private long countCommentsByPost(Post post) {
+        String jpqlCountQuery = "SELECT COUNT(c) FROM Comment c WHERE c.post = :post";
+        Query countQuery = entityManager.createQuery(jpqlCountQuery);
+        countQuery.setParameter("post", post);
+        return (long) countQuery.getSingleResult();
     }
 
 }
