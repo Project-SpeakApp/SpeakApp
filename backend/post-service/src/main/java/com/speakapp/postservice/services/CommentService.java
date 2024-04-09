@@ -62,17 +62,17 @@ public class CommentService {
         Post post = postService.getPostById(postId);
         List<Comment> sortedPostComments = findCommentPageByPostSorted(post,firstComment, lastComment,sortBy, sortDirection);
 
-        if(firstComment > sortedPostComments.size()) {
-            firstComment = sortedPostComments.size();
+        long totalComments = countCommentsByPost(post);
+
+        if(firstComment > totalComments) {
+            firstComment = (int)totalComments;
         }
 
-        if(lastComment > sortedPostComments.size()) {
-            lastComment = sortedPostComments.size();
+        if(lastComment > totalComments) {
+            lastComment = (int)totalComments;
         }
 
-        List<Comment> commentsToGet = sortedPostComments.subList(firstComment, lastComment);
-
-        return createCommentPageGetDTOFromCommentPage(commentsToGet, userId, firstComment, lastComment, countCommentsByPost(post));
+        return createCommentPageGetDTOFromCommentPage(sortedPostComments, userId, firstComment, lastComment, totalComments);
 
     }
 
@@ -187,7 +187,7 @@ public class CommentService {
         Query query = entityManager.createQuery(jpqlQuery);
         query.setParameter("post", post);
         query.setFirstResult(firstComment);
-        query.setMaxResults(lastComment);
+        query.setMaxResults(lastComment - firstComment + 1);
 
         return query.getResultList();
     }
