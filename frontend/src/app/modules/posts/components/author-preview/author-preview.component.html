@@ -1,13 +1,27 @@
-<div class="flex flex-row">
-  <div [ngClass]="{'w-1/8': true, }">
-    <div class="avatar">
-      <div [ngClass]="{'rounded-full': true, 'w-12': !isComment, 'w-10': isComment}">
-        <img alt="profile-picture" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+<div class="mytooltip">
+  <div class="flex flex-row cursor-pointer" (click)="navigateToUserProfile()">
+    <div [ngClass]="{'w-1/8': true, }">
+      <div class="avatar">
+        <div [ngClass]="{'rounded-full': true, 'w-12': !isComment, 'w-10': isComment}">
+          <img alt="profile-picture" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        </div>
       </div>
     </div>
+    <div class="pl-[10px]" >
+      <h2 [ngClass]="{'font-semibold': true, 'text-xl': !isComment, 'text-sm': isComment}">{{user.fullName}}</h2>
+      <p class="text-[12px] italic">{{formattedDate}}</p>
+    </div>
   </div>
-  <div class="pl-[10px]" >
-    <h2 [ngClass]="{'font-semibold': true, 'text-xl': !isComment, 'text-sm': isComment}">{{fullName}}</h2>
-    <p class="text-[12px] italic">{{formattedDate}}</p>
+  <div class="tooltiptext top-[54px] h-[50px] w-[250px] bg-base-100 rounded-full">
+    <div class="flex flex-row gap-4">
+      <button class="text-sm">
+        <span class="material-symbols-outlined">group</span>
+        Friend request
+      </button>
+      <button class="text-sm">
+        <span class="material-symbols-outlined my-auto">chat</span>
+        Chat
+      </button>
+    </div>
   </div>
 </div>

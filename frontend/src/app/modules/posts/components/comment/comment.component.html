@@ -1,6 +1,6 @@
 <div class="card py-2 px-2 w-[470px] bg-base-100 shadow-xl " >
   <div class="flex items-center">
-    <app-author-preview [fullName]="comment.author.fullName" [formattedDate]="formattedDate" [isComment]="true"></app-author-preview>
+    <app-author-preview [user]="comment.author" [formattedDate]="formattedDate" [isComment]="true"></app-author-preview>
     <div class="ml-auto">
       <app-comment-delete  (deleted)="handleDeletion($event)" [commentId]="comment.commentId" [authorId]="comment.author.userId"></app-comment-delete>
       <span *ngIf="userId === comment.author.userId" (click)="enableEditing()" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Edit">

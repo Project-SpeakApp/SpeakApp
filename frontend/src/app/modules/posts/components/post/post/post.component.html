@@ -1,6 +1,6 @@
 <div class="card py-2 bg-base-300 w-[500px] shadow-xl">
     <div class="flex items-center">
-      <app-author-preview [fullName]="post.author.fullName" [formattedDate]="formattedDate"></app-author-preview>
+      <app-author-preview [user]="post.author" [formattedDate]="formattedDate"></app-author-preview>
       <div class="ml-auto" style="margin-right: -5px">
         <app-delete-post (deleted)="handleDeletion($event)" [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>
         <span *ngIf="userId === post.author.userId" (click)="enableEditing()" class="tooltip tooltip-bottom cursor-pointer -top-4" data-tip="Edit">
