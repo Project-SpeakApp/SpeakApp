@@ -1,11 +1,13 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { PostService } from '../../sevices/post.service';
-import { Subscription } from 'rxjs';
-import { AlertService } from '../../../../shared/services/alert.service';
+import {PostService} from '../../sevices/post.service';
+import {Subscription} from 'rxjs';
+import {AlertService} from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
-import {AuthService} from "../../../../shared/services/auth.service";
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
+import ImageSnippet from "../../../../shared/types/media/ImageSnippet";
+import {ImageService} from "../../../../shared/services/image.service";
+import TypeMedia from "../../../../shared/types/media/type-media";
 
 @Component({
   selector: 'app-add-post',
@@ -20,11 +22,13 @@ export class AddPostComponent implements OnInit, OnDestroy {
 
   myForm!: FormGroup;
 
+  selectedFile: ImageSnippet | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
     private alertService: AlertService,
+    private imageService: ImageService
   ) {
     this.model = {
       content: ''
@@ -48,6 +52,19 @@ export class AddPostComponent implements OnInit, OnDestroy {
     } else {
       this.alertService.showAlert('Type Content', 'error');
     }
+  }
+
+  processImage(imageInput: any) {
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
+        this.selectedFile = new ImageSnippet(event.target.result, file);
+      });
+    })
+
+    reader.readAsDataURL(file);
   }
 
   ngOnInit(): void {
