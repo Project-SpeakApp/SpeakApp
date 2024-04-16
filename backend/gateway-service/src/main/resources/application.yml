@@ -35,6 +35,6 @@ spring:
           issuer-uri: ${app.jwt.issuer-uri}
           jwk-set-uri: ${app.jwt.keycloak}/realms/${app.jwt.realm}/protocol/openid-connect/certs
   application:
-    name: gateway-service
+    name: api-gateway
 
 
