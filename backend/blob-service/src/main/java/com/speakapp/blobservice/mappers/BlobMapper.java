@@ -15,7 +15,4 @@ public interface BlobMapper {
 
     @Mapping(target = "content", source = "content")
     BlobFileDTO toFileDTO(Metadata metadata, byte[] content);
-
-    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-    void updateMetadataFromDTO(BlobMetadataDTO blobMetadataDTO, @MappingTarget Metadata metadata);
 }

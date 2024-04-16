@@ -12,14 +12,13 @@ import java.util.regex.Pattern;
 
 public class MultipartFileValidator {
 
-    public static boolean validateMultipartFile(MultipartFile multipartFile) {
+    public static void validateMultipartFile(MultipartFile multipartFile) {
 
         if(multipartFile.isEmpty()) {
             throw new EmptyMultipartFileException();
         }
 
         String contentType = multipartFile.getContentType();
-        System.out.println("Content type of multipart file: " + contentType);
 
         if(contentType == null) {
             throw new ServiceLayerException(
@@ -35,7 +34,5 @@ public class MultipartFileValidator {
         if(!matcher.matches()) {
             throw new MultipartFileForbiddenMimeTypeException();
         }
-
-        return true;
     }
 }

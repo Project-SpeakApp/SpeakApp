@@ -8,10 +8,10 @@ public class AccessDeniedException extends ServiceLayerException {
       private static final HttpStatus HTTP_STATUS = HttpStatus.FORBIDDEN;
 
       public AccessDeniedException() {
-     super(DEFAULT_MESSAGE, HTTP_STATUS);
+          super(DEFAULT_MESSAGE, HTTP_STATUS);
       }
 
       public AccessDeniedException(String message) {
-     super(message, HTTP_STATUS);
+          super(message, HTTP_STATUS);
       }
 }

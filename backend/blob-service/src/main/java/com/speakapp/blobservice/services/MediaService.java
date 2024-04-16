@@ -7,12 +7,12 @@ import com.speakapp.blobservice.dtos.BlobMetadataDTO;
 import com.speakapp.blobservice.entities.Metadata;
 import com.speakapp.blobservice.entities.TypeMedia;
 import com.speakapp.blobservice.exceptions.AccessDeniedException;
+import com.speakapp.blobservice.exceptions.MetadataNotFoundException;
 import com.speakapp.blobservice.mappers.BlobMapper;
 import com.speakapp.blobservice.repositories.MediaMetadataRepository;
 import com.speakapp.blobservice.utils.MultipartFileValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.hibernate.boot.MetadataBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,7 +31,10 @@ public class MediaService {
     private final BlobMapper blobMapper;
 
     public BlobFileDTO downloadMediaByUUID(UUID mediaId) {
-        Metadata metadata = mediaMetadataRepository.findByMediaId(mediaId);
+        Optional<Metadata> optionalMetadata = mediaMetadataRepository.findByMediaId(mediaId);
+
+        Metadata metadata = optionalMetadata.orElseThrow(MetadataNotFoundException::new);
+
         BlobClient blobClient = blobContainerClient.getBlobClient(metadata.getFileName());
         byte[] content = blobClient.downloadContent().toBytes();
         return blobMapper.toFileDTO(metadata, content);
@@ -63,12 +67,16 @@ public class MediaService {
         return blobMapper.toDTO(savedMetadata, userId);
     }
 
+    @Transactional
     public void deleteMedia(UUID userId, UUID mediaId) {
         // TODO Finish implementing this method after consulting with frontend team
-        Metadata metadata = mediaMetadataRepository.findByMediaId(mediaId);
+        Optional<Metadata> optionalMetadata = mediaMetadataRepository.findByMediaId(mediaId);
+        Metadata metadata = optionalMetadata.orElseThrow(MetadataNotFoundException::new);
+
         if (!metadata.getUserId().equals(userId)) {
             throw new AccessDeniedException("User with id = " + userId + " is not allowed to delete media with id = " + mediaId);
         }
+
         BlobClient blobClient = blobContainerClient.getBlobClient(metadata.getFileName());
         blobClient.delete();
         mediaMetadataRepository.delete(metadata);
