@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8084
 
 logging:
   level:
@@ -49,7 +49,7 @@ spring:
     log-request-details: true # for debugging
 
   datasource:
-    url: jdbc:postgresql://message-db-service:5435/message_db
+    url: jdbc:postgresql://message-db-service:5436/message_db
     username: postgres
     password: postgres
 
