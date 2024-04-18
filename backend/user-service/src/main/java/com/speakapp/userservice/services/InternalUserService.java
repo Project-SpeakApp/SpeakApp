@@ -1,6 +1,7 @@
 package com.speakapp.userservice.services;
 
 import com.speakapp.userservice.dtos.AppUserPreviewDTO;
+import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.mappers.AppUserMapper;
 import com.speakapp.userservice.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,6 @@ public class InternalUserService {
     public AppUserPreviewDTO getUserPreview(UUID userId) {
         return userRepository.findById(userId)
                 .map(appUserMapper::toAppUserPreviewDto)
-                .orElse(AppUserPreviewDTO.empty(userId));
+                .orElseThrow(UserNotFoundException::new);
     }
 }

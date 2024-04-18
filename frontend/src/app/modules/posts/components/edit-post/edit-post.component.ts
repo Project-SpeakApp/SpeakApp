@@ -6,11 +6,12 @@ import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
+import {CalculateNumberOfRows} from "../../../../shared/util/CalculateNumberOfRows";
 
 @Component({
   selector: 'app-edit-post',
   templateUrl: './edit-post.component.html',
-  styleUrls: ['./edit-post.component.css']
+  styleUrls: ['../../css-files/edit-style-sheet.component.css']
 })
 export class EditPostComponent implements OnInit, OnDestroy{
   @Input() currentContent: string = "";
@@ -29,6 +30,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
   private UpdatePostSubscription?: Subscription;
   model: AddPost;
   isLoading: boolean = false;
+  numberOfRows: number = 0;
 
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertService, private postService: PostService, private authService: AuthService) {
@@ -37,13 +39,12 @@ export class EditPostComponent implements OnInit, OnDestroy{
     };
   }
 
-
   onFormSubmit(): void {
     if (this.myForm.valid && this.initContent !== this.myForm.value.content) {
       this.isLoading = true;
       this.currentContent = this.myForm.value.content;
       this.model.content = this.currentContent;
-      this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model, this.authService.state().userId).subscribe(
+      this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model).subscribe(
         (updatedPost) => { this.alertService.showAlert('Post updated successfully', 'success'), this.contentUpdated.emit(updatedPost), this.isLoading = false;},
         (error) => {this.isLoading =false;}
 
@@ -65,6 +66,7 @@ export class EditPostComponent implements OnInit, OnDestroy{
     this.myForm = this.formBuilder.group({
       content: [this.currentContent, [Validators.required, Validators.minLength(1)]]
     });
+    this.numberOfRows = CalculateNumberOfRows.calculateNumberOfRows(this.currentContent);
   }
 
 

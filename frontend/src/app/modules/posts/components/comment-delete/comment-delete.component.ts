@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, signal} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AlertService} from "../../../../shared/services/alert.service";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {Subscription} from "rxjs";
 import {CommentService} from "../../sevices/comment.service";
+import {ModalManagement} from "../../../../shared/util/ModalManagement";
 
 @Component({
   selector: 'app-comment-delete',
@@ -15,6 +16,7 @@ export class CommentDeleteComponent implements OnDestroy, OnInit{
   @Input() commentId: string = '';
   @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
 
+
   visible: boolean = false;
   isLoading: boolean = false;
   private deleteCommentSubscription?: Subscription;
@@ -24,7 +26,7 @@ export class CommentDeleteComponent implements OnDestroy, OnInit{
 
   onFormSubmit(modalId: string): void {
     this.isLoading = true;
-    this.deleteCommentSubscription = this.commentService.deleteComment( this.commentId, this.authService.state().userId).subscribe(
+    this.deleteCommentSubscription = this.commentService.deleteComment( this.commentId).subscribe(
       () => {
         this.deleted.emit(this.commentId);
         this.closeModal(modalId);
@@ -37,18 +39,13 @@ export class CommentDeleteComponent implements OnDestroy, OnInit{
     );
   }
 
+
   openModal(modalId: string): void {
-    const modal = document.getElementById(modalId) as HTMLDialogElement;
-    if (modal) {
-      modal.showModal();
-    }
+    ModalManagement.open(modalId);
   }
 
   closeModal(modalId: string): void {
-    const modal = document.getElementById(modalId) as HTMLDialogElement;
-    if (modal) {
-      modal.close();
-    }
+    ModalManagement.close(modalId);
   }
   ngOnDestroy(): void {
     this.deleteCommentSubscription?.unsubscribe();

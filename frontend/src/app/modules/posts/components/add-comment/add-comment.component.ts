@@ -24,7 +24,7 @@ export class AddCommentComponent implements OnDestroy{
     model: AddComment;
     private addCommentSubscription?: Subscription;
 
-    constructor(private commentService: CommentService, private authService: AuthService) {
+    constructor(private commentService: CommentService) {
       this.model = {
         content: '',
         postId: this.postId,
@@ -36,7 +36,7 @@ export class AddCommentComponent implements OnDestroy{
         this.isLoading = true;
         this.model.content = this.contentControl.value;
         this.model.postId = this.postId;
-        this.addCommentSubscription = this.commentService.addComment(this.model, this.authService.state().userId).subscribe(
+        this.addCommentSubscription = this.commentService.addComment(this.model).subscribe(
           (newComment) => {
             this.contentAdded.emit(newComment);
             this.contentControl.reset();

@@ -1,10 +1,10 @@
-<header class="top-0 left-0 navbar h-20 fixed bg-primary z-40">
+<header id="header" class="top-0 left-0 fixed navbar h-20 bg-primary z-40">
   <!-- logo -->
   <div class="navbar-start ml-4 w-100 lg:ml-16">
     <h1 class="text-3xl my-auto font-bold cursor-pointer select-none" routerLink="/">SpeakApp</h1>
   </div>
   <!-- center menu-->
-  <nav
+  <nav id="navbar"
     class="md:navbar-center md:static md:justify-center md:gap-16 md:w-auto
            text-lg fixed left-0 bottom-0 bg-primary w-full h-20 m-0 justify-between px-4 flex flex-row "
   >
@@ -17,28 +17,15 @@
       </span>
       <h2 class="my-auto hidden min-[320px]:block" >Home</h2>
     </a>
-    <a
-      class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110"
-      routerLink="/chats"
-    >
-      <span class="material-symbols-outlined" style="font-size: 32px">
-        chat
-      </span>
-      <h2 class="my-auto hidden min-[320px]:block">Chats</h2>
-    </a>
-    <a
-      class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110"
-      routerLink="/search"
-    >
-      <span class="material-symbols-outlined" style="font-size: 32px">
+    <a class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" routerLink="/chats"><span class="material-symbols-outlined" style="font-size: 32px">chat</span><h2 class="my-auto hidden min-[320px]:block">Chats</h2></a><a class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" routerLink="/search"><span class="material-symbols-outlined" style="font-size: 32px">
         search
       </span>
       <h2 class="my-auto hidden min-[320px]:block">Search</h2>
     </a>
   </nav>
   <!-- user menu-->
-  <div class="navbar-end mr-4 w-100 lg:mr-16">
-    <div class="flex flex-row gap-2 cursor-pointer sm:gap-6" [routerLink]="['profiles/', authState().userId]">
+  <div *ngIf="authState().isLoggedIn" class="navbar-end mr-4 flex gap-8 w-100 lg:mr-16">
+    <div class="flex flex-row gap-2 cursor-pointer sm:gap-4" [routerLink]="['profiles/', authState().userId]">
       <h2 class="text-lg font-semibold my-auto hidden min-[320px]:block select-none">{{ authState().firstName }}</h2>
       <div class="avatar">
         <div class="w-14 rounded-full">
@@ -46,8 +33,14 @@
         </div>
       </div>
     </div>
+    <button *ngIf="authState().isLoggedIn" class="btn btn-secondary rounded-2xl shadow-md shadow-gray-500" (click)="logoutUser()">Logout</button>
   </div>
-  <select (change)="themeChanges($event)" class="select select-sm">
-    <option *ngFor="let theme of themes" [value]="theme">{{ theme }}</option>
-  </select>
+<!--  <select (change)="themeChanges($event)" class="select select-sm">-->
+<!--    <option *ngFor="let theme of themes" [value]="theme">{{ theme }}</option>-->
+<!--  </select>-->
+
+  <div *ngIf="!authState().isLoggedIn" class="navbar-end flex gap-4 mr-4 w-100 lg:mr-16">
+    <button class="btn btn-secondary rounded-2xl shadow-md shadow-gray-500" (click)="loginUser()">Login</button>
+    <button class="btn btn-secondary rounded-2xl shadow-md shadow-gray-500" (click)="registerUser()">Sign up</button>
+  </div>
 </header>
