@@ -23,5 +23,5 @@ public class MessageSeen {
 
     @OneToOne
     @JoinColumn(name = "messageId")
-    private Message messageId;
+    private Message message;
 }

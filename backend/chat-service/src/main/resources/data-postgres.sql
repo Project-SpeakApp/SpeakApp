@@ -69,7 +69,7 @@ VALUES (conversation_id_1, 'Bears fans', true),
        (conversation_id_3, 'Private conversation 2', false),
        (conversation_id_4, 'Private conversation 3', false);
 
-INSERT INTO group_member (group_member_id, user_id, conversation_id, joined_datetime, left_datetime)
+INSERT INTO group_member (group_member_id, user_id, conversation_id, joined_at, left_at)
 VALUES (group_member_id_1, user_id_1, conversation_id_1 , timestamp_earlier, timestamp_later),
        (group_member_id_2, user_id_2, conversation_id_1 , timestamp_earlier, timestamp_later),
        (group_member_id_3, user_id_3, conversation_id_1 , timestamp_earlier, timestamp_later),
@@ -84,7 +84,7 @@ VALUES (group_member_id_1, user_id_1, conversation_id_1 , timestamp_earlier, tim
        (group_member_id_9, user_id_6, conversation_id_4 , timestamp_earlier, timestamp_later),
        (group_member_id_10, user_id_3, conversation_id_4 , timestamp_earlier, timestamp_later);
 
-INSERT INTO message (message_id, from_user, content, type, conversation_id, response_to_message_id, sent_at, delivered_at, is_deleted)
+INSERT INTO message (message_id, from_user_id, content, type, conversation_id, response_to_message_id, sent_at, delivered_at, is_deleted)
 VALUES (message_id_1, user_id_1, 'Bears are the best animals imo!', 'TEXT', conversation_id_1, null, message_timestamp_1, message_timestamp_1, false),
        (message_id_2, user_id_2, 'It is true!', 'TEXT', conversation_id_1, message_id_1, message_timestamp_2, message_timestamp_2, false),
        (message_id_3, user_id_3, 'I think cats are better than bears', 'TEXT', conversation_id_1, null, message_timestamp_3, message_timestamp_3, false),

@@ -3,9 +3,9 @@ package com.chatservice.services;
 import com.chatservice.communication.UserServiceCommunicationClient;
 import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
+import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
 import com.chatservice.mappers.ConversationMapper;
-import com.chatservice.mappers.GroupMemberMapper;
 import com.chatservice.repositories.ConversationRepository;
 import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
@@ -30,8 +30,6 @@ public class ChatService {
 
     private final ConversationMapper conversationMapper;
 
-    private final GroupMemberMapper groupMemberMapper;
-
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     private final MessageRepository messageRepository;
@@ -54,10 +52,15 @@ public class ChatService {
 
         Conversation createdConversation = conversationRepository.save(conversationMapper.toEntity(false));
 
-        groupMemberRepository.save(groupMemberMapper.toEntity(conversationCreatorUser, createdConversation));
+        groupMemberRepository.save(GroupMember.builder()
+                .userId(conversationCreatorUser)
+                .conversation(createdConversation)
+                .build());
 
-        groupMemberRepository.save(groupMemberMapper.toEntity(newPrivateConversationDTO.getConversationMemberUser(),
-                createdConversation));
+        groupMemberRepository.save(GroupMember.builder()
+                .userId(newPrivateConversationDTO.getConversationMemberUser())
+                .conversation(createdConversation)
+                .build());
 
         return createdConversation;
 
@@ -91,12 +94,12 @@ public class ChatService {
                 .build();
 
 
-        UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUser());
+        UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
 
         MessageGetDTO messageGetDTO = MessageGetDTO.builder()
                 .content(message.getContent())
                 .type(message.getType())
-                .fromUser(messageAuthor).build();
+                .fromUserId(messageAuthor).build();
 
         List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(getConversationForMessage.getConversationId());
         List<UserGetDTO> conversationMembersDTO = conversationMembers.stream().map(userServiceCommunicationClient::getUserById).toList();

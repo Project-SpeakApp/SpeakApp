@@ -13,9 +13,9 @@ import java.util.UUID;
 //TODO: for group chats we might have to create DTO with 'toUser' -> 'toConversation'
 public class MessagePrivateCreateDTO {
 
-    UUID fromUser;
+    UUID fromUserId;
 
-    UUID toUser;
+    UUID toUserId;
 
     String content;
 

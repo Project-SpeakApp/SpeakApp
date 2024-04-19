@@ -28,7 +28,7 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
-        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUser(), messageDTO);
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), messageDTO);
     }
 
     @PostMapping("/api/chat")

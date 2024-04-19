@@ -21,7 +21,7 @@ public class Message extends Auditable{
     private UUID messageId;
 
     @Column(nullable = false)
-    private UUID fromUser;
+    private UUID fromUserId;
 
     @Column(nullable = false)
     private String content;

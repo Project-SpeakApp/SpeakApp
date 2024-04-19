@@ -1,5 +1,5 @@
 ### Create conversation with user, post 2 times to see exception throw 400 (can't make 2 private conversations with same user)
-POST http://localhost:8083/api/chat
+POST http://localhost:8084/api/chat
 Content-Type: application/json
 Authorization: Bearer Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Yzg0ZmI5NS0xMmM0LTExZWMtODJhOC0wMjQyYWMxMzAwMDMiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.k3sedckyNF1v0i3QTgGyh3MrxzgqMDVs043zB5X34pY
 
