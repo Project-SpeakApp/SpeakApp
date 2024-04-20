@@ -5,15 +5,25 @@
         <textarea (keydown.enter)="onFormSubmit()" id="content" formControlName="content" class="text-black w-full" placeholder="What's on your mind?" name="content" type="text"></textarea>
       </div>
       <div>
-        <button [disabled]="isLoading" class="app-btn btn-primary">
-          <span *ngIf="isLoading" class="loading loading-spinner"></span>
-          <ng-container *ngIf="!isLoading">
-            Post
-          </ng-container>
-        </button>
-        <div>
-          <img *ngIf="selectedFile" [src]="selectedFile.src" width="100px" class="w-full h-96" />
-          <input #imageInput alt="lmao" type="file" accept="image/*" (change)="processImage(imageInput)" />
+        <div *ngIf="selectedFile" class="p-2 flex flex-row justify-center">
+<!--          dummy element to center the image because i can't into css-->
+          <span class="w-[30px]"></span>
+          <img [src]="selectedFile.src" class="max-h-[200px] rounded-[20px]"  alt="Your image"/>
+          <button class="absolute -top-[10px] -left-[20px] bg-black opacity-50 rounded-full w-[30px] h-[30px]">
+            <span class="material-symbols-outlined text-[30px] text-white">close</span>
+          </button>
+        </div>
+        <div class="flex flex-row justify-end gap-4">
+          <label style="background: #ef9fbc" class="app-btn border-none">
+            <span class="material-symbols-outlined">add_photo_alternate</span>
+            <input #imageInput alt="lmao" type="file" accept="image/*" (change)="processImage(imageInput)" class="hidden"/>
+          </label>
+          <button [disabled]="isLoading" class="app-btn btn-primary">
+            <span *ngIf="isLoading" class="loading loading-spinner"></span>
+            <ng-container *ngIf="!isLoading">
+              Post
+            </ng-container>
+          </button>
         </div>
       </div>
     </div>
