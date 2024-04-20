@@ -60,7 +60,10 @@ export class AddPostComponent implements OnInit, OnDestroy {
 
     reader.addEventListener('load', (event: any) => {
       this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
-        this.selectedFile = new ImageSnippet(event.target.result, file);
+        this.imageService.downloadImage(res).subscribe((blob) => {
+          const imageUrl = URL.createObjectURL(blob);
+          this.selectedFile = new ImageSnippet(imageUrl, file);
+        });
       });
     })
 

@@ -11,7 +11,10 @@
             Post
           </ng-container>
         </button>
-        <input #imageInput alt="lmao" type="file" accept="image/*" (change)="processImage(imageInput)" />
+        <div>
+          <img *ngIf="selectedFile" [src]="selectedFile.src" width="100px" class="w-full h-96" />
+          <input #imageInput alt="lmao" type="file" accept="image/*" (change)="processImage(imageInput)" />
+        </div>
       </div>
     </div>
   </form>

@@ -15,6 +15,10 @@ export class ImageService {
 
     const params = new HttpParams().set('type', type);
 
-    return this.http.post('http://localhost:8080/api/media', formData, { params });
+    return this.http.post('http://localhost:8080/api/media', formData, { params, responseType: 'text' });
+  }
+
+  public downloadImage(imageUrl: string) {
+    return this.http.get(`http://localhost:8080/api/media/${imageUrl}`, { responseType: 'blob' });
   }
 }
