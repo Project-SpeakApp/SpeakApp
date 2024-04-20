@@ -14,7 +14,7 @@ logging:
   level:
     root: INFO
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
-    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway: DEBUG
 
 app:
   cors:
@@ -36,5 +36,12 @@ spring:
           jwk-set-uri: ${app.jwt.keycloak}/realms/${app.jwt.realm}/protocol/openid-connect/certs
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
 
 

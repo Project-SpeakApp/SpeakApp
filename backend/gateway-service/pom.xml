@@ -66,8 +66,8 @@
             <artifactId>spring-cloud-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.netflix.eureka</groupId>
-            <artifactId>eureka-client</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
 
 
