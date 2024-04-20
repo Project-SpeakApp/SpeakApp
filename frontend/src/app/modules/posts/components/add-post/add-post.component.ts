@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PostService} from '../../sevices/post.service';
 import {Subscription} from 'rxjs';
@@ -26,6 +26,11 @@ export class AddPostComponent implements OnInit, OnDestroy {
 
   @ViewChild('imageInput')
   fileInputElement: ElementRef = new ElementRef(null);
+
+  imageLoading = signal(false);
+  deleteImageLoading = signal(false);
+
+  imageSubstription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,16 +67,18 @@ export class AddPostComponent implements OnInit, OnDestroy {
       this.deleteImage();
     }
 
+    this.imageLoading.set(true);
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
-        this.imageService.downloadImage(res).subscribe((blob) => {
+      this.imageSubstription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
+        this.imageSubstription.add(this.imageService.downloadImage(res).subscribe((blob) => {
           const imageUrl = URL.createObjectURL(blob);
           this.selectedFile = new ImageSnippet(imageUrl, file, res);
-        });
-      });
+          this.imageLoading.set(false);
+        }));
+      }));
     })
 
     reader.readAsDataURL(file);
@@ -79,10 +86,13 @@ export class AddPostComponent implements OnInit, OnDestroy {
 
   deleteImage() {
     if (!this.selectedFile) return;
-    this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
+
+    this.deleteImageLoading.set(true);
+    this.imageSubstription.add(this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
       this.selectedFile = null;
       this.fileInputElement.nativeElement.value = '';
-    });
+      this.deleteImageLoading.set(false);
+    }));
   }
 
   ngOnInit(): void {
@@ -92,5 +102,6 @@ export class AddPostComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
+    this.imageSubstription.unsubscribe();
   }
 }

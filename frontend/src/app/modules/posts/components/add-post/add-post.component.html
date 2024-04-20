@@ -5,11 +5,16 @@
         <textarea (keydown.enter)="onFormSubmit()" id="content" formControlName="content" class="text-black w-full" placeholder="What's on your mind?" name="content" type="text"></textarea>
       </div>
       <div>
+        <!-- dummy image for loading -->
+        <div *ngIf="!selectedFile && imageLoading()" class="mx-auto h-[200px] w-[200px] bg-gray-200 rounded-[20px] flex flex-col justify-center">
+          <app-loading-spinner class="loading loading-spinner loading-lg mx-auto"></app-loading-spinner>
+        </div>
         <div *ngIf="selectedFile" class="p-2 flex flex-row justify-center">
-<!--          dummy element to center the image because i can't into css-->
-          <span class="w-[30px]"></span>
-          <img [src]="selectedFile.src" class="max-h-[200px] rounded-[20px]"  alt="Your image"/>
-          <button
+          <!-- dummy element to center the image because i can't into css-->
+          <span class="w-[30px]">
+          </span>
+          <app-loading-spinner *ngIf="deleteImageLoading()" class="bottom-[120px] absolute loading loading-spinner loading-lg z-10 bg-white"></app-loading-spinner>
+          <img [src]="selectedFile.src" [ngClass]="{'max-h-[200px] rounded-[20px]': true, 'filter brightness-50 blur-[1px]': deleteImageLoading() }"  alt="Your image"/><button
             class="absolute -top-[10px] -left-[20px] bg-black opacity-50 rounded-full w-[30px] h-[30px]"
             (click)="deleteImage()"
             type="button">
