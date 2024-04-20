@@ -1,5 +1,5 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PostService} from '../../sevices/post.service';
 import {Subscription} from 'rxjs';
 import {AlertService} from '../../../../shared/services/alert.service';
@@ -23,6 +23,9 @@ export class AddPostComponent implements OnInit, OnDestroy {
   myForm!: FormGroup;
 
   selectedFile: ImageSnippet | null = null;
+
+  @ViewChild('imageInput')
+  fileInputElement: ElementRef = new ElementRef(null);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,6 +58,10 @@ export class AddPostComponent implements OnInit, OnDestroy {
   }
 
   processImage(imageInput: any) {
+    if (this.selectedFile) {
+      this.deleteImage();
+    }
+
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
@@ -62,12 +69,20 @@ export class AddPostComponent implements OnInit, OnDestroy {
       this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
         this.imageService.downloadImage(res).subscribe((blob) => {
           const imageUrl = URL.createObjectURL(blob);
-          this.selectedFile = new ImageSnippet(imageUrl, file);
+          this.selectedFile = new ImageSnippet(imageUrl, file, res);
         });
       });
     })
 
     reader.readAsDataURL(file);
+  }
+
+  deleteImage() {
+    if (!this.selectedFile) return;
+    this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
+      this.selectedFile = null;
+      this.fileInputElement.nativeElement.value = '';
+    });
   }
 
   ngOnInit(): void {

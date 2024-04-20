@@ -21,4 +21,8 @@ export class ImageService {
   public downloadImage(imageUrl: string) {
     return this.http.get(`http://localhost:8080/api/media/${imageUrl}`, { responseType: 'blob' });
   }
+
+  public deleteImage(imageUrl: string) {
+    return this.http.delete(`http://localhost:8080/api/media/${imageUrl}`);
+  }
 }
