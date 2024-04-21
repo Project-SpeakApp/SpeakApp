@@ -9,6 +9,7 @@ import com.speakapp.postservice.utils.JwtDecoder;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class CommentController {
             @RequestParam(defaultValue = "0") int firstComment,
             @RequestParam(defaultValue = "10") int lastComment,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String sortDirection,
+            @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
             @RequestParam UUID postId,
             @RequestHeader("Authorization") String authHeader) {
 

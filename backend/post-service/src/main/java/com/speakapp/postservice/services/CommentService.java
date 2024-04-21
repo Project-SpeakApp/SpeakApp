@@ -17,6 +17,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -57,7 +58,7 @@ public class CommentService {
     }
 
     public CommentPageGetDTO getCommentsForPost(int firstComment, int lastComment, UUID postId, UUID userId,
-                                                String sortBy, String sortDirection){
+                                                String sortBy, Sort.Direction sortDirection){
 
         Post post = postService.getPostById(postId);
         List<Comment> sortedPostComments = findCommentPageByPostSorted(post,firstComment, lastComment,sortBy, sortDirection);
@@ -179,7 +180,7 @@ public class CommentService {
         commentRepository.delete(commentToDelete);
     }
 
-    private List<Comment> findCommentPageByPostSorted(Post post,int firstComment, int lastComment, String sortBy, String sortOrder) {
+    private List<Comment> findCommentPageByPostSorted(Post post,int firstComment, int lastComment, String sortBy, Sort.Direction sortOrder) {
         String jpqlQuery = "SELECT c FROM Comment c WHERE c.post = :post ORDER BY";
 
         jpqlQuery += " c." + sortBy + " " + sortOrder;
