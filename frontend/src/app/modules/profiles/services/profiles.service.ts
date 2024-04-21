@@ -42,4 +42,8 @@ export class ProfilesService {
         ),
       );
   }
+
+  public updateProfilePhoto(mediaId: string) {
+    return this.http.put(`http://localhost:8080/api/users/profile-photo`, { photoId: mediaId }, {});
+  }
 }
