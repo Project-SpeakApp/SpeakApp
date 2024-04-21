@@ -39,7 +39,8 @@ export class AddPostComponent implements OnInit, OnDestroy {
     private imageService: ImageService
   ) {
     this.model = {
-      content: ''
+      content: '',
+      mediaId: null,
     };
   }
 
@@ -47,7 +48,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     if (this.myForm.valid) {
       this.isLoading = true;
       this.model.content = this.myForm.value.content;
-      this.model.mediaId = this.selectedFile?.guid;
+      this.model.mediaId = this.selectedFile?.guid ? this.selectedFile.guid : null;
       this.addPostSubscription = this.postService.addPost(this.model).subscribe(
         (newPost) => {
           this.contentAdded.emit(newPost);

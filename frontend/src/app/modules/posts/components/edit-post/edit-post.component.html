@@ -14,3 +14,13 @@
     </div>
   </form>
 </div>
+
+<!--<app-loading-spinner *ngIf="deleteImageLoading()" class="bottom-[120px] absolute loading loading-spinner loading-lg z-10 bg-white"></app-loading-spinner>-->
+<!--<img [src]="selectedFile.src" [ngClass]="{'max-h-[200px] rounded-[20px]': true, 'filter brightness-50 blur-[1px]': deleteImageLoading() }"  alt="Your image"/>-->
+<button
+  *ngIf="imageId"
+  class="absolute -bottom-[50px] -right-[10px] bg-black opacity-50 rounded-full w-[30px] h-[30px]"
+  (click)="deleteImage()"
+  type="button">
+  <span class="material-symbols-outlined text-[30px] text-white">close</span>
+</button>
