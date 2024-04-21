@@ -47,11 +47,13 @@ export class AddPostComponent implements OnInit, OnDestroy {
     if (this.myForm.valid) {
       this.isLoading = true;
       this.model.content = this.myForm.value.content;
+      this.model.mediaId = this.selectedFile?.guid;
       this.addPostSubscription = this.postService.addPost(this.model).subscribe(
         (newPost) => {
           this.contentAdded.emit(newPost);
           this.isLoading = false;
           this.myForm.reset();
+          this.selectedFile = null;
         },
         (error) => {
           this.isLoading = false;

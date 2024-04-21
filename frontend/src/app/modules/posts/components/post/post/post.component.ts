@@ -1,8 +1,10 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, signal, SimpleChanges} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
 import {DateFormatting} from "../../../../../shared/util/DateFormatting";
 import {AuthService} from "../../../../../shared/services/auth.service";
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
+import {ImageService} from "../../../../../shared/services/image.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -19,9 +21,11 @@ export class PostComponent implements OnChanges, OnInit{
   userId: string = '';
   isEdited: boolean = false;
 
+  imageSub = new Subscription();
+  imageLoading = signal(false);
+  imageUrl: string | null = null;
 
-
-  constructor(private authService: AuthService ) {
+  constructor(private authService: AuthService, private imageService: ImageService) {
   }
 
 
@@ -89,5 +93,14 @@ export class PostComponent implements OnChanges, OnInit{
 
   ngOnInit() {
     this.userId = this.authService.state().userId;
+    if (this.post.mediaId) {
+      this.imageLoading.set(true);
+      this.imageSub.add(this.imageService.downloadImage(this.post.mediaId).subscribe(
+        (blob) => {
+          this.imageUrl = URL.createObjectURL(blob);
+          this.imageLoading.set(false);
+        }
+      ));
+    }
   }
 }
