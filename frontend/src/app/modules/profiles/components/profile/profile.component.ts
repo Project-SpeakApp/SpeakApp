@@ -10,8 +10,14 @@ export class ProfileComponent {
   @Input() profile: ProfileGetDTO | null = null;
   @Input() isLoading = false;
 
-  constructor(private authService: AuthService) {}
+  authState = this.authService.state;
 
+  constructor(private authService: AuthService) {
+  }
+
+  processImage(event: any) {
+    // this.authService.processImage(event);
+  }
   changePassword() {
     this.authService.manageAccount();
   }

@@ -4,7 +4,14 @@
     <img class="absolute max-w-[calc(64rem-2rem)] z-0 w-[calc(100%-2rem)] h-[250px] rounded-[20px] object-cover" src="https://wallpaperaccess.com/full/1419752.jpg" alt="user background picture">
     <div class="flex flex-row pt-[125px] pl-10">
       <div class="avatar">
-        <div class="w-[180px] rounded-full border-white border-4">
+        <div [ngClass]="{ 'w-[180px] rounded-full border-white border-4' : true,
+                    'hover:filter hover:brightness-50 hover:blur-[1px]': authState().userId === profile.userId}">
+          <label class="absolute w-[180px] h-[180px] rounded-full cursor-pointer z-40 justify-center flex flex-col opacity-0 hover:opacity-100">
+            <div class="mx-auto">
+              <span class="material-symbols-outlined text-black text-[100px]">photo_camera</span>
+            </div>
+            <input #imageInput id="add-post-image-input" alt="lmao" type="file" accept="image/*" (change)="processImage(imageInput)" class="hidden"/>
+          </label>
           <img src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg" />
         </div>
       </div>

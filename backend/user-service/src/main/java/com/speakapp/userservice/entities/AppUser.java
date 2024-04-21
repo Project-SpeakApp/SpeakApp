@@ -38,9 +38,11 @@ public class AppUser extends Auditable {
     @Column(nullable = false)
     private Instant lastOnline;
 
-    private String bgPhotoUrl;
+    @Column(nullable = true)
+    private UUID bgPhotoId;
 
-    private String profilePhotoUrl;
+    @Column(nullable = true)
+    private UUID profilePhotoId;
 
     public void updateLastOnline() {
         this.lastOnline = Instant.now();

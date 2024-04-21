@@ -1,6 +1,5 @@
 import { Injectable, signal } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
-import {ProfilesService} from "../../modules/profiles/services/profiles.service";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -12,9 +11,9 @@ export class AuthService {
 
   defaultState: AuthState = {
     isLoggedIn: false,
-    firstName: 'Christopher',
-    lastName: 'Bear',
-    userId: '6c84fb97-12c4-11ec-82a8-0242ac130003'
+    firstName: '',
+    lastName: '',
+    userId: ''
   }
 
   state = signal(this.defaultState);
