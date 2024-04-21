@@ -24,14 +24,11 @@ export class EditPostComponent implements OnInit, OnDestroy{
 
   initContent: string = ""
   myForm!: FormGroup;
-
   visible: boolean = false;
-
   private UpdatePostSubscription?: Subscription;
   model: AddPost;
   isLoading: boolean = false;
   numberOfRows: number = 0;
-
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertService, private postService: PostService, private authService: AuthService) {
     this.model = {
@@ -75,7 +72,6 @@ export class EditPostComponent implements OnInit, OnDestroy{
     });
     this.numberOfRows = CalculateNumberOfRows.calculateNumberOfRows(this.currentContent);
   }
-
 
   ngOnDestroy(): void {
     this.UpdatePostSubscription?.unsubscribe();

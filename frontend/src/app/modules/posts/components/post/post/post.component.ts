@@ -39,7 +39,6 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
   constructor(private authService: AuthService, private imageService: ImageService, private postService: PostService) {
   }
 
-
   enableEditing(): void {
     this.isEdited = !this.isEdited;
   }
