@@ -2,7 +2,6 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal} f
 import ProfileGetDTO from '../../types/ProfileGetDTO';
 import {AuthService} from "../../../../shared/services/auth.service";
 import TypeMedia from "../../../../shared/types/media/type-media";
-import ImageSnippet from "../../../../shared/types/media/ImageSnippet";
 import {Subscription} from "rxjs";
 import {ImageService} from "../../../../shared/services/image.service";
 import {ProfilesService} from "../../services/profiles.service";
@@ -46,13 +45,15 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log(this.profile)
     if (this.profile?.profilePhotoId) {
       this.imageLoading.set(true);
       this.imageSubstription.add(this.imageService.downloadImage(this.profile.profilePhotoId).subscribe((blob) => {
         this.avatarSrc = URL.createObjectURL(blob);
         this.imageLoading.set(false);
       }));
+    }
+    else {
+      this.avatarSrc = 'https://th.bing.com/th/id/OIP.eyhIau9Wqaz8_VhUIomLWgAAAA?rs=1&pid=ImgDetMain';
     }
   }
 

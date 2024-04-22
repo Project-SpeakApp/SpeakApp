@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 export class ProfilesService {
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
     private router: Router,
   ) {}
 
@@ -36,9 +35,7 @@ export class ProfilesService {
       .pipe(
         finalize(() => this.profileUpdateLoading.set(false)),
         tap(
-          () => {
-            this.router.navigate(['/profiles', this.authService.state().userId]);
-          },
+          () => {},
         ),
       );
   }

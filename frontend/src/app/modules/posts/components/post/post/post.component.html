@@ -1,11 +1,7 @@
 <div class="card py-2 bg-base-300 w-[500px] shadow-xl">
     <div class="flex items-center">
       <div class="w-1/8">
-        <div class="avatar">
-          <div class="w-12 rounded-full">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
+        <app-user-avatar [src]="post.author.profilePhotoId" size="m"></app-user-avatar>
       </div>
       <div style="padding-left: 10px" >
         <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>

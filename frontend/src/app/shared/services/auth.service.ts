@@ -1,19 +1,21 @@
 import { Injectable, signal } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
 import {Router} from "@angular/router";
+import {ProfilesService} from "../../modules/profiles/services/profiles.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private keycloak: KeycloakService, private router: Router) { }
+  constructor(private keycloak: KeycloakService, private profileService: ProfilesService) { }
 
   defaultState: AuthState = {
     isLoggedIn: false,
     firstName: '',
     lastName: '',
-    userId: ''
+    userId: '',
+    profilePhotoId: '',
   }
 
   state = signal(this.defaultState);
@@ -21,11 +23,14 @@ export class AuthService {
   public updateState() {
     try {
       this.keycloak.loadUserProfile().then(x => {
-        this.state.set({
-          isLoggedIn: true,
-          firstName: x.firstName!,
-          lastName: x.lastName!,
-          userId: x.id!
+        this.profileService.getProfile(x.id!).subscribe((res) => {
+          this.state.set({
+            isLoggedIn: true,
+            firstName: res.firstName,
+            lastName: res.lastName,
+            userId: x.id!,
+            profilePhotoId: res.profilePhotoId,
+          });
         });
       });
     }
@@ -59,4 +64,5 @@ type AuthState = {
   firstName: string;
   lastName: string;
   userId: string;
+  profilePhotoId: string;
 }

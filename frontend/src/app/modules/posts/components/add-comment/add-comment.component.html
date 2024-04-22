@@ -1,11 +1,7 @@
 <div class="card w-96 w-[480px] flex flex-nowrap">
   <div class="flex items-center">
     <div class="flex-none mt-1">
-      <div class="avatar">
-        <div class="w-10 rounded-full">
-          <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-        </div>
-      </div>
+      <app-user-avatar [src]="authState().profilePhotoId" size="sm"></app-user-avatar>
     </div>
     <form (ngSubmit)="onFormSubmit()">
       <div [ngClass]="{'w-[480px]': !isLoading, 'w-[430px]': isLoading}" class="relative px-2 ml-2 flex flex-nowrap">
