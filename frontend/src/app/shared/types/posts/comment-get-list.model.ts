@@ -2,8 +2,7 @@ import {CommentGetModel} from "./comment-get.model";
 
 export interface CommentGetListModel {
   commentGetDTOS: CommentGetModel [];
-  currentPage: number;
-  pageSize: number;
-  totalPages: number;
+  firstComment: number;
+  lastComment: number;
   totalComments: number;
 }

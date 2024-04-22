@@ -18,10 +18,6 @@ export class CommentListComponent implements OnInit, OnDestroy{
   comments: CommentGetModel[] = [];
   isLoading: boolean = false;
 
-  numberOfPages: number = 0;
-
-  currentPage: number = 0;
-
   totalComments: number = 0;
 
   currentComments: number = 0;
@@ -57,17 +53,11 @@ export class CommentListComponent implements OnInit, OnDestroy{
     }
   }
 
-  getComments(pageSize: number, pageNumber: number, sort: boolean): void {
+  getComments(firstComment: number, numberOfComments: number, sort: boolean): void {
     this.isLoading = true;
-    this.subscription = this.commentService.getComments(this.postId, pageNumber, pageSize, this.sortBy, this.sortDirection).subscribe({
+    this.subscription = this.commentService.getComments(this.postId, firstComment, firstComment + numberOfComments, this.sortBy, this.sortDirection).subscribe({
       next: (response) => {
-        if(this.currentPage == 0 && pageSize != 2) {
-          this.comments = response.commentGetDTOS;
-        }
-        else this.comments = [...this.comments, ...response.commentGetDTOS];
-        if(pageSize != 2 && !sort) this.currentPage = response.currentPage+1;
-        else if(pageSize != 2 && sort) this.currentPage = Math.floor(this.comments.length / 10);
-        this.numberOfPages = response.totalPages;
+        this.comments = [...this.comments, ...response.commentGetDTOS];
         this.parseComments(this.comments);
         this.totalComments = response.totalComments;
         this.isLoading = false;
@@ -86,7 +76,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
     this.totalComments = 0;
     this.sortBy = sortBy;
     this.sortDirection = sortOrder;
-    this.getComments(this.currentComments, 0, true);
+    this.getComments(0, this.currentComments, true);
   }
 
   addComment(newComment?: CommentGetModel): void {
@@ -99,7 +89,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.getComments(2, 0, false);
+    this.getComments(0,2, false);
   }
 
   ngOnDestroy(): void {
