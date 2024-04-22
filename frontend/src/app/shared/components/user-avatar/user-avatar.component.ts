@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, signal, SimpleChanges} from '@angular/core';
 import {ImageService} from "../../services/image.service";
 import {Subscription} from "rxjs";
 
@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
   selector: 'app-user-avatar',
   templateUrl: './user-avatar.component.html'
 })
-export class UserAvatarComponent implements OnInit, OnDestroy {
+export class UserAvatarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() src: string | null = null;
   @Input() size: 'sm' | 'm' | 'xl' = 'm';
 
@@ -26,6 +26,12 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     }
     else {
       this.avatarSrc = 'https://th.bing.com/th/id/OIP.eyhIau9Wqaz8_VhUIomLWgAAAA?rs=1&pid=ImgDetMain';
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['src']) {
+      this.ngOnInit();
     }
   }
 

@@ -15,5 +15,5 @@ public class UserGetDTO {
 
     String fullName;
 
-    String profilePhotoUrl;
+    UUID profilePhotoId;
 }

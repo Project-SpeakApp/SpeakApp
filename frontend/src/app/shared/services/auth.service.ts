@@ -57,6 +57,13 @@ export class AuthService {
   public manageAccount() {
     window.location.href = 'http://localhost:8443/realms/SpeakApp/account/#/security/signingin';
   }
+
+  public updateProfilePhoto(photoId: string) {
+    this.state.set({
+      ...this.state(),
+      profilePhotoId: photoId,
+    })
+  }
 }
 
 type AuthState = {

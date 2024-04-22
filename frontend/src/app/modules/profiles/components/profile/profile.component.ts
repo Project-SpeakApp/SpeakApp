@@ -5,6 +5,7 @@ import TypeMedia from "../../../../shared/types/media/type-media";
 import {Subscription} from "rxjs";
 import {ImageService} from "../../../../shared/services/image.service";
 import {ProfilesService} from "../../services/profiles.service";
+import {AlertService} from "../../../../shared/services/alert.service";
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,11 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
 
   avatarSrc = '';
 
-  constructor(private authService: AuthService, private imageService: ImageService, private profileService: ProfilesService) {
+  constructor(
+    private authService: AuthService,
+    private imageService: ImageService,
+    private profileService: ProfilesService,
+    private alertService: AlertService) {
   }
 
   processImage(imageInput: any) {
@@ -32,7 +37,11 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     reader.addEventListener('load', (event: any) => {
       this.imageSubstription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).subscribe((res) => {
         this.imageSubstription.add(this.profileService.updateProfilePhoto(res).subscribe((_) => {
-          if (this.profile) this.profile.profilePhotoId = res;
+          if (this.profile){
+            this.profile.profilePhotoId = res;
+            this.authService.updateProfilePhoto(res);
+            this.alertService.showAlert('Profile photo updated', 'success');
+          }
           this.ngOnInit();
         }));
       }));
