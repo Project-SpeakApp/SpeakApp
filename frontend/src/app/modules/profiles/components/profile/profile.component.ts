@@ -32,6 +32,8 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   processImage(imageInput: any, type: 'avatar' | 'background' = 'avatar') {
+    if (this.authState().userId !== this.profile?.userId) return;
+
     if (type === 'avatar') {
       this.avatarLoading.set(true);
     } else {

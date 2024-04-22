@@ -92,7 +92,7 @@ export class CommentComponent implements OnInit, OnDestroy{
   }
 
   async redirectToProfile() {
-    await this.router.navigate(['/profiles', this.comment.author.userId]);
+    await this.router.navigate(['/profiles', this.comment.author.userId, 'info']);
   }
 
   ngOnInit(): void {

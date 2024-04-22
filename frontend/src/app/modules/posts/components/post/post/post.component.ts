@@ -109,7 +109,7 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   async redirectToProfile() {
-    await this.router.navigate(['/profiles', this.post.author.userId]);
+    await this.router.navigate(['/profiles', this.post.author.userId, 'info']);
   }
 
   ngOnInit() {
