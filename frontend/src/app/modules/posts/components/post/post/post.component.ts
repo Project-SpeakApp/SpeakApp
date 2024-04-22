@@ -16,6 +16,7 @@ import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 import {ImageService} from "../../../../../shared/services/image.service";
 import {Subscription} from "rxjs";
 import {PostService} from "../../../sevices/post.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -36,7 +37,11 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
   imageLoading = signal(false);
   imageUrl: string | null = null;
 
-  constructor(private authService: AuthService, private imageService: ImageService, private postService: PostService) {
+  constructor(
+    private authService: AuthService,
+    private imageService: ImageService,
+    private postService: PostService,
+    private router: Router) {
   }
 
   enableEditing(): void {
@@ -53,12 +58,6 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
   handleDeletion(postId?: string): void {
     if(postId) {
       this.deleted.emit(postId);
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['post'] && this.post && this.post.createdAt) {
-      this.formattedDate = DateFormatting.formatDateTime(this.post.createdAt);
     }
   }
 
@@ -109,6 +108,10 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
     ));
   }
 
+  async redirectToProfile() {
+    await this.router.navigate(['/profiles', this.post.author.userId]);
+  }
+
   ngOnInit() {
     this.userId = this.authService.state().userId;
     if (this.post.mediaId) {
@@ -119,6 +122,12 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
           this.imageLoading.set(false);
         }
       ));
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['post'] && this.post && this.post.createdAt) {
+      this.formattedDate = DateFormatting.formatDateTime(this.post.createdAt);
     }
   }
 
