@@ -36,7 +36,7 @@
         <div class="flex flex-row justify-between">
           <h1 class="text-3xl font-semibold">{{ profile.firstName + " " + profile.lastName }}</h1>
           <div class="flex flex-row gap-2">
-            <button *ngif="authState().userId === profile.userId" class="flex flex-row gap-2 app-btn btn-primary" (click)="changePassword()">
+            <button *ngIf="authState().userId === profile.userId" class="flex flex-row gap-2 app-btn btn-primary" (click)="changePassword()">
               <h2 class="">Manage Account</h2>
               <span class="material-symbols-outlined">manage_accounts</span>
             </button>
