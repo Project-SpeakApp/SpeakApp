@@ -1,7 +1,23 @@
 <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
 <div *ngIf="profile && !isLoading">
   <div>
-    <img class="absolute max-w-[calc(64rem-2rem)] z-0 w-[calc(100%-2rem)] h-[250px] rounded-[20px] object-cover" src="https://wallpaperaccess.com/full/1419752.jpg" alt="user background picture">
+    <div
+      [ngClass]="{
+        'absolute max-w-[calc(64rem-2rem)] z-0 w-[calc(100%-2rem)] h-[250px] rounded-[20px] object-cover bg-black': true,
+        'filter hover:brightness-50 hover:blur-[1px]': authState().userId === profile.userId,
+      }">
+      <img
+        class="object-cover w-full h-full rounded-[20px] bg-black"
+        [src]="backgroundSrc"
+        alt="user background picture">
+      <label class="absolute left-[0px] top-[0px] max-w-[calc(64rem)] w-[calc(100%)] h-[250px] rounded-[20px] cursor-pointer z-0 justify-center flex flex-col opacity-0 hover:opacity-100">
+        <div class="mx-auto">
+          <span class="material-symbols-outlined text-black text-[100px]">photo_camera</span>
+        </div>
+        <input #bgInput alt="lmao" type="file" accept="image/*" (change)="processImage(bgInput, 'background')" class="hidden"/>
+      </label>
+      <span *ngIf="backgroundLoading()" class="absolute top-[calc((250px-40px)/2)] left-[calc((100%-40px)/2)] text-white loading loading-spinner loading-lg"></span>
+    </div>
     <div class="flex flex-row pt-[125px] pl-10">
       <div class="avatar">
         <div [ngClass]="{ 'w-[180px] rounded-full border-white border-4' : true,
@@ -12,8 +28,8 @@
             </div>
             <input #imageInput id="add-post-image-input" alt="lmao" type="file" accept="image/*" (change)="processImage(imageInput)" class="hidden"/>
           </label>
-          <img [src]="avatarSrc" alt="profile photo" [ngClass]="{'filter brightness-50 blur-[1px]': imageLoading(), 'bg-black': true}"/>
-          <app-loading-spinner [isLoading]="imageLoading()" class="absolute -top-[10px] left-[70px] text-white "></app-loading-spinner>
+          <img [src]="avatarSrc" alt="profile photo" [ngClass]="{'filter brightness-50 blur-[1px]': avatarLoading(), 'bg-black': true}"/>
+          <app-loading-spinner [isLoading]="avatarLoading()" class="absolute -top-[10px] left-[70px] text-white "></app-loading-spinner>
         </div>
       </div>
       <div class="flex flex-col justify-end w-full">

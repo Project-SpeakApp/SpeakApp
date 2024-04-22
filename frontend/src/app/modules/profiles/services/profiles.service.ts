@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import ProfileGetDTO from '../types/ProfileGetDTO';
 import { finalize, tap } from 'rxjs';
 import ProfileUpdateDTO from '../types/ProfileUpdateDTO';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +10,6 @@ import { Router } from '@angular/router';
 export class ProfilesService {
   constructor(
     private http: HttpClient,
-    private router: Router,
   ) {}
 
   isLoading = signal(false);
@@ -42,5 +39,9 @@ export class ProfilesService {
 
   public updateProfilePhoto(mediaId: string) {
     return this.http.put(`http://localhost:8080/api/users/profile-photo`, { photoId: mediaId }, {});
+  }
+
+  public updateBackgroundPhoto(mediaId: string) {
+    return this.http.put(`http://localhost:8080/api/users/background-photo`, { photoId: mediaId }, {});
   }
 }

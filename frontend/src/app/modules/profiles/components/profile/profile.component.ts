@@ -17,10 +17,12 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
 
   authState = this.authService.state;
 
-  imageLoading = signal(false);
   imageSubstription = new Subscription();
 
+  avatarLoading = signal(false);
+  backgroundLoading = signal(false);
   avatarSrc = '';
+  backgroundSrc = '';
 
   constructor(
     private authService: AuthService,
@@ -29,41 +31,84 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     private alertService: AlertService) {
   }
 
-  processImage(imageInput: any) {
-    this.imageLoading.set(true);
+  processImage(imageInput: any, type: 'avatar' | 'background' = 'avatar') {
+    if (type === 'avatar') {
+      this.avatarLoading.set(true);
+    } else {
+      this.backgroundLoading.set(true);
+    }
+
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
       this.imageSubstription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).subscribe((res) => {
-        this.imageSubstription.add(this.profileService.updateProfilePhoto(res).subscribe((_) => {
-          if (this.profile){
-            this.profile.profilePhotoId = res;
-            this.authService.updateProfilePhoto(res);
-            this.alertService.showAlert('Profile photo updated', 'success');
-          }
-          this.ngOnInit();
-        }));
+        if (type === 'avatar') {
+          this.updateAvatar(res);
+        }
+        else {
+          this.updateBackground(res);
+        }
       }));
     })
 
     reader.readAsDataURL(file);
   }
+
+  updateAvatar(res: string) {
+    this.imageSubstription.add(this.profileService.updateProfilePhoto(res).subscribe((_) => {
+      if (this.profile){
+        this.profile.profilePhotoId = res;
+        this.authService.updateProfilePhoto(res);
+        this.alertService.showAlert('Profile photo updated', 'success');
+        this.loadProfilePhoto();
+      }
+    }));
+  }
+
+  updateBackground(res: string) {
+    this.imageSubstription.add(this.profileService.updateBackgroundPhoto(res).subscribe((_) => {
+      if (this.profile){
+        this.profile.bgPhotoId = res;
+        this.alertService.showAlert('Background photo updated', 'success');
+        this.loadBackgroundPhoto();
+      }
+    }));
+  }
+
   changePassword() {
     this.authService.manageAccount();
   }
 
-  ngOnInit(): void {
+  loadProfilePhoto() {
     if (this.profile?.profilePhotoId) {
-      this.imageLoading.set(true);
+      this.avatarLoading.set(true);
       this.imageSubstription.add(this.imageService.downloadImage(this.profile.profilePhotoId).subscribe((blob) => {
         this.avatarSrc = URL.createObjectURL(blob);
-        this.imageLoading.set(false);
+        this.avatarLoading.set(false);
       }));
     }
     else {
       this.avatarSrc = 'https://th.bing.com/th/id/OIP.eyhIau9Wqaz8_VhUIomLWgAAAA?rs=1&pid=ImgDetMain';
     }
+  }
+
+  loadBackgroundPhoto() {
+    if (this.profile?.bgPhotoId) {
+      this.backgroundLoading.set(true);
+      this.imageSubstription.add(this.imageService.downloadImage(this.profile.bgPhotoId).subscribe((blob) => {
+        this.backgroundSrc = URL.createObjectURL(blob);
+        this.backgroundLoading.set(false);
+      }));
+    }
+    else {
+      this.backgroundSrc = 'https://wallpaperaccess.com/full/1419752.jpg';
+    }
+  }
+
+  ngOnInit(): void {
+    this.loadProfilePhoto();
+    this.loadBackgroundPhoto();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
