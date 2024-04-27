@@ -37,7 +37,7 @@ public class Message extends Auditable{
 
     @OneToOne
     @JoinColumn(name = "response_to_message_id")
-    private Message responseToMessageId;
+    private Message responseToMessage;
 
     private boolean isDeleted;
 

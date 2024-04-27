@@ -12,16 +12,17 @@ import java.util.UUID;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, UUID> {
-    @Query(value = "SELECT * FROM Message m " +
+    @Query(value = "SELECT * FROM message m " +
             "INNER JOIN (" +
             "    SELECT m1.conversation_id AS conversationId, MAX(m1.sent_at) AS maxSentAt " +
-            "    FROM Message m1 " +
+            "    FROM message m1 " +
+            "    INNER JOIN group_member gm ON m1.conversation_id = gm.conversation_id " +
+            "    WHERE gm.user_id = :userId " +
             "    GROUP BY m1.conversation_id" +
             ") maxDate " +
             "ON maxDate.conversationId = m.conversation_id " +
             "AND maxDate.maxSentAt = m.sent_at " +
-            "WHERE m.conversation_id IN :conversationIds " +
-            "ORDER BY m.sent_at DESC", nativeQuery = true)
-    Page<Message> findLatestMessageForEachConversation(List<UUID> conversationIds, Pageable pageable);
+            "ORDER BY maxDate.maxSentAt DESC", nativeQuery = true)
+    Page<Message> findLatestMessageForUserConversations(UUID userId, Pageable pageable);
 
 }

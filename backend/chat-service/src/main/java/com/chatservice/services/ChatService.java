@@ -5,7 +5,6 @@ import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
 import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
-import com.chatservice.mappers.ConversationMapper;
 import com.chatservice.repositories.ConversationRepository;
 import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
@@ -28,8 +27,6 @@ public class ChatService {
 
     private final GroupMemberRepository groupMemberRepository;
 
-    private final ConversationMapper conversationMapper;
-
     private final UserServiceCommunicationClient userServiceCommunicationClient;
 
     private final MessageRepository messageRepository;
@@ -41,7 +38,7 @@ public class ChatService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserId's must be different to create a conversation");
         }
 
-        List<UUID> checkIfPrivateConversationExists = conversationRepository.findPrivateConversationForTwoUsers
+        List<UUID> checkIfPrivateConversationExists = conversationRepository.findConversationsForTwoUsers
                 (newPrivateConversationDTO.getConversationMemberUser(),
                 conversationCreatorUser);
 
@@ -50,7 +47,8 @@ public class ChatService {
                     "Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser() + " already exists");
         }
 
-        Conversation createdConversation = conversationRepository.save(conversationMapper.toEntity(false));
+        Conversation createdConversation = conversationRepository.save(Conversation.builder()
+                .isGroupConversation(false).build());
 
         groupMemberRepository.save(GroupMember.builder()
                 .userId(conversationCreatorUser)
@@ -67,9 +65,8 @@ public class ChatService {
     }
 
     public ChatPreviewPageDTO getChatPreviews(UUID userId, int pageNumber, int pageSize){
-        List<UUID> conversationsOfCurrentUser = groupMemberRepository.findConversationsByGroupMember(userId);
         Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<Message> messagesPage = messageRepository.findLatestMessageForEachConversation(conversationsOfCurrentUser, page);
+        Page<Message> messagesPage = messageRepository.findLatestMessageForUserConversations(userId, page);
 
         return createChatPreviewPageDTOFromMessagesPage(messagesPage, page);
     }
