@@ -96,7 +96,7 @@ public class ChatService {
         MessageGetDTO messageGetDTO = MessageGetDTO.builder()
                 .content(message.getContent())
                 .type(message.getType())
-                .fromUserId(messageAuthor).build();
+                .fromUser(messageAuthor).build();
 
         List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(getConversationForMessage.getConversationId());
         List<UserGetDTO> conversationMembersDTO = conversationMembers.stream().map(userServiceCommunicationClient::getUserById).toList();

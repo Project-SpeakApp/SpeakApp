@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class MessageGetDTO {
 
-    UserGetDTO fromUserId;
+    UserGetDTO fromUser;
 
     String content;
 
