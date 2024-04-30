@@ -5,6 +5,7 @@ import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
 import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
+import com.chatservice.exceptions.BadRequestException;
 import com.chatservice.repositories.ConversationRepository;
 import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
@@ -12,9 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class ChatService {
                                                   UUID conversationCreatorUser){
 
         if(newPrivateConversationDTO.getConversationMemberUser().equals(conversationCreatorUser)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserId's must be different to create a conversation");
+            throw new BadRequestException("Bad request: UserId's must be different to create a conversation");
         }
 
         List<UUID> checkIfPrivateConversationExists = conversationRepository.findConversationsForTwoUsers
@@ -43,8 +42,9 @@ public class ChatService {
                 conversationCreatorUser);
 
         if(!checkIfPrivateConversationExists.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser() + " already exists");
+            throw new BadRequestException(
+                    "Bad request: Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser()
+                            + " already exists");
         }
 
         Conversation createdConversation = conversationRepository.save(Conversation.builder()

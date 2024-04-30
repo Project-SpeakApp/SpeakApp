@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ConversationRepository extends JpaRepository<Conversation, UUID> {
 
     @Query("SELECT gm.conversation.conversationId FROM group_member gm " +
-            "WHERE gm.userId = :userId1 " +
+            "WHERE gm.userId = :userId1 AND gm.conversation.isGroupConversation = false " +
             "AND gm.conversation.conversationId IN " +
             "(SELECT gm2.conversation.conversationId FROM group_member gm2 WHERE gm2.userId = :userId2)")
     List<UUID> findConversationsForTwoUsers(UUID userId1, UUID userId2);
