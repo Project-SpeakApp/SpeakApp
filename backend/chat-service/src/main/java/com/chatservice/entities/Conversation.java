@@ -23,6 +23,10 @@ public class Conversation {
     @Column(name = "conversation_name")
     private String conversationName;
 
+    @OneToOne
+    @JoinColumn(name = "last_message_id")
+    private Message lastMessage;
+
     @Column(nullable = false)
     private boolean isGroupConversation;
 

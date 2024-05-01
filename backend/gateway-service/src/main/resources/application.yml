@@ -1,53 +1,40 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
+
 logging:
   level:
     root: INFO
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
     org.springframework.cloud.gateway: TRACE
 
+app:
+  cors:
+    allowed-origins: http://localhost:4200
+  jwt:
+    keycloak: http://keycloak-service:8443
+    realm: SpeakApp
+    issuer-uri: http://localhost:8443/realms/${app.jwt.realm}
+    resource-client-id: SpeakAppClient
+
 spring:
-  cloud:
-    gateway:
-      globalcors:
-        corsConfigurations:
-          '[/api/users/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "UserId"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            maxAge: 3600
-          '[/api/posts/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "UserId"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            maxAge: 3600
-          '[/api/comments/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedHeaders:
-              - "Authorization"
-              - "Content-Type"
-              - "UserId"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            maxAge: 3600
+  main:
+    web-application-type: reactive
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: ${app.jwt.issuer-uri}
+          jwk-set-uri: ${app.jwt.keycloak}/realms/${app.jwt.realm}/protocol/openid-connect/certs
+  application:
+    name: api-gateway
+
+

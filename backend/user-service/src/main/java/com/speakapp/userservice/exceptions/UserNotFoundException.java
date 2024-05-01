@@ -1,13 +1,13 @@
 package com.speakapp.userservice.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+public class UserNotFoundException extends EntityNotFoundException {
+    private static final String DEFAULT_MESSAGE = "Requested user could not be found!";
 
-import java.util.UUID;
+    public UserNotFoundException() {
+        super(DEFAULT_MESSAGE);
+    }
 
-public class UserNotFoundException extends ResponseStatusException {
-
-    public UserNotFoundException(UUID uuid) {
-        super(HttpStatus.NOT_FOUND, "User not found for id: " + uuid);
+    public UserNotFoundException(String message) {
+        super(message);
     }
 }

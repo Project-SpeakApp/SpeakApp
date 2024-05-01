@@ -1,6 +1,7 @@
 package com.chatservice.controllers;
 
-import com.chatservice.dtos.MessageDTO;
+import com.chatservice.dtos.ChatPreviewPageDTO;
+import com.chatservice.dtos.MessagePrivateCreateDTO;
 import com.chatservice.dtos.NewPrivateConversationDTO;
 import com.chatservice.entities.Conversation;
 import com.chatservice.services.ChatService;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,8 +27,8 @@ public class ChatController {
     private static final String AUTH_HEADER_PREFIX = "Bearer ";
 
     @MessageMapping("/chat.sendMessage")
-    public void sendMessage(@Payload MessageDTO messageDTO){
-        messagingTemplate.convertAndSend("/chat/" + messageDTO.getConversationId(), messageDTO);
+    public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), messageDTO);
     }
 
     @PostMapping("/api/chat")
@@ -39,6 +39,16 @@ public class ChatController {
         UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
 
         return chatService.createPrivateConversation(newPrivateConversationDTO, userId);
+    }
+
+    @GetMapping("/api/chat/chatpreview")
+    public ChatPreviewPageDTO getChatPreviewPageDTO(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestHeader("Authorization") String authHeader) {
+        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        return chatService.getChatPreviews(userId, pageNumber, pageSize);
     }
 
 }

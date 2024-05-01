@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -32,7 +32,7 @@ public class MessageReaction {
     @Column(nullable = false)
     private UUID userId;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(updatable = false)
     private Instant date;
 
@@ -40,5 +40,5 @@ public class MessageReaction {
     @Enumerated(EnumType.STRING)
     private ReactionType type;
 
-    private int numberOfReactions;
+
 }
