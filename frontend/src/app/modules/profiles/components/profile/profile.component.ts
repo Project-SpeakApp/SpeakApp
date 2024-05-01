@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal} f
 import ProfileGetDTO from '../../types/ProfileGetDTO';
 import {AuthService} from "../../../../shared/services/auth.service";
 import TypeMedia from "../../../../shared/types/media/type-media";
-import {Subscription} from "rxjs";
+import {Subscription, tap} from "rxjs";
 import {ImageService} from "../../../../shared/services/image.service";
 import {ProfilesService} from "../../services/profiles.service";
 import {AlertService} from "../../../../shared/services/alert.service";
@@ -42,14 +42,18 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).subscribe((res) => {
-        if (type === 'avatar') {
-          this.updateAvatar(res);
-        }
-        else {
-          this.updateBackground(res);
-        }
-      }));
+      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).pipe(
+        tap((res) => {
+          if (type === 'avatar')
+            this.updateAvatar(res);
+          else
+            this.updateBackground(res);
+        }, (error) => {
+          if (type === 'avatar')
+            this.avatarLoading.set(false);
+          else
+            this.backgroundLoading.set(false);
+        })).subscribe());
     })
 
     reader.readAsDataURL(file);

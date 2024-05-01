@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PostService} from '../../sevices/post.service';
-import {Subscription} from 'rxjs';
+import {pipe, Subscription, tap} from 'rxjs';
 import {AlertService} from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
@@ -75,13 +75,20 @@ export class AddPostComponent implements OnInit, OnDestroy {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
-        this.imageSubscription.add(this.imageService.downloadImage(res).subscribe((blob) => {
-          const imageUrl = URL.createObjectURL(blob);
-          this.selectedFile = new ImageSnippet(imageUrl, file, res);
-          this.imageLoading.set(false);
-        }));
-      }));
+      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).pipe(
+        tap(
+          (res: string) => {
+            this.imageSubscription.add(this.imageService.downloadImage(res).subscribe((blob) => {
+              const imageUrl = URL.createObjectURL(blob);
+              this.selectedFile = new ImageSnippet(imageUrl, file, res);
+              this.imageLoading.set(false);
+            }));
+          },
+          (error) => {
+            this.imageLoading.set(false);
+          }
+        )
+      ).subscribe());
     })
 
     reader.readAsDataURL(file);
