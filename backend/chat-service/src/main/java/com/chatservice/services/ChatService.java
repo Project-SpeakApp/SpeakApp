@@ -1,15 +1,20 @@
 package com.chatservice.services;
 
-import com.chatservice.dtos.MessageDTO;
+import com.chatservice.communication.UserServiceCommunicationClient;
+import com.chatservice.dtos.ChatPreviewDTO;
+import com.chatservice.dtos.ChatPreviewPageDTO;
+import com.chatservice.dtos.ConversationGetDTO;
+import com.chatservice.dtos.MessageGetDTO;
+import com.chatservice.dtos.MessagePrivateCreateDTO;
 import com.chatservice.dtos.NewPrivateConversationDTO;
+import com.chatservice.dtos.UserGetDTO;
 import com.chatservice.entities.Conversation;
 import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
 import com.chatservice.entities.MessageType;
 import com.chatservice.exceptions.AccessDeniedException;
+import com.chatservice.exceptions.BadRequestException;
 import com.chatservice.exceptions.ConversationNotFound;
-import com.chatservice.mappers.ConversationMapper;
-import com.chatservice.mappers.MessageMapper;
 import com.chatservice.repositories.ConversationRepository;
 import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
@@ -17,71 +22,101 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ChatService {
 
-  private final ConversationRepository conversationRepository;
+    private final ConversationRepository conversationRepository;
 
-  private final GroupMemberRepository groupMemberRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
-  private final MessageRepository messageRepository;
+    private final UserServiceCommunicationClient userServiceCommunicationClient;
 
-  private final ConversationMapper conversationMapper;
+    private final MessageRepository messageRepository;
 
-  private final MessageMapper messageMapper;
+    public Conversation createPrivateConversation(NewPrivateConversationDTO newPrivateConversationDTO,
+                                                  UUID conversationCreatorUser){
 
-  public Conversation createPrivateConversation(NewPrivateConversationDTO newPrivateConversationDTO,
-      UUID conversationCreatorUser) {
-
-    List<GroupMember> usersGroupMembership = groupMemberRepository.findGroupMemberByUserIdsAndConversationIsPrivate(
-        conversationCreatorUser,
-        newPrivateConversationDTO.getConversationMemberUser()
-    );
-
-    if (!usersGroupMembership.isEmpty()) {
-      List<UUID> uniqueConversationsIds = new ArrayList<>();
-
-      for (GroupMember groupMember : usersGroupMembership) {
-        UUID conversationIdToCheck = groupMember.getConversation().getConversationId();
-
-        if (!uniqueConversationsIds.contains(conversationIdToCheck)) {
-          uniqueConversationsIds.add(conversationIdToCheck);
-        } else {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-              "Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser()
-                  + " already exists");
+        if(newPrivateConversationDTO.getConversationMemberUser().equals(conversationCreatorUser)){
+            throw new BadRequestException("Bad request: UserId's must be different to create a conversation");
         }
-      }
+
+        List<UUID> checkIfPrivateConversationExists = conversationRepository.findConversationsForTwoUsers
+                (newPrivateConversationDTO.getConversationMemberUser(),
+                conversationCreatorUser);
+
+        if(!checkIfPrivateConversationExists.isEmpty()){
+            throw new BadRequestException(
+                    "Bad request: Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser()
+                            + " already exists");
+        }
+
+        Conversation createdConversation = conversationRepository.save(Conversation.builder()
+                .isGroupConversation(false).build());
+
+        groupMemberRepository.save(GroupMember.builder()
+                .userId(conversationCreatorUser)
+                .conversation(createdConversation)
+                .build());
+
+        groupMemberRepository.save(GroupMember.builder()
+                .userId(newPrivateConversationDTO.getConversationMemberUser())
+                .conversation(createdConversation)
+                .build());
+
+        return createdConversation;
+
     }
 
-    Conversation createdConversation = conversationRepository.save(
-        conversationMapper.toEntity(false));
+    public ChatPreviewPageDTO getChatPreviews(UUID userId, int pageNumber, int pageSize){
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        Page<Message> messagesPage = messageRepository.findLatestMessageForUserConversations(userId, page);
 
-    groupMemberRepository.save(GroupMember.builder()
-        .conversation(createdConversation)
-        .userId(conversationCreatorUser)
-        .build());
+        return createChatPreviewPageDTOFromMessagesPage(messagesPage, page);
+    }
 
-    groupMemberRepository.save(GroupMember.builder()
-        .conversation(createdConversation)
-        .userId(newPrivateConversationDTO.getConversationMemberUser())
-        .build());
+    private ChatPreviewPageDTO createChatPreviewPageDTOFromMessagesPage(Page<Message> messagesPage, Pageable page){
+        List<ChatPreviewDTO> chatPreviewDTOList = messagesPage.getContent().stream().map(this::createChatPreviewDTO).toList();
 
-    return createdConversation;
+        return ChatPreviewPageDTO.builder()
+                .chatPreviewDTOS(chatPreviewDTOList)
+                .totalPages(messagesPage.getTotalPages())
+                .pageSize(page.getPageSize())
+                .currentPage(page.getPageNumber()).build();
+    }
 
-  }
+    private ChatPreviewDTO createChatPreviewDTO(Message message){
+        Conversation getConversationForMessage = message.getConversation();
 
-  public List<MessageDTO> getConversationHistory(int pageNumber, int pageSize, UUID conversationId,
+        ConversationGetDTO conversationGetDTO = ConversationGetDTO.builder()
+                .conversationId(getConversationForMessage.getConversationId())
+                .conversationName(getConversationForMessage.getConversationName())
+                .isGroupConversation(getConversationForMessage.isGroupConversation())
+                .build();
+
+
+        UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
+
+        MessageGetDTO messageGetDTO = MessageGetDTO.builder()
+                .content(message.getContent())
+                .type(message.getType())
+                .fromUser(messageAuthor).build();
+
+        List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(getConversationForMessage.getConversationId());
+        List<UserGetDTO> conversationMembersDTO = conversationMembers.stream().map(userServiceCommunicationClient::getUserById).toList();
+
+        return ChatPreviewDTO.builder()
+                .ChatMembers(conversationMembersDTO)
+                .lastMessage(messageGetDTO)
+                .conversationGetDTO(conversationGetDTO).build();
+    }
+
+  public List<MessageGetDTO> getConversationHistory(int pageNumber, int pageSize, UUID conversationId,
       UUID userId) {
     Conversation conversation = conversationRepository.findByConversationId(conversationId)
         .orElseThrow(ConversationNotFound::new);
@@ -94,26 +129,24 @@ public class ChatService {
     Page<Message> messagesPage = messageRepository.findAllByConversationOrderByDeliveredAtDesc(conversation, page);
 
     return messagesPage.getContent().stream().map(message -> {
-      return MessageDTO.builder()
-          .fromUser(message.getFromUser())
-          .toUser(null)  //is it even useful?
+      return MessageGetDTO.builder()
+          .fromUser(userServiceCommunicationClient.getUserById(message.getFromUserId()))
           .content(message.getContent())
-          .type(MessageType.valueOf(message.getType())) // maybe just return type as string and store as MessageType?
-          .conversationId(message.getConversation().getConversationId())
+          .type(MessageType.valueOf(message.getType().toString()))
           .build();
     }).toList();
   }
 
-  public void saveMessage(MessageDTO messageDTO){
-    Conversation conversation = conversationRepository.findByConversationId(messageDTO.getConversationId())
+  public void saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
+    Conversation conversation = conversationRepository.findByConversationId(messagePrivateCreateDTO.getConversationId())
         .orElseThrow(ConversationNotFound::new);
 
     messageRepository.save(Message.builder()
-            .fromUser(messageDTO.getFromUser())
-            .content(messageDTO.getContent())
-            .type(messageDTO.getType().toString())
+            .fromUserId(messagePrivateCreateDTO.getFromUserId())
+            .content(messagePrivateCreateDTO.getContent())
+            .type(messagePrivateCreateDTO.getType())
             .conversation(conversation)
-            .responseToMessageId(null) //not implemented
+            .responseToMessage(null)
         .build());
   }
 

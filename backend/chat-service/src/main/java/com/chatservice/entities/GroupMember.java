@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -34,8 +35,8 @@ public class GroupMember {
 
     @CreatedDate
     @Column(updatable = false)
-    private Instant joinedDatetime;
+    private Instant joinedAt;
 
-    private Instant leftDatetime;
+    private Instant leftAt;
 
 }

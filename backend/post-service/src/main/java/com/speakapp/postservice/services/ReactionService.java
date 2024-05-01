@@ -1,16 +1,15 @@
 package com.speakapp.postservice.services;
 
 import com.speakapp.postservice.entities.*;
+import com.speakapp.postservice.exceptions.CommentNotFoundException;
+import com.speakapp.postservice.exceptions.PostNotFoundException;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +20,8 @@ public class ReactionService {
     private final CommentRepository commentRepository;
     
     public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("Post with provided id does not exist"));
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new PostNotFoundException("Post with id = " + postId + " has not been found"));
         PostReaction oldReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 
         if (oldReaction == null && newReaction != null) {
@@ -42,11 +42,12 @@ public class ReactionService {
     }
 
     public ReactionType createUpdateCommentReaction(ReactionType newReaction, UUID commentId, UUID userId){
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Comment with provided commentId " + commentId + " does not exist"));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new CommentNotFoundException("Comment with provided commentId " + commentId + " does not exist"));
         CommentReaction oldReaction = commentReactionRepository.findCommentReactionByCommentAndUserId(comment, userId);
 
         if (oldReaction == null && newReaction != null) {
+            comment.incrementNumberOfReactions();
             commentReactionRepository.save(CommentReaction.builder()
                     .comment(comment)
                     .userId(userId)
@@ -54,6 +55,7 @@ public class ReactionService {
                     .build());
         }
         if (oldReaction != null && newReaction == null) {
+            comment.decrementNumberOfReactions();
             commentReactionRepository.delete(oldReaction);
         }
         if (oldReaction != null && newReaction != null) {

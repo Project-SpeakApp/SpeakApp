@@ -22,7 +22,7 @@ public class UserService {
         Optional<AppUser> user = userRepository.findById(userId);
 
         return user.map(appUserMapper::toGetDTO)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public void createUser(AppUserCreateDTO userDTO) {
@@ -33,7 +33,7 @@ public class UserService {
 
     public AppUserGetDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {
         Optional<AppUser> user = userRepository.findById(userId);
-        AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
+        AppUser appUser = user.orElseThrow(UserNotFoundException::new);
 
         appUserMapper.updateAppUserFromAppUserUpdateDTO(appUserUpdateDTO, appUser);
 
@@ -43,7 +43,7 @@ public class UserService {
 
     public AppUserGetDTO updateUserProfilePhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
         Optional<AppUser> user = userRepository.findById(userId);
-        AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
+        AppUser appUser = user.orElseThrow(UserNotFoundException::new);
 
         appUserMapper.updateAppUserProfilePhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
@@ -53,7 +53,7 @@ public class UserService {
 
     public AppUserGetDTO updateUserBackgroundPhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
         Optional<AppUser> user = userRepository.findById(userId);
-        AppUser appUser = user.orElseThrow(() -> new UserNotFoundException(userId));
+        AppUser appUser = user.orElseThrow(UserNotFoundException::new);
 
         appUserMapper.updateAppUserBackgroundPhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 

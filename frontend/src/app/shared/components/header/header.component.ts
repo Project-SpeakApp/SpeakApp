@@ -19,6 +19,18 @@ export class HeaderComponent implements OnInit {
     console.log(event.target.value);
   }
 
+  async logoutUser() {
+    await this.authService.logout('http://localhost:4200/');
+  }
+
+  async loginUser() {
+    await this.authService.login();
+  }
+
+  async registerUser() {
+    await this.authService.register();
+  }
+
   ngOnInit(): void {
 
   }

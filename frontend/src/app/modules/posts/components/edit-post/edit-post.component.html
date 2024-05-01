@@ -1,16 +1,16 @@
 <div class="-mb-[24px]">
-<div class="flex">
-  <div class="flex flex-row justify-end w-full">
-    <span class="material-symbols-outlined cursor-pointer" (click)="closeForm()">close</span>
-    <span *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer" (click)="onFormSubmit()">done</span>
-    <div *ngIf="isLoading" class="w-[24px] h-[24px]">
-    <span class="loading loading-spinner loading-sm mt-[2px] ml-[2px]"></span>
+  <div class="flex">
+    <div class="flex flex-row justify-end w-full">
+      <span class="material-symbols-outlined cursor-pointer" (click)="closeForm()">close</span>
+      <span *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer" (click)="onFormSubmit()">done</span>
+      <div *ngIf="isLoading" class="w-[24px] h-[24px]">
+        <span class="loading loading-spinner loading-sm mt-[2px] ml-[2px]"></span>
+      </div>
     </div>
   </div>
-</div>
-<form [formGroup]="myForm" (ngSubmit)="onFormSubmit()" class="">
-  <div class="grow-wrap">
-      <textarea id="content" rows="1" formControlName="content" name="content" class="resize-none bg-[#D9D9D9] border-black border-[1px] w-full rounded max-h-screen max-w-full" onInput="this.parentNode.dataset.replicatedValue = this.value">{{currentContent}}</textarea>
-  </div>
-</form>
+  <form [formGroup]="myForm" (ngSubmit)="onFormSubmit()" class="">
+    <div class="grow-wrap">
+      <textarea id="content" (keydown.enter)="onFormSubmit()" rows="{{numberOfRows}}" formControlName="content" name="content" class="resize-none bg-[#D9D9D9] border-black border-[1px] w-full rounded max-h-screen max-w-full" onInput="this.parentNode.dataset.replicatedValue = this.value">{{currentContent}}</textarea>
+    </div>
+  </form>
 </div>

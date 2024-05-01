@@ -21,19 +21,24 @@ public class Message extends Auditable{
     private UUID messageId;
 
     @Column(nullable = false)
-    private UUID fromUser;
+    private UUID fromUserId;
 
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private MessageType type;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "conversationId")
     private Conversation conversation;
 
-    private UUID responseToMessageId;
+    @OneToOne
+    @JoinColumn(name = "response_to_message_id")
+    private Message responseToMessage;
+
+    private boolean isDeleted;
 
 }

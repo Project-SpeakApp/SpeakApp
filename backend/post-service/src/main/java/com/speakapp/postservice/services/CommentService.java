@@ -6,20 +6,19 @@ import com.speakapp.postservice.entities.Comment;
 import com.speakapp.postservice.entities.CommentReaction;
 import com.speakapp.postservice.entities.Post;
 import com.speakapp.postservice.entities.ReactionType;
+import com.speakapp.postservice.exceptions.AccessDeniedException;
+import com.speakapp.postservice.exceptions.CommentNotFoundException;
 import com.speakapp.postservice.mappers.CommentMapper;
 import com.speakapp.postservice.mappers.CommentPageMapper;
 import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -34,15 +33,16 @@ public class CommentService {
     private final CommentPageMapper commentPageMapper;
     private final ReactionsMapper reactionsMapper;
     private final UserServiceCommunicationClient userServiceCommunicationClient;
+    private final EntityManager entityManager;
 
     public CommentGetDTO updateComment(CommentUpdateDTO commentUpdateDTO, UUID commentId, UUID userId) {
         Comment commentToUpdate = commentRepository.findById(commentId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + " was not found"));
+                new CommentNotFoundException("Comment with id = " + commentId + " was not found"));
 
         UserGetDTO author = userServiceCommunicationClient.getUserById(commentToUpdate.getUserId());
 
         if (!commentToUpdate.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only author of comment can update it");
+            throw new AccessDeniedException("Only author of comment can update it");
         }
 
         commentMapper.updateCommentFromCommentUpdateDTO(commentUpdateDTO, commentToUpdate);
@@ -57,13 +57,24 @@ public class CommentService {
                 currentUserReactionType);
     }
 
-    public CommentPageGetDTO getCommentsForPost(int pageNumber, int pageSize, UUID postId, UUID userId,
+    public CommentPageGetDTO getCommentsForPost(int firstComment, int lastComment, UUID postId, UUID userId,
                                                 String sortBy, Sort.Direction sortDirection){
 
         Post post = postService.getPostById(postId);
-        Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, sortBy));
-        Page<Comment> commentsPage = commentRepository.findAllByPost(post, page);
-        return createCommentPageGetDTOFromCommentPage(commentsPage, userId, page);
+        List<Comment> sortedPostComments = findCommentPageByPostSorted(post,firstComment, lastComment,sortBy, sortDirection);
+
+        long totalComments = countCommentsByPost(post);
+
+        if(firstComment > totalComments) {
+            firstComment = (int)totalComments;
+        }
+
+        if(lastComment > totalComments) {
+            lastComment = (int)totalComments;
+        }
+
+        return createCommentPageGetDTOFromCommentPage(sortedPostComments, userId, firstComment, lastComment, totalComments);
+
     }
 
     // Keep the class implementation for migration to CommentService
@@ -112,8 +123,9 @@ public class CommentService {
                 .build();
     }
 
-    private CommentPageGetDTO createCommentPageGetDTOFromCommentPage(Page<Comment> commentsPage, UUID userId, Pageable page){
-        List<CommentGetDTO> commentGetDTOS = commentsPage.getContent().stream().map(comment -> {
+    private CommentPageGetDTO createCommentPageGetDTOFromCommentPage(List<Comment> commentsToGet, UUID userId,
+                                                                     int firstComment, int lastComment, Long totalComments){
+        List<CommentGetDTO> commentGetDTOS = commentsToGet.stream().map(comment -> {
             UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
             ReactionsGetDTO commentReactions = getReactionsForTheComment(comment);
             ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
@@ -128,9 +140,9 @@ public class CommentService {
 
         return commentPageMapper.toGetDTO(
                 commentGetDTOS,
-                page,
-                commentsPage.getTotalPages(),
-                commentsPage.getTotalElements()
+                firstComment,
+                lastComment,
+                totalComments
         );
     }
 
@@ -156,16 +168,36 @@ public class CommentService {
     public void deleteComment(UUID userId, UUID commentId){
 
         Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id = " + commentId + "has not been found"));
+                new CommentNotFoundException("Comment with id = " + commentId + " has not been found"));
 
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
         if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only author of the post or the comment can delete the comment");
+            throw new AccessDeniedException("Only author of the post or the comment can delete the comment");
         }
 
         commentRepository.delete(commentToDelete);
     }
+
+    private List<Comment> findCommentPageByPostSorted(Post post,int firstComment, int lastComment, String sortBy, Sort.Direction sortOrder) {
+        String jpqlQuery = "SELECT c FROM Comment c WHERE c.post = :post ORDER BY";
+
+        jpqlQuery += " c." + sortBy + " " + sortOrder;
+
+        Query query = entityManager.createQuery(jpqlQuery);
+        query.setParameter("post", post);
+        query.setFirstResult(firstComment);
+        query.setMaxResults(lastComment - firstComment + 1);
+
+        return query.getResultList();
+    }
+
+    private long countCommentsByPost(Post post) {
+        String jpqlCountQuery = "SELECT COUNT(c) FROM Comment c WHERE c.post = :post";
+        Query countQuery = entityManager.createQuery(jpqlCountQuery);
+        countQuery.setParameter("post", post);
+        return (long) countQuery.getSingleResult();
+    }
+
 }

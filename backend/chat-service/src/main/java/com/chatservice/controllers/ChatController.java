@@ -1,6 +1,9 @@
 package com.chatservice.controllers;
 
-import com.chatservice.dtos.MessageDTO;
+
+import com.chatservice.dtos.ChatPreviewPageDTO;
+import com.chatservice.dtos.MessageGetDTO;
+import com.chatservice.dtos.MessagePrivateCreateDTO;
 import com.chatservice.dtos.NewPrivateConversationDTO;
 import com.chatservice.entities.Conversation;
 import com.chatservice.services.ChatService;
@@ -12,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,31 +24,40 @@ import java.util.UUID;
 @SecurityRequirement(name = "bearerAuth")
 public class ChatController {
 
-  private final ChatService chatService;
-  private final SimpMessagingTemplate messagingTemplate;
-  private final JwtDecoder jwtDecoder;
-  private static final String AUTH_HEADER_PREFIX = "Bearer ";
+    private final ChatService chatService;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final JwtDecoder jwtDecoder;
+    private static final String AUTH_HEADER_PREFIX = "Bearer ";
 
-  @MessageMapping("/chat.sendMessage")
-  public void sendMessage(@Payload MessageDTO messageDTO) {
-    messagingTemplate.convertAndSend("/chat/" + messageDTO.getConversationId(), messageDTO);
-    chatService.saveMessage(messageDTO);
-  }
+    @MessageMapping("/chat.sendMessage")
+    public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), messageDTO);
+        chatService.saveMessage(messageDTO);
+    }
 
-  //TODO: consider extracting http endpoints to another controller
-  @PostMapping("/api/chat")
-  @ResponseStatus(HttpStatus.CREATED)
-  public Conversation createPrivateConversation(@RequestHeader("Authorization") String authHeader,
-      @RequestBody NewPrivateConversationDTO newPrivateConversationDTO) {
-    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+    @PostMapping("/api/chat")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Conversation createPrivateConversation(@RequestHeader("Authorization") String authHeader,
+                                                  @RequestBody NewPrivateConversationDTO newPrivateConversationDTO){
+        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
 
-    return chatService.createPrivateConversation(newPrivateConversationDTO, userId);
-  }
+        return chatService.createPrivateConversation(newPrivateConversationDTO, userId);
+    }
+
+    @GetMapping("/api/chat/chatpreview")
+    public ChatPreviewPageDTO getChatPreviewPageDTO(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestHeader("Authorization") String authHeader) {
+        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        return chatService.getChatPreviews(userId, pageNumber, pageSize);
+    }
 
   @GetMapping("/api/chat/{conversationId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<MessageDTO> getConversationHistory(@RequestParam(defaultValue = "0") int pageNumber,
+  public List<MessageGetDTO> getConversationHistory(@RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize,
       @PathVariable UUID conversationId,
       @RequestHeader("Authorization") String authHeader) {

@@ -3,6 +3,8 @@ version: '3.8'
 x-service: &service
   environment:
     - SPRING_PROFILES_ACTIVE=dev
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
 
 x-db: &db
   image: postgres:16.0-alpine
@@ -18,66 +20,107 @@ x-db-env: &db-env
   POSTGRES_PASSWORD: postgres
 
 services:
-  user-service:
-    <<: *service
-    build: user-service
+  config-server:
+    container_name: config-server
+    build: config-server
     ports:
-      - '8081:8081'
+      - '8888:8888'
     networks:
-      - net-userDB-userServ
-      - net-postServ-userServ
-      - net-apiGw-userServ
+      - net-eureka-config
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  eureka-server:
+    container_name: discovery-service
+    build: discovery-service
+    ports:
+      - '8761:8761'
+    networks:
+      - net-eureka-config
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
-      user-db-service:
-        condition: service_healthy
+      - config-server
+
+  user-service:
+   <<: *service
+   container_name: user-service
+   build: user-service
+   ports:
+     - '8081:8081'
+   networks:
+     - net-userDB-userServ
+     - net-postServ-userServ
+     - net-apiGw-userServ
+     - net-eureka-config
+     - net-userServ-chatServ
+   depends_on:
+     config-server:
+       condition: service_healthy
+     eureka-server:
+       condition: service_healthy
+     user-db-service:
+       condition: service_healthy
 
   user-db-service:
-    <<: *db
-    environment:
-      <<: *db-env
-      POSTGRES_DB: user_db
-    volumes:
-      - vol-user-db:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
-    networks:
-      - net-userDB-userServ
+   <<: *db
+   environment:
+     <<: *db-env
+     POSTGRES_DB: user_db
+   volumes:
+     - vol-user-db:/var/lib/postgresql/data
+   ports:
+     - '5432:5432'
+   networks:
+     - net-userDB-userServ
 
   post-service:
-    <<: *service
-    build: post-service
-    ports:
-      - '8082:8082'
-    networks:
-      - net-postDB-postServ
-      - net-postServ-userServ
-      - net-apiGw-postServ
-    depends_on:
-      post-db-service:
-        condition: service_healthy
-
+   <<: *service
+   container_name: post-service
+   build: post-service
+   ports:
+     - '8082:8082'
+   networks:
+     - net-postServ-userServ
+     - net-postDB-postServ
+     - net-apiGw-postServ
+     - net-eureka-config
+   depends_on:
+     post-db-service:
+       condition: service_healthy
+     config-server:
+       condition: service_healthy
+     eureka-server:
+       condition: service_healthy
 
   post-db-service:
-    <<: *db
-    environment:
-      <<: *db-env
-      POSTGRES_DB: post_db
-      PGPORT: 5433
-    volumes:
-      - vol-post-db:/var/lib/postgresql/data
-    ports:
-      - '5433:5433'
-    networks:
-      - net-postDB-postServ
+   <<: *db
+   environment:
+     <<: *db-env
+     POSTGRES_DB: post_db
+     PGPORT: 5433
+   volumes:
+     - vol-post-db:/var/lib/postgresql/data
+   ports:
+     - '5433:5433'
+   networks:
+     - net-postDB-postServ
 
   chat-service:
     <<: *service
     build: chat-service
     ports:
-      - '8083:8083'
+      - '8084:8084'
     networks:
       - net-messageDB-chatServ
       - net-apiGw-chatServ
+      - net-userServ-chatServ
     depends_on:
       message-db-service:
         condition: service_healthy
@@ -87,16 +130,17 @@ services:
     environment:
       <<: *db-env
       POSTGRES_DB: message_db
-      PGPORT: 5435
+      PGPORT: 5436
     volumes:
       - vol-message-db:/var/lib/postgresql/data
     ports:
-      - '5435:5435'
+      - '5436:5436'
     networks:
       - net-messageDB-chatServ
 
   api-gateway:
     <<: *service
+    container_name: api-gateway
     build: gateway-service
     ports:
       - '8080:8080'
@@ -104,17 +148,134 @@ services:
       - net-apiGw-userServ
       - net-apiGw-postServ
       - net-apiGw-chatServ
+      - net-keycloak-apiGw
+      - net-eureka-config
+      - net-apiGw-blobServ
+    depends_on:
+      - config-server
+      - eureka-server
+      - keycloak-service
+
+  angular-client:
+    container_name: angular-client
+    build:
+      context: ../frontend
+    ports:
+      - '4200:4200'
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+  keycloak-service:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=keycloak-db
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+      - KC_DB_URL_PORT=5434
+    volumes:
+      - ./keycloak-service/themes:/opt/keycloak/themes
+      - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
+      - ./keycloak-utils/jar/keycloak-utils.jar:/opt/keycloak/providers/keycloak-utils.jar
+    ports:
+      - '8443:8443'
+    networks:
+      - net-keycloakDB-keycloakServ
+      - net-keycloak-apiGw
+    command:
+      - "start-dev"
+      - "--http-port=8443"
+      - "--import-realm"
+      - "--features=declarative-user-profile"
+      - "--spi-theme-cache-themes=true"
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+
+  keycloak-db:
+    <<: *db
+    environment:
+      <<: *db-env
+      POSTGRES_DB: keycloak
+      PGPORT: 5434
+    ports:
+      - '5434:5434'
+    networks:
+      - net-keycloakDB-keycloakServ
+    volumes:
+      - vol-keycloak-db:/var/lib/postgresql/data
+
+  blob-service:
+    <<: *service
+    build: blob-service
+    container_name: blob-service
+    ports:
+      - '8083:8083'
+    networks:
+      - net-apiGw-blobServ
+      - net-blobServ-azurite
+      - net-eureka-config
+    depends_on:
+      azurite:
+        condition: service_healthy
+      metadata-db:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  metadata-db:
+    <<: *db
+    environment:
+      <<: *db-env
+      POSTGRES_DB: metadata_db
+      PGPORT: 5435
+    ports:
+      - '5435:5435'
+    networks:
+      - net-blobServ-azurite
+    volumes:
+      - vol-metadata-db:/var/lib/postgresql/data
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: blob-container
+    ports:
+      - '10000:10000'
+      - '10001:10001'
+      - '10002:10002'
+    networks:
+      - net-blobServ-azurite
+    healthcheck:
+      test: nc 127.0.0.1 10000 -z
+      interval: 1s
+      retries: 30
 
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
   net-messageDB-chatServ:
   net-postServ-userServ:
+  net-userServ-chatServ:
   net-apiGw-userServ:
   net-apiGw-postServ:
+  net-keycloakDB-keycloakServ:
+  net-keycloak-apiGw:
+  net-apiGw-blobServ:
+  net-blobServ-azurite:
+  net-eureka-config:
   net-apiGw-chatServ:
 
 volumes:
   vol-user-db:
   vol-post-db:
   vol-message-db:
+  vol-keycloak-db:
+  vol-metadata-db:

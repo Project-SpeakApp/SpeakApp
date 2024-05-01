@@ -1,6 +1,12 @@
 server:
   port: 8082
 
+spring:
+  application:
+    name: post-service
+  config:
+    import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-server:8888/post-service}
+
 logging:
   level:
     org.springframework.web: DEBUG
@@ -9,8 +15,6 @@ logging:
 ---
 
 spring:
-  application:
-    name: post-service
   config:
     activate:
       on-profile: local

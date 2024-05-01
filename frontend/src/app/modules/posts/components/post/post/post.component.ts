@@ -20,13 +20,13 @@ export class PostComponent implements OnChanges, OnInit{
   isEdited: boolean = false;
 
 
+
   constructor(private authService: AuthService ) {
   }
 
 
   enableEditing(): void {
-    if(this.isEdited) this.isEdited = false;
-    else this.isEdited = true;
+    this.isEdited = !this.isEdited;
   }
 
   updateContent(updatedPost?: PostGet): void {
@@ -77,6 +77,14 @@ export class PostComponent implements OnChanges, OnInit{
 
       // rerender component
       this.post = {...this.post};
+  }
+
+  handleCommentAdding() {
+    this.post.totalNumberOfComments++;
+  }
+
+  handleCommentDeletion() {
+    this.post.totalNumberOfComments--;
   }
 
   ngOnInit() {

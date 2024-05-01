@@ -18,7 +18,6 @@ import java.util.UUID;
 public class AppUser extends Auditable {
 
     @Id
-    @GeneratedValue
     private UUID userId;
 
     @Column(nullable = false, length = 64)
