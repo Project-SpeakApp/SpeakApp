@@ -1,7 +1,7 @@
 DO
 $$
     DECLARE
-message_id_1         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130003'::uuid;
+        message_id_1         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130003'::uuid;
         message_id_2         uuid      := '6c84fbae-12c4-11ec-82a8-0242ac130003'::uuid;
         message_id_3         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130004'::uuid;
         message_id_4         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130005'::uuid;
