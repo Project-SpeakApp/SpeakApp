@@ -30,7 +30,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
   imageLoading = signal(false);
   deleteImageLoading = signal(false);
 
-  imageSubstription = new Subscription();
+  imageSubscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,8 +75,8 @@ export class AddPostComponent implements OnInit, OnDestroy {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageSubstription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
-        this.imageSubstription.add(this.imageService.downloadImage(res).subscribe((blob) => {
+      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
+        this.imageSubscription.add(this.imageService.downloadImage(res).subscribe((blob) => {
           const imageUrl = URL.createObjectURL(blob);
           this.selectedFile = new ImageSnippet(imageUrl, file, res);
           this.imageLoading.set(false);
@@ -91,7 +91,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     if (!this.selectedFile) return;
 
     this.deleteImageLoading.set(true);
-    this.imageSubstription.add(this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
+    this.imageSubscription.add(this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
       this.selectedFile = null;
       this.fileInputElement.nativeElement.value = '';
       this.deleteImageLoading.set(false);
@@ -105,6 +105,6 @@ export class AddPostComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
-    this.imageSubstription.unsubscribe();
+    this.imageSubscription.unsubscribe();
   }
 }
