@@ -1,5 +1,6 @@
 package com.chatservice.repositories;
 
+import com.chatservice.entities.Conversation;
 import com.chatservice.entities.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,5 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
             "ORDER BY maxDate.maxSentAt DESC", nativeQuery = true)
     Page<Message> findLatestMessageForUserConversations(UUID userId, Pageable pageable);
 
+  Page<Message> findAllByConversationOrderByDeliveredAtDesc(Conversation conversation, Pageable pageable);
 }

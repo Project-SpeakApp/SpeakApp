@@ -1,11 +1,20 @@
 package com.chatservice.services;
 
 import com.chatservice.communication.UserServiceCommunicationClient;
-import com.chatservice.dtos.*;
+import com.chatservice.dtos.ChatPreviewDTO;
+import com.chatservice.dtos.ChatPreviewPageDTO;
+import com.chatservice.dtos.ConversationGetDTO;
+import com.chatservice.dtos.MessageGetDTO;
+import com.chatservice.dtos.MessagePrivateCreateDTO;
+import com.chatservice.dtos.NewPrivateConversationDTO;
+import com.chatservice.dtos.UserGetDTO;
 import com.chatservice.entities.Conversation;
 import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
+import com.chatservice.entities.MessageType;
+import com.chatservice.exceptions.AccessDeniedException;
 import com.chatservice.exceptions.BadRequestException;
+import com.chatservice.exceptions.ConversationNotFound;
 import com.chatservice.repositories.ConversationRepository;
 import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
@@ -106,5 +115,39 @@ public class ChatService {
                 .lastMessage(messageGetDTO)
                 .conversationGetDTO(conversationGetDTO).build();
     }
+
+  public List<MessageGetDTO> getConversationHistory(int pageNumber, int pageSize, UUID conversationId,
+      UUID userId) {
+    Conversation conversation = conversationRepository.findByConversationId(conversationId)
+        .orElseThrow(ConversationNotFound::new);
+
+    if (!groupMemberRepository.existsGroupMemberByConversationAndAndUserId(conversation, userId)) {
+      throw new AccessDeniedException();
+    }
+
+    Pageable page = PageRequest.of(pageNumber, pageSize);
+    Page<Message> messagesPage = messageRepository.findAllByConversationOrderByDeliveredAtDesc(conversation, page);
+
+    return messagesPage.getContent().stream().map(message -> {
+      return MessageGetDTO.builder()
+          .fromUser(userServiceCommunicationClient.getUserById(message.getFromUserId()))
+          .content(message.getContent())
+          .type(MessageType.valueOf(message.getType().toString()))
+          .build();
+    }).toList();
+  }
+
+  public void saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
+    Conversation conversation = conversationRepository.findByConversationId(messagePrivateCreateDTO.getConversationId())
+        .orElseThrow(ConversationNotFound::new);
+
+    messageRepository.save(Message.builder()
+            .fromUserId(messagePrivateCreateDTO.getFromUserId())
+            .content(messagePrivateCreateDTO.getContent())
+            .type(messagePrivateCreateDTO.getType())
+            .conversation(conversation)
+            .responseToMessage(null)
+        .build());
+  }
 
 }
