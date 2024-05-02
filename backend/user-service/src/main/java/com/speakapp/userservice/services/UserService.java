@@ -41,10 +41,10 @@ public class UserService {
         if (fullNameParts.length == 2) {
             appUserFirstName = fullNameParts[0];
             appUserLastName = fullNameParts[1];
-            appUsersPage = userRepository.findAllByFirstNameEqualsAndLastNameEquals(appUserFirstName, appUserLastName, page);
+            appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCaseAndLastNameEqualsIgnoreCase(appUserFirstName, appUserLastName, page);
         } else if(fullNameParts.length == 1) {
             appUserFirstName = fullNameParts[0];
-            appUsersPage = userRepository.findAllByFirstNameEquals(appUserFirstName, page);
+            appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCase(appUserFirstName, page);
         } else {
             appUsersPage = userRepository.findAll(page);
         }

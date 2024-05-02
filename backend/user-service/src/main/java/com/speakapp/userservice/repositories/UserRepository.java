@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<AppUser, UUID> {
 
-  Page<AppUser> findAllByFirstNameEqualsAndLastNameEquals(String firstName, String lastName, Pageable page);
-  Page<AppUser> findAllByFirstNameEquals(String firstName, Pageable page);
+  Page<AppUser> findAllByFirstNameEqualsIgnoreCaseAndLastNameEqualsIgnoreCase(String firstName, String lastName, Pageable page);
+  Page<AppUser> findAllByFirstNameEqualsIgnoreCase(String firstName, Pageable page);
 
 }
