@@ -8,7 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 @Builder
 @Jacksonized
-public class AppUserPreviewPageDto {
+public class AppUserPreviewPageDTO {
 
   List<AppUserPreviewDTO> appUserPreviewDTOS;
 
