@@ -32,10 +32,10 @@ public class UserController {
     return userService.getUser(userId);
   }
 
-  @GetMapping("/findByFullName/{appUserFullName}")
+  @GetMapping("/findByFullName")
   @ResponseStatus(HttpStatus.OK)
   public AppUserPreviewPageDTO getUsersByFullName(
-      @PathVariable(name = "appUserFullName") String appUserFullName,
+      @RequestParam(defaultValue = "") String appUserFullName,
       @RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize) {
 
