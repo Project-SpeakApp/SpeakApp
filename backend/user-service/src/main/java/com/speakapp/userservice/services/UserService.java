@@ -42,7 +42,7 @@ public class UserService {
             appUserFirstName = fullNameParts[0];
             appUserLastName = fullNameParts[1];
             appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCaseAndLastNameEqualsIgnoreCase(appUserFirstName, appUserLastName, page);
-        } else if(fullNameParts.length == 1) {
+        } else if(fullNameParts.length == 1 && !appUserFullName.isEmpty()) {
             appUserFirstName = fullNameParts[0];
             appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCase(appUserFirstName, page);
         } else {
