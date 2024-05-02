@@ -32,7 +32,7 @@ public class UserController {
     return userService.getUser(userId);
   }
 
-  @GetMapping("/{appUserFullName}")
+  @GetMapping("/findByFullName/{appUserFullName}")
   @ResponseStatus(HttpStatus.OK)
   public AppUserPreviewPageDTO getUsersByFullName(
       @PathVariable(name = "appUserFullName") String appUserFullName,
