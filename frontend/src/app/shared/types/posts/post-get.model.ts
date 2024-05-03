@@ -11,4 +11,5 @@ export interface PostGet {
   reactions: ReactionsGet;
   currentUserReaction: ReactionType | null;
   totalNumberOfComments: number;
+  mediaId: string | null;
 }

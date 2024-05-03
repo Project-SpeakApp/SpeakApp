@@ -27,11 +27,7 @@
   <div *ngIf="authState().isLoggedIn" class="navbar-end mr-4 flex gap-8 w-100 lg:mr-16">
     <div class="flex flex-row gap-2 cursor-pointer sm:gap-4" [routerLink]="['profiles/', authState().userId]">
       <h2 class="text-lg font-semibold my-auto hidden min-[320px]:block select-none">{{ authState().firstName }}</h2>
-      <div class="avatar">
-        <div class="w-14 rounded-full">
-          <img src="https://tapety.tja.pl/obrazki/tja_normalne/166120.jpg" />
-        </div>
-      </div>
+      <app-user-avatar [src]="authState().profilePhotoId" size="xl"></app-user-avatar>
     </div>
     <button *ngIf="authState().isLoggedIn" class="btn btn-secondary rounded-2xl shadow-md shadow-gray-500" (click)="logoutUser()">Logout</button>
   </div>

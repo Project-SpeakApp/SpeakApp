@@ -1,11 +1,7 @@
 <div class="card py-2 bg-base-300 w-[500px] shadow-xl">
     <div class="flex items-center">
       <div class="w-1/8">
-        <div class="avatar">
-          <div class="w-12 rounded-full">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
+        <app-user-avatar [src]="post.author.profilePhotoId" size="m"></app-user-avatar>
       </div>
       <div style="padding-left: 10px" >
         <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>
@@ -19,8 +15,19 @@
       </div>
     </div>
     <p *ngIf="!isEdited" style="max-width: 100%" class="m-[1px] break-words whitespace-pre-line">{{post.content}}</p>
-    <app-edit-post [authorId]="post.author.userId" class="-translate-y-[24px]" (contentUpdated)="updateContent($event)" [postId]="post.postId" [currentContent]="post.content" *ngIf="isEdited"></app-edit-post>
-    <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+    <app-edit-post
+      *ngIf="isEdited"
+      class="-translate-y-[24px]"
+      [authorId]="post.author.userId"
+      [postId]="post.postId"
+      [currentContent]="post.content"
+      [imageId]="post.mediaId"
+      (contentUpdated)="updateContent($event)"
+      (imageDeleted)="removeImage()"></app-edit-post>
+    <figure *ngIf="!imageLoading() && imageUrl"><img [src]="imageUrl" alt="post image" /></figure>
+    <div *ngIf="!imageUrl && imageLoading()" class="mx-auto h-[200px] w-full bg-gray-300 rounded-[20px] flex flex-col justify-center">
+      <app-loading-spinner class="loading loading-spinner loading-lg mx-auto"></app-loading-spinner>
+    </div>
     <app-post-bottom-bar [post]="post" (changeReaction)="changeReaction($event)"></app-post-bottom-bar>
   <br/>
   <app-comment-list (contentDeleted)="handleCommentDeletion()" (contentAdded)="handleCommentAdding()" [postId]="post.postId"></app-comment-list>

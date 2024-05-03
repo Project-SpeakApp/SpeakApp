@@ -1,8 +1,21 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  signal,
+  SimpleChanges
+} from '@angular/core';
 import {PostGet} from "../../../../../shared/types/posts/post-get.model";
 import {DateFormatting} from "../../../../../shared/util/DateFormatting";
 import {AuthService} from "../../../../../shared/services/auth.service";
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
+import {ImageService} from "../../../../../shared/services/image.service";
+import {Subscription} from "rxjs";
+import {PostService} from "../../../sevices/post.service";
 
 
 @Component({
@@ -10,7 +23,7 @@ import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })
-export class PostComponent implements OnChanges, OnInit{
+export class PostComponent implements OnChanges, OnInit, OnDestroy {
   @Input() post: PostGet = {} as PostGet;
   @Output() deleted: EventEmitter<string> = new EventEmitter<string>();
   @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
@@ -19,11 +32,12 @@ export class PostComponent implements OnChanges, OnInit{
   userId: string = '';
   isEdited: boolean = false;
 
+  imageSub = new Subscription();
+  imageLoading = signal(false);
+  imageUrl: string | null = null;
 
-
-  constructor(private authService: AuthService ) {
+  constructor(private authService: AuthService, private imageService: ImageService, private postService: PostService) {
   }
-
 
   enableEditing(): void {
     this.isEdited = !this.isEdited;
@@ -87,7 +101,28 @@ export class PostComponent implements OnChanges, OnInit{
     this.post.totalNumberOfComments--;
   }
 
+  removeImage() {
+    this.post.mediaId = null;
+    this.imageUrl = null;
+    this.imageSub.add(this.postService.updatePost(this.post.postId, {content: this.post.content, mediaId: null}).subscribe(
+      (updatedPost) => {this.contentUpdated.emit(updatedPost);}
+    ));
+  }
+
   ngOnInit() {
     this.userId = this.authService.state().userId;
+    if (this.post.mediaId) {
+      this.imageLoading.set(true);
+      this.imageSub.add(this.imageService.downloadImage(this.post.mediaId).subscribe(
+        (blob) => {
+          this.imageUrl = URL.createObjectURL(blob);
+          this.imageLoading.set(false);
+        }
+      ));
+    }
+  }
+
+  ngOnDestroy() {
+    this.imageSub.unsubscribe();
   }
 }

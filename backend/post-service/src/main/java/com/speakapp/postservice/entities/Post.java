@@ -28,10 +28,6 @@ public class Post extends Auditable{
     @Column(nullable = false, length = 3000)
     private String content;
 
-//   TODO Media service for photos, audio, video
-//    @Lob
-//    private byte[] media;
-
-
+    private UUID mediaId;
 }
 
