@@ -82,6 +82,10 @@
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webflux</artifactId>
+      </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

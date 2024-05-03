@@ -1,5 +1,6 @@
 package com.speakapp.userservice.services;
 
+import com.speakapp.userservice.communication.ChatServiceCommunicationClient;
 import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.entities.AppUser;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
@@ -19,95 +20,104 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final AppUserMapper appUserMapper;
+  private final UserRepository userRepository;
+  private final AppUserMapper appUserMapper;
+  private final ChatServiceCommunicationClient chatServiceCommunicationClient;
 
-    public AppUserGetDTO getUser(UUID userId) throws UserNotFoundException {
-        Optional<AppUser> user = userRepository.findById(userId);
+  public AppUserGetDTO getUser(UUID userId) throws UserNotFoundException {
+    Optional<AppUser> user = userRepository.findById(userId);
 
-        return user.map(appUserMapper::toGetDTO)
-                .orElseThrow(UserNotFoundException::new);
+    return user.map(appUserMapper::toGetDTO)
+        .orElseThrow(UserNotFoundException::new);
+  }
+
+  public AppUserPreviewPageDTO getUsersByFullName(String appUserFullName, int pageNumber,
+      int pageSize) {
+    String appUserFirstName;
+    String appUserLastName;
+
+    String[] fullNameParts = appUserFullName.trim().split("\\s+", 2);
+
+    Pageable page = PageRequest.of(pageNumber, pageSize);
+    Page<AppUser> appUsersPage;
+
+    if (fullNameParts.length == 2) {
+      appUserFirstName = fullNameParts[0];
+      appUserLastName = fullNameParts[1];
+      appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCaseAndLastNameEqualsIgnoreCase(
+          appUserFirstName, appUserLastName, page);
+    } else if (fullNameParts.length == 1 && !appUserFullName.isEmpty()) {
+      appUserFirstName = fullNameParts[0];
+      appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCase(appUserFirstName, page);
+    } else {
+      appUsersPage = userRepository.findAll(page);
     }
 
-    public AppUserPreviewPageDTO getUsersByFullName(String appUserFullName, int pageNumber, int pageSize){
-        String appUserFirstName;
-        String appUserLastName;
+    return createAppUserPreviewPageDTOFromAppUserPage(appUsersPage);
+  }
 
-        String[] fullNameParts = appUserFullName.trim().split("\\s+", 2);
+  public AppUserPreviewPageDTO createAppUserPreviewPageDTOFromAppUserPage(
+      Page<AppUser> appUsersPage) {
+    List<AppUserPreviewDTO> appUserPreviewDTOS = appUsersPage.getContent().stream().map(appUser ->
+        AppUserPreviewDTO.builder()
+            .userId(appUser.getUserId())
+            .fullName(appUser.getFirstName() + " " + appUser.getLastName())
+            .profilePhotoUrl(appUser.getProfilePhotoUrl())
+            .build()
+    ).toList();
 
-        Pageable page = PageRequest.of(pageNumber, pageSize);
-        Page<AppUser> appUsersPage;
-
-        if (fullNameParts.length == 2) {
-            appUserFirstName = fullNameParts[0];
-            appUserLastName = fullNameParts[1];
-            appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCaseAndLastNameEqualsIgnoreCase(appUserFirstName, appUserLastName, page);
-        } else if(fullNameParts.length == 1 && !appUserFullName.isEmpty()) {
-            appUserFirstName = fullNameParts[0];
-            appUsersPage = userRepository.findAllByFirstNameEqualsIgnoreCase(appUserFirstName, page);
-        } else {
-            appUsersPage = userRepository.findAll(page);
-        }
+    return AppUserPreviewPageDTO.builder()
+        .appUserPreviewDTOS(appUserPreviewDTOS)
+        .pageNumber(appUsersPage.getNumber())
+        .pageSize(appUsersPage.getSize())
+        .totalPages((long) appUsersPage.getTotalPages())
+        .build();
+  }
 
 
-        return createAppUserPreviewPageDTOFromAppUserPage(appUsersPage);
+  public void createUser(AppUserCreateDTO userDTO) {
+    AppUser appUser = appUserMapper.toEntity(userDTO);
+    appUser.updateLastOnline();
+    userRepository.save(appUser);
+  }
+
+  public AppUserGetDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {
+    Optional<AppUser> user = userRepository.findById(userId);
+    AppUser appUser = user.orElseThrow(UserNotFoundException::new);
+
+    if (!appUser.getFirstName().equals(appUserUpdateDTO.getFirstName()) || !appUser.getLastName()
+        .equals(appUserUpdateDTO.getLastName())) {
+      chatServiceCommunicationClient.updateUserInChatService(appUser.getUserId(),
+          appUserUpdateDTO.getFirstName(), appUserUpdateDTO.getLastName());
     }
 
-    public AppUserPreviewPageDTO createAppUserPreviewPageDTOFromAppUserPage(Page<AppUser> appUsersPage){
-        List<AppUserPreviewDTO> appUserPreviewDTOS = appUsersPage.getContent().stream().map( appUser ->
-                AppUserPreviewDTO.builder()
-                .userId(appUser.getUserId())
-                .fullName(appUser.getFirstName() + " " + appUser.getLastName())
-                .profilePhotoUrl(appUser.getProfilePhotoUrl())
-                .build()
-        ).toList();
+    appUserMapper.updateAppUserFromAppUserUpdateDTO(appUserUpdateDTO, appUser);
 
-        return AppUserPreviewPageDTO.builder()
-            .appUserPreviewDTOS(appUserPreviewDTOS)
-            .pageNumber(appUsersPage.getNumber())
-            .pageSize(appUsersPage.getSize())
-            .totalPages((long) appUsersPage.getTotalPages())
-            .build();
-    }
+    AppUser updatedUser = userRepository.save(appUser);
+    return appUserMapper.toGetDTO(updatedUser);
+  }
 
+  public AppUserGetDTO updateUserProfilePhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
+    Optional<AppUser> user = userRepository.findById(userId);
+    AppUser appUser = user.orElseThrow(UserNotFoundException::new);
 
-    public void createUser(AppUserCreateDTO userDTO) {
-        AppUser appUser = appUserMapper.toEntity(userDTO);
-        appUser.updateLastOnline();
-        userRepository.save(appUser);
-    }
+    appUserMapper.updateAppUserProfilePhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
-    public AppUserGetDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {
-        Optional<AppUser> user = userRepository.findById(userId);
-        AppUser appUser = user.orElseThrow(UserNotFoundException::new);
+    AppUser updatedUser = userRepository.save(appUser);
+    return appUserMapper.toGetDTO(updatedUser);
+  }
 
-        appUserMapper.updateAppUserFromAppUserUpdateDTO(appUserUpdateDTO, appUser);
+  public AppUserGetDTO updateUserBackgroundPhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
+    Optional<AppUser> user = userRepository.findById(userId);
+    AppUser appUser = user.orElseThrow(UserNotFoundException::new);
 
-        AppUser updatedUser = userRepository.save(appUser);
-        return appUserMapper.toGetDTO(updatedUser);
-    }
+    appUserMapper.updateAppUserBackgroundPhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
-    public AppUserGetDTO updateUserProfilePhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
-        Optional<AppUser> user = userRepository.findById(userId);
-        AppUser appUser = user.orElseThrow(UserNotFoundException::new);
+    AppUser updatedUser = userRepository.save(appUser);
+    return appUserMapper.toGetDTO(updatedUser);
+  }
 
-        appUserMapper.updateAppUserProfilePhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
-
-        AppUser updatedUser = userRepository.save(appUser);
-        return appUserMapper.toGetDTO(updatedUser);
-    }
-
-    public AppUserGetDTO updateUserBackgroundPhoto(UUID userId, PhotoUpdateDTO photoUpdateDTO) {
-        Optional<AppUser> user = userRepository.findById(userId);
-        AppUser appUser = user.orElseThrow(UserNotFoundException::new);
-
-        appUserMapper.updateAppUserBackgroundPhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
-
-        AppUser updatedUser = userRepository.save(appUser);
-        return appUserMapper.toGetDTO(updatedUser);
-    }
-
-    public void deleteUser(UUID uuid) {
-        userRepository.deleteById(uuid);
-    }
+  public void deleteUser(UUID uuid) {
+    userRepository.deleteById(uuid);
+  }
 }

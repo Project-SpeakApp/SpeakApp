@@ -21,8 +21,10 @@ public class InternalChatController {
 
   @GetMapping("/{userId}")
   @ResponseStatus(HttpStatus.OK)
-  public void updateGroupMemberFirstAndLastName(@PathVariable UUID userId, @RequestParam String updatedFirstName,
+  public String updateGroupMemberFirstAndLastName(@PathVariable UUID userId, @RequestParam String updatedFirstName,
       @RequestParam String updatedLastName) {
     internalChatService.updateGroupMemberData(userId, updatedFirstName, updatedLastName);
+    String confirmationMessage = "Data updated correctly!";
+    return confirmationMessage;
   }
 }
