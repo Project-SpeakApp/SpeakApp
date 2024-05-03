@@ -1,5 +1,6 @@
 package com.chatservice.communication;
 
+import com.chatservice.dtos.AppUserPreviewDTO;
 import com.chatservice.dtos.UserGetDTO;
 import com.chatservice.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatusCode;
@@ -20,7 +21,7 @@ public class UserServiceCommunicationClient {
                 .build();
     }
 
-    public UserGetDTO getUserById(UUID userId) {
+    public AppUserPreviewDTO getUserById(UUID userId) {
         return webClient.get()
                 .uri("/api/internal/users/{id}", userId)
                 .retrieve()
@@ -30,7 +31,7 @@ public class UserServiceCommunicationClient {
                                     new UserNotFoundException()
                             ));
                 })
-                .bodyToMono(UserGetDTO.class)
+                .bodyToMono(AppUserPreviewDTO.class)
                 .block();
     }
 }

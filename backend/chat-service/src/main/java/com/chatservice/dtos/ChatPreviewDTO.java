@@ -15,6 +15,6 @@ public class ChatPreviewDTO {
 
     MessageGetDTO lastMessage;
 
-    List<UserGetDTO> ChatMembers;
+    List<AppUserPreviewDTO> chatMembers;
 
 }

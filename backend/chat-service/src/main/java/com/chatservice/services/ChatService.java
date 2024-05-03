@@ -1,6 +1,7 @@
 package com.chatservice.services;
 
 import com.chatservice.communication.UserServiceCommunicationClient;
+import com.chatservice.dtos.AppUserPreviewDTO;
 import com.chatservice.dtos.ChatPreviewDTO;
 import com.chatservice.dtos.ChatPreviewPageDTO;
 import com.chatservice.dtos.ConversationGetDTO;
@@ -62,12 +63,12 @@ public class ChatService {
     Conversation createdConversation = conversationRepository.save(Conversation.builder()
         .isGroupConversation(false).build());
 
-    UserGetDTO conversationCreatorUser = userServiceCommunicationClient.getUserById(
+    AppUserPreviewDTO conversationCreatorUser = userServiceCommunicationClient.getUserById(
         conversationCreatorUserId);
     String[] fullNamePartsCreatorUser = conversationCreatorUser.getFullName().trim()
         .split("\\s+", 2);
 
-    UserGetDTO conversationMemberUser = userServiceCommunicationClient.getUserById(
+    AppUserPreviewDTO conversationMemberUser = userServiceCommunicationClient.getUserById(
         newPrivateConversationDTO.getConversationMemberUserId());
     String[] fullNamePartsMemberUser = conversationMemberUser.getFullName().trim().split("\\s+", 2);
 
@@ -118,7 +119,7 @@ public class ChatService {
         .isGroupConversation(getConversationForMessage.isGroupConversation())
         .build();
 
-    UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
+    AppUserPreviewDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
 
     MessageGetDTO messageGetDTO = MessageGetDTO.builder()
         .content(message.getContent())
@@ -127,11 +128,11 @@ public class ChatService {
 
     List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(
         getConversationForMessage.getConversationId());
-    List<UserGetDTO> conversationMembersDTO = conversationMembers.stream()
+    List<AppUserPreviewDTO> conversationMembersDTO = conversationMembers.stream()
         .map(userServiceCommunicationClient::getUserById).toList();
 
     return ChatPreviewDTO.builder()
-        .ChatMembers(conversationMembersDTO)
+        .chatMembers(conversationMembersDTO)
         .lastMessage(messageGetDTO)
         .conversationGetDTO(conversationGetDTO).build();
   }
@@ -223,9 +224,8 @@ public class ChatService {
       GroupMember secondGroupMember = groupMemberRepository.findSecondGroupMemberOfPrivateConversation(userId, conversation);
       conversationName = secondGroupMember.getFirstName() + " " + secondGroupMember.getLastName();
 
-      UserGetDTO secondUser = userServiceCommunicationClient.getUserById(secondGroupMember.getUserId());
-      //TODO: wait till pr changing string photo url to uuid is merged and change this
-      conversationPhotoId = secondUser.getProfilePhotoUrl();
+      AppUserPreviewDTO secondUser = userServiceCommunicationClient.getUserById(secondGroupMember.getUserId());
+      conversationPhotoId = secondUser.getProfilePhotoId();
     }
 
     return ConversationGetDTO.builder()
