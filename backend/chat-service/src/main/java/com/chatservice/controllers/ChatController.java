@@ -2,6 +2,7 @@ package com.chatservice.controllers;
 
 
 import com.chatservice.dtos.ChatPreviewPageDTO;
+import com.chatservice.dtos.ConversationPageDTO;
 import com.chatservice.dtos.MessageGetDTO;
 import com.chatservice.dtos.MessagePrivateCreateDTO;
 import com.chatservice.dtos.NewPrivateConversationDTO;
@@ -65,5 +66,17 @@ public class ChatController {
     UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
 
     return chatService.getConversationHistory(pageNumber, pageSize, conversationId, userId);
+  }
+
+  @GetMapping("/api/chat/getConversations")
+  @ResponseStatus(HttpStatus.OK)
+  public ConversationPageDTO getConversationsByUsernameOrConversationName(@RequestParam(defaultValue = "0") int pageNumber,
+      @RequestParam(defaultValue = "5") int pageSize,
+      @RequestParam(defaultValue = "") String conversationName,
+      @RequestHeader("Authorization") String authHeader) {
+    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+
+    return chatService.getConversationsByUsernameOrConversationName(pageNumber, pageSize, conversationName, userId);
   }
 }

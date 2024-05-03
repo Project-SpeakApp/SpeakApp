@@ -23,6 +23,9 @@ public class Conversation {
     @Column(name = "conversation_name")
     private String conversationName;
 
+    @Column(name = "conversation_photo_id")
+    private UUID conversationPhotoId;
+
     @OneToOne
     @JoinColumn(name = "last_message_id")
     private Message lastMessage;

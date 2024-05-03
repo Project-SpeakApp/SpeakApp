@@ -21,4 +21,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, UUID> 
     boolean existsGroupMemberByConversationAndAndUserId(Conversation conversation, UUID userId);
 
     Optional<GroupMember> findGroupMemberByUserId(UUID userId);
+
+    @Query("SELECT gm FROM group_member gm WHERE gm.conversation.conversationId = :conversationId AND gm.userId != :userId")
+    GroupMember findSecondGroupMemberOfPrivateConversation(UUID userId, Conversation conversation);
 }
