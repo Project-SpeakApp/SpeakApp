@@ -28,6 +28,12 @@ public class GroupMember {
     @Column(nullable = false)
     private UUID userId;
 
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "conversationId")

@@ -40,32 +40,42 @@ public class ChatService {
     private final MessageRepository messageRepository;
 
     public Conversation createPrivateConversation(NewPrivateConversationDTO newPrivateConversationDTO,
-                                                  UUID conversationCreatorUser){
+                                                  UUID conversationCreatorUserId){
 
-        if(newPrivateConversationDTO.getConversationMemberUser().equals(conversationCreatorUser)){
+        if(newPrivateConversationDTO.getConversationMemberUserId().equals(conversationCreatorUserId)){
             throw new BadRequestException("Bad request: UserId's must be different to create a conversation");
         }
 
         List<UUID> checkIfPrivateConversationExists = conversationRepository.findConversationsForTwoUsers
-                (newPrivateConversationDTO.getConversationMemberUser(),
-                conversationCreatorUser);
+                (newPrivateConversationDTO.getConversationMemberUserId(),
+                conversationCreatorUserId);
 
         if(!checkIfPrivateConversationExists.isEmpty()){
             throw new BadRequestException(
-                    "Bad request: Conversation with user: " + newPrivateConversationDTO.getConversationMemberUser()
+                    "Bad request: Conversation with user: " + newPrivateConversationDTO.getConversationMemberUserId()
                             + " already exists");
         }
 
         Conversation createdConversation = conversationRepository.save(Conversation.builder()
                 .isGroupConversation(false).build());
 
+      UserGetDTO conversationCreatorUser = userServiceCommunicationClient.getUserById(conversationCreatorUserId);
+      String[] fullNamePartsCreatorUser = conversationCreatorUser.getFullName().trim().split("\\s+", 2);
+
+      UserGetDTO conversationMemberUser = userServiceCommunicationClient.getUserById(newPrivateConversationDTO.getConversationMemberUserId());
+      String[] fullNamePartsMemberUser = conversationMemberUser.getFullName().trim().split("\\s+", 2);
+
         groupMemberRepository.save(GroupMember.builder()
-                .userId(conversationCreatorUser)
+                .userId(conversationCreatorUserId)
+                .firstName(fullNamePartsCreatorUser[0])
+                .lastName(fullNamePartsCreatorUser[1])
                 .conversation(createdConversation)
                 .build());
 
         groupMemberRepository.save(GroupMember.builder()
-                .userId(newPrivateConversationDTO.getConversationMemberUser())
+                .userId(newPrivateConversationDTO.getConversationMemberUserId())
+                .firstName(fullNamePartsMemberUser[0])
+                .lastName(fullNamePartsMemberUser[1])
                 .conversation(createdConversation)
                 .build());
 
