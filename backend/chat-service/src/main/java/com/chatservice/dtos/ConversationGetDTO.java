@@ -15,5 +15,7 @@ public class ConversationGetDTO {
 
     String conversationName;
 
+    UUID conversationPhotoId;
+
     boolean isGroupConversation;
 }
