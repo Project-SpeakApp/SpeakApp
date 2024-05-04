@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity(name = "UserFriend")
@@ -17,23 +16,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "user_friend")
-public class UserFriend {
+public class UserFriend extends Auditable {
     @Id
     @GeneratedValue
-    private UUID friendId;
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "requesterId", referencedColumnName = "userId")
+    @JoinColumn(name = "requester_id", referencedColumnName = "userId")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private AppUser requesterId;
+    private AppUser requester;
 
     @ManyToOne
-    @JoinColumn(name = "addresseeId", referencedColumnName = "userId")
+    @JoinColumn(name = "addressee_id", referencedColumnName = "userId")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private AppUser addresseeId;
-
-    @Column(nullable = false)
-    private Timestamp createdAt;
+    private AppUser addressee;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
