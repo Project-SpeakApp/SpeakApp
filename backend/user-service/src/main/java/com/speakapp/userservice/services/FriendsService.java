@@ -99,4 +99,14 @@ public class FriendsService {
                 .build();
     }
 
+    @Transactional
+    public void removeUserFromFriendsList(UUID accountOwnerId, UUID userToRemoveId) {
+        AppUser accountOwner = userRepository.findById(accountOwnerId)
+                .orElseThrow(UserNotFoundException::new);
+        AppUser userToRemoveFromFriends = userRepository.findById(userToRemoveId)
+                .orElseThrow(UserNotFoundException::new);
+
+        userFriendRepository.deleteByAddresseeAndRequester(accountOwner, userToRemoveFromFriends);
+        userFriendRepository.deleteByAddresseeAndRequester(userToRemoveFromFriends, accountOwner);
+    }
 }

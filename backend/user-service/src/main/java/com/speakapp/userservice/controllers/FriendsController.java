@@ -51,4 +51,12 @@ public class FriendsController {
         return friendsService.findRequestsByAddressee(accountOwnerId, requestedPageable);
     }
 
+    @DeleteMapping("/{userToRemoveId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeUserFromFriendsList(@RequestHeader(name = "Authorization") String authHeader,
+                                          @PathVariable UUID userToRemoveId) {
+        UUID accountOwnerId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        friendsService.removeUserFromFriendsList(accountOwnerId, userToRemoveId);
+    }
+
 }

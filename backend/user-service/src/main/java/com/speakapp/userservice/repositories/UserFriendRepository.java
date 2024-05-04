@@ -29,4 +29,5 @@ public interface UserFriendRepository extends JpaRepository<UserFriend, UUID> {
                                                                      FriendStatus status,
                                                                      Pageable pageable);
 
+    void deleteByAddresseeAndRequester(AppUser addressee, AppUser requester);
 }
