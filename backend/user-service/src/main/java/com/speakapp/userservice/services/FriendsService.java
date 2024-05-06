@@ -1,5 +1,7 @@
 package com.speakapp.userservice.services;
 
+import com.speakapp.userservice.dtos.AppUserPreviewDTO;
+import com.speakapp.userservice.dtos.AppUserPreviewPageDTO;
 import com.speakapp.userservice.dtos.FriendRequestGetDTO;
 import com.speakapp.userservice.dtos.FriendRequestsPage;
 import com.speakapp.userservice.entities.AppUser;
@@ -8,6 +10,7 @@ import com.speakapp.userservice.entities.UserFriend;
 import com.speakapp.userservice.exceptions.FriendRequestNotFoundException;
 import com.speakapp.userservice.exceptions.InvalidFriendRequestException;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
+import com.speakapp.userservice.mappers.AppUserMapper;
 import com.speakapp.userservice.mappers.FriendsMapper;
 import com.speakapp.userservice.repositories.UserFriendRepository;
 import com.speakapp.userservice.repositories.UserRepository;
@@ -27,6 +30,7 @@ public class FriendsService {
     private final UserFriendRepository userFriendRepository;
     private final UserRepository userRepository;
     private final FriendsMapper friendsMapper;
+    private final AppUserMapper appUserMapper;
 
     public void sendFriendRequest(UUID requesterId, UUID addresseeId) {
         AppUser requester = userRepository.findById(requesterId)
@@ -108,5 +112,33 @@ public class FriendsService {
 
         userFriendRepository.deleteByAddresseeAndRequester(accountOwner, userToRemoveFromFriends);
         userFriendRepository.deleteByAddresseeAndRequester(userToRemoveFromFriends, accountOwner);
+    }
+
+    public AppUserPreviewPageDTO getFriendsOfUser(UUID userId, Pageable requestedPageable) {
+        AppUser userWhoseFriendsToSearch = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        Page<UserFriend> userFriendPage = userFriendRepository.findAllByAddresseeOrRequesterAndStatusOrderByCreatedAt(
+                userWhoseFriendsToSearch,
+                userWhoseFriendsToSearch,
+                FriendStatus.FRIEND,
+                requestedPageable
+        );
+
+        List<AppUserPreviewDTO> friendPreviews = userFriendPage.stream()
+                .map(userFriend -> {
+                    if (userFriend.getAddressee().getUserId() != userId) {
+                        return userFriend.getAddressee();
+                    } else {
+                        return userFriend.getRequester();
+                    }
+                })
+                .map(appUserMapper::toAppUserPreviewDto).toList();
+
+        return AppUserPreviewPageDTO.builder()
+                .userPreviews(friendPreviews)
+                .currentPage(userFriendPage.getNumber())
+                .pageSize(userFriendPage.getSize())
+                .totalPages(userFriendPage.getTotalPages())
+                .build();
     }
 }
