@@ -29,10 +29,11 @@ public interface UserFriendRepository extends JpaRepository<UserFriend, UUID> {
                                                                      FriendStatus status,
                                                                      Pageable pageable);
 
-    Page<UserFriend> findAllByAddresseeOrRequesterAndStatusOrderByCreatedAt(AppUser addressee,
-                                                                            AppUser requester,
-                                                                            FriendStatus status,
-                                                                            Pageable pageable);
+    Page<UserFriend> findAllByAddresseeAndStatusOrRequesterAndStatus(AppUser addressee,
+                                                                     FriendStatus status1,
+                                                                     AppUser requester,
+                                                                     FriendStatus status2,
+                                                                     Pageable pageable);
 
     void deleteByAddresseeAndRequester(AppUser addressee, AppUser requester);
 }

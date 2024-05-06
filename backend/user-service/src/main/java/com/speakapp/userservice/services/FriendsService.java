@@ -117,12 +117,12 @@ public class FriendsService {
     public AppUserPreviewPageDTO getFriendsOfUser(UUID userId, Pageable requestedPageable) {
         AppUser userWhoseFriendsToSearch = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        Page<UserFriend> userFriendPage = userFriendRepository.findAllByAddresseeOrRequesterAndStatusOrderByCreatedAt(
-                userWhoseFriendsToSearch,
+        Page<UserFriend> userFriendPage = userFriendRepository.findAllByAddresseeAndStatusOrRequesterAndStatus(
                 userWhoseFriendsToSearch,
                 FriendStatus.FRIEND,
-                requestedPageable
-        );
+                userWhoseFriendsToSearch,
+                FriendStatus.FRIEND,
+                requestedPageable);
 
         List<AppUserPreviewDTO> friendPreviews = userFriendPage.stream()
                 .map(userFriend -> {
