@@ -10,7 +10,12 @@ import java.util.UUID;
 @Component
 public class JwtDecoder {
 
-    public UUID extractUserIdFromJwt(String encodedJwt) {
+    private JwtDecoder() {
+    }
+
+    public static final String AUTH_HEADER_PREFIX = "Bearer ";
+
+    private static UUID extractUserIdFromJwt(String encodedJwt) {
         if (encodedJwt == null) {
             throw new IllegalArgumentException("JWT token is null");
         }
@@ -27,5 +32,10 @@ public class JwtDecoder {
         } catch (Exception e) {
             throw new InvalidJWTFormatException("Invalid JWT token format. Failed to collect claims.");
         }
+    }
+
+    public static UUID extractUserIdFromAuthorizationHeader(String authorizationHeader) {
+        String requesterJwtToken = authorizationHeader.replace(AUTH_HEADER_PREFIX, "");
+        return extractUserIdFromJwt(requesterJwtToken);
     }
 }
