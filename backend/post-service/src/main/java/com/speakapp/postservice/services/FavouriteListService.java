@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,7 +41,7 @@ public class FavouriteListService {
                 FavouriteListNotFoundException::new
         );
 
-        Page<Post> favouritePosts = postRepository.findByFavouriteLists(favouriteList, page);
+        Page<Post> favouritePosts = postRepository.findByFavouriteListsOrderByCreatedAtDesc(favouriteList, page);
         return postService.createPostPageGetDTOFromPostPage(favouritePosts, userId, page);
     }
 

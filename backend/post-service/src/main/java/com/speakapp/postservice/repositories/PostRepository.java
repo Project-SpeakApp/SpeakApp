@@ -14,5 +14,5 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
 
     Page<Post> findAllByUserIdOrderByCreatedAtDesc(UUID userId, Pageable pageable);
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
-    Page<Post> findByFavouriteLists(FavouriteList favouriteList, Pageable pageable);
+    Page<Post> findByFavouriteListsOrderByCreatedAtDesc(FavouriteList favouriteList, Pageable pageable);
 }

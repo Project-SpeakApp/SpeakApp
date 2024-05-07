@@ -26,9 +26,7 @@ public class FavouriteListController {
     public PostPageGetDTO getFavouriteList(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam(defaultValue = "0") int firstPost,
-            @RequestParam(defaultValue = "10") int lastPost,
-            @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection
+            @RequestParam(defaultValue = "10") int lastPost
     ) {
         UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return favouriteListService.getFavouritePosts(userId, firstPost, lastPost);

@@ -10,11 +10,10 @@ import java.util.UUID;
 @Data
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "favourite_list")
-public class FavouriteList extends Auditable{
+public class FavouriteList {
     @Id
     @GeneratedValue
     private UUID listId;
