@@ -59,7 +59,6 @@ public class FavouriteListService {
 
         if(!favouritePosts.contains(post)) {
             favouriteList.getFavouritePosts().add(post);
-            favouriteList.setFavouritePosts(favouritePosts);
             favouriteListRepository.save(favouriteList);
         }
     }
@@ -71,8 +70,11 @@ public class FavouriteListService {
         );
 
         UUID postIdToRemove = favouriteListDeletePostDTO.getPostId();
+
         List<Post> favouritePosts = favouriteList.getFavouritePosts();
-        favouritePosts.removeIf(favouritePost -> favouritePost.getPostId().equals(postIdToRemove));
+        favouritePosts.removeIf(
+                favouritePost -> favouritePost.getPostId().equals(postIdToRemove)
+        );
         favouriteList.setFavouritePosts(favouritePosts);
 
         favouriteListRepository.save(favouriteList);
