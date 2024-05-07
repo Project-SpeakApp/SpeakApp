@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +29,8 @@ public class Post extends Auditable{
     @Column(nullable = false, length = 3000)
     private String content;
 
+    @ManyToMany(mappedBy = "favouritePosts")
+    private List<FavouriteList> favouriteLists;
 //   TODO Media service for photos, audio, video
 //    @Lob
 //    private byte[] media;

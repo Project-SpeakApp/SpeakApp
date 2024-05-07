@@ -2,13 +2,13 @@ package com.speakapp.postservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "FavouriteList")
 @Data
-@SuperBuilder
+@Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -22,7 +22,9 @@ public class FavouriteList extends Auditable{
     @Column(nullable = false)
     private UUID userId;
 
-    @Column(nullable = false)
-    private String name;
-
+    @ManyToMany
+    @JoinTable(name = "post",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "list_id"))
+    private List<Post> favouritePosts;
 }
