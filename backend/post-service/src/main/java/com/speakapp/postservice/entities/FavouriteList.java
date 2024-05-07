@@ -23,8 +23,10 @@ public class FavouriteList extends Auditable{
     private UUID userId;
 
     @ManyToMany
-    @JoinTable(name = "post",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "list_id"))
+    @JoinTable(
+            name = "favourite_list_post",
+            joinColumns = @JoinColumn(name = "favourite_list_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
     private List<Post> favouritePosts;
 }

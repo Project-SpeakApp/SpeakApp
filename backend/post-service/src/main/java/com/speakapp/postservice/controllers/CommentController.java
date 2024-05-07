@@ -22,8 +22,6 @@ import java.util.UUID;
 public class CommentController {
 
     private final CommentService commentService;
-    private static final String AUTH_HEADER_PREFIX = "Bearer ";
-
     @GetMapping("")
     public CommentPageGetDTO getCommentsForPostByCreatedAtSorted(
             @RequestParam(defaultValue = "0") int firstComment,

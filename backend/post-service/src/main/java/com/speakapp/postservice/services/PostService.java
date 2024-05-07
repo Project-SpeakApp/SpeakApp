@@ -7,6 +7,7 @@ import com.speakapp.postservice.exceptions.AccessDeniedException;
 import com.speakapp.postservice.exceptions.PostNotFoundException;
 import com.speakapp.postservice.mappers.*;
 import com.speakapp.postservice.repositories.CommentRepository;
+import com.speakapp.postservice.repositories.FavouriteListRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     private final PostReactionRepository postReactionRepository;
+
+    private final FavouriteListRepository favouriteListRepository;
 
     private final PostMapper postMapper;
 
@@ -47,7 +50,8 @@ public class PostService {
                 author,
                 reactionsGetDTO,
                 null,
-                0L
+                0L,
+                false
         );
     }
 
@@ -70,11 +74,15 @@ public class PostService {
 
         Long totalNumberOfComments = commentRepository.countAllByPost(postUpdated);
 
+        boolean favourite = isPostFavourite(userId, postToUpdate);
+
         return postMapper.toGetDTO(postUpdated,
                 author,
                 reactionsGetDTO,
                 currentUserReactionType,
-                totalNumberOfComments);
+                totalNumberOfComments,
+                favourite
+        );
     }
 
     public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId) {
@@ -129,13 +137,15 @@ public class PostService {
             ReactionsGetDTO postReactions = getReactionsForThePost(post);
             ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
             Long totalNumberOfComments = commentRepository.countAllByPost(post);
+            boolean favourite = isPostFavourite(userId, post);
 
             return postMapper.toGetDTO(
-                post,
-                postAuthor,
-                postReactions,
-                currentUserReactionType,
-                totalNumberOfComments
+                    post,
+                    postAuthor,
+                    postReactions,
+                    currentUserReactionType,
+                    totalNumberOfComments,
+                    favourite
             );
         }).toList();
 
@@ -155,4 +165,14 @@ public class PostService {
         return postOptional.get();
     }
 
+    private boolean isPostFavourite(UUID userId, Post post) {
+
+        Optional<FavouriteList> favouriteList = favouriteListRepository.getFavouriteListByUserId(userId);
+
+        if(favouriteList.isEmpty()) {       //If it doesn't exist
+            return false;
+        }
+
+        return favouriteList.get().getFavouritePosts().contains(post);
+    }
 }

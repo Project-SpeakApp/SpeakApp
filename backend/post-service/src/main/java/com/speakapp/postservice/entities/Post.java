@@ -14,7 +14,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post extends Auditable{
+public class Post extends Auditable {
 
     @Id
     @GeneratedValue
@@ -31,6 +31,7 @@ public class Post extends Auditable{
 
     @ManyToMany(mappedBy = "favouritePosts")
     private List<FavouriteList> favouriteLists;
+
 //   TODO Media service for photos, audio, video
 //    @Lob
 //    private byte[] media;
