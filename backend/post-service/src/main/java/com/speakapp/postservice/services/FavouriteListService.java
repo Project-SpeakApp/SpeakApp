@@ -71,11 +71,9 @@ public class FavouriteListService {
 
         UUID postIdToRemove = favouriteListDeletePostDTO.getPostId();
 
-        List<Post> favouritePosts = favouriteList.getFavouritePosts();
-        favouritePosts.removeIf(
+        favouriteList.getFavouritePosts().removeIf(
                 favouritePost -> favouritePost.getPostId().equals(postIdToRemove)
         );
-        favouriteList.setFavouritePosts(favouritePosts);
 
         favouriteListRepository.save(favouriteList);
     }
