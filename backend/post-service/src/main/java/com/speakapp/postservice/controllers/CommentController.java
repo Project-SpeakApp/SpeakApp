@@ -24,10 +24,11 @@ public class CommentController {
     private final CommentService commentService;
     private final JwtDecoder jwtDecoder;
     private static final String AUTH_HEADER_PREFIX = "Bearer ";
+
     @GetMapping("")
     public CommentPageGetDTO getCommentsForPostByCreatedAtSorted(
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "0") int firstComment,
+            @RequestParam(defaultValue = "10") int lastComment,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
             @RequestParam UUID postId,
@@ -36,7 +37,7 @@ public class CommentController {
         String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
         UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
         return commentService.getCommentsForPost(
-                pageNumber, pageSize, postId, userId, sortBy, sortDirection);
+                firstComment, lastComment, postId, userId, sortBy, sortDirection);
     }
 
     @PostMapping("")
