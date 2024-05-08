@@ -60,6 +60,7 @@ services:
      - net-apiGw-userServ
      - net-eureka-config
      - net-userServ-chatServ
+     - net-kafka-userServ
    depends_on:
      config-server:
        condition: service_healthy
@@ -272,6 +273,8 @@ networks:
   net-blobServ-azurite:
   net-eureka-config:
   net-apiGw-chatServ:
+  net-kafka-userServ:
+  net-kafka-zookeeper:
 
 volumes:
   vol-user-db:
