@@ -22,17 +22,14 @@ public class SecurityConfig {
     private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
-    public SecurityWebFilterChain securityFilterChain(
-            ServerHttpSecurity serverHttpSecurity,
-            ApiKeyAuthenticationFilter apiKeyAuthenticationFilter
-            ) {
+    public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         return serverHttpSecurity
                 .authorizeExchange(authorizeExchangeSpec ->
                         authorizeExchangeSpec
                                 .pathMatchers("/api/internal/**")
                                 .denyAll()
                                 .pathMatchers(HttpMethod.POST, "/api/users")
-                                .access(apiKeyAuthenticationFilter::check)
+                                .access(ApiKeyAuthenticationFilter::check)
                                 .pathMatchers(HttpMethod.POST, "/api/users")
                                 .permitAll()
                                 .anyExchange()

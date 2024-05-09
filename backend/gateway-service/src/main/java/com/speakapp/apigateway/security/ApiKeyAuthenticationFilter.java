@@ -1,6 +1,5 @@
 package com.speakapp.apigateway.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
@@ -8,10 +7,9 @@ import reactor.core.publisher.Mono;
 
 public class ApiKeyAuthenticationFilter {
 
-    @Value("${app.keycloak-service-key}")
-    private String keycloakServiceKey;
+    private static final String keycloakServiceKey = System.getenv("KC_API_KEY");
 
-    public Mono<AuthorizationDecision> check(
+    public static Mono<AuthorizationDecision> check(
             Mono<Authentication> authentication,
             AuthorizationContext context
     ) {
@@ -22,7 +20,7 @@ public class ApiKeyAuthenticationFilter {
         return Mono.just(new AuthorizationDecision(isValidApiKey));
     }
 
-    private boolean isValidApiKey(String apiKey) {
+    private static boolean isValidApiKey(String apiKey) {
         return apiKey != null && apiKey.equals(keycloakServiceKey);
     }
 }

@@ -1,34 +1,27 @@
 package com.speakapp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.speakapp.dtos.AppUserDTO;
 import org.jboss.logging.Logger;
-
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
 public class Client {
 
     private Client(){}
     private static final HttpClient httpClient = HttpClient.newBuilder().build();
+    private static final ObjectMapper objectMapper;
     private static final Logger log = Logger.getLogger(Client.class);
-
-    private static String serviceKey;
+    private static final String SERVICE_KEY;
 
     static {
-        Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream("properties")) {
-            properties.load(fis);
-            serviceKey = properties.getProperty("keycloak-service-key");
-        } catch (IOException e) {
-            log.error("Failed to load the keycloak secret. Message: " + e.getMessage());
-        }
+        SERVICE_KEY = System.getenv("KC_API_KEY");
+        objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     }
 
     public static void postService(AppUserDTO appUserDTO) {
@@ -36,19 +29,18 @@ public class Client {
 
             String requestBody = appUserToBody(appUserDTO);
 
-            log.info("Keycloak service secret: " + serviceKey);
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("http://api-gateway:8080/api/users"))
                     .header("Content-Type", "application/json")
-                    .header("x-api-key", serviceKey)
+                    .header("x-api-key", SERVICE_KEY)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
             CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
-            responseFuture.thenAccept(response -> {
-            }).join();
+            responseFuture.thenAccept(
+                    response -> log.info("Response status code: " + response.statusCode())
+            ).join();
 
         } catch (URISyntaxException e) {
             log.error(e.getMessage());
@@ -56,11 +48,13 @@ public class Client {
     }
 
     private static String appUserToBody(AppUserDTO appUserDTO) {
-        return "{\"userId\":\"" + appUserDTO.getUserId() +
-                "\", \"firstName\":\"" + appUserDTO.getFirstName() +
-                "\", \"lastName\":\"" + appUserDTO.getLastName() +
-                "\", \"email\":\"" + appUserDTO.getEmail() +
-                "\", \"dateOfBirth\":\"" + appUserDTO.getDateOfBirth() + "\"}";
+
+        try {
+            return objectMapper.writeValueAsString(appUserDTO);
+        } catch (Exception e) {
+            log.error("Failed to create json body from appUserDTO.");
+            throw new IllegalArgumentException("Failed to read the appUserDto.");
+        }
     }
 
 }

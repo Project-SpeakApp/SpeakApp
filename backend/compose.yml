@@ -60,7 +60,6 @@ services:
      - net-apiGw-userServ
      - net-eureka-config
      - net-userServ-chatServ
-     - net-kafka-userServ
    depends_on:
      config-server:
        condition: service_healthy
@@ -143,6 +142,8 @@ services:
     <<: *service
     container_name: api-gateway
     build: gateway-service
+    environment:
+      - KC_API_KEY=JnojeD8sXC8C6fXol8+Z5iRmK1fwK5MjMmtrJ0EMFns
     ports:
       - '8080:8080'
     networks:
@@ -180,6 +181,7 @@ services:
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=postgres
       - KC_DB_URL_PORT=5434
+      - KC_API_KEY=JnojeD8sXC8C6fXol8+Z5iRmK1fwK5MjMmtrJ0EMFns
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
@@ -273,8 +275,6 @@ networks:
   net-blobServ-azurite:
   net-eureka-config:
   net-apiGw-chatServ:
-  net-kafka-userServ:
-  net-kafka-zookeeper:
 
 volumes:
   vol-user-db:
