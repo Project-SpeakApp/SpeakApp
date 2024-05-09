@@ -60,8 +60,4 @@ public class UserService {
         AppUser updatedUser = userRepository.save(appUser);
         return appUserMapper.toGetDTO(updatedUser);
     }
-
-    public void deleteUser(UUID uuid) {
-        userRepository.deleteById(uuid);
-    }
 }
