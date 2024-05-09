@@ -11,7 +11,6 @@ import java.util.UUID;
 @Value
 @Builder
 @Jacksonized
-@ToString
 public class AppUserCreateDTO {
 
     UUID userId;
