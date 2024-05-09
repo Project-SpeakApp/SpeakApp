@@ -131,7 +131,7 @@ public class PostService {
                 .build();
     }
 
-    protected PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
+    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
         List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
             UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
             ReactionsGetDTO postReactions = getReactionsForThePost(post);
