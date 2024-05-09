@@ -1,9 +1,6 @@
 package com.speakapp.userservice.controllers;
 
-import com.speakapp.userservice.dtos.AppUserCreateDTO;
-import com.speakapp.userservice.dtos.AppUserGetDTO;
-import com.speakapp.userservice.dtos.AppUserUpdateDTO;
-import com.speakapp.userservice.dtos.PhotoUpdateDTO;
+import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.services.UserService;
 import com.speakapp.userservice.utils.JwtDecoder;
@@ -24,9 +21,11 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public AppUserGetDTO getUserById(@PathVariable(name = "userId") UUID userId)
+    public AppUserWithFriendStatusGetDTO getUserById(@RequestHeader("Authorization") String authHeader,
+                                                     @PathVariable(name = "userId") UUID userId)
             throws UserNotFoundException {
-        return userService.getUser(userId);
+        UUID requesterId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        return userService.getUser(requesterId, userId);
     }
 
     @PostMapping("")

@@ -22,5 +22,15 @@ POST localhost:8081/api/friends/reject-request/e33e6ddb-28fe-4abe-bb78-f434b27dd
 Authorization: Bearer {{alice_johnson_token}}
 
 ### Alice Johnson accepting friend request from John Doe (same issue as up)
-POST localhost:8081/api/friends/accept-request/3796684a-c0d6-40c0-9243-a236d785615b
+POST localhost:8081/api/friends/accept-request/4d87a164-3e56-4548-b445-f57306091102
 Authorization: Bearer {{alice_johnson_token}}
+
+### Alice removes John Doe from friends list
+DELETE localhost:8081/api/friends/{{john_doe_id}}
+Authorization: Bearer {{alice_johnson_token}}
+
+### Getting friends of John Doe
+GET localhost:8081/api/friends/of-user/{{john_doe_id}}
+
+### Getting friends of Alice Johnson
+GET localhost:8081/api/friends/of-user/{{alice_johnson_id}}
