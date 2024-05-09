@@ -1,7 +1,6 @@
 package com.speakapp.userservice.dtos;
 
 import lombok.Builder;
-import lombok.ToString;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
