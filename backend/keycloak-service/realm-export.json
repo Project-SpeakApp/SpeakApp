@@ -1708,7 +1708,20 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "replyToDisplayName": "SpeakApp",
+    "starttls": "false",
+    "auth": "true",
+    "envelopeFrom": "",
+    "ssl": "true",
+    "password": "**********",
+    "port": "465",
+    "host": "smtp.gmail.com",
+    "replyTo": "speakappproject@gmail.com",
+    "from": "speakappproject@gmail.com",
+    "fromDisplayName": "SpeakApp",
+    "user": "speakappproject@gmail.com"
+  },
   "eventsEnabled": false,
   "eventsListeners": [
     "custom-event-listener",
