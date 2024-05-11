@@ -179,6 +179,7 @@ services:
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=postgres
       - KC_DB_URL_PORT=5434
+      - JAVA_OPTS_APPEND=-Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
