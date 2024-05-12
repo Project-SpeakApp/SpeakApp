@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommentService} from "../../sevices/comment.service";
 import {Subscription} from "rxjs";
-import {AuthService} from "../../../../shared/services/auth.service";
 import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model";
 import {ReactionType} from "../../../../shared/types/posts/ReactionType.enum";
 import {SortOrder} from "../../../../shared/types/posts/SortOrder.enum";
@@ -15,34 +14,35 @@ export class CommentListComponent implements OnInit, OnDestroy{
   @Input() postId: string = "";
   @Output() contentAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() contentDeleted: EventEmitter<any> = new EventEmitter<any>();
+
   comments: CommentGetModel[] = [];
-  isLoading: boolean = false;
-
   totalComments: number = 0;
-
   currentComments: number = 0;
 
+  isLoading: boolean = false;
   subscription = new Subscription();
+
+  sortBy: string = "createdAt";
+  sortDirection: SortOrder = SortOrder.DESC;
 
   constructor(private commentService: CommentService) {
   }
 
   private parseComments(comments: CommentGetModel[]) {
-    comments.forEach((comment) => {
-      const keys = Object.keys(comment.reactionsGetDTO.sumOfReactionsByType);
-      const value = Object.values(comment.reactionsGetDTO.sumOfReactionsByType);
-
-      comment.reactionsGetDTO.sumOfReactionsByType = new Map();
-
-      for (let i = 0; i < keys.length; i++) {
-        const reactionType: ReactionType = ReactionType[keys[i] as keyof typeof ReactionType];
-        comment.reactionsGetDTO.sumOfReactionsByType.set(reactionType, value[i]);
-      }
-    })
+    comments.forEach(c => this.parseComment(c));
   }
 
-  sortBy: string = "createdAt";
-  sortDirection: SortOrder = SortOrder.DESC;
+  private parseComment(comment: CommentGetModel) {
+    const keys = Object.keys(comment.reactionsGetDTO.sumOfReactionsByType);
+    const value = Object.values(comment.reactionsGetDTO.sumOfReactionsByType);
+
+    comment.reactionsGetDTO.sumOfReactionsByType = new Map();
+
+    for (let i = 0; i < keys.length; i++) {
+      const reactionType: ReactionType = ReactionType[keys[i] as keyof typeof ReactionType];
+      comment.reactionsGetDTO.sumOfReactionsByType.set(reactionType, value[i]);
+    }
+  }
 
   handleDeletion(commentToDelete: string) {
     if (commentToDelete) {
@@ -81,6 +81,7 @@ export class CommentListComponent implements OnInit, OnDestroy{
 
   addComment(newComment?: CommentGetModel): void {
     if(newComment) {
+      this.parseComment(newComment);
       this.comments.unshift(newComment);
       this.currentComments += 1;
       this.totalComments += 1;
@@ -95,6 +96,4 @@ export class CommentListComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
-
 }

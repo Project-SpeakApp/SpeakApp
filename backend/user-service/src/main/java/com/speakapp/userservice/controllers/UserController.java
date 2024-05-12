@@ -1,10 +1,6 @@
 package com.speakapp.userservice.controllers;
 
-import com.speakapp.userservice.dtos.AppUserCreateDTO;
-import com.speakapp.userservice.dtos.AppUserGetDTO;
-import com.speakapp.userservice.dtos.AppUserPreviewPageDTO;
-import com.speakapp.userservice.dtos.AppUserUpdateDTO;
-import com.speakapp.userservice.dtos.PhotoUpdateDTO;
+import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.services.UserService;
 import com.speakapp.userservice.utils.JwtDecoder;
@@ -21,16 +17,16 @@ import java.util.UUID;
 @RestController
 public class UserController {
 
-  private final UserService userService;
-  private final JwtDecoder jwtDecoder;
-  private static final String AUTH_HEADER_PREFIX = "Bearer ";
+    private final UserService userService;
 
-  @GetMapping("/{userId}")
-  @ResponseStatus(HttpStatus.OK)
-  public AppUserGetDTO getUserById(@PathVariable(name = "userId") UUID userId)
-      throws UserNotFoundException {
-    return userService.getUser(userId);
-  }
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AppUserWithFriendStatusGetDTO getUserById(@RequestHeader("Authorization") String authHeader,
+                                                     @PathVariable(name = "userId") UUID userId)
+            throws UserNotFoundException {
+        UUID requesterId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        return userService.getUser(requesterId, userId);
+    }
 
   @GetMapping("/findByFullName")
   @ResponseStatus(HttpStatus.OK)
@@ -48,34 +44,29 @@ public class UserController {
     userService.createUser(userCreateDTO);
   }
 
-  @PutMapping
-  @ResponseStatus(HttpStatus.OK)
-  public AppUserGetDTO updateUserInfo(@RequestHeader("Authorization") String authHeader,
-      @RequestBody AppUserUpdateDTO userUpdateDTO) {
-    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
-    return userService.updateUserInfo(userId, userUpdateDTO);
-  }
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public AppUserGetDTO updateUserInfo(@RequestHeader("Authorization") String authHeader,
+                                        @RequestBody AppUserUpdateDTO userUpdateDTO) {
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        return userService.updateUserInfo(userId, userUpdateDTO);
+    }
 
-  @PutMapping("/profile-photo")
-  @ResponseStatus(HttpStatus.OK)
-  public AppUserGetDTO updateUserProfilePhoto(
-      @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody PhotoUpdateDTO photoUpdateDTO) {
-    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
-    return userService.updateUserProfilePhoto(userId, photoUpdateDTO);
-  }
+    @PutMapping("/profile-photo")
+    @ResponseStatus(HttpStatus.OK)
+    public AppUserGetDTO updateUserProfilePhoto(@RequestHeader(name = "Authorization") String authHeader,
+                                                @RequestBody PhotoUpdateDTO photoUpdateDTO) {
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        return userService.updateUserProfilePhoto(userId, photoUpdateDTO);
+    }
 
-  @PutMapping("/background-photo")
-  @ResponseStatus(HttpStatus.OK)
-  public AppUserGetDTO updateUserBackgroundPhoto(
-      @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody PhotoUpdateDTO photoUpdateDTO) {
-    String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-    UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
-    return userService.updateUserBackgroundPhoto(userId, photoUpdateDTO);
-  }
+    @PutMapping("/background-photo")
+    @ResponseStatus(HttpStatus.OK)
+    public AppUserGetDTO updateUserBackgroundPhoto(@RequestHeader(name = "Authorization") String authHeader,
+                                                   @RequestBody PhotoUpdateDTO photoUpdateDTO) {
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        return userService.updateUserBackgroundPhoto(userId, photoUpdateDTO);
+    }
 
   @DeleteMapping("/{userId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
