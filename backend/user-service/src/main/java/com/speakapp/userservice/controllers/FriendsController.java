@@ -1,5 +1,6 @@
 package com.speakapp.userservice.controllers;
 
+import com.speakapp.userservice.dtos.AppUserPreviewPageDTO;
 import com.speakapp.userservice.dtos.FriendRequestsPage;
 import com.speakapp.userservice.services.FriendsService;
 import com.speakapp.userservice.utils.JwtDecoder;
@@ -49,6 +50,23 @@ public class FriendsController {
         UUID accountOwnerId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         Pageable requestedPageable = Pageable.ofSize(pageSize).withPage(pageNumber);
         return friendsService.findRequestsByAddressee(accountOwnerId, requestedPageable);
+    }
+
+    @DeleteMapping("/{userToRemoveId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeUserFromFriendsList(@RequestHeader(name = "Authorization") String authHeader,
+                                          @PathVariable UUID userToRemoveId) {
+        UUID accountOwnerId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        friendsService.removeUserFromFriendsList(accountOwnerId, userToRemoveId);
+    }
+
+    @GetMapping("/of-user/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AppUserPreviewPageDTO getFriendsOfUser(@PathVariable UUID userId,
+                                                  @RequestParam(defaultValue = "0") int pageNumber,
+                                                  @RequestParam(defaultValue = "8") int pageSize) {
+        Pageable requestedPageable = Pageable.ofSize(pageSize).withPage(pageNumber);
+        return friendsService.getFriendsOfUser(userId, requestedPageable);
     }
 
 }
