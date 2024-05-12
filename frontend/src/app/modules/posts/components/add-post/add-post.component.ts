@@ -55,6 +55,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.myForm.reset();
           this.selectedFile = null;
+          this.fileInputElement.nativeElement.value = '';
         },
         (error) => {
           this.isLoading = false;
