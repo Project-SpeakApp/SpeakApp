@@ -105,7 +105,9 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
     this.post.mediaId = null;
     this.imageUrl = null;
     this.imageSub.add(this.postService.updatePost(this.post.postId, {content: this.post.content, mediaId: null}).subscribe(
-      (updatedPost) => {this.contentUpdated.emit(updatedPost);}
+      (updatedPost) => {
+        this.post = updatedPost;
+      }
     ));
   }
 
