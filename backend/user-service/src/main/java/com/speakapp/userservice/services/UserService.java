@@ -92,10 +92,10 @@ public class UserService {
         ).toList();
 
         return AppUserPreviewPageDTO.builder()
-            .appUserPreviewDTOS(appUserPreviewDTOS)
-            .pageNumber(appUsersPage.getNumber())
+            .userPreviews(appUserPreviewDTOS)
+            .currentPage(appUsersPage.getNumber())
             .pageSize(appUsersPage.getSize())
-            .totalPages((long) appUsersPage.getTotalPages())
+            .totalPages(appUsersPage.getTotalPages())
             .build();
     }
 
