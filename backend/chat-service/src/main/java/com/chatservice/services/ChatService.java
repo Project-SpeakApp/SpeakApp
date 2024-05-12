@@ -22,6 +22,7 @@ import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -119,7 +120,8 @@ public class ChatService {
         .isGroupConversation(getConversationForMessage.isGroupConversation())
         .build();
 
-    AppUserPreviewDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
+    AppUserPreviewDTO messageAuthor = userServiceCommunicationClient.getUserById(
+        message.getFromUserId());
 
     MessageGetDTO messageGetDTO = MessageGetDTO.builder()
         .content(message.getContent())
@@ -187,18 +189,19 @@ public class ChatService {
     if (fullNameParts.length == 2) {
       userFirstName = fullNameParts[0];
       userLastName = fullNameParts[1];
-      conversationPage = conversationRepository.findConversationsForTwoUsersByIdAndUserFullNameIgnoreCaseOrByConversationName(
+      conversationPage = conversationRepository.findUserConversationsByOtherUserFullNameOrConversationName(
           userId, userFirstName, userLastName, conversationName, page);
+
     } else if (fullNameParts.length == 1 && !conversationName.isEmpty()) {
       userFirstName = fullNameParts[0];
-      conversationPage = conversationRepository.findConversationsForTwoUsersByIdAndUserFirstNameIgnoreCaseOrByConversationName(
+      conversationPage = conversationRepository.findUserConversationsByOtherUserFirstNameOrConversationName(
           userId, userFirstName, conversationName, page);
+
     } else {
-      conversationPage = conversationRepository.findAllUsersConversations(userId, page);
+      conversationPage = conversationRepository.findAllUserConversations(userId, page);
     }
 
     return createConversationPageDTOFromConversationPage(conversationPage, userId);
-
   }
 
   public ConversationPageDTO createConversationPageDTOFromConversationPage(
@@ -217,14 +220,17 @@ public class ChatService {
 
   }
 
-  public ConversationGetDTO convertConversationToConversationGetDTO(Conversation conversation, UUID userId){
+  public ConversationGetDTO convertConversationToConversationGetDTO(Conversation conversation,
+      UUID userId) {
     String conversationName = conversation.getConversationName();
     UUID conversationPhotoId = conversation.getConversationPhotoId();
-    if(!conversation.isGroupConversation()) {
-      GroupMember secondGroupMember = groupMemberRepository.findSecondGroupMemberOfPrivateConversation(userId, conversation);
+    if (!conversation.isGroupConversation()) {
+      GroupMember secondGroupMember = groupMemberRepository.findSecondGroupMemberOfPrivateConversation(
+          userId, conversation);
       conversationName = secondGroupMember.getFirstName() + " " + secondGroupMember.getLastName();
 
-      AppUserPreviewDTO secondUser = userServiceCommunicationClient.getUserById(secondGroupMember.getUserId());
+      AppUserPreviewDTO secondUser = userServiceCommunicationClient.getUserById(
+          secondGroupMember.getUserId());
       conversationPhotoId = secondUser.getProfilePhotoId();
     }
 

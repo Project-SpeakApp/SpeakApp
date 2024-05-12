@@ -22,6 +22,6 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, UUID> 
 
     Optional<GroupMember> findGroupMemberByUserId(UUID userId);
 
-    @Query("SELECT gm FROM group_member gm WHERE gm.conversation.conversationId = :conversationId AND gm.userId != :userId")
+    @Query("SELECT gm FROM group_member gm WHERE gm.conversation = :conversation AND gm.userId != :userId")
     GroupMember findSecondGroupMemberOfPrivateConversation(UUID userId, Conversation conversation);
 }
