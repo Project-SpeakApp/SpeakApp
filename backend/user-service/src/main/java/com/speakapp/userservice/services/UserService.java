@@ -3,8 +3,10 @@ package com.speakapp.userservice.services;
 import com.speakapp.userservice.communication.ChatServiceCommunicationClient;
 import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.entities.AppUser;
+import com.speakapp.userservice.entities.FriendStatus;
 import com.speakapp.userservice.exceptions.UserNotFoundException;
 import com.speakapp.userservice.mappers.AppUserMapper;
+import com.speakapp.userservice.repositories.UserFriendRepository;
 import com.speakapp.userservice.repositories.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +22,43 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-  private final UserRepository userRepository;
-  private final AppUserMapper appUserMapper;
-  private final ChatServiceCommunicationClient chatServiceCommunicationClient;
+    private final UserRepository userRepository;
+    private final AppUserMapper appUserMapper;
+    private final UserFriendRepository userFriendRepository;
+    private final ChatServiceCommunicationClient chatServiceCommunicationClient;
 
-  public AppUserGetDTO getUser(UUID userId) throws UserNotFoundException {
-    Optional<AppUser> user = userRepository.findById(userId);
+    public AppUserWithFriendStatusGetDTO getUser(UUID requesterId, UUID userIdToFetch) throws UserNotFoundException {
+        AppUser requester = userRepository.findById(requesterId)
+                .orElseThrow(UserNotFoundException::new);
+        AppUser userToFetch = userRepository.findById(userIdToFetch)
+                .orElseThrow(UserNotFoundException::new);
 
-    return user.map(appUserMapper::toGetDTO)
-        .orElseThrow(UserNotFoundException::new);
-  }
+        String friendStatus = userFriendRepository.findFriendStatusByAddresseeAndRequester(
+                        requester,
+                        userToFetch
+                )
+                .map(fs -> {
+                    if (fs == FriendStatus.REQUEST) {
+                        return fs.name() + " TO ACCEPT";
+                    }
+                    return fs.name();
+                })
+                .orElse(null);
+        if (friendStatus == null) {
+            friendStatus = userFriendRepository.findFriendStatusByAddresseeAndRequester(
+                            userToFetch,
+                            requester
+                    ).map(fs -> {
+                        if (fs == FriendStatus.REQUEST) {
+                            return fs.name() + " SENT";
+                        }
+                        return fs.name();
+                    })
+                    .orElse(null);
+        }
+
+        return appUserMapper.toGetDTO(userToFetch, friendStatus);
+    }
 
   public AppUserPreviewPageDTO getUsersByFullName(String appUserFullName, int pageNumber,
       int pageSize) {
@@ -62,15 +91,15 @@ public class UserService {
         AppUserPreviewDTO.builder()
             .userId(appUser.getUserId())
             .fullName(appUser.getFirstName() + " " + appUser.getLastName())
-            .profilePhotoUrl(appUser.getProfilePhotoUrl())
+            .profilePhotoId(appUser.getProfilePhotoId())
             .build()
     ).toList();
 
     return AppUserPreviewPageDTO.builder()
-        .appUserPreviewDTOS(appUserPreviewDTOS)
-        .pageNumber(appUsersPage.getNumber())
+        .userPreviews(appUserPreviewDTOS)
+        .currentPage(appUsersPage.getNumber())
         .pageSize(appUsersPage.getSize())
-        .totalPages((long) appUsersPage.getTotalPages())
+        .totalPages(appUsersPage.getTotalPages())
         .build();
   }
 
