@@ -4,7 +4,7 @@ $$
         message_id_1         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130003'::uuid;
         message_id_2         uuid      := '6c84fbae-12c4-11ec-82a8-0242ac130003'::uuid;
         message_id_3         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130004'::uuid;
-        message_id_4         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130005'::uuid;
+        message_id_4         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130005'::uuid; --
         message_id_5         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130006'::uuid;
         message_id_6         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130007'::uuid;
         message_id_7         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130008'::uuid;
@@ -14,14 +14,14 @@ $$
         message_id_11         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130012'::uuid;
         message_id_12         uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130013'::uuid;
 
-        user_id_1         uuid      := '6c84fb95-12c4-11ec-82a8-0242ac130003'::uuid;
+        user_id_1         uuid      := '6c84fb95-12c4-11ec-82a8-0242ac130003'::uuid; --
         user_id_2         uuid      := '6c84fb96-12c4-11ec-82a8-0242ac130003'::uuid;
         user_id_3         uuid      := '6c84fb97-12c4-11ec-82a8-0242ac130003'::uuid;
         user_id_4         uuid      := '6c84fb98-12c4-11ec-82a8-0242ac130003'::uuid;
         user_id_5         uuid      := '6c84fb99-12c4-11ec-82a8-0242ac130003'::uuid;
         user_id_6         uuid      := '6c84fb9a-12c4-11ec-82a8-0242ac130003'::uuid;
 
-        group_member_id_1         uuid      := '6c84fb95-12c4-11ec-82a8-0242ac130003'::uuid;
+        group_member_id_1         uuid      := '6c84fb95-12c4-11ec-82a8-0242ac130003'::uuid; --
         group_member_id_2         uuid      := '6c84fb96-12c4-11ec-82a8-0242ac130003'::uuid;
         group_member_id_3         uuid      := '6c84fb97-12c4-11ec-82a8-0242ac130003'::uuid;
         group_member_id_4         uuid      := '6c84fb98-12c4-11ec-82a8-0242ac130003'::uuid;
@@ -69,20 +69,20 @@ VALUES (conversation_id_1, 'Bears fans', true),
        (conversation_id_3, 'Private conversation 2', false),
        (conversation_id_4, 'Private conversation 3', false);
 
-INSERT INTO group_member (group_member_id, user_id, conversation_id, joined_at, left_at)
-VALUES (group_member_id_1, user_id_1, conversation_id_1 , timestamp_earlier, timestamp_later),
-       (group_member_id_2, user_id_2, conversation_id_1 , timestamp_earlier, timestamp_later),
-       (group_member_id_3, user_id_3, conversation_id_1 , timestamp_earlier, timestamp_later),
-       (group_member_id_4, user_id_6, conversation_id_1 , timestamp_earlier, timestamp_later),
+INSERT INTO group_member (group_member_id, user_id, first_name, last_name, conversation_id, joined_at, left_at)
+VALUES (group_member_id_1, user_id_1, 'John', 'Doe', conversation_id_1 , timestamp_earlier, timestamp_later),
+       (group_member_id_2, user_id_2, 'Alice','Johnson', conversation_id_1 , timestamp_earlier, timestamp_later),
+       (group_member_id_3, user_id_3, 'Christopher', 'Bear', conversation_id_1 , timestamp_earlier, timestamp_later),
+       (group_member_id_4, user_id_6, 'Sophia', 'Brown', conversation_id_1 , timestamp_earlier, timestamp_later),
 
-       (group_member_id_5, user_id_4, conversation_id_2 , timestamp_earlier, timestamp_later),
-       (group_member_id_6, user_id_5, conversation_id_2 , timestamp_earlier, timestamp_later),
+       (group_member_id_5, user_id_4, 'Emily', 'Smith', conversation_id_2 , timestamp_earlier, timestamp_later),
+       (group_member_id_6, user_id_5, 'Michael', 'Williams', conversation_id_2 , timestamp_earlier, timestamp_later),
 
-       (group_member_id_7, user_id_1, conversation_id_3 , timestamp_earlier, timestamp_later),
-       (group_member_id_8, user_id_2, conversation_id_3 , timestamp_earlier, timestamp_later),
+       (group_member_id_7, user_id_1, 'John', 'Doe', conversation_id_3 , timestamp_earlier, timestamp_later),
+       (group_member_id_8, user_id_2, 'Alice', 'Johnson', conversation_id_3 , timestamp_earlier, timestamp_later),
 
-       (group_member_id_9, user_id_6, conversation_id_4 , timestamp_earlier, timestamp_later),
-       (group_member_id_10, user_id_3, conversation_id_4 , timestamp_earlier, timestamp_later);
+       (group_member_id_9, user_id_6, 'Sophia', 'Brown', conversation_id_4 , timestamp_earlier, timestamp_later),
+       (group_member_id_10, user_id_3, 'Christopher', 'Bear', conversation_id_4 , timestamp_earlier, timestamp_later);
 
 INSERT INTO message (message_id, from_user_id, content, type, conversation_id, response_to_message_id, sent_at, delivered_at, is_deleted)
 VALUES (message_id_1, user_id_1, 'Bears are the best animals imo!', 'TEXT', conversation_id_1, null, message_timestamp_1, message_timestamp_1, false),
