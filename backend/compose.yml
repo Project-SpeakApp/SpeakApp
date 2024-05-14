@@ -32,7 +32,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-      
+
   eureka-server:
     container_name: discovery-service
     build: discovery-service
@@ -47,7 +47,7 @@ services:
       retries: 5
     depends_on:
       - config-server
-      
+
   user-service:
    <<: *service
    container_name: user-service
@@ -59,6 +59,7 @@ services:
      - net-postServ-userServ
      - net-apiGw-userServ
      - net-eureka-config
+     - net-userServ-chatServ
    depends_on:
      config-server:
        condition: service_healthy
@@ -111,6 +112,32 @@ services:
    networks:
      - net-postDB-postServ
 
+  chat-service:
+    <<: *service
+    build: chat-service
+    ports:
+      - '8084:8084'
+    networks:
+      - net-messageDB-chatServ
+      - net-apiGw-chatServ
+      - net-userServ-chatServ
+    depends_on:
+      message-db-service:
+        condition: service_healthy
+
+  message-db-service:
+    <<: *db
+    environment:
+      <<: *db-env
+      POSTGRES_DB: message_db
+      PGPORT: 5436
+    volumes:
+      - vol-message-db:/var/lib/postgresql/data
+    ports:
+      - '5436:5436'
+    networks:
+      - net-messageDB-chatServ
+
   api-gateway:
     <<: *service
     container_name: api-gateway
@@ -120,6 +147,7 @@ services:
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
+      - net-apiGw-chatServ
       - net-keycloak-apiGw
       - net-eureka-config
       - net-apiGw-blobServ
@@ -233,7 +261,9 @@ services:
 networks:
   net-postDB-postServ:
   net-userDB-userServ:
+  net-messageDB-chatServ:
   net-postServ-userServ:
+  net-userServ-chatServ:
   net-apiGw-userServ:
   net-apiGw-postServ:
   net-keycloakDB-keycloakServ:
@@ -241,9 +271,11 @@ networks:
   net-apiGw-blobServ:
   net-blobServ-azurite:
   net-eureka-config:
+  net-apiGw-chatServ:
 
 volumes:
   vol-user-db:
   vol-post-db:
+  vol-message-db:
   vol-keycloak-db:
   vol-metadata-db:

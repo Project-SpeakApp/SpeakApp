@@ -25,16 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReactionController {
 
     private final ReactionService reactionService;
-    private final JwtDecoder jwtDecoder;
-    private static final String AUTH_HEADER_PREFIX = "Bearer ";
 
     @PutMapping("/posts/reactions/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ReactionType createUpdatePostReaction(@RequestParam(required = false) ReactionType reactionType,
                                                  @PathVariable UUID postId,
                                                  @RequestHeader("Authorization") String authHeader){
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return reactionService.createUpdatePostReaction(reactionType, postId, userId);
     }
 
@@ -43,8 +40,7 @@ public class ReactionController {
     public ReactionType createUpdateCommentReaction(@RequestParam(required = false) ReactionType reactionType,
                                                     @PathVariable UUID commentId,
                                                     @RequestHeader("Authorization") String authHeader){
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return reactionService.createUpdateCommentReaction(reactionType, commentId, userId);
     }
 
