@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post extends Auditable{
+public class Post extends Auditable {
 
     @Id
     @GeneratedValue
@@ -27,6 +28,9 @@ public class Post extends Auditable{
 
     @Column(nullable = false, length = 3000)
     private String content;
+
+    @ManyToMany(mappedBy = "favouritePosts")
+    private List<FavouriteList> favouriteLists;
 
 //   TODO Media service for photos, audio, video
 //    @Lob

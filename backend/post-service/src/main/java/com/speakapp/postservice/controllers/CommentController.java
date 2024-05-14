@@ -22,9 +22,6 @@ import java.util.UUID;
 public class CommentController {
 
     private final CommentService commentService;
-    private final JwtDecoder jwtDecoder;
-    private static final String AUTH_HEADER_PREFIX = "Bearer ";
-
     @GetMapping("")
     public CommentPageGetDTO getCommentsForPostByCreatedAtSorted(
             @RequestParam(defaultValue = "0") int firstComment,
@@ -34,8 +31,7 @@ public class CommentController {
             @RequestParam UUID postId,
             @RequestHeader("Authorization") String authHeader) {
 
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return commentService.getCommentsForPost(
                 firstComment, lastComment, postId, userId, sortBy, sortDirection);
     }
@@ -44,16 +40,14 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentGetDTO createComment(@RequestBody @Valid CommentCreateDTO commentCreateDTO,
                                        @RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return commentService.createComment(commentCreateDTO, userId);
     }
 
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable UUID commentId, @RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         commentService.deleteComment(userId, commentId);
     }
 
@@ -62,8 +56,7 @@ public class CommentController {
     public CommentGetDTO updateComment(@RequestBody @Valid CommentUpdateDTO commentUpdateDTO,
                                        @RequestHeader("Authorization") String authHeader,
                                        @PathVariable UUID commentId) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return commentService.updateComment(commentUpdateDTO, commentId, userId);
     }
 }

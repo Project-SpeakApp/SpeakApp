@@ -28,4 +28,6 @@ public class PostGetDTO {
     ReactionType currentUserReaction;
 
     Long totalNumberOfComments;
+
+    boolean favourite;
 }
