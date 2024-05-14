@@ -20,23 +20,19 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
-    private final JwtDecoder jwtDecoder;
-    private static final String AUTH_HEADER_PREFIX = "Bearer ";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostGetDTO createPost(@Valid @RequestBody PostCreateDTO postCreateDTO,
                                  @RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return postService.createPost(postCreateDTO, userId);
     }
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable UUID postId, @RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         postService.deletePost(userId, postId);
     }
 
@@ -45,8 +41,7 @@ public class PostController {
     public PostGetDTO updatePost(@Valid @RequestBody PostCreateDTO postCreateDTO,
                                  @RequestHeader("Authorization") String authHeader,
                                  @PathVariable UUID postId) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return postService.updatePost(postCreateDTO, postId, userId);
 
     }
@@ -57,8 +52,7 @@ public class PostController {
                                              @RequestParam(defaultValue = "5") int pageSize,
                                              @PathVariable UUID userIdOfProfileOwner,
                                              @RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return postService.getUsersLatestPosts(pageNumber, pageSize, userIdOfProfileOwner, userId);
     }
 
@@ -67,8 +61,7 @@ public class PostController {
     public PostPageGetDTO getLatestPosts(@RequestParam(defaultValue = "0") int pageNumber,
                                          @RequestParam(defaultValue = "5") int pageSize,
                                          @RequestHeader("Authorization") String authHeader ) {
-        String jwtToken = authHeader.substring("Bearer ".length());
-        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return postService.getLatestPosts(pageNumber, pageSize, userId);
     }
 }

@@ -1,6 +1,5 @@
 import { Injectable, signal } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
-import {Router} from "@angular/router";
 import {ProfilesService} from "../../modules/profiles/services/profiles.service";
 
 @Injectable({

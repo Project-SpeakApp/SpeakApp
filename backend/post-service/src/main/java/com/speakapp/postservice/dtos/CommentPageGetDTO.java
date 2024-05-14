@@ -12,11 +12,9 @@ import java.util.List;
 public class CommentPageGetDTO {
     List<CommentGetDTO> commentGetDTOS;
 
-    int currentPage;
+    int firstComment;
 
-    int pageSize;
-
-    int totalPages;
+    int lastComment;
 
     Long totalComments;
 }

@@ -13,6 +13,9 @@ public interface AppUserMapper {
 
     AppUserGetDTO toGetDTO(AppUser appUser);
 
+    AppUserWithFriendStatusGetDTO toGetDTO(AppUser appUser,
+                                           String friendStatus);
+
     @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     void updateAppUserFromAppUserUpdateDTO(AppUserUpdateDTO appUserUpdateDTO,
                                            @MappingTarget AppUser appUser);

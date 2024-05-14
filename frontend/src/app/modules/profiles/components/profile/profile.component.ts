@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal} f
 import ProfileGetDTO from '../../types/ProfileGetDTO';
 import {AuthService} from "../../../../shared/services/auth.service";
 import TypeMedia from "../../../../shared/types/media/type-media";
-import {Subscription} from "rxjs";
+import {Subscription, tap} from "rxjs";
 import {ImageService} from "../../../../shared/services/image.service";
 import {ProfilesService} from "../../services/profiles.service";
 import {AlertService} from "../../../../shared/services/alert.service";
@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
 
   authState = this.authService.state;
 
-  imageSubstription = new Subscription();
+  imageSubscription = new Subscription();
 
   avatarLoading = signal(false);
   backgroundLoading = signal(false);
@@ -44,21 +44,25 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageSubstription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).subscribe((res) => {
-        if (type === 'avatar') {
-          this.updateAvatar(res);
-        }
-        else {
-          this.updateBackground(res);
-        }
-      }));
+      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).pipe(
+        tap((res) => {
+          if (type === 'avatar')
+            this.updateAvatar(res);
+          else
+            this.updateBackground(res);
+        }, (error) => {
+          if (type === 'avatar')
+            this.avatarLoading.set(false);
+          else
+            this.backgroundLoading.set(false);
+        })).subscribe());
     })
 
     reader.readAsDataURL(file);
   }
 
   updateAvatar(res: string) {
-    this.imageSubstription.add(this.profileService.updateProfilePhoto(res).subscribe((_) => {
+    this.imageSubscription.add(this.profileService.updateProfilePhoto(res).subscribe((_) => {
       if (this.profile){
         this.profile.profilePhotoId = res;
         this.authService.updateProfilePhoto(res);
@@ -69,7 +73,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   updateBackground(res: string) {
-    this.imageSubstription.add(this.profileService.updateBackgroundPhoto(res).subscribe((_) => {
+    this.imageSubscription.add(this.profileService.updateBackgroundPhoto(res).subscribe((_) => {
       if (this.profile){
         this.profile.bgPhotoId = res;
         this.alertService.showAlert('Background photo updated', 'success');
@@ -85,7 +89,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   loadProfilePhoto() {
     if (this.profile?.profilePhotoId) {
       this.avatarLoading.set(true);
-      this.imageSubstription.add(this.imageService.downloadImage(this.profile.profilePhotoId).subscribe((blob) => {
+      this.imageSubscription.add(this.imageService.downloadImage(this.profile.profilePhotoId).subscribe((blob) => {
         this.avatarSrc = URL.createObjectURL(blob);
         this.avatarLoading.set(false);
       }));
@@ -98,7 +102,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   loadBackgroundPhoto() {
     if (this.profile?.bgPhotoId) {
       this.backgroundLoading.set(true);
-      this.imageSubstription.add(this.imageService.downloadImage(this.profile.bgPhotoId).subscribe((blob) => {
+      this.imageSubscription.add(this.imageService.downloadImage(this.profile.bgPhotoId).subscribe((blob) => {
         this.backgroundSrc = URL.createObjectURL(blob);
         this.backgroundLoading.set(false);
       }));
@@ -120,6 +124,6 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.imageSubstription.unsubscribe();
+    this.imageSubscription.unsubscribe();
   }
 }

@@ -107,6 +107,7 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
       (updatedPost) => {
         this.updateContent(updatedPost);
         this.contentUpdated.emit(updatedPost);
+        this.post = updatedPost;
       }
     ));
   }

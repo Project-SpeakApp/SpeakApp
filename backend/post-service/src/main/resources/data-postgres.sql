@@ -16,6 +16,7 @@ $$
         post_id_13        uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130013'::uuid;
         post_id_14        uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130014'::uuid;
         post_id_15        uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130015'::uuid;
+        post_id_16        uuid      := '6c84fbad-12c4-11ec-82a8-0242ac130016'::uuid;
 
         user_id_1         uuid      := '6c84fb95-12c4-11ec-82a8-0242ac130003'::uuid;
         user_id_2         uuid      := '6c84fb96-12c4-11ec-82a8-0242ac130003'::uuid;
@@ -61,9 +62,11 @@ $$
                (post_id_12, user_id_2, 'In the heart of the village, where ancient oak trees stood sentinel, Amelia, a talented artist, captured the essence of the changing seasons on her canvas. Whispers of an enchanted grove added an air of mystique to the idyllic scene.The marketplace, a hub of activity every Saturday, showcased the community''s spirit. Farmers displayed fresh produce, artisans presented handcrafted wares, and children played under the watchful eyes of their parents. The village, bound by a sense of togetherness, thrived on these simple joys.As seasons cycled through, the village transformed. Winter draped everything in a serene blanket of snow, fostering warmth and camaraderie around hearths. Spring brought a burst of colors, with flowers and songbirds announcing the renewal of life. Summer festivals echoed through cobbled streets, filling the air with music and laughter. Autumn adorned the landscape in rich hues, a tapestry of memories.Yet, amidst the routine, a touch of mystery lingered. Legends spoke of an enchanted grove, a hidden realm where ancient spirits danced among the trees. Some dismissed it as folklore, but others claimed to witness the ethereal glow emanating from the heart of the woods.Amelia''s paintings adorned the local gallery, a testament to the talent thriving in this close-knit community. The villagers, connected by a shared love for their home, found solace in the simplicity of their daily lives. In this small haven, where time seemed to stand still, the interplay of seasons and the mystical tales added layers to the timeless portrait of a village that thrived on the beauty of each passing moment.', '2023-01-18 12:00:00', '2023-01-18 12:00:00', false),
                (post_id_13, user_id_3, 'Weekend DIY project: building a small herb garden.', '2023-01-19 12:00:00', '2023-01-19 12:00:00', false),
                (post_id_14, user_id_4, 'Celebrating a personal milestone today. Grateful for the journey!', '2023-01-20 12:00:00', '2023-01-20 12:00:00', false),
-               (post_id_15, user_id_5, 'Movie night with friends. Any movie recommendations?', '2023-01-21 12:00:00', '2023-01-21 12:00:00', false);
-        
-        INSERT INTO comment (comment_id, post_id, user_id, content, created_at, modified_at, is_deleted, number_of_reactions)
+               (post_id_15, user_id_5, 'Movie night with friends. Any movie recommendations?', '2023-01-21 12:00:00', '2023-01-21 12:00:00', false),
+               (post_id_16, user_id_5, 'SpeakApp night?', '2023-01-21 12:00:00', '2023-01-21 12:00:00', false);
+
+
+INSERT INTO comment (comment_id, post_id, user_id, content, created_at, modified_at, is_deleted, number_of_reactions)
         VALUES
          -- Komentarze dla post_id_1
             ('6c84fbbf-12c4-11ec-82a8-0242ac130004'::uuid, post_id_1, user_id_6, 'Great post!', timestamp_earlier, timestamp_earlier, false, 3),
@@ -257,19 +260,27 @@ $$
         ('6c84fc1d-12c4-11ec-82a8-0242ac130003'::uuid, post_id_15, user_id_4, 'HA_HA');
 
 
-        INSERT INTO favourite_list (list_id, user_id, name, created_at, modified_at)
-        VALUES (list_id_1, user_id_1, 'My favourite posts', timestamp_earlier, timestamp_earlier),
-               (list_id_2, user_id_2, 'My favourite posts', timestamp_later, timestamp_later),
-               (list_id_3, user_id_3, 'My favourite posts', timestamp_later, timestamp_later),
-               (list_id_4, user_id_3, 'Top 5 bears of all time', timestamp_later, timestamp_later);
+        INSERT INTO favourite_list (list_id, user_id)
+        VALUES (list_id_1, user_id_1),
+               (list_id_2, user_id_2),
+               (list_id_3, user_id_3),
+               (list_id_4, user_id_3);
 
-        INSERT INTO favourite_post (fav_post_id, list_id, post_id)
-        VALUES ('6c84fbbb-12c4-11ec-82a8-0242ac130003'::uuid, list_id_1, post_id_1),
-               ('6c84fbbc-12c4-11ec-82a8-0242ac130003'::uuid, list_id_2, post_id_2),
-               ('6c84fbbd-12c4-11ec-82a8-0242ac130003'::uuid, list_id_3, post_id_3),
-                ('6c84fbbe-12c4-11ec-82a8-0242ac130003'::uuid, list_id_4, post_id_4),
-               ('6c84fbbf-12c4-11ec-82a8-0242ac130003'::uuid, list_id_4, post_id_5),
-                ('6c85fbbf-12c4-11ec-82a8-0242ac130003'::uuid, list_id_4, post_id_6);
+        INSERT INTO favourite_list_post(favourite_list_id, post_id)
+        VALUES (list_id_1, post_id_1),
+               (list_id_1, post_id_2),
+               (list_id_1, post_id_3),
+               (list_id_2, post_id_1),
+               (list_id_2, post_id_2),
+               (list_id_2, post_id_3),
+               (list_id_3, post_id_4),
+               (list_id_3, post_id_5),
+               (list_id_3, post_id_6),
+               (list_id_4, post_id_7),
+               (list_id_4, post_id_8),
+               (list_id_4, post_id_9);
+
+
 
         INSERT INTO tag (tag_id, tag_name)
         VALUES (tag_id_1, 'Nature'),

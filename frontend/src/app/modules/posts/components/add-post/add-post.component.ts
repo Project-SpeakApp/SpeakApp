@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PostService} from '../../sevices/post.service';
-import {Subscription} from 'rxjs';
+import {Subscription, tap} from 'rxjs';
 import {AlertService} from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
@@ -30,7 +30,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
   imageLoading = signal(false);
   deleteImageLoading = signal(false);
 
-  imageSubstription = new Subscription();
+  imageSubscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,6 +55,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.myForm.reset();
           this.selectedFile = null;
+          this.fileInputElement.nativeElement.value = '';
         },
         (error) => {
           this.isLoading = false;
@@ -75,13 +76,20 @@ export class AddPostComponent implements OnInit, OnDestroy {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageSubstription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).subscribe((res) => {
-        this.imageSubstription.add(this.imageService.downloadImage(res).subscribe((blob) => {
-          const imageUrl = URL.createObjectURL(blob);
-          this.selectedFile = new ImageSnippet(imageUrl, file, res);
-          this.imageLoading.set(false);
-        }));
-      }));
+      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.IMAGE).pipe(
+        tap(
+          (res: string) => {
+            this.imageSubscription.add(this.imageService.downloadImage(res).subscribe((blob) => {
+              const imageUrl = URL.createObjectURL(blob);
+              this.selectedFile = new ImageSnippet(imageUrl, file, res);
+              this.imageLoading.set(false);
+            }));
+          },
+          (error) => {
+            this.imageLoading.set(false);
+          }
+        )
+      ).subscribe());
     })
 
     reader.readAsDataURL(file);
@@ -91,7 +99,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     if (!this.selectedFile) return;
 
     this.deleteImageLoading.set(true);
-    this.imageSubstription.add(this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
+    this.imageSubscription.add(this.imageService.deleteImage(this.selectedFile.guid).subscribe(() => {
       this.selectedFile = null;
       this.fileInputElement.nativeElement.value = '';
       this.deleteImageLoading.set(false);
@@ -105,6 +113,6 @@ export class AddPostComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.addPostSubscription?.unsubscribe();
-    this.imageSubstription.unsubscribe();
+    this.imageSubscription.unsubscribe();
   }
 }
