@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "../../app-routing.module";
@@ -44,16 +44,17 @@ import { EditCommentComponent } from './components/edit-comment/edit-comment.com
     SortCommentsComponent,
     EditCommentComponent,
   ],
-  imports: [
-    CommonModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    SharedModule,
-    InfiniteScrollModule,
+    imports: [
+        CommonModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        SharedModule,
+        InfiniteScrollModule,
+        NgOptimizedImage,
 
-  ],
+    ],
   exports: [
     AddPostComponent,
     DeletePostComponent,

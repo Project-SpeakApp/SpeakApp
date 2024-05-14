@@ -29,13 +29,10 @@ public class Post extends Auditable {
     @Column(nullable = false, length = 3000)
     private String content;
 
+    private UUID mediaId;
+
     @ManyToMany(mappedBy = "favouritePosts")
     private List<FavouriteList> favouriteLists;
-
-//   TODO Media service for photos, audio, video
-//    @Lob
-//    private byte[] media;
-
 
 }
 

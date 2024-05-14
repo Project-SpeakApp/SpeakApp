@@ -1,9 +1,10 @@
 type ProfileGetDTO = {
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;
-  profilePhotoUrl: string;
-  bgPhotoUrl: string;
+  profilePhotoId: string;
+  bgPhotoId: string;
   about: string;
   dateOfBirth: Date;
 }

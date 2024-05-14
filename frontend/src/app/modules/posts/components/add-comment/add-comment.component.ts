@@ -12,24 +12,22 @@ import {CommentGetModel} from "../../../../shared/types/posts/comment-get.model"
   styleUrls: ['./add-comment.component.css']
 })
 export class AddCommentComponent implements OnDestroy{
-
   @Input() postId: string = "";
 
   @Output() contentAdded: EventEmitter<CommentGetModel> = new EventEmitter<CommentGetModel>();
 
   contentControl = new FormControl('', [Validators.required, Validators.minLength(1)]);
-
-
   isLoading: boolean = false;
-    model: AddComment;
-    private addCommentSubscription?: Subscription;
+  model: AddComment;
+  private addCommentSubscription?: Subscription;
+  authState = this.authService.state;
 
-    constructor(private commentService: CommentService) {
-      this.model = {
-        content: '',
-        postId: this.postId,
-      };
-    }
+  constructor(private commentService: CommentService, private authService: AuthService) {
+    this.model = {
+      content: '',
+      postId: this.postId,
+    };
+  }
 
   onFormSubmit(): void {
       if(this.contentControl.valid && this.contentControl.value != null) {
