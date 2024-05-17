@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   }
 
   async logoutUser() {
-    await this.authService.logout('http://localhost:4200/');
+    await this.authService.logout('https://localhost:4200/');
   }
 
   async loginUser() {

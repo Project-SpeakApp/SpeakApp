@@ -12,20 +12,20 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   updatePost(postId: string, model: AddPost): Observable<PostGet> {
-    return this.http.put<PostGet>(`http://localhost:8080/api/posts/${postId}`, model);
+    return this.http.put<PostGet>(`https://localhost:8080/api/posts/${postId}`, model);
   }
 
   deletePost(postId: string): Observable<void> {
-    return this.http.delete<void>(`http://localhost:8080/api/posts/${postId}`);
+    return this.http.delete<void>(`https://localhost:8080/api/posts/${postId}`);
   }
 
   addPost(model: AddPost): Observable<PostGet> {
-    return this.http.post<PostGet>('http://localhost:8080/api/posts', model);
+    return this.http.post<PostGet>('https://localhost:8080/api/posts', model);
   }
 
   getPosts(page: number, size: number): Observable<PostGetResponse> {
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
-    return this.http.get<PostGetResponse>('http://localhost:8080/api/posts', {params});
+    return this.http.get<PostGetResponse>('https://localhost:8080/api/posts', {params});
   }
 }

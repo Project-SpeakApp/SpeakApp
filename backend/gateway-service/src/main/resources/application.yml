@@ -1,5 +1,14 @@
 server:
   port: 8080
+  ssl:
+    key-store-type: JKS
+    key-store: classpath:gateway.jks
+    key-store-password: gateway
+    key-store-provider: SUN
+    key-alias: gateway
+    trust-store: classpath:gateway_truststore.jks
+    trust-store-password: gateway
+    trust-store-type: JKS
 
 eureka:
   client:
@@ -18,14 +27,21 @@ logging:
 
 app:
   cors:
-    allowed-origins: http://localhost:4200
+    allowed-origins: https://localhost:4200
   jwt:
-    keycloak: http://keycloak-service:8443
+    keycloak: https://keycloak-service:8443
     realm: SpeakApp
-    issuer-uri: http://localhost:8443/realms/${app.jwt.realm}
+    issuer-uri: https://localhost:8443/realms/${app.jwt.realm}
     resource-client-id: SpeakAppClient
 
 spring:
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          trusted-x509-certificates:
+            - "classpath:nginx-selfsigned.crt"
+
   main:
     web-application-type: reactive
   security:
