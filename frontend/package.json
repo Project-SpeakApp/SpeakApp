@@ -24,6 +24,7 @@
     "keycloak-js": "^23.0.7",
     "ngx-infinite-scroll": "^16.0.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.7.5",
     "sockjs-client": "^1.6.1",
     "theme-change": "^2.5.0",
     "tslib": "^2.3.0",

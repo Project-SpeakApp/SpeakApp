@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainViewComponent } from './components/main-view/main-view.component';
 import { ConversationSummaryComponent } from './components/conversation-summary/conversation-summary.component';
 import { ChatPreviewComponent } from './components/chat-preview/chat-preview.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -12,8 +13,10 @@ import { ChatPreviewComponent } from './components/chat-preview/chat-preview.com
     ConversationSummaryComponent,
     ChatPreviewComponent,
   ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule
+    ]
 })
 export class ChatModule { }

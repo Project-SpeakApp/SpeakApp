@@ -4,6 +4,7 @@ import {ChatPreviewDTO} from "../../../../shared/types/chat/chat-preview-dto.mod
 import {AuthService} from "../../../../shared/services/auth.service";
 import {MessageGetDTO} from "../../../../shared/types/chat/message-get-DTO.model";
 import {MessagePrivateCreateDTO} from "../../../../shared/types/chat/message-private-create-dto.model";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-main-view',
@@ -15,13 +16,14 @@ export class MainViewComponent implements OnInit{
   selectedChat: ChatPreviewDTO | null = null;
   currentPage: number = 0;
   totalPages: number = 0;
-  userId: string = '6c84fb95-12c4-11ec-82a8-0242ac130003';
+  state = this.authService.state;
   messages: MessageGetDTO [] = [];
-  messageContent: string = '';
+  isLoading: boolean = false;
+  contentControl = new FormControl('', [Validators.required, Validators.minLength(1)]);
 
   ngOnInit(): void {
     this.loadChatPreviews();
-    this.chatService.connect(this.userId)
+    this.chatService.connect();
   }
 
   constructor(private chatService: ChatService, private authService: AuthService) { }
@@ -55,15 +57,23 @@ export class MainViewComponent implements OnInit{
   }
 
   sendMessage(): void {
-    if (!this.messageContent.trim()) {
+    this.isLoading = true;
+    console.log(this.contentControl.value);
+
+    if (this.contentControl.invalid) {
+      console.log('Invalid input');
+      this.isLoading = false;
       return;
     }
+    this.contentControl.reset();
 
+    this.isLoading = false;
+    /*
     if (this.selectedChat) {
       const messageDTO: MessagePrivateCreateDTO = {
         fromUserId: this.userId,
         toUserId: this.selectedChat.conversationGetDTO.otherUserId,
-        content: this.messageContent,
+        content: this.contentControl.value, // Use the form control's value
         type: 'TEXT',
         conversationId: this.selectedChat.conversationGetDTO.conversationId
       };
@@ -72,14 +82,15 @@ export class MainViewComponent implements OnInit{
         (response) => {
           console.log('Message sent successfully', response);
           this.messages.unshift(response);
-          this.messageContent = '';
+          this.contentControl.reset(); // Reset the input field after sending
         },
         (error) => {
           console.error('Failed to send message:', error);
         }
       );
-    }
+    }*/
   }
+
 
 
 }

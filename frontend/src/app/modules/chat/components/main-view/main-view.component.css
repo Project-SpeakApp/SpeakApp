@@ -2,25 +2,23 @@
   display: flex;
   height: 100%;
   width: 100%;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden; /* Prevents overflow to ensure layout stability */
 }
 
 .sidebar {
   width: 30%;
   border-right: 1px solid #ddd;
-  overflow-y: auto;
+  overflow-y: auto; /* Scrollable sidebar for chat previews */
   padding: 10px;
-  background-color: #f8f9fa; /* Light background color for sidebar */
-  box-sizing: border-box; /* Include padding in height calculation */
+  background-color: #f8f9fa;
 }
 
 .chat-area {
   width: 70%;
   display: flex;
   flex-direction: column;
-  background-color: #f1f1f1; /* Light background color for chat area */
-  box-sizing: border-box; /* Include padding in height calculation */
-  height: 100%; /* Ensure it takes full height */
+  background-color: #f1f1f1;
+  height: 100%;
 }
 
 .chat-header {
@@ -28,8 +26,7 @@
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  background-color: #ffffff; /* White background for header */
-  flex-shrink: 0; /* Prevent shrinking */
+  background-color: #ffffff;
 }
 
 .chat-header .avatar {
@@ -38,9 +35,6 @@
   border-radius: 50%;
   overflow: hidden;
   background-color: gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-right: 10px;
 }
 
@@ -59,8 +53,7 @@
   padding: 10px;
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse; /* Reverse the order of messages */
-  background-color: #f5f5f5;
+  flex-direction: column-reverse;
 }
 
 .message {
@@ -72,7 +65,7 @@
 
 .message.own-message {
   align-items: flex-end;
-  align-self: flex-end; /* Align the message to the right */
+  align-self: flex-end;
 }
 
 .message-content {
@@ -84,7 +77,7 @@
 }
 
 .message.own-message .message-content {
-  background-color: #dcf8c6; /* Different background for sent messages */
+  background-color: #2DD4BF;
 }
 
 .message-time {
@@ -93,35 +86,38 @@
   color: gray;
 }
 
-.chat-input-container {
-  display: flex;
-  align-items: center;
+.card {
   padding: 10px;
+  background-color: #ffffff;
   border-top: 1px solid #ddd;
-  background-color: #ffffff; /* White background for input */
-  flex-shrink: 0;
-  box-sizing: border-box; /* Include padding in width calculation */
+  display: flex; /* Ensure it uses flex layout */
+  align-items: center; /* Align items vertically in the center */
 }
 
-.chat-input {
-  display: flex;
-  width: 100%; /* Ensure it takes full width */
-}
-
-.chat-input input {
-  flex-grow: 1;
-  padding: 10px;
-  border: none;
+textarea {
+  height: 40px;
+  color: black;
   border-radius: 20px;
-  background-color: #f1f1f1;
+  background-color: #EBEBEB;
+  width: calc(100% - 48px);
+  padding: 7px 15px;
+  border-bottom: 2px solid #EF9FBC;
+  resize: none;
 }
 
-.chat-input button {
-  margin-left: 10px;
-  padding: 10px 20px;
+button {
+  min-width: 40px; /* Ensures the button has a reasonable minimum width */
+  height: 40px; /* Matches the height of the textarea */
   border: none;
-  border-radius: 20px;
-  background-color: #007bff;
-  color: white;
+  color: black;
   cursor: pointer;
+  border-radius: 20px; /* Rounded corners */
+  padding: 0 16px; /* Padding inside the button */
+}
+
+.loading {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
