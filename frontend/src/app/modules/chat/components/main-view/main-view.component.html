@@ -1,7 +1,36 @@
-<div class="chat-container">
-  <div class="recent-chats" *ngFor="let chat of chatPreviews">
-    <div class="chat-item">Max Verstappen<br><span>{{chat.lastMessage}}</span></div>
+<div class="chat-page">
+  <div class="sidebar">
+    <div *ngFor="let preview of chatPreviews" (click)="selectChat(preview)">
+      <app-chat-preview [chatPreview]="preview" [userId]="userId"></app-chat-preview>
+    </div>
   </div>
-  <div class="chat-window">
+  <div class="chat-area" *ngIf="selectedChat">
+    <div class="chat-header">
+      <div class="avatar">
+        <ng-container *ngIf="selectedChat.lastMessage.fromUser.profilePhotoId; else initials">
+          <img [src]="selectedChat.lastMessage.fromUser.profilePhotoId" alt="Profile Image" />
+        </ng-container>
+        <ng-template #initials>
+          XD
+        </ng-template>
+      </div>
+      <div class="name">{{ selectedChat.conversationGetDTO.conversationName }}</div>
+    </div>
+    <div class="chat-messages" #chatMessages>
+      <div class="message" *ngFor="let message of messages" [ngClass]="{'own-message': message.fromUser.userId === userId}">
+        <div class="message-content">
+          {{ message.content }}
+        </div>
+        <div class="message-time">
+          {{ message.fromUser.fullName }}
+        </div>
+      </div>
+    </div>
+    <div class="chat-input-container">
+      <div class="chat-input">
+        <input [(ngModel)]="messageContent" type="text" placeholder="Aa" />
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
   </div>
 </div>

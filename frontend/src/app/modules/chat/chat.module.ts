@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainViewComponent } from './components/main-view/main-view.component';
 import { ConversationSummaryComponent } from './components/conversation-summary/conversation-summary.component';
-import { ConversationDetailsComponent } from './components/conversation-details/conversation-details.component';
+import { ChatPreviewComponent } from './components/chat-preview/chat-preview.component';
 
 
 
@@ -10,7 +10,7 @@ import { ConversationDetailsComponent } from './components/conversation-details/
   declarations: [
     MainViewComponent,
     ConversationSummaryComponent,
-    ConversationDetailsComponent
+    ChatPreviewComponent,
   ],
   imports: [
     CommonModule
