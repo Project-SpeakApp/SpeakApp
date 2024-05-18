@@ -1,4 +1,4 @@
-<app-add-post (contentAdded)="addContent($event)"></app-add-post>
+<app-add-post *ngIf="!userId" (contentAdded)="addContent($event)"></app-add-post>
 <div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.8">
   <ul class="flex flex-col gap-4">
     <li *ngFor="let post of posts">

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { PostGet } from '../../../../../shared/types/posts/post-get.model';
 import { PostService } from '../../../sevices/post.service';
 import { AuthService } from '../../../../../shared/services/auth.service';
@@ -18,6 +18,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   totalPages: number = 0;
 
   subscription = new Subscription();
+
+  @Input() userId?: string;
 
   constructor(
     private postService: PostService,
@@ -44,7 +46,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   loadPosts() {
     if(this.totalPages === this.pageNumber && this.pageNumber !== 0) return;
     this.isLoading = true;
-    this.subscription = this.postService.getPosts(this.pageNumber, 10).subscribe({
+    this.subscription = this.postService.getPosts(this.pageNumber, 10, this.userId).subscribe({
       next: (response) => {
         this.parsePosts(response.posts);
         this.posts = [...this.posts, ...response.posts];

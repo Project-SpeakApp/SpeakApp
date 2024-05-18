@@ -23,9 +23,11 @@ export class PostService {
     return this.http.post<PostGet>('http://localhost:8080/api/posts', model);
   }
 
-  getPosts(page: number, size: number): Observable<PostGetResponse> {
+  getPosts(page: number, size: number, userId?: string): Observable<PostGetResponse> {
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
-    return this.http.get<PostGetResponse>('http://localhost:8080/api/posts', {params});
+    return this.http.get<PostGetResponse>(
+      userId ? `http://localhost:8080/api/posts/by-user/${userId}` : 'http://localhost:8080/api/posts',
+      {params});
   }
 }
