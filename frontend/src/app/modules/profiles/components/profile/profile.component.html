@@ -44,10 +44,28 @@
               <h2 class="">Preferences</h2>
               <span class="material-symbols-outlined">settings</span>
             </button>
-            <button *ngIf="authState().userId !== profile.userId" class="flex flex-row gap-2 app-btn btn-primary">
-              <h2 class="">Send friend request</h2>
-              <span class="material-symbols-outlined">person_add</span>
-            </button>
+            <ng-container *ngIf="authState().userId !== profile.userId">
+              <button *ngIf="profile.friendStatus === null" class="flex flex-row gap-2 app-btn btn-primary">
+                <h2 class="">Send friend request</h2>
+                <span class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_TO_ACCEPT" class="flex flex-row gap-2 app-btn btn-primary">
+                <h2 class="">Accept</h2>
+                <span class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_TO_ACCEPT" class="flex flex-row gap-2 app-btn btn-error">
+                <h2 class="">Deny</h2>
+                <span class="material-symbols-outlined">person_remove</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_SENT" class="flex flex-row gap-2 app-btn btn-primary" disabled>
+                <h2 class="">Request sent</h2>
+                <span class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.FRIEND" class="flex flex-row gap-2 app-btn btn-error">
+                <h2 class="">Unfriend</h2>
+                <span class="material-symbols-outlined">person_remove</span>
+              </button>
+            </ng-container>
             <button *ngIf="authState().userId !== profile.userId" class="flex flex-row gap-2 app-btn btn-primary">
               <h2 class="">Chat</h2>
               <span class="material-symbols-outlined">chat</span>

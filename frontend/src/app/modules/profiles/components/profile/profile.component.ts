@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal} from '@angular/core';
-import ProfileGetDTO from '../../types/ProfileGetDTO';
+import ProfileGetDTO, {FriendStatus} from '../../types/ProfileGetDTO';
 import {AuthService} from "../../../../shared/services/auth.service";
 import TypeMedia from "../../../../shared/types/media/type-media";
 import {Subscription, tap} from "rxjs";
@@ -126,4 +126,6 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.imageSubscription.unsubscribe();
   }
+
+  protected readonly FriendStatus = FriendStatus;
 }

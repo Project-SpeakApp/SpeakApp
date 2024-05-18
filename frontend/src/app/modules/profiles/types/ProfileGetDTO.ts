@@ -7,6 +7,13 @@ type ProfileGetDTO = {
   bgPhotoId: string;
   about: string;
   dateOfBirth: Date;
+  friendStatus: FriendStatus | null;
 }
 
 export default ProfileGetDTO;
+
+export enum FriendStatus {
+  FRIEND = 'FRIEND',
+  REQUEST_SENT = 'REQUEST SENT',
+  REQUEST_TO_ACCEPT = 'REQUEST TO ACCEPT',
+}
