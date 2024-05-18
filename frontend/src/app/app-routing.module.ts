@@ -8,6 +8,9 @@ import { UserProfileSettingsPageComponent } from './modules/profiles/components/
 import {PostFeedPageComponent} from "./modules/posts/components/post-feed-page/post-feed-page.component";
 import {AuthGuard} from "./guard/auth.guard";
 import {UserPostsPageComponent} from "./modules/posts/components/user-posts-page/user-posts-page.component";
+import {
+  UserFavoritePostsPageComponent
+} from "./modules/posts/components/user-favorite-posts-page/user-favorite-posts-page.component";
 
 
 
@@ -17,6 +20,7 @@ const routes: Routes = [
   { path: 'profiles/:id', component: UserProfilePageComponent, canActivate: [AuthGuard], children: [
     { path: 'info', component: UserProfileInfoPageComponent  },
     { path: 'posts', component: UserPostsPageComponent },
+    { path: 'saved', component: UserFavoritePostsPageComponent },
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostFeedPageComponent, canActivate: [AuthGuard]},

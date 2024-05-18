@@ -22,6 +22,7 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
 import { SortCommentsComponent } from './components/sort-comments/sort-comments.component';
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
 import { UserPostsPageComponent } from './components/user-posts-page/user-posts-page.component';
+import { UserFavoritePostsPageComponent } from './components/user-favorite-posts-page/user-favorite-posts-page.component';
 
 
 
@@ -45,6 +46,7 @@ import { UserPostsPageComponent } from './components/user-posts-page/user-posts-
     SortCommentsComponent,
     EditCommentComponent,
     UserPostsPageComponent,
+    UserFavoritePostsPageComponent,
   ],
     imports: [
         CommonModule,

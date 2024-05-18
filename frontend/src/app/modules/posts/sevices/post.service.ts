@@ -23,10 +23,11 @@ export class PostService {
     return this.http.post<PostGet>('http://localhost:8080/api/posts', model);
   }
 
-  getPosts(page: number, size: number, userId?: string): Observable<PostGetResponse> {
+  getPosts(page: number, size: number, favouritePosts?: boolean, userId?: string): Observable<PostGetResponse> {
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
     return this.http.get<PostGetResponse>(
+      favouritePosts ? 'http://localhost:8080/api/posts/favouriteList' :
       userId ? `http://localhost:8080/api/posts/by-user/${userId}` : 'http://localhost:8080/api/posts',
       {params});
   }
