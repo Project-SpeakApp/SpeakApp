@@ -21,6 +21,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule} from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserProfileFriendsPageComponent } from './components/user-profile-friends-page/user-profile-friends-page.component';
+import { UserFriendsListComponent } from './components/user-friends-list/user-friends-list.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { FriendCardComponent } from './components/friend-card/friend-card.component';
 
 
 
@@ -36,7 +40,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProfileComponent,
     UserProfileInfoPageComponent,
     UserProfileSettingsPageComponent,
-    UserProfileEditFormComponent
+    UserProfileEditFormComponent,
+    UserProfileFriendsPageComponent,
+    UserFriendsListComponent,
+    FriendCardComponent
   ],
   imports: [
     CommonModule,
@@ -52,6 +59,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     MatSelectModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
   ],
 
 

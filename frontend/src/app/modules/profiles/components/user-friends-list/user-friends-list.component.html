@@ -1,0 +1,25 @@
+<div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.8">
+  <ul class="flex flex-row gap-4 flex-wrap">
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+    <li *ngFor="let user of users">
+      <app-friend-card [user]="user"></app-friend-card>
+    </li>
+  </ul>
+</div>
