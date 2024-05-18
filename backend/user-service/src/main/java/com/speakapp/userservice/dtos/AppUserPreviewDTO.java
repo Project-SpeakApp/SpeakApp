@@ -13,13 +13,13 @@ public class AppUserPreviewDTO {
 
     UUID userId;
     String fullName;
-    String profilePhotoUrl;
+    UUID profilePhotoId;
 
     public static AppUserPreviewDTO empty(UUID userId) {
         return AppUserPreviewDTO.builder()
                 .userId(userId)
                 .fullName("")
-                .profilePhotoUrl("")
+                .profilePhotoId(null)
                 .build();
     }
 }

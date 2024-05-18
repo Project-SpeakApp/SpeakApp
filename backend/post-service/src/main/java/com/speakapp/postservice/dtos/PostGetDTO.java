@@ -28,4 +28,8 @@ public class PostGetDTO {
     ReactionType currentUserReaction;
 
     Long totalNumberOfComments;
+    
+    UUID mediaId;
+
+    boolean favourite;
 }

@@ -1,5 +1,6 @@
 package com.speakapp.userservice.services;
 
+import com.speakapp.userservice.communication.PostServiceCommunication;
 import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.entities.AppUser;
 import com.speakapp.userservice.entities.FriendStatus;
@@ -19,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AppUserMapper appUserMapper;
+    private final PostServiceCommunication postServiceCommunication;
     private final UserFriendRepository userFriendRepository;
 
     public AppUserWithFriendStatusGetDTO getUser(UUID requesterId, UUID userIdToFetch) throws UserNotFoundException {
@@ -57,7 +59,8 @@ public class UserService {
     public void createUser(AppUserCreateDTO userDTO) {
         AppUser appUser = appUserMapper.toEntity(userDTO);
         appUser.updateLastOnline();
-        userRepository.save(appUser);
+        UUID userId = userRepository.save(appUser).getUserId();
+        postServiceCommunication.createFavouriteList(userId);
     }
 
     public AppUserGetDTO updateUserInfo(UUID userId, AppUserUpdateDTO appUserUpdateDTO) {

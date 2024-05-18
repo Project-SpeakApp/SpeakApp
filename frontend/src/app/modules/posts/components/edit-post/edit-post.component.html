@@ -14,3 +14,11 @@
     </div>
   </form>
 </div>
+
+<button
+  *ngIf="imageId"
+  class="absolute -bottom-[50px] -right-[10px] bg-black opacity-50 rounded-full w-[30px] h-[30px]"
+  (click)="deleteImage()"
+  type="button">
+  <span class="material-symbols-outlined text-[30px] text-white">close</span>
+</button>
