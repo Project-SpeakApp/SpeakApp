@@ -14,6 +14,7 @@ import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 import { ReactionService } from '../../sevices/reaction.service';
 import { Subscription } from 'rxjs';
 import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
+import {PostService} from "../../sevices/post.service";
 
 @Component({
   selector: 'app-post-bottom-bar',
@@ -41,7 +42,7 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
   sad = ReactionType.SAD;
   wrr = ReactionType.WRR;
 
-  constructor(private reactionService: ReactionService) {}
+  constructor(private reactionService: ReactionService, private postService: PostService) {}
 
   checkIfPostWasEdited() {
     if (this.post.modifiedAt == null || this.post.createdAt.valueOf() == this.post.modifiedAt.valueOf()) {
@@ -62,6 +63,18 @@ export class PostBottomBarComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription = this.reactionService
       .upsertReaction(this.post.postId, reactionType, this.post.currentUserReaction)
       .subscribe(() => this.updateReaction(reactionType));
+  }
+
+  manageFavourite() {
+    if (this.post.favourite) {
+      this.subscription = this.postService.removeFromFavourites(this.post.postId).subscribe(() => {
+        this.post.favourite = false;
+      });
+    } else {
+      this.subscription = this.postService.saveToFavourites(this.post.postId).subscribe(() => {
+        this.post.favourite = true;
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

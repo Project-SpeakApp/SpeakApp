@@ -31,4 +31,12 @@ export class PostService {
       userId ? `http://localhost:8080/api/posts/by-user/${userId}` : 'http://localhost:8080/api/posts',
       {params});
   }
+
+  saveToFavourites(postId: string): Observable<void> {
+    return this.http.post<void>(`http://localhost:8080/api/posts/favouriteList`, { postId: postId });
+  }
+
+  removeFromFavourites(postId: string): Observable<void> {
+    return this.http.delete<void>(`http://localhost:8080/api/posts/favouriteList`, { body: {postId: postId}});
+  }
 }
