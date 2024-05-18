@@ -28,16 +28,12 @@ public class ApiGatewayApplication {
                         .uri("http://blob-service:8083")
                 )
                 .route("chat-service", r -> r
-                        .path("/api/chat/**")
+                        .path("/api/chat/**", "/ws")
                         .uri("http://chat-service:8084")
                 )
                 .route("chat-service-ws", r -> r
-                        .path("/app/**", "/chat/**", "")
+                        .path("/app/**", "/chat/**", "/ws")
                         .uri("ws://chat-service:8084")
-                )
-                .route("chat-service-ws-main", r -> r  
-                        .path("/ws/**", "/ws") 
-                        .uri("http://localhost:8084")
                 )
                 .build();
     }
