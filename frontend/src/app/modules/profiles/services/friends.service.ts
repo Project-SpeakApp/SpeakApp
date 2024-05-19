@@ -34,15 +34,13 @@ export class FriendsService implements OnDestroy{
 
   acceptFriendRequest(id: string): Observable<void> {
     const ret = this.http.post<void>(`http://localhost:8080/api/users/friends/accept-request/${id}`, null);
-    // a hack to update the indicator in the header
-    this.authService.updateState();
+    this.authService.requestCount.update((s) => s-1);
     return ret;
   }
 
   rejectFriendRequest(id: string): Observable<void> {
     const ret = this.http.post<void>(`http://localhost:8080/api/users/friends/reject-request/${id}`, null);
-    // a hack to update the indicator in the header
-    this.authService.updateState();
+    this.authService.requestCount.update((s) => s-1);
     return ret;
   }
 

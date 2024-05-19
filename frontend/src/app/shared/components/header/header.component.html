@@ -22,7 +22,7 @@
         group
       </span>
       <div class="indicator">
-        <span *ngIf="requestsCount !== 0" class="indicator-item badge badge-secondary badge-sm">{{ requestsCount }}</span>
+        <span *ngIf="requestsCount() !== 0" class="indicator-item badge badge-secondary badge-sm">{{ requestsCount() }}</span>
         <h2 class="my-auto hidden min-[320px]:block pr-2">Friends</h2>
       </div>
     </a>

@@ -1,7 +1,7 @@
 import {Component, effect, OnDestroy, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import {FriendsService} from "../../../modules/profiles/services/friends.service";
 import {Subscription} from "rxjs";
+import {FriendsService} from "../../../modules/profiles/services/friends.service";
 
 @Component({
   selector: 'app-header',
@@ -11,16 +11,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService, private friendsService: FriendsService) {
     effect(() => {
-      if (!this.authState().isLoggedIn) return;
-      this.sub.add(this.friendsService.getFriendRequests(0, 99).subscribe(page => {
-        this.requestsCount = page.friendRequests.length;
-      }));
+      if (this.authState().isLoggedIn) {
+        this.sub.add(this.friendsService.getFriendRequests(0, 99).subscribe((count) => {
+          this.requestsCount.set(count.friendRequests.length);
+        }));
+      }
     });
   }
 
   authState = this.authService.state;
 
-  requestsCount = 0;
+  requestsCount = this.authService.requestCount;
   sub = new Subscription();
 
   async logoutUser() {
