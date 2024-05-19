@@ -21,6 +21,8 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { SortCommentsComponent } from './components/sort-comments/sort-comments.component';
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
+import { UserPostsPageComponent } from './components/user-posts-page/user-posts-page.component';
+import { UserFavoritePostsPageComponent } from './components/user-favorite-posts-page/user-favorite-posts-page.component';
 
 
 
@@ -43,6 +45,8 @@ import { EditCommentComponent } from './components/edit-comment/edit-comment.com
     AddCommentComponent,
     SortCommentsComponent,
     EditCommentComponent,
+    UserPostsPageComponent,
+    UserFavoritePostsPageComponent,
   ],
     imports: [
         CommonModule,
