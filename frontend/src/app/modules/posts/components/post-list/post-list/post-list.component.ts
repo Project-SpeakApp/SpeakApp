@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { PostGet } from '../../../../../shared/types/posts/post-get.model';
 import { PostService } from '../../../sevices/post.service';
-import { AuthService } from '../../../../../shared/services/auth.service';
 import { ReactionType } from 'src/app/shared/types/posts/ReactionType.enum';
 import { Subscription } from 'rxjs';
 
