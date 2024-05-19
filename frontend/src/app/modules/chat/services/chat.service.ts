@@ -1,36 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import { ChatPreviewsResponse } from '../../../shared/types/chat/chat-preview-response.model';
+import {Observable, Subject} from 'rxjs';
 import { MessageGetDTO } from '../../../shared/types/chat/message-get-DTO.model';
-import {Stomp} from "@stomp/stompjs";
+import { MessagePrivateCreateDTO } from '../../../shared/types/chat/message-private-create-dto.model';
+import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
+import {ChatPreviewsResponse} from "../../../shared/types/chat/chat-preview-response.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private messageSource = new BehaviorSubject<any>(null);
-
-  constructor(private http: HttpClient) {
-  }
-
   private stompClient: any;
+  public messageReceived = new Subject<MessageGetDTO>();
 
-  public connect(): void {
+
+  constructor(private http: HttpClient) { }
+
+  public connect(userId: string): void {
     const socket = new SockJS('http://localhost:8084/ws');
     this.stompClient = Stomp.over(socket);
-
     this.stompClient.connect({}, () => {
-      this.stompClient.subscribe('/topic/messages', () => {
-        console.log('Got message');
+      console.log(userId);
+      this.stompClient.subscribe(`/chat/${userId}`, (message: any) => {
+        const messageData: MessageGetDTO = JSON.parse(message.body);
+        console.log(messageData);
+        this.messageReceived.next(messageData);
       });
-
     }, this.onError);
-  }
-
-  private onError(error: string) {
-    console.error('Error in WebSocket connection:', error);
   }
 
   public disconnect(): void {
@@ -40,8 +37,21 @@ export class ChatService {
     }
   }
 
-  public sendMessage(message: any): void {
-    this.stompClient.send('/app/send', {}, JSON.stringify(message));
+  public sendMessage(messageDTO: MessagePrivateCreateDTO): Observable<any> {
+    return new Observable((subscriber) => {
+      if (this.stompClient && this.stompClient.connected) {
+        console.log(messageDTO);
+        this.stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(messageDTO));
+        subscriber.next({ message: 'Message sent successfully' });
+        subscriber.complete();
+      } else {
+        subscriber.error('WebSocket connection is not established.');
+      }
+    });
+  }
+
+  private onError(error: string): void {
+    console.error('Error in WebSocket connection:', error);
   }
 
   getMessages(conversationId: string, pageNumber: number = 0, pageSize: number = 5): Observable<MessageGetDTO[]> {

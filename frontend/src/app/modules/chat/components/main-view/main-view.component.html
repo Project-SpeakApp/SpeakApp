@@ -16,19 +16,27 @@
       </div>
       <div class="name">{{ selectedChat.conversationGetDTO.conversationName }}</div>
     </div>
-    <div class="chat-messages">
-      <div *ngFor="let message of messages" [ngClass]="{'own-message': message.fromUser.userId === state().userId}" class="message">
-        <div class="message-content">{{ message.content }}</div>
-        <div class="message-time">{{ message.fromUser.fullName }}</div>
+    <div class="chat-container">
+      <div class="chat-messages"
+           infiniteScroll
+           [infiniteScrollDistance]="0.8"
+           [infiniteScrollUpDistance]="0.8"
+           [infiniteScrollThrottle]="1500"
+           [scrollWindow]="false"
+           (scrolledUp)="onScroll()">
+        <app-loading-spinner [isLoading]="isLoading2"></app-loading-spinner>
+        <div *ngFor="let message of messages" [ngClass]="{'own-message': message.fromUser.userId === state().userId}" class="message">
+          <div class="message-content">{{ message.content }}</div>
+          <div class="message-time">{{ message.fromUser.fullName }}</div>
+        </div>
+      </div>
+      <div class="card">
+        <form (submit)="sendMessage()" class="flex w-full items-center">
+          <textarea [formControl]="contentControl" class="text-black" placeholder="Add a comment..."></textarea>
+          <button *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer" type="submit">send</button>
+          <div *ngIf="isLoading" class="loading loading-spinner"></div>
+        </form>
       </div>
     </div>
-    <div class="card">
-      <form (submit)="sendMessage()" class="flex w-full items-center">
-        <textarea [formControl]="contentControl" (keydown.enter)="sendMessage()" class="text-black" placeholder="Add a comment..."></textarea>
-        <button *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer" type="submit">send</button>
-        <div *ngIf="isLoading" class="loading loading-spinner"></div>
-      </form>
-    </div>
-
   </div>
 </div>
