@@ -1,9 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {find, Observable, Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import UserPreviewPage from "../../../shared/types/profiles/user-preview-page";
 import FriendRequestPage from "../../../shared/types/profiles/FriendRequestPage";
-import {convertTypeScriptDiagnostic} from "@angular-devkit/build-angular/src/tools/esbuild/angular/diagnostics";
 import {AuthService} from "../../../shared/services/auth.service";
 
 @Injectable({
