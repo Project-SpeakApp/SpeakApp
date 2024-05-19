@@ -126,6 +126,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     this.imageSubscription.add(this.friendsService.unfriend(this.profile.userId).subscribe((_) => {
       this.profile!.friendStatus = null;
       this.unfriendLoading = false;
+      this.alertService.showAlert("Unfriended", "success");
     }));
   }
 
@@ -140,6 +141,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
       this.imageSubscription.add(this.friendsService.acceptFriendRequest(request.id).subscribe((_) => {
         this.profile!.friendStatus = FriendStatus.FRIEND;
         this.acceptRequestLoading = false;
+        this.alertService.showAlert("Friend request accepted", "success");
       }));
     }));
   }
@@ -155,6 +157,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
       this.imageSubscription.add(this.friendsService.rejectFriendRequest(request.id).subscribe((_) => {
         this.profile!.friendStatus = null;
         this.rejectRequestLoading = false;
+        this.alertService.showAlert("Friend request rejected", "success");
       }));
     }));
   }
@@ -166,6 +169,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     this.imageSubscription.add(this.friendsService.sendFriendRequest(this.profile.userId).subscribe((_) => {
       this.profile!.friendStatus = FriendStatus.REQUEST_SENT;
       this.sendRequestLoading = false;
+      this.alertService.showAlert("Friend request sent", "success");
     }));
   }
 
