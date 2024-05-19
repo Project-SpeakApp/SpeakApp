@@ -1,23 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, effect, OnDestroy, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ThemeService } from '../../services/theme.service';
+import {FriendsService} from "../../../modules/profiles/services/friends.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  constructor(private authService: AuthService, private themeService: ThemeService) { }
+  constructor(private authService: AuthService, private friendsService: FriendsService) {
+    effect(() => {
+      if (!this.authState().isLoggedIn) return;
+      this.sub.add(this.friendsService.getFriendRequests(0, 99).subscribe(page => {
+        this.requestsCount = page.friendRequests.length;
+      }));
+    });
+  }
 
   authState = this.authService.state;
 
-  themes = this.themeService.themes;
-
-  themeChanges(event: any) {
-    this.themeService.changeTheme(event.target.value);
-    console.log(event.target.value);
-  }
+  requestsCount = 0;
+  sub = new Subscription();
 
   async logoutUser() {
     await this.authService.logout('http://localhost:4200/');
@@ -32,6 +36,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

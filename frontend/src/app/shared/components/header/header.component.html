@@ -21,7 +21,10 @@
       <span class="material-symbols-outlined" style="font-size: 32px">
         group
       </span>
-      <h2 class="my-auto hidden min-[320px]:block">Friends</h2>
+      <div class="indicator">
+        <span *ngIf="requestsCount !== 0" class="indicator-item badge badge-secondary badge-sm">{{ requestsCount }}</span>
+        <h2 class="my-auto hidden min-[320px]:block pr-2">Friends</h2>
+      </div>
     </a>
     <a class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" routerLink="/chats">
       <span class="material-symbols-outlined" style="font-size: 32px">chat</span>

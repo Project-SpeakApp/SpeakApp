@@ -4,6 +4,7 @@ import {find, Observable, Subscription} from "rxjs";
 import UserPreviewPage from "../../../shared/types/profiles/user-preview-page";
 import FriendRequestPage from "../../../shared/types/profiles/FriendRequestPage";
 import {convertTypeScriptDiagnostic} from "@angular-devkit/build-angular/src/tools/esbuild/angular/diagnostics";
+import {AuthService} from "../../../shared/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class FriendsService implements OnDestroy{
 
   sub: Subscription = new Subscription();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getFriends(userId: string, page: number, size: number): Observable<UserPreviewPage> {
     let params = new HttpParams();
@@ -33,11 +34,17 @@ export class FriendsService implements OnDestroy{
   }
 
   acceptFriendRequest(id: string): Observable<void> {
-    return this.http.post<void>(`http://localhost:8080/api/users/friends/accept-request/${id}`, null);
+    const ret = this.http.post<void>(`http://localhost:8080/api/users/friends/accept-request/${id}`, null);
+    // a hack to update the indicator in the header
+    this.authService.updateState();
+    return ret;
   }
 
   rejectFriendRequest(id: string): Observable<void> {
-    return this.http.post<void>(`http://localhost:8080/api/users/friends/reject-request/${id}`, null);
+    const ret = this.http.post<void>(`http://localhost:8080/api/users/friends/reject-request/${id}`, null);
+    // a hack to update the indicator in the header
+    this.authService.updateState();
+    return ret;
   }
 
   unfriend(userId: string): Observable<void> {
