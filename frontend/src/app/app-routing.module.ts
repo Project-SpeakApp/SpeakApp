@@ -12,6 +12,7 @@ import {
   UserFavoritePostsPageComponent
 } from "./modules/posts/components/user-favorite-posts-page/user-favorite-posts-page.component";
 import { UserProfileFriendsPageComponent } from './modules/profiles/components/user-profile-friends-page/user-profile-friends-page.component';
+import {FriendsPageComponent} from "./modules/posts/components/friends-page/friends-page.component";
 
 
 
@@ -26,6 +27,7 @@ const routes: Routes = [
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostFeedPageComponent, canActivate: [AuthGuard]},
+  { path: 'friends', component: FriendsPageComponent, canActivate: [AuthGuard]},
   { path: '**', component: NotFoundPageComponent },
 
 ];

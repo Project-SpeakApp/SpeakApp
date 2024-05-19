@@ -23,6 +23,9 @@ import { SortCommentsComponent } from './components/sort-comments/sort-comments.
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
 import { UserPostsPageComponent } from './components/user-posts-page/user-posts-page.component';
 import { UserFavoritePostsPageComponent } from './components/user-favorite-posts-page/user-favorite-posts-page.component';
+import { FriendsPageComponent } from './components/friends-page/friends-page.component';
+import { FriendRequestListComponent } from './components/friend-request-list/friend-request-list.component';
+import { FriendRequestCardComponent } from './components/friend-request-card/friend-request-card.component';
 
 
 
@@ -47,6 +50,9 @@ import { UserFavoritePostsPageComponent } from './components/user-favorite-posts
     EditCommentComponent,
     UserPostsPageComponent,
     UserFavoritePostsPageComponent,
+    FriendsPageComponent,
+    FriendRequestListComponent,
+    FriendRequestCardComponent,
   ],
     imports: [
         CommonModule,
