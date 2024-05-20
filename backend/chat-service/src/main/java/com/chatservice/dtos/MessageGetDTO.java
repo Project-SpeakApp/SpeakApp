@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.Instant;
+import java.util.UUID;
+
 @Value
 @Builder
 @Jacksonized
@@ -15,5 +18,9 @@ public class MessageGetDTO {
     String content;
 
     MessageType type;
+
+    UUID conversationId;
+
+    Instant sentAt;
 
 }
