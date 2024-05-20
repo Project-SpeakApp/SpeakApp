@@ -166,6 +166,7 @@ services:
       - api-gateway
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl/nginx:/etc/nginx/ssl
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
@@ -179,21 +180,32 @@ services:
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=postgres
       - KC_DB_URL_PORT=5434
+      - KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/keycloak.crt
+      - KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/keycloak.key
+      - KC_HTTPS_TRUST_STORE_FILE=/opt/keycloak/conf/keycloak-truststore.jks
+      - KC_HTTPS_TRUST_STORE_PASSWORD=keycloak
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
       - ./keycloak-utils/jar/keycloak-utils.jar:/opt/keycloak/providers/keycloak-utils.jar
+      - ./ssl/keycloak:/opt/keycloak/conf
     ports:
       - '8443:8443'
     networks:
       - net-keycloakDB-keycloakServ
       - net-keycloak-apiGw
     command:
-      - "start-dev"
-      - "--http-port=8443"
+      - "start"
+      - "--hostname=localhost"
+      - "--https-port=8443"
       - "--import-realm"
       - "--features=declarative-user-profile"
       - "--spi-theme-cache-themes=true"
+      - "--https-certificate-file=/opt/keycloak/conf/keycloak.crt"
+      - "--https-certificate-key-file=/opt/keycloak/conf/keycloak.key"
+      - "--https-trust-store-file=/opt/keycloak/conf/keycloak-truststore.jks"
+      - "--https-trust-store-password=keycloak"
+
     depends_on:
       keycloak-db:
         condition: service_healthy
