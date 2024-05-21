@@ -45,6 +45,16 @@ public class ChatController {
         return chatService.createPrivateConversation(newPrivateConversationDTO, userId);
     }
 
+    @DeleteMapping("/api/chat/{messageId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMessage(@RequestHeader("Authorization") String authHeader,
+                                                  @PathVariable UUID messageId){
+        String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
+        UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
+
+        chatService.deleteMessage(messageId, userId);
+    }
+
     @GetMapping("/api/chat/chatpreview")
     public ChatPreviewPageDTO getChatPreviewPageDTO(
             @RequestParam(defaultValue = "0") int pageNumber,
