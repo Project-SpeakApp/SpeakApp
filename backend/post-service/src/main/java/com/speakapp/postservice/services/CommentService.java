@@ -15,7 +15,6 @@ import com.speakapp.postservice.repositories.CommentReactionRepository;
 import com.speakapp.postservice.repositories.CommentRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -58,53 +57,25 @@ public class CommentService {
     }
 
     public CommentPageGetDTO getCommentsForPost(int firstComment, int lastComment, UUID postId, UUID userId,
-                                                String sortBy, Sort.Direction sortDirection){
+                                                String sortBy, Sort.Direction sortDirection) {
 
         Post post = postService.getPostById(postId);
-        List<Comment> sortedPostComments = findCommentPageByPostSorted(post,firstComment, lastComment,sortBy, sortDirection);
+        List<Comment> sortedPostComments = findCommentPageByPostSorted(post, firstComment, lastComment, sortBy, sortDirection);
 
         long totalComments = countCommentsByPost(post);
 
-        if(firstComment > totalComments) {
-            firstComment = (int)totalComments;
+        if (firstComment > totalComments) {
+            firstComment = (int) totalComments;
         }
 
-        if(lastComment > totalComments) {
-            lastComment = (int)totalComments;
+        if (lastComment > totalComments) {
+            lastComment = (int) totalComments;
         }
 
         return createCommentPageGetDTOFromCommentPage(sortedPostComments, userId, firstComment, lastComment, totalComments);
 
     }
 
-    // Keep the class implementation for migration to CommentService
-    @NotNull
-    private List<CommentGetDTO> getAllCommentsForThePost(Post post, UUID userId) {
-        List<Comment> comments = commentRepository.findAllByPostOrderByCreatedAtDesc(post);
-
-        List<CommentGetDTO> commentGetDTOS = new ArrayList<>();
-        for (Comment comment : comments) {
-            // TODO: Performance bottleneck in future - consider getting users from user-service by batches
-            UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
-            ReactionsGetDTO reactionsGetDTO = getReactionsForTheComment(comment);
-            ReactionType currentUserReactionType = commentReactionRepository.findTypeByCommentAndUserId(comment, userId).orElse(null);
-
-            CommentGetDTO commentGetDTO = commentMapper.toGetDTO(
-                    comment,
-                    commentAuthor,
-                    reactionsGetDTO,
-                    currentUserReactionType
-            );
-
-            commentGetDTOS.add(commentGetDTO);
-        }
-
-        return commentGetDTOS;
-    }
-
-    // Keep the class implementation for migration to CommentService
-    // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
-    // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForTheComment(Comment comment) {
         List<CommentReaction> commentReactions = commentReactionRepository.getCommentReactionByComment(comment);
 
@@ -124,7 +95,7 @@ public class CommentService {
     }
 
     private CommentPageGetDTO createCommentPageGetDTOFromCommentPage(List<Comment> commentsToGet, UUID userId,
-                                                                     int firstComment, int lastComment, Long totalComments){
+                                                                     int firstComment, int lastComment, Long totalComments) {
         List<CommentGetDTO> commentGetDTOS = commentsToGet.stream().map(comment -> {
             UserGetDTO commentAuthor = userServiceCommunicationClient.getUserById(comment.getUserId());
             ReactionsGetDTO commentReactions = getReactionsForTheComment(comment);
@@ -165,22 +136,22 @@ public class CommentService {
 
     }
 
-    public void deleteComment(UUID userId, UUID commentId){
+    public void deleteComment(UUID userId, UUID commentId) {
 
-        Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(()->
+        Comment commentToDelete = commentRepository.findById(commentId).orElseThrow(() ->
                 new CommentNotFoundException("Comment with id = " + commentId + " has not been found"));
 
         Post commentedPost = commentToDelete.getPost();
         UUID authorOfCommentedPost = commentedPost.getUserId();
 
-        if(!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
+        if (!(userId.equals(commentToDelete.getUserId()) || userId.equals(authorOfCommentedPost))) {
             throw new AccessDeniedException("Only author of the post or the comment can delete the comment");
         }
 
         commentRepository.delete(commentToDelete);
     }
 
-    private List<Comment> findCommentPageByPostSorted(Post post,int firstComment, int lastComment, String sortBy, Sort.Direction sortOrder) {
+    private List<Comment> findCommentPageByPostSorted(Post post, int firstComment, int lastComment, String sortBy, Sort.Direction sortOrder) {
         String jpqlQuery = "SELECT c FROM Comment c WHERE c.post = :post ORDER BY";
 
         jpqlQuery += " c." + sortBy + " " + sortOrder;

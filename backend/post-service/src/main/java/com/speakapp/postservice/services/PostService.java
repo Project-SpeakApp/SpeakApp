@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,20 +73,21 @@ public class PostService {
 
         Post postUpdated = postRepository.save(postToUpdate);
 
-        return createPostGetDTOFromPage(userId, postToUpdate, postUpdated);
+        return createPostGetDTOFromPost(userId, postUpdated);
     }
 
-    private PostGetDTO createPostGetDTOFromPage(UUID userId, Post postToUpdate, Post postUpdated) {
-        UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
-        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
+    private PostGetDTO createPostGetDTOFromPost(UUID userId, Post post) {
+        UserGetDTO author = userServiceCommunicationClient.getUserById(post.getUserId());
+        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(post);
 
-        ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(postUpdated, userId).orElse(null);
+        ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
 
-        Long totalNumberOfComments = commentRepository.countAllByPost(postUpdated);
+        Long totalNumberOfComments = commentRepository.countAllByPost(post);
 
-        boolean favourite = isPostFavourite(userId, postToUpdate);
+        boolean favourite = isPostFavourite(userId, post);
 
-        return postMapper.toGetDTO(postUpdated,
+        return postMapper.toGetDTO(
+                post,
                 author,
                 reactionsGetDTO,
                 currentUserReactionType,
@@ -119,8 +121,6 @@ public class PostService {
         postRepository.delete(postToDelete);
     }
 
-    // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
-    // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForThePost(Post post) {
         List<PostReaction> postReactions = postReactionRepository.findAllByPost(post);
 
@@ -140,9 +140,33 @@ public class PostService {
     }
 
     public PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
-        List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post ->
-            createPostGetDTOFromPage(userId, post, post)
-        ).toList();
+        Set<UUID> userIds = postsPage
+                .getContent()
+                .stream()
+                .map(Post::getUserId)
+                .collect(Collectors.toSet());
+        Map<UUID, AppUserPreviewInternalDTO> uuidToAppUserPreviewInternal = userServiceCommunicationClient.getUsersByTheirIds(userIds);
+
+        List<PostGetDTO> postGetDTOS = postsPage
+                .getContent()
+                .stream()
+                .map(post -> {
+                            AppUserPreviewInternalDTO appUserPreviewInternalDTO = uuidToAppUserPreviewInternal.get(post.getUserId());
+                            return postMapper.toGetDTO(
+                                    post,
+                                    UserGetDTO.builder()
+                                            .userId(post.getUserId())
+                                            .profilePhotoId(appUserPreviewInternalDTO.getProfilePhotoId())
+                                            .fullName(appUserPreviewInternalDTO.getFullName())
+                                            .build(),
+                                    getReactionsForThePost(post),
+                                    postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null),
+                                    commentRepository.countAllByPost(post),
+                                    isPostFavourite(userId, post)
+                            );
+                        }
+                )
+                .toList();
 
         return postPageMapper.toGetDTO(
                 postGetDTOS,
