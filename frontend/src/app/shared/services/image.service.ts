@@ -15,14 +15,14 @@ export class ImageService {
 
     const params = new HttpParams().set('type', type);
 
-    return this.http.post('http://localhost:8080/api/media', formData, { params, responseType: 'text' });
+    return this.http.post('https://localhost:4200/api/media', formData, { params, responseType: 'text' });
   }
 
   public downloadImage(imageUrl: string) {
-    return this.http.get(`http://localhost:8080/api/media/${imageUrl}`, { responseType: 'blob' });
+    return this.http.get(`https://localhost:4200/api/media/${imageUrl}`, { responseType: 'blob' });
   }
 
   public deleteImage(imageUrl: string) {
-    return this.http.delete(`http://localhost:8080/api/media/${imageUrl}`);
+    return this.http.delete(`https://localhost:4200/api/media/${imageUrl}`);
   }
 }

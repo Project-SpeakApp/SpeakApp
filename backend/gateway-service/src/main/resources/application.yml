@@ -1,14 +1,5 @@
 server:
   port: 8080
-  ssl:
-    enabled: true
-    key-store: classpath:gateway-keystore.jks
-    key-store-password: gateway
-    key-store-type: JKS
-    key-alias: gateway
-    trust-store: classpath:gateway-truststore.jks
-    trust-store-password: gateway
-    trust-store-type: JKS
 
 eureka:
   client:
@@ -29,7 +20,7 @@ app:
   cors:
     allowed-origins: https://localhost:4200
   jwt:
-    keycloak: https://localhost:8443
+    keycloak: http://keycloak:8444 
     realm: SpeakApp
     issuer-uri: https://localhost:8443/realms/${app.jwt.realm}
     resource-client-id: SpeakAppClient

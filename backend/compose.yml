@@ -151,6 +151,7 @@ services:
       - net-keycloak-apiGw
       - net-eureka-config
       - net-apiGw-blobServ
+      - net-apiGw-client
     depends_on:
       - config-server
       - eureka-server
@@ -167,6 +168,8 @@ services:
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
       - ./ssl/nginx:/etc/nginx/ssl
+    networks:
+      - net-apiGw-client
 
   keycloak-service:
     image: quay.io/keycloak/keycloak:23.0
@@ -182,8 +185,6 @@ services:
       - KC_DB_URL_PORT=5434
       - KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/keycloak.crt
       - KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/keycloak.key
-      - KC_HTTPS_TRUST_STORE_FILE=/opt/keycloak/conf/keycloak-truststore.jks
-      - KC_HTTPS_TRUST_STORE_PASSWORD=keycloak
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json
@@ -191,20 +192,18 @@ services:
       - ./ssl/keycloak:/opt/keycloak/conf
     ports:
       - '8443:8443'
+      - '8444:8444'
     networks:
       - net-keycloakDB-keycloakServ
       - net-keycloak-apiGw
     command:
-      - "start"
+      - "start-dev"
       - "--hostname=localhost"
+      - "--http-port=8444"
       - "--https-port=8443"
       - "--import-realm"
       - "--features=declarative-user-profile"
       - "--spi-theme-cache-themes=true"
-      - "--https-certificate-file=/opt/keycloak/conf/keycloak.crt"
-      - "--https-certificate-key-file=/opt/keycloak/conf/keycloak.key"
-      - "--https-trust-store-file=/opt/keycloak/conf/keycloak-truststore.jks"
-      - "--https-trust-store-password=keycloak"
 
     depends_on:
       keycloak-db:
@@ -284,6 +283,7 @@ networks:
   net-blobServ-azurite:
   net-eureka-config:
   net-apiGw-chatServ:
+  net-apiGw-client:
 
 volumes:
   vol-user-db:

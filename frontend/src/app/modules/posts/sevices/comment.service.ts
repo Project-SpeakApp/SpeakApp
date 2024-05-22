@@ -15,18 +15,18 @@ export class CommentService {
 
   getComments(postId: string, firstComment: number, lastComment: number, sortBy: string, sortDirection: string): Observable<CommentGetListModel> {
     let params = new HttpParams().set('postId', postId).set('firstComment', firstComment).set('lastComment', lastComment-1).set('sortBy', sortBy ).set('sortDirection', sortDirection);
-    return this.http.get<CommentGetListModel>('https://localhost:8080/api/comments', {params});
+    return this.http.get<CommentGetListModel>('https://localhost:4200/api/comments', {params});
   }
 
   deleteComment(commentId: string): Observable<void> {
-    return this.http.delete<void>(`https://localhost:8080/api/comments/${commentId}`);
+    return this.http.delete<void>(`https://localhost:4200/api/comments/${commentId}`);
   }
 
   addComment(model: AddComment): Observable<CommentGetModel> {
-      return this.http.post<CommentGetModel>('https://localhost:8080/api/comments', model);
+      return this.http.post<CommentGetModel>('https://localhost:4200/api/comments', model);
   }
 
   updateComment(model: UpdateCommentModel, commentId: string) : Observable<CommentGetModel> {
-    return this.http.put<CommentGetModel>(`https://localhost:8080/api/comments/${commentId}`, model);
+    return this.http.put<CommentGetModel>(`https://localhost:4200/api/comments/${commentId}`, model);
   }
 }
