@@ -34,6 +34,11 @@ public interface AppUserMapper {
             expression = "java(concatenateNames(appUser.getFirstName(), appUser.getLastName()))")
     AppUserPreviewDTO toAppUserPreviewDto(AppUser appUser);
 
+    @Mapping(target = "fullName",
+            expression = "java(concatenateNames(appUser.getFirstName(), appUser.getLastName()))")
+    AppUserPreviewInternalDTO toAppUserPreviewInternalDto(AppUser appUser);
+
+
     default String concatenateNames(String firstName, String lastName) {
         return firstName + " " + lastName;
     }
