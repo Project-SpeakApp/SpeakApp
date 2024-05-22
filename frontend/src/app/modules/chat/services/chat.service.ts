@@ -6,6 +6,7 @@ import { MessagePrivateCreateDTO } from '../../../shared/types/chat/message-priv
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import {ChatPreviewsResponse} from "../../../shared/types/chat/chat-preview-response.model";
+import {ConversationHistoryGetDtoModel} from "../../../shared/types/chat/conversation-history-get-dto.model";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,6 @@ export class ChatService {
       console.log(userId);
       this.stompClient.subscribe(`/chat/${userId}`, (message: any) => {
         const messageData: MessageGetDTO = JSON.parse(message.body);
-        console.log(messageData);
         this.messageReceived.next(messageData);
       });
     }, this.onError);
@@ -54,9 +54,9 @@ export class ChatService {
     console.error('Error in WebSocket connection:', error);
   }
 
-  getMessages(conversationId: string, pageNumber: number = 0, pageSize: number = 5): Observable<MessageGetDTO[]> {
+  getMessages(conversationId: string, pageNumber: number = 0, pageSize: number = 5): Observable<ConversationHistoryGetDtoModel> {
     let params = new HttpParams().set('pageNumber', pageNumber.toString()).set('pageSize', pageSize.toString());
-    return this.http.get<MessageGetDTO[]>(`http://localhost:8080/api/chat/${conversationId}`, {params});
+    return this.http.get<ConversationHistoryGetDtoModel>(`http://localhost:8080/api/chat/${conversationId}`, {params});
   }
 
   getChatPreview(pageNumber: number = 0, pageSize: number = 10): Observable<ChatPreviewsResponse> {

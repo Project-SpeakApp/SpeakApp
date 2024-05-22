@@ -4,4 +4,6 @@ export interface MessageGetDTO {
   content: string;
   fromUser: UserGet;
   type: string;
+  conversationId: string;
+  sentAt: Date;
 }
