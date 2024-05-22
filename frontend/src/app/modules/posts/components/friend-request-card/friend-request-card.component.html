@@ -1,0 +1,18 @@
+<div class="flex flex-row justify-between">
+  <div class="flex flex-row gap-4 cursor-pointer" [routerLink]="['/profiles', request.requester.userId]">
+    <app-user-avatar [src]="request.requester.profilePhotoId"></app-user-avatar>
+    <h1 class="my-auto text-lg">{{ request.requester.fullName }}</h1>
+  </div>
+  <div class="my-auto flex flex-row gap-2">
+    <button [disabled]="acceptRequestLoading"  class="flex flex-row gap-2 app-btn btn-primary w-[107px]" (click)="acceptRequest()">
+      <h2 *ngIf="!acceptRequestLoading" class="">Accept</h2>
+      <span *ngIf="acceptRequestLoading" class="loading loading-spinner"></span>
+      <span *ngIf="!acceptRequestLoading" class="material-symbols-outlined">person_add</span>
+    </button>
+    <button [disabled]="rejectRequestLoading" class="flex flex-row gap-2 app-btn btn-error w-[107px]" (click)="rejectRequest()">
+      <h2 *ngIf="!rejectRequestLoading" class="">Reject</h2>
+      <span *ngIf="rejectRequestLoading" class="loading loading-spinner"></span>
+      <span *ngIf="!rejectRequestLoading" class="material-symbols-outlined">person_remove</span>
+    </button>
+  </div>
+</div>

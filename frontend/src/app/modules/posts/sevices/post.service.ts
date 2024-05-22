@@ -23,13 +23,15 @@ export class PostService {
     return this.http.post<PostGet>('https://localhost:4200/api/posts', model);
   }
 
-  getPosts(page: number, size: number, favouritePosts?: boolean, userId?: string): Observable<PostGetResponse> {
+  getPosts(page: number, size: number, favouritePosts?: boolean, userId?: string, friendsOnly?: boolean): Observable<PostGetResponse> {
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
-    return this.http.get<PostGetResponse>(
-      favouritePosts ? 'https://localhost:4200/api/posts/favouriteList' :
-      userId ? `https://localhost:4200/api/posts/by-user/${userId}` : 'https://localhost:4200/api/posts',
-      {params});
+
+    const url = favouritePosts ? 'https://localhost:4200/api/posts/favouriteList' :
+      userId ? `https://localhost:4200/api/posts/by-user/${userId}` :
+      friendsOnly ? 'https://localhost:4200/api/posts/friends' : 'https://localhost:4200/api/posts';
+
+    return this.http.get<PostGetResponse>(url,  {params});
   }
 
   saveToFavourites(postId: string): Observable<void> {

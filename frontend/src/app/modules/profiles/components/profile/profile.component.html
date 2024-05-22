@@ -44,10 +44,32 @@
               <h2 class="">Preferences</h2>
               <span class="material-symbols-outlined">settings</span>
             </button>
-            <button *ngIf="authState().userId !== profile.userId" class="flex flex-row gap-2 app-btn btn-primary">
-              <h2 class="">Send friend request</h2>
-              <span class="material-symbols-outlined">person_add</span>
-            </button>
+            <ng-container *ngIf="authState().userId !== profile.userId">
+              <button *ngIf="profile.friendStatus === null" [disabled]="sendRequestLoading"  class="flex flex-row gap-2 app-btn btn-primary w-[193px]" (click)="sendRequest()">
+                <h2 *ngIf="!sendRequestLoading" class="">Send friend request</h2>
+                <span *ngIf="sendRequestLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!sendRequestLoading" class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_TO_ACCEPT" [disabled]="acceptRequestLoading"  class="flex flex-row gap-2 app-btn btn-primary w-[107px]" (click)="acceptRequest()">
+                <h2 *ngIf="!acceptRequestLoading" class="">Accept</h2>
+                <span *ngIf="acceptRequestLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!acceptRequestLoading" class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_TO_ACCEPT" [disabled]="rejectRequestLoading" class="flex flex-row gap-2 app-btn btn-error w-[107px]" (click)="rejectRequest()">
+                <h2 *ngIf="!rejectRequestLoading" class="">Reject</h2>
+                <span *ngIf="rejectRequestLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!rejectRequestLoading" class="material-symbols-outlined">person_remove</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_SENT" class="flex flex-row gap-2 app-btn btn-primary" disabled>
+                <h2 class="">Request sent</h2>
+                <span class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.FRIEND" [disabled]="unfriendLoading" class="flex flex-row gap-2 app-btn btn-error w-[117px]" (click)="unfriend()">
+                <h2 *ngIf="!unfriendLoading" class="">Unfriend</h2>
+                <span *ngIf="unfriendLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!unfriendLoading" class="material-symbols-outlined justify-self-end">person_remove</span>
+              </button>
+            </ng-container>
             <button *ngIf="authState().userId !== profile.userId" class="flex flex-row gap-2 app-btn btn-primary">
               <h2 class="">Chat</h2>
               <span class="material-symbols-outlined">chat</span>

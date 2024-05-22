@@ -264,7 +264,7 @@ INSERT INTO comment (comment_id, post_id, user_id, content, created_at, modified
         VALUES (list_id_1, user_id_1),
                (list_id_2, user_id_2),
                (list_id_3, user_id_3),
-               (list_id_4, user_id_3);
+               (list_id_4, user_id_4);
 
         INSERT INTO favourite_list_post(favourite_list_id, post_id)
         VALUES (list_id_1, post_id_1),

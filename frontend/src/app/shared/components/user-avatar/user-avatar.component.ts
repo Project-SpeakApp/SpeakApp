@@ -8,7 +8,7 @@ import {Subscription} from "rxjs";
 })
 export class UserAvatarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() src: string | null = null;
-  @Input() size: 'sm' | 'm' | 'xl' = 'm';
+  @Input() size: 'sm' | 'm' | 'xl' | 'xxl' = 'm';
 
   imageLoading = signal(false);
   imageSubscription = new Subscription();
