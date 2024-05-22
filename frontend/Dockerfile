@@ -10,6 +10,6 @@ FROM nginx:alpine
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-step /app/dist/frontend /usr/share/nginx/html
 
-EXPOSE 4200 443
+EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
 
