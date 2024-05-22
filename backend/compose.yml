@@ -192,7 +192,6 @@ services:
       - ./ssl/keycloak:/opt/keycloak/conf
     ports:
       - '8443:8443'
-      - '8444:8444'
     networks:
       - net-keycloakDB-keycloakServ
       - net-keycloak-apiGw
