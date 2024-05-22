@@ -3,11 +3,13 @@ package com.speakapp.postservice.communication;
 import com.speakapp.postservice.dtos.UserGetDTO;
 import com.speakapp.postservice.exceptions.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -32,6 +34,14 @@ public class UserServiceCommunicationClient {
                             ));
                 })
                 .bodyToMono(UserGetDTO.class)
+                .block();
+    }
+
+    public List<UUID> getFriendIdsOfUser(UUID userId) {
+        return webClient.get()
+                .uri("/api/internal/friends/ids/{id}", userId)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<UUID>>() {})
                 .block();
     }
 }
