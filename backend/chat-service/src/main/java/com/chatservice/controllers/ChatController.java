@@ -12,8 +12,6 @@ import com.chatservice.utils.JwtDecoder;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -36,14 +34,6 @@ public class ChatController {
     public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
 
         boolean status = chatService.checkIfFriends(messageDTO.getFromUserId(), messageDTO.getToUserId());
-        Logger logger = LoggerFactory.getLogger(ChatController.class);
-
-        if(status) {
-            logger.info("true");
-        }else {
-            logger.info("false");
-        }
-
         if(!status){
             throw new BadRequestException("You can only write a message to your friend!");
         }
