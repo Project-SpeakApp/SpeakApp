@@ -141,17 +141,31 @@ public class ChatService {
             .totalPages(messagesPage.getTotalPages()).build();
   }
 
-  public void saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
+  public Message saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
     Conversation conversation = conversationRepository.findByConversationId(messagePrivateCreateDTO.getConversationId())
         .orElseThrow(ConversationNotFound::new);
 
-    messageRepository.save(Message.builder()
+    return messageRepository.save(Message.builder()
             .fromUserId(messagePrivateCreateDTO.getFromUserId())
             .content(messagePrivateCreateDTO.getContent())
             .type(messagePrivateCreateDTO.getType())
             .conversation(conversation)
             .responseToMessage(null)
         .build());
+  }
+
+  public MessageGetDTO convertMessageToGetDTO(Message message){
+        conversationRepository.findByConversationId(message.getConversation().getConversationId())
+              .orElseThrow(ConversationNotFound::new);
+
+      UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
+      return MessageGetDTO.builder()
+              .sentAt(message.getSentAt())
+              .conversationId(message.getConversation().getConversationId())
+              .content(message.getContent())
+              .fromUser(messageAuthor)
+              .type(message.getType())
+              .build();
   }
 
 }
