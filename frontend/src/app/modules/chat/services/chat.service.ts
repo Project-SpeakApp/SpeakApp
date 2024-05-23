@@ -15,7 +15,6 @@ export class ChatService {
   private stompClient: any;
   public messageReceived = new Subject<MessageGetDTO>();
 
-
   constructor(private http: HttpClient) { }
 
   public connect(userId: string): void {
@@ -32,8 +31,9 @@ export class ChatService {
 
   public disconnect(): void {
     if (this.stompClient) {
-      this.stompClient.disconnect();
-      console.log('Disconnected');
+      this.stompClient.disconnect(() => {
+        console.log('Disconnected');
+      });
     }
   }
 
