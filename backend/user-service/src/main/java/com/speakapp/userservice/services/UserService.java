@@ -89,7 +89,7 @@ public class UserService {
                 AppUserPreviewDTO.builder()
                 .userId(appUser.getUserId())
                 .fullName(appUser.getFirstName() + " " + appUser.getLastName())
-                .profilePhotoUrl(appUser.getProfilePhotoUrl())
+                .profilePhotoId(appUser.getProfilePhotoId())
                 .build()
         ).toList();
 
