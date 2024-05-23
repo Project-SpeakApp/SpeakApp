@@ -28,11 +28,21 @@ public class UserController {
         return userService.getUser(requesterId, userId);
     }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody AppUserCreateDTO userCreateDTO) {
-        userService.createUser(userCreateDTO);
-    }
+  @GetMapping("/findByFullName")
+  @ResponseStatus(HttpStatus.OK)
+  public AppUserPreviewPageDTO getUsersByFullName(
+      @RequestParam(defaultValue = "") String appUserFullName,
+      @RequestParam(defaultValue = "0") int pageNumber,
+      @RequestParam(defaultValue = "5") int pageSize) {
+
+    return userService.getUsersByFullName(appUserFullName, pageNumber, pageSize);
+  }
+
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void createUser(@RequestBody AppUserCreateDTO userCreateDTO) {
+    userService.createUser(userCreateDTO);
+  }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
