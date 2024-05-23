@@ -37,9 +37,9 @@ public class UserServiceCommunicationClient {
     public boolean checkIfFriends(UUID userId1, UUID userId2){
         return Boolean.TRUE.equals(webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/api/users/friend-status")
+                        .path("/api/users/friends/friend-status")
                         .queryParam("messageSenderId", userId1)
-                        .queryParam("messageReceiverId", userId2)
+                        .queryParam("messageRecieverId", userId2)
                         .build())
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
@@ -49,7 +49,6 @@ public class UserServiceCommunicationClient {
                             ));
                 })
                 .bodyToMono(Boolean.class)
-                .onErrorResume(error -> Mono.just(false))
                 .block());
     }
 }
