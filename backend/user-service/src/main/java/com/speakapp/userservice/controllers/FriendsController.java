@@ -5,6 +5,8 @@ import com.speakapp.userservice.dtos.FriendRequestsPage;
 import com.speakapp.userservice.services.FriendsService;
 import com.speakapp.userservice.utils.JwtDecoder;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +77,7 @@ public class FriendsController {
                                     @RequestParam UUID messageRecieverId) {
 
         return friendsService.checkIfFriends(messageSenderId, messageRecieverId);
+
     }
 
 }

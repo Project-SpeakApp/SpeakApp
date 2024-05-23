@@ -151,7 +151,9 @@ public class ChatService {
   }
 
   public boolean checkIfFriends(UUID userId1, UUID userId2){
-        return userServiceCommunicationClient.checkIfFriends(userId1, userId2);
+        boolean status =  userServiceCommunicationClient.checkIfFriends(userId1, userId2);
+
+        return status;
   }
 
 }

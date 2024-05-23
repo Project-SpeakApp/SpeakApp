@@ -34,3 +34,7 @@ GET localhost:8081/api/friends/of-user/{{john_doe_id}}
 
 ### Getting friends of Alice Johnson
 GET localhost:8081/api/friends/of-user/{{alice_johnson_id}}
+
+### Check if firends when friends
+GET localhost:8081/api/users/friends/friend-status?messageSenderId=6c84fb97-12c4-11ec-82a8-0242ac130003&messageRecieverId=6c84fb95-12c4-11ec-82a8-0242ac130003
+
