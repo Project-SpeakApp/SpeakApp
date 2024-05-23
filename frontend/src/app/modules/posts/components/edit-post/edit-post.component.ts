@@ -15,27 +15,25 @@ import {CalculateNumberOfRows} from "../../../../shared/util/CalculateNumberOfRo
 })
 export class EditPostComponent implements OnInit, OnDestroy{
   @Input() currentContent: string = "";
-
+  @Input() imageId: string | null = null;
   @Input() postId: string = "";
-
   @Input() authorId: string = "";
 
   @Output() contentUpdated: EventEmitter<PostGet> = new EventEmitter<PostGet>();
+  @Output() imageDeleted: EventEmitter<void> = new EventEmitter<void>();
 
   initContent: string = ""
   myForm!: FormGroup;
-
   visible: boolean = false;
-
   private UpdatePostSubscription?: Subscription;
   model: AddPost;
   isLoading: boolean = false;
   numberOfRows: number = 0;
 
-
   constructor(private formBuilder: FormBuilder, private alertService: AlertService, private postService: PostService, private authService: AuthService) {
     this.model = {
-      content: ''
+      content: '',
+      mediaId: null,
     };
   }
 
@@ -44,9 +42,10 @@ export class EditPostComponent implements OnInit, OnDestroy{
       this.isLoading = true;
       this.currentContent = this.myForm.value.content;
       this.model.content = this.currentContent;
+      this.model.mediaId = this.imageId;
       this.UpdatePostSubscription = this.postService.updatePost(this.postId, this.model).subscribe(
         (updatedPost) => { this.alertService.showAlert('Post updated successfully', 'success'), this.contentUpdated.emit(updatedPost), this.isLoading = false;},
-        (error) => {this.isLoading =false;}
+        (error) => {this.isLoading = false;}
 
       );
     } else if (this.initContent === this.myForm.value.content) {
@@ -60,6 +59,11 @@ export class EditPostComponent implements OnInit, OnDestroy{
     this.contentUpdated.emit();
   }
 
+  deleteImage() {
+    this.imageId = null;
+    this.imageDeleted.emit();
+  }
+
   ngOnInit(): void {
     this.initContent = this.currentContent;
     if(this.authorId === this.authService.state().userId) this.visible = true;
@@ -68,7 +72,6 @@ export class EditPostComponent implements OnInit, OnDestroy{
     });
     this.numberOfRows = CalculateNumberOfRows.calculateNumberOfRows(this.currentContent);
   }
-
 
   ngOnDestroy(): void {
     this.UpdatePostSubscription?.unsubscribe();

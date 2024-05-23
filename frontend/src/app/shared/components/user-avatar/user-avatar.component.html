@@ -1,0 +1,14 @@
+<div class="avatar">
+  <div [ngClass]="{ 'rounded-full': true, 'w-14': size === 'xl', 'w-12': size === 'm', 'w-10': size === 'sm', 'w-20': size === 'xxl'}">
+    <img [src]="avatarSrc" alt="profile photo" [ngClass]="{'filter brightness-50 blur-[1px]': imageLoading(), 'bg-black': true}"/>
+    <span
+      *ngIf="imageLoading()"
+      [ngClass]="{
+        'absolute text-white loading loading-spinner': true,
+        'top-[4px] left-[5px] loading-lg': size === 'xl',
+        'top-[12px] left-[12px]': size === 'm',
+        'top-[8px] left-[8px]': size === 'sm'
+        }
+"></span>
+  </div>
+</div>
