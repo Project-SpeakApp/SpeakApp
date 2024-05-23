@@ -16,6 +16,13 @@ import java.util.UUID;
 @Repository
 public interface UserFriendRepository extends JpaRepository<UserFriend, UUID> {
 
+    @Query("SELECT CASE WHEN COUNT(uf) > 0 THEN true ELSE false END " +
+            "FROM UserFriend uf " +
+            "WHERE ((uf.requester.userId = :userId1 AND uf.addressee.userId = :userId2) " +
+            "OR (uf.requester.userId = :userId2 AND uf.addressee.userId = :userId1)) " +
+            "AND uf.status = 'FRIEND' ")
+    boolean existFriendStatusForTwoUsers(UUID userId1, UUID userId2);
+
     boolean existsByRequesterAndAddressee(AppUser requester,
                                           AppUser addressee);
 

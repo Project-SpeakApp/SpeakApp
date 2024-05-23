@@ -33,4 +33,23 @@ public class UserServiceCommunicationClient {
                 .bodyToMono(UserGetDTO.class)
                 .block();
     }
+
+    public boolean checkIfFriends(UUID userId1, UUID userId2){
+        return Boolean.TRUE.equals(webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/users/friend-status")
+                        .queryParam("messageSenderId", userId1)
+                        .queryParam("messageReceiverId", userId2)
+                        .build())
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
+                    return clientResponse.bodyToMono(String.class)
+                            .flatMap(errorBody -> Mono.error(
+                                    new UserNotFoundException()
+                            ));
+                })
+                .bodyToMono(Boolean.class)
+                .onErrorResume(error -> Mono.just(false))
+                .block());
+    }
 }

@@ -141,4 +141,11 @@ public class FriendsService {
                 .totalPages(userFriendPage.getTotalPages())
                 .build();
     }
+
+    public boolean checkIfFriends(UUID userId1, UUID userId2){
+        AppUser user1 = userRepository.findById(userId1).orElseThrow(UserNotFoundException::new);
+        AppUser user2 = userRepository.findById(userId2).orElseThrow(UserNotFoundException::new);
+
+        return userFriendRepository.existFriendStatusForTwoUsers(userId1, userId2);
+    }
 }

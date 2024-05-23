@@ -6,6 +6,7 @@ import com.chatservice.dtos.MessageGetDTO;
 import com.chatservice.dtos.MessagePrivateCreateDTO;
 import com.chatservice.dtos.NewPrivateConversationDTO;
 import com.chatservice.entities.Conversation;
+import com.chatservice.exceptions.BadRequestException;
 import com.chatservice.services.ChatService;
 import com.chatservice.utils.JwtDecoder;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,6 +32,9 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
+        if(!chatService.checkIfFriends(messageDTO.getFromUserId(), messageDTO.getToUserId())){
+            throw new BadRequestException("You can only write a message to your friend!");
+        }
         messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), messageDTO);
         chatService.saveMessage(messageDTO);
     }

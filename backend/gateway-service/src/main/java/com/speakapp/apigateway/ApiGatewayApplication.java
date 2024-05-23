@@ -30,6 +30,14 @@ public class ApiGatewayApplication {
                         .path("/api/chat/**", "/chat.sendMessage")
                         .uri("http://chat-service:8084")
                 )
+                .route("chat-service", r -> r
+                        .path("/api/chat/**", "/ws")
+                        .uri("http://chat-service:8084")
+                )
+                .route("chat-service-ws", r -> r
+                        .path("/app/**", "/chat/**", "/ws")
+                        .uri("ws://chat-service:8084")
+                )
                 .build();
     }
 }

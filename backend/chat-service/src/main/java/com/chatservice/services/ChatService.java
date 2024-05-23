@@ -150,4 +150,8 @@ public class ChatService {
         .build());
   }
 
+  public boolean checkIfFriends(UUID userId1, UUID userId2){
+        return userServiceCommunicationClient.checkIfFriends(userId1, userId2);
+  }
+
 }

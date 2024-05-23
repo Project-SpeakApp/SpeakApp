@@ -69,4 +69,12 @@ public class FriendsController {
         return friendsService.getFriendsOfUser(userId, requestedPageable);
     }
 
+    @GetMapping("/friend-status")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean checkIfFriends(@RequestParam UUID messageSenderId,
+                                    @RequestParam UUID messageRecieverId) {
+
+        return friendsService.checkIfFriends(messageSenderId, messageRecieverId);
+    }
+
 }
