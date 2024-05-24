@@ -227,7 +227,10 @@ public class ChatService {
     if (!conversation.isGroupConversation()) {
       GroupMember secondGroupMember = groupMemberRepository.findSecondGroupMemberOfPrivateConversation(
           userId, conversation);
-      conversationName = secondGroupMember.getFirstName() + " " + secondGroupMember.getLastName();
+
+      if(conversationName == null) {
+        conversationName = secondGroupMember.getFirstName() + " " + secondGroupMember.getLastName();
+      }
 
       AppUserPreviewDTO secondUser = userServiceCommunicationClient.getUserById(
           secondGroupMember.getUserId());
