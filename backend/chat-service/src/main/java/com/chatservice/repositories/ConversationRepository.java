@@ -26,7 +26,6 @@ public interface ConversationRepository extends JpaRepository<Conversation, UUID
       "JOIN gm.conversation gc " +
       "JOIN group_member gm2 ON gm.conversation = gm2.conversation " +
       "WHERE gm.userId = :userId1 " +
-      "AND gc.isGroupConversation = false " +
       "AND ((LOWER(gm2.firstName) = LOWER(:firstName) AND LOWER(gm2.lastName) = LOWER(:lastName)) " +
       "OR LOWER(gc.conversationName) = LOWER(:conversationName))")
   Page<Conversation> findUserConversationsByOtherUserFullNameOrConversationName(UUID userId1, String firstName, String lastName, String conversationName, Pageable page);
@@ -35,7 +34,6 @@ public interface ConversationRepository extends JpaRepository<Conversation, UUID
   @Query("SELECT gm.conversation " +
       "FROM group_member gm JOIN gm.conversation gc, group_member gm2 " +
       "WHERE gm.userId = :userId1 " +
-      "AND gc.isGroupConversation = false " +
       "AND gm.conversation = gm2.conversation " +
       "AND (LOWER(gm2.firstName) = LOWER(:firstName) OR LOWER(gc.conversationName) = LOWER(:conversationName))")
   Page<Conversation> findUserConversationsByOtherUserFirstNameOrConversationName(UUID userId1, String firstName, String conversationName, Pageable page);
