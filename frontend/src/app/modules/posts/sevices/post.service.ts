@@ -29,7 +29,7 @@ export class PostService {
 
     const url = favouritePosts ? 'https://localhost:4200/api/posts/favouriteList' :
       userId ? `https://localhost:4200/api/posts/by-user/${userId}` :
-      friendsOnly ? 'https://localhost:4200/api/posts/friends' : 'https://localhost:4200/api/posts';
+      friendsOnly ? 'https://localhost:4200/api/posts/by-friends' : 'https://localhost:4200/api/posts';
 
     return this.http.get<PostGetResponse>(url,  {params});
   }

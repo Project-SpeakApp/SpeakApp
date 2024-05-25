@@ -25,7 +25,7 @@ public class SecurityConfig {
                                 .pathMatchers("/api/internal/**")
                                 .denyAll()
                                 .pathMatchers(HttpMethod.POST, "/api/users")
-                                .permitAll()
+                                .access(ApiKeyAuthenticationFilter::check)
                                 .anyExchange()
                                 .authenticated()
                 )

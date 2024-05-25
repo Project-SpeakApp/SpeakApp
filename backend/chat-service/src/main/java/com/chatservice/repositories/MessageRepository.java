@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -26,5 +26,7 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
             "ORDER BY maxDate.maxSentAt DESC", nativeQuery = true)
     Page<Message> findLatestMessageForUserConversations(UUID userId, Pageable pageable);
 
-  Page<Message> findAllByConversationOrderByDeliveredAtDesc(Conversation conversation, Pageable pageable);
+    Page<Message> findAllByConversationOrderByDeliveredAtDesc(Conversation conversation, Pageable pageable);
+
+    Optional<Message> findByMessageIdAndFromUserId(UUID messageId, UUID fromUserId);
 }

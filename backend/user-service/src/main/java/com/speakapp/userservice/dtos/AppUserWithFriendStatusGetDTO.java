@@ -15,8 +15,8 @@ public class AppUserWithFriendStatusGetDTO {
     UUID userId;
     String firstName;
     String lastName;
-    String profilePhotoUrl;
-    String bgPhotoUrl;
+    UUID profilePhotoId;
+    UUID bgPhotoId;
     String email;
     String about;
     String friendStatus;

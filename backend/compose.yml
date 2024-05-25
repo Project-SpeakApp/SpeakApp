@@ -2,10 +2,9 @@ version: '3.8'
 
 x-service: &service
   environment:
-    - SPRING_PROFILES_ACTIVE=dev
-    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-    - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-
+    - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    - SPRING_CLOUD_CONFIG_URI=${SPRING_CLOUD_CONFIG_URI}
 x-db: &db
   image: postgres:16.0-alpine
   restart: always
@@ -144,6 +143,11 @@ services:
     build: gateway-service
     ports:
       - '8080:8080'
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+      - SPRING_CLOUD_CONFIG_URI=${SPRING_CLOUD_CONFIG_URI}
+      - KC_API_KEY=${KC_API_KEY}
     networks:
       - net-apiGw-userServ
       - net-apiGw-postServ
@@ -185,6 +189,7 @@ services:
       - KC_DB_URL_PORT=5434
       - KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/keycloak.crt
       - KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/keycloak.key
+      - KC_API_KEY=${KC_API_KEY}
     volumes:
       - ./keycloak-service/themes:/opt/keycloak/themes
       - ./keycloak-service/realm-export.json:/opt/keycloak/data/import/realm-export.json

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,4 +46,13 @@ public interface UserFriendRepository extends JpaRepository<UserFriend, UUID> {
             @Param("addressee") AppUser addressee,
             @Param("requester") AppUser requester
     );
+
+    @Query("SELECT CASE " +
+            "WHEN uf.requester.userId = :userId THEN uf.addressee.userId " +
+            "WHEN uf.addressee.userId = :userId THEN uf.requester.userId " +
+            "END " +
+            "FROM UserFriend uf " +
+            "WHERE uf.status = 'FRIEND' " +
+            "AND (uf.requester.userId = :userId OR uf.addressee.userId = :userId)")
+    List<UUID> getAllFriendIdsOfUserWithId(UUID userId);
 }

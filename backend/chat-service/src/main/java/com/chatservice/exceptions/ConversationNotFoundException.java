@@ -1,13 +1,13 @@
 package com.chatservice.exceptions;
 
-public class ConversationNotFound extends EntityNotFoundException{
+public class ConversationNotFoundException extends EntityNotFoundException{
   private static final String DEFAULT_MESSAGE = "Requested conversation could not be found!";
 
-  public ConversationNotFound(){
+  public ConversationNotFoundException(){
     super(DEFAULT_MESSAGE);
   }
 
-  public ConversationNotFound(String message){
+  public ConversationNotFoundException(String message){
     super(message);
   }
 
