@@ -3,6 +3,7 @@ package com.chatservice.controllers;
 
 import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
+import com.chatservice.entities.Message;
 import com.chatservice.services.ChatService;
 import com.chatservice.utils.JwtDecoder;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -27,9 +28,10 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
-        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), messageDTO);
-        messagingTemplate.convertAndSend("/chat/" + messageDTO.getFromUserId(), messageDTO);
-        chatService.saveMessage(messageDTO);
+        Message savedMessage = chatService.saveMessage(messageDTO);
+        MessageGetDTO convertedMessage = chatService.convertMessageToGetDTO(savedMessage);
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), convertedMessage);
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getFromUserId(), convertedMessage);
     }
 
     @PostMapping("/api/chat")

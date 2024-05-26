@@ -1,0 +1,457 @@
+[33mcommit 3f18f94b75fbee8c566cd50e6a9157c5be94d41e[m[33m ([m[1;36mHEAD -> [m[1;32mSPA-82-Jako-u-ytkownik-chc-wysy-a-wiadomo-ci-tekstowe-do-innych-u-ytkownik-w[m[33m)[m
+Merge: 1c257fc 790a4c0
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Thu May 23 11:44:16 2024 +0200
+
+    Merge branch 'chat-service-bufg-fixing' into SPA-82-Jako-u-ytkownik-chc-wysy-a-wiadomo-ci-tekstowe-do-innych-u-ytkownik-w
+
+[33mcommit 790a4c0c0a35c5df2d41fe3d77604f331adda0a7[m[33m ([m[1;31morigin/chat-service-bufg-fixing[m[33m, [m[1;32mchat-service-bufg-fixing[m[33m)[m
+Author: Maciej Kwiatkowski <maciek-kwiatkowski@o2.pl>
+Date:   Thu May 23 11:28:01 2024 +0200
+
+    changed DTO passed through websocket
+
+[33mcommit 1c257fcd8389f626a76ece1ea453bf15d3395d6f[m[33m ([m[1;31morigin/SPA-82-Jako-u-ytkownik-chc-wysy-a-wiadomo-ci-tekstowe-do-innych-u-ytkownik-w[m[33m)[m
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Wed May 22 18:46:21 2024 +0200
+
+    Saving changes
+
+[33mcommit 42c81070cb126b66cc79dccf2a96c42fa3213804[m
+Merge: b651c06 53e8fe6
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Wed May 22 17:52:10 2024 +0200
+
+    Merge branch 'chat-service-bufg-fixing' into SPA-82-Jako-u-ytkownik-chc-wysy-a-wiadomo-ci-tekstowe-do-innych-u-ytkownik-w
+
+[33mcommit 53e8fe6aaa4729310e26eb361f94c1c9ca03fccd[m
+Author: Maciej Kwiatkowski <maciek-kwiatkowski@o2.pl>
+Date:   Tue May 21 00:09:41 2024 +0200
+
+    added dtos and fixes
+
+[33mcommit b651c06fb3090f39c76d5eb94cffe0aa08ecb0f6[m
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Sun May 19 13:41:54 2024 +0200
+
+    Saving changes
+
+[33mcommit f234f58b68394b3731b60f9e32dcf7a69607fdf5[m
+Author: Maciej Kwiatkowski <maciek-kwiatkowski@o2.pl>
+Date:   Sun May 19 01:14:50 2024 +0200
+
+    cors settings
+
+[33mcommit 65a73d20320757c5361260eee93b6bd5c381a9a6[m
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Sat May 18 23:16:44 2024 +0200
+
+    Saving changes
+
+[33mcommit 3771f0bea3beac3ea035d7931f4c4192a73d073a[m
+Merge: db82610 e82126b
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Sat May 18 22:42:48 2024 +0200
+
+    Merge branch 'chat-service-bufg-fixing' into SPA-82-Jako-u-ytkownik-chc-wysy-a-wiadomo-ci-tekstowe-do-innych-u-ytkownik-w
+
+[33mcommit e82126bb352e7ad00fdd27dd33a0291e1b9e9eb6[m
+Author: Maciej Kwiatkowski <maciek-kwiatkowski@o2.pl>
+Date:   Sat May 18 22:37:36 2024 +0200
+
+    cors settings
+
+[33mcommit db82610c77b1888049404cfa7366f57598a66364[m
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Sat May 18 20:57:31 2024 +0200
+
+    1 2 3 4 5 6 7 8 9 10
+
+[33mcommit 726793caa550db048716a6382b6c5164a73c91fa[m
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Sat May 18 13:55:23 2024 +0200
+
+    Get message history & get conversation previews done
+
+[33mcommit cd0e542be8bfed7a0da659e7dd02791dce49c045[m
+Merge: a30c68b 7a35c4d
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Sat May 18 11:12:57 2024 +0200
+
+    Merge branch 'main' into SPA-82-Jako-u-ytkownik-chc-wysy-a-wiadomo-ci-tekstowe-do-innych-u-ytkownik-w
+
+[33mcommit 7a35c4d85fa5f8986eb5e96a80e0f2a86d046c7f[m
+Merge: 3a4ab13 4305121
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Tue May 14 21:12:38 2024 +0200
+
+    Merge pull request #74 from Project-SpeakApp/SPA-74
+    
+    SPA-74 (& SPA-75) - Dodawanie avatarów / zdjęć w tle
+
+[33mcommit a30c68b1a145b8ff5e21b6d421c5132ce69d18e3[m
+Author: macius02 <mkuzmicki2002@gmail.com>
+Date:   Tue May 14 20:47:14 2024 +0200
+
+    Started chat
+
+[33mcommit 4305121e492bc7d0dd477501feb32c4d6b41d5cd[m[33m ([m[1;31morigin/SPA-74[m[33m)[m
+Author: Krzysztof <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Tue May 14 16:07:48 2024 +0200
+
+    fix data seeder
+
+[33mcommit bc6d7d857d3cf24a386fd8f93abca3e73968476a[m
+Merge: 610be70 3a4ab13
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Tue May 14 15:51:57 2024 +0200
+
+    Merge branch 'main' into SPA-74
+
+[33mcommit 3a4ab13e779f028b1d74b967f363dedf07176c0e[m
+Merge: 6856001 fb3607a
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Tue May 14 15:50:34 2024 +0200
+
+    Merge pull request #80 from Project-SpeakApp/SPA-279-Dodawanie-postu-do-ulubionych
+    
+    Spa 279 dodawanie postu do ulubionych
+
+[33mcommit 685600172b9e8d6b50990061804701e8e19e9e27[m
+Merge: da64c6b 36c8892
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Tue May 14 15:50:21 2024 +0200
+
+    Merge pull request #82 from Project-SpeakApp/SPA-280-Keycloak-serwis-mailowy
+    
+    Spa 280 keycloak serwis mailowy
+
+[33mcommit 36c88922854031ba48a029fbe7a35a98b1dc41a3[m[33m ([m[1;31morigin/SPA-280-Keycloak-serwis-mailowy[m[33m)[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Mon May 13 23:39:30 2024 +0200
+
+    removed - wasnt working anyways
+
+[33mcommit fb3607ab1313657c68ccc855cc2841ecf2fb87b6[m[33m ([m[1;31morigin/SPA-279-Dodawanie-postu-do-ulubionych[m[33m)[m
+Merge: c71b62a da64c6b
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Sun May 12 15:21:41 2024 +0200
+
+    Merge with main
+
+[33mcommit 610be705b6e80c54b49fb0e605a935bc1d424750[m
+Author: Krzysztof <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Sun May 12 13:50:41 2024 +0200
+
+    remove unused import
+
+[33mcommit 90b7637f1cea815e6ba23ab7560ec037523ec4a7[m
+Author: Krzysztof <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Sun May 12 13:45:41 2024 +0200
+
+    fix adding bug
+
+[33mcommit f9bb5678dd1af962dbff2aa0e367640f9ba3db7c[m
+Author: Krzysztof <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Sun May 12 13:42:55 2024 +0200
+
+    fix edited on deleting image
+
+[33mcommit 2db33550a9a587ce2c080cf75dfb937c60ab985f[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Sat May 11 22:44:10 2024 +0200
+
+    Small fixes - password for email account, and overwrite existing realms on keycloak boot
+
+[33mcommit 1cf07b1cbb751d675e94dae92af597faa3afa1a0[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Fri May 10 13:41:01 2024 +0200
+
+    Email config for keycloak service
+
+[33mcommit c71b62a9096b8222512d0b7054cd04d645adc92a[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Thu May 9 17:57:58 2024 +0200
+
+    Deleted potential circular dependency
+
+[33mcommit da64c6b2d07d3df372babce894adf1d1602378b9[m
+Merge: 866a3fd 2e33bb0
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Thu May 9 11:31:46 2024 +0200
+
+    Merge pull request #79 from Project-SpeakApp/SPA-129-usuwanie-ze-znajomych
+    
+    Usuwanie ze znajomych, dostawanie listy znajomych, aktualizacja GETowania informacji o userze
+
+[33mcommit 44afa6bc6f3ebe28720dcfed05bf5cfd7cf5b033[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Tue May 7 21:48:35 2024 +0200
+
+    Refactoring
+
+[33mcommit e09b00f5e3beb2023ee263781b6cbbd367b1f1cc[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Tue May 7 21:44:01 2024 +0200
+
+    Refactoring
+
+[33mcommit 45eba123ac50046c6b8d12a604e4f01bf440af0c[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Tue May 7 21:38:53 2024 +0200
+
+    Small fixes
+
+[33mcommit a4e89f7c0dc41c65cc048353ce2bd880290913de[m
+Author: szlazakm <01169634@pw.edu.pl>
+Date:   Tue May 7 21:31:28 2024 +0200
+
+    Working adding post to favourite list
+
+[33mcommit 030f6dcc291217f990402d1eca93d4afd218c0dd[m
+Author: szlazakm <michal.szlazak77@gmail.com>
+Date:   Tue May 7 18:03:41 2024 +0200
+
+    initial favourite post get impl
+
+[33mcommit 2e33bb001ee998b501f095ea0b5ecb43386ed491[m
+Merge: 3a59f62 866a3fd
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Mon May 6 23:58:58 2024 +0200
+
+    Merge branch 'main' of https://github.com/Project-SpeakApp/SpeakApp into SPA-129-usuwanie-ze-znajomych
+
+[33mcommit 3a59f62d61d489a28051c4329a3bbc06e118a7cf[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Mon May 6 23:53:51 2024 +0200
+
+    modify tests for GET /api/users/{userId} endpoint to match new implementation after fix
+
+[33mcommit f3f7b9116e854fd0a1edeae2e7de66c35f62e281[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Mon May 6 23:53:07 2024 +0200
+
+    tests for getting friends of user
+
+[33mcommit 670439c1a513e41fe870685d43377fbc98963ccb[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Mon May 6 23:52:46 2024 +0200
+
+    Modification of get user endpoint (/api/users/{userId})
+
+[33mcommit ae59065e1267e36cd9250b48719b0e596890aa18[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Mon May 6 22:31:20 2024 +0200
+
+    Fix of the query
+
+[33mcommit 866a3fd745f0ed0a934d1d5c604e9914cbc5adc1[m
+Merge: 8bd5db0 9217b05
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Mon May 6 22:23:07 2024 +0200
+
+    Merge pull request #76 from Project-SpeakApp/SPA-272
+    
+    SPA-272 brak zliczania reakcji na własny komentarz
+
+[33mcommit d6577b7673b0631a4e79bb9493ebbf31433926dc[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Mon May 6 22:09:20 2024 +0200
+
+    Add getting friends of specified user
+
+[33mcommit 8bd5db0fc46a76218f685f05273080eacd7c4e01[m
+Merge: f0d630c e09461c
+Author: Krzysztof Jurkowski <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Mon May 6 17:36:29 2024 +0200
+
+    Merge pull request #78 from Project-SpeakApp/SPA-112-wysylanie-zapro
+    
+    Spa 112 wysylanie zaproszeń do znajomych
+
+[33mcommit 2289b2cfe4afc455e5310f939fc6d751f4ed5be3[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 03:05:25 2024 +0200
+
+    add execution permission for compatibility with linux
+
+[33mcommit c25e88e49970b0c37cba1630581442b8e9d7e2c2[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 03:04:35 2024 +0200
+
+    add tests for removing from friends list
+
+[33mcommit ab31dadc1e639ef79e0b1bbbb7ef2b82d4c6ee76[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 03:04:20 2024 +0200
+
+    add removing user from friends list
+
+[33mcommit e09461ccaecb8a7165874d1ed60f292e11f71b68[m[33m ([m[1;31morigin/SPA-112-wysylanie-zapro[m[33m)[m
+Merge: 0667fcf 96fc785
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:37:29 2024 +0200
+
+    Merge remote-tracking branch 'origin/SPA-112-wysylanie-zapro' into SPA-112-wysylanie-zapro
+
+[33mcommit 0667fcfae728236da7c8b4dc57a5a80910cb26ab[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:04:41 2024 +0200
+
+    add test requests
+
+[33mcommit 68b4f7d8984129d10848837a680978962240702e[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:04:23 2024 +0200
+
+    add basic functionality on friends requests (send, accept, reject, get page of previews)
+
+[33mcommit 1dcec20f10a31d2c152edb197ee28286b7a65cae[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:02:28 2024 +0200
+
+    fix data seeder (previous version assumes bidirectional request sending - ambiguous and inefficient)
+
+[33mcommit 7a8255fddcf1554a33a47b7d84b135f0a6ac3e6c[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 01:59:53 2024 +0200
+
+    add execution permission to mvnw for compatibility with linux
+
+[33mcommit 566d40766d8d82f05f38f1627ca9a92fa12ada15[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Fri May 3 21:06:34 2024 +0200
+
+    Small refactor for smaller redundancy in JwtDecoder usage
+
+[33mcommit bc045b56e15ba029883462ce7df7afc3fb0f1b45[m
+Merge: 83b2847 96fc785
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:34:18 2024 +0200
+
+    Merge remote-tracking branch 'origin/SPA-129-usuwanie-ze-znajomych' into SPA-129-usuwanie-ze-znajomych
+
+[33mcommit 83b2847c721d4e04aef42296ed200c8c01507da5[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:04:41 2024 +0200
+
+    add test requests
+
+[33mcommit 7e5e33eb8cb35ef6a290677f512b429f58d065be[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:04:23 2024 +0200
+
+    add basic functionality on friends requests (send, accept, reject, get page of previews)
+
+[33mcommit a9b7d044ef13855a58b84a7562e81ba9e2094ce1[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:02:28 2024 +0200
+
+    fix data seeder (previous version assumes bidirectional request sending - ambiguous and inefficient)
+
+[33mcommit ba701bf5f4144180a8ae1946b36cd2812413f028[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 01:59:53 2024 +0200
+
+    add execution permission to mvnw for compatibility with linux
+
+[33mcommit 1791a7fe8afaf55ffc115508ea081c2b0a0ef58d[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Fri May 3 21:06:34 2024 +0200
+
+    Small refactor for smaller redundancy in JwtDecoder usage
+
+[33mcommit 96fc78587e3c84abd2cd6f63c544febfeb1b0c81[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:04:41 2024 +0200
+
+    add test requests
+
+[33mcommit 6287d9fa6753adb8f523f0e09533c909c569e2ce[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:04:23 2024 +0200
+
+    add basic functionality on friends requests (send, accept, reject, get page of previews)
+
+[33mcommit 0082f239db5d119aa299c56fead1f3b0cd5dfcf0[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 02:02:28 2024 +0200
+
+    fix data seeder (previous version assumes bidirectional request sending - ambiguous and inefficient)
+
+[33mcommit 99483002e657cbd93ab2f576928b81b8a7b09a68[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Sat May 4 01:59:53 2024 +0200
+
+    add execution permission to mvnw for compatibility with linux
+
+[33mcommit 446bd3233c2eda97d23ae2a0292f4198728f0e55[m
+Author: Sebastian Pawliński <pawlinskisebastian@gmail.com>
+Date:   Fri May 3 21:06:34 2024 +0200
+
+    Small refactor for smaller redundancy in JwtDecoder usage
+
+[33mcommit f0d630c21563ddb813aa7684450e9f1bae70b031[m
+Merge: bce1c5d 56c0b3c
+Author: Arkadiusz <95890831+arkadiuszc2@users.noreply.github.com>
+Date:   Wed May 1 22:31:05 2024 +0200
+
+    Merge pull request #71 from Project-SpeakApp/SPA-258-jako-uzytkownik-chce-przegladac-historie-wiadomosci-konwersacji
+    
+    Spa 258 jako uzytkownik chce przegladac historie wiadomosci konwersacji
+
+[33mcommit bce1c5d8f28dc4f1f9767d96ba5c9911685bb656[m
+Merge: 202cd78 dc9a882
+Author: Arkadiusz <95890831+arkadiuszc2@users.noreply.github.com>
+Date:   Wed May 1 22:30:52 2024 +0200
+
+    Merge pull request #70 from Project-SpeakApp/SPA-259-utworzenie-data-seedera-dla-chatu
+    
+    Spa 259 utworzenie data seedera dla chatu
+
+[33mcommit 56c0b3c3de33c0f0b8ee03dd003b524daf9b0c69[m[33m ([m[1;31morigin/SPA-258-jako-uzytkownik-chce-przegladac-historie-wiadomosci-konwersacji[m[33m)[m
+Merge: 903feed 202cd78
+Author: Arkadiusz Ciepliński <arkadiusz.cieplinski2@gmail.com>
+Date:   Wed May 1 22:20:57 2024 +0200
+
+    Resolve conflicts and merge main, adjust code to changes from main
+
+[33mcommit dc9a88202e45959e7cc92020562597a0643ccf76[m[33m ([m[1;31morigin/SPA-259-utworzenie-data-seedera-dla-chatu[m[33m)[m
+Merge: 7f34e90 202cd78
+Author: Arkadiusz Ciepliński <arkadiusz.cieplinski2@gmail.com>
+Date:   Wed May 1 21:12:54 2024 +0200
+
+    Resolve conflicts with main and merge main
+
+[33mcommit 202cd78d21d748a1ec56cee0d9c86e7d2484ccb2[m
+Merge: effdfe7 50990f2
+Author: MaciekK2001 <96350439+MaciekK2001@users.noreply.github.com>
+Date:   Wed May 1 20:55:56 2024 +0200
+
+    Merge pull request #69 from Project-SpeakApp/SPA-242-Inicjalizacja-i-konfiguracja-WebSocket-w-i-bazy-danych-MessageDB-ii-konwersacje-prywatne-i-chatPreview
+    
+    Spa 242 inicjalizacja i konfiguracja web socket w i bazy danych message db i konwersacje prywatne i chatPreview
+
+[33mcommit 9217b059c56a882bfa64462075fb2ab8abcd9f93[m[33m ([m[1;31morigin/SPA-272[m[33m, [m[1;32mSPA-272[m[33m)[m
+Author: Krezlau <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Wed May 1 13:36:48 2024 +0200
+
+    parse newly added comment before adding it to the list
+
+[33mcommit 67c5d8ee794727bb6fb2e709589d3fa288a2d603[m
+Author: Krezlau <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Wed May 1 13:17:54 2024 +0200
+
+    add error handling to uploading images
+
+[33mcommit 2182298e50f884ce8e9d74f61c32074bf6956168[m
+Author: Krezlau <krzysztof.andrzej.jurkowski@gmail.com>
+Date:   Wed May 1 12:56:44 2024 +0200
+
+    typo fixes
+
+[33mcommit 50990f2099e18a9d178d491f20b29fc13488b3ec[m[33m ([m[1;31morigin/SPA-242-Inicjalizacja-i-konfiguracja-WebSocket-w-i-bazy-danych-MessageDB-ii-konwersacje-prywatne-i-chatPreview[m[33m)[m
+Author: Maciej Kwiatkowski <maciek-kwiatkowski@o2.pl>
+Date:   Tue Apr 30 15:15:43 2024 +0200
+
+    fixed issue with searching, added exception, added chat-service to apiGateway
