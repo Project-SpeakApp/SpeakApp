@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { ChatPreviewDTO } from '../../../../shared/types/chat/chat-preview-dto.model';
 import { AuthService } from '../../../../shared/services/auth.service';
@@ -29,27 +29,24 @@ export class MainViewComponent implements OnInit, OnDestroy {
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadChatPreviews();
-    this.subscriptions.add(
-      this.chatService.messageReceived.subscribe((newMessage: MessageGetDTO) => {
-        console.log(newMessage);
-        const chatPreviewIndex = this.chatPreviews.findIndex(
-          x => x.conversationGetDTO.conversationId === newMessage.conversationId
-        );
-        if (chatPreviewIndex !== -1) {
-          this.chatPreviews[chatPreviewIndex].lastMessage = newMessage;
-        }
-        if (this.selectedChat && this.selectedChat.conversationGetDTO.conversationId === newMessage.conversationId) {
-          console.log(newMessage);
-          this.messages = [...this.messages, newMessage];
-        }
-        this.cdr.detectChanges();
-      })
-    );
+    this.chatService.messageReceived.subscribe((message: MessageGetDTO) => {
+      const chatPreviewIndex = this.chatPreviews.findIndex(
+        x => x.conversationGetDTO.conversationId === message.conversationId
+      );
+      if (chatPreviewIndex !== -1) {
+        // Also design case
+        message.fromUser.profilePhotoId = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+        this.chatPreviews[chatPreviewIndex].lastMessage = message;
+      }
+      if (this.selectedChat && this.selectedChat.conversationGetDTO.conversationId === message.conversationId) {
+        console.log(this.messages);
+        this.messages.unshift(message);
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -79,6 +76,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.chatPreviews = response.chatPreviewDTOS;
         this.totalPagesPreview = response.totalPages;
         this.currentPagePreview = response.currentPage + 1;
+        console.log(this.chatPreviews);
       },
       error => {
         console.error('Failed to load chat previews:', error);
@@ -88,7 +86,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
 
   selectChat(chatPreview: ChatPreviewDTO): void {
     this.isLoading2 = true;
-    this.chatService.connect(this.authService.state().userId); // Ensure correct userId is used
+    this.chatService.connect(this.authService.state().userId);
     this.selectedChat = chatPreview;
     this.chatService.getMessages(this.selectedChat.conversationGetDTO.conversationId, 0, 10).subscribe(
       response => {
@@ -123,7 +121,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.chatService.sendMessage(messageDTO).subscribe(
         response => {
-          this.messages.unshift(response);
           this.contentControl.reset();
           this.isLoading = false;
         },

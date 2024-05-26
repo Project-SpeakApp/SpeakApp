@@ -1,20 +1,17 @@
-/* Overall page layout */
 .chat-page {
   display: flex;
-  height: 80vh; /* Ensure the height is defined */
+  height: 80vh;
   width: 100%;
 }
 
-/* Sidebar configuration */
 .sidebar {
   width: 30%;
   border-right: 1px solid #ddd;
-  overflow-y: auto;
+  overflow: hidden;
   padding: 10px;
   background-color: #f8f9fa;
 }
 
-/* Chat area configuration */
 .chat-area {
   width: 70%;
   display: flex;
@@ -23,7 +20,6 @@
   height: 100%;
 }
 
-/* Chat header styling */
 .chat-header {
   display: flex;
   align-items: center;
@@ -32,7 +28,6 @@
   background-color: #ffffff;
 }
 
-/* Avatar within the chat header */
 .chat-header .avatar {
   width: 40px;
   height: 40px;
@@ -48,30 +43,26 @@
   object-fit: cover;
 }
 
-/* Name styling in chat header */
 .chat-header .name {
   font-weight: bold;
 }
 
-/* Chat container configuration */
 .chat-container {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow-y: hidden; /* Prevent scrolling on the container itself */
+  overflow-y: hidden;
 }
 
-/* Chat messages styling */
 .chat-messages {
   flex-grow: 1;
   padding: 10px;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto;
   display: flex;
   flex-direction: column-reverse;
-  height: calc(100% - 60px); /* Adjust height as needed */
+  height: calc(100% - 60px);
 }
 
-/* Individual message styling */
 .message {
   display: flex;
   flex-direction: column;
@@ -81,7 +72,6 @@
 
 .message.own-message {
   align-items: flex-end;
-  align-self: flex-end;
 }
 
 .message-content {
@@ -97,24 +87,21 @@
   background-color: #2DD4BF;
 }
 
-/* Timestamp styling for messages */
 .message-time {
   margin-top: 5px;
   font-size: 12px;
   color: gray;
 }
 
-/* Input card styling */
 .card {
   padding: 10px;
   background-color: #ffffff;
   border-top: 1px solid #ddd;
   display: flex;
   align-items: center;
-  height: 60px; /* Ensure the input card has a fixed height */
+  height: 60px;
 }
 
-/* Textarea styling */
 textarea {
   height: 40px;
   color: black;
@@ -126,7 +113,6 @@ textarea {
   resize: none;
 }
 
-/* Send button styling */
 button {
   min-width: 40px;
   height: 40px;
@@ -137,7 +123,6 @@ button {
   padding: 0 16px;
 }
 
-/* Loading spinner styling */
 .loading {
   position: absolute;
   right: 10px;

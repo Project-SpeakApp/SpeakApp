@@ -7,7 +7,7 @@
   <div class="chat-area" *ngIf="selectedChat">
     <div class="chat-header">
       <div class="avatar">
-        <ng-container *ngIf="selectedChat.lastMessage.fromUser.profilePhotoId; else initials">
+        <ng-container *ngIf="selectedChat.lastMessage.fromUser.profilePhotoId !== ''; else initials">
           <img [src]="selectedChat.lastMessage.fromUser.profilePhotoId" alt="Profile Image">
         </ng-container>
         <ng-template #initials>

@@ -3,14 +3,11 @@
     <ng-container *ngIf="chatPreview.lastMessage.fromUser.profilePhotoId">
       <img [src]="chatPreview.lastMessage.fromUser.profilePhotoId" alt="Profile Image" />
     </ng-container>
-    <ng-template #initials>
-      {{ getInitials(chatPreview.lastMessage.fromUser.fullName) }}
-    </ng-template>
   </div>
   <div class="details">
     <div class="name">{{ chatPreview.conversationGetDTO.conversationName }}</div>
     <div class="last-message">
-      <span *ngIf="userId === chatPreview.lastMessage.fromUser.userId">You: </span>{{ chatPreview.lastMessage.content }} • 39 min.
+      <span *ngIf="userId === chatPreview.lastMessage.fromUser.userId">You: </span>{{ ChatPreviewTextFormatting.formatChatPreviewText(chatPreview.lastMessage.content, 30) }} • 39 min.
     </div>
   </div>
 </div>

@@ -15,14 +15,17 @@ export class ChatService {
   private stompClient: any;
   public messageReceived = new Subject<MessageGetDTO>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.messageReceived = new Subject<MessageGetDTO>();
+  }
+
+
 
   public connect(userId: string): void {
     const socket = new SockJS('http://localhost:8084/ws');
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, () => {
-      console.log(userId);
-      this.stompClient.subscribe(`/chat/${userId}`, (message: any) => {
+      this.stompClient.subscribe(`/chat/${userId}`, (message: { body: string; }) => {
         const messageData: MessageGetDTO = JSON.parse(message.body);
         this.messageReceived.next(messageData);
       });
@@ -40,7 +43,6 @@ export class ChatService {
   public sendMessage(messageDTO: MessagePrivateCreateDTO): Observable<any> {
     return new Observable((subscriber) => {
       if (this.stompClient && this.stompClient.connected) {
-        console.log(messageDTO);
         this.stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(messageDTO));
         subscriber.next({ message: 'Message sent successfully' });
         subscriber.complete();
