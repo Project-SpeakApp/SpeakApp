@@ -20,17 +20,17 @@ public class ApiGatewayApplication {
         return builder.routes()
                 .route("post-service", r -> r
                         .path("/api/posts/**", "/api/comments/**")
-                        .uri("lb://post-service")) //post-service:8082
+                        .uri("http://post-service")) //post-service:8082
                 .route("user-service", r -> r
                         .path("/api/users/**")
-                        .uri("lb://user-service")) //user-service:8081
+                        .uri("http://user-service")) //user-service:8081
                 .route("media-service", r -> r
                         .path("/api/media/**")
-                        .uri("lb://blob-service") //blob-service:8083
+                        .uri("http://blob-service") //blob-service:8083
                 )
                 .route("chat-service", r -> r
                         .path("/api/chat/**", "/chat.sendMessage")
-                        .uri("http://chat-service:8084")
+                        .uri("http://chat-service") //chat-service:8084
                 )
                 .build();
     }
