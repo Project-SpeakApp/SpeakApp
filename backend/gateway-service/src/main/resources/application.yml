@@ -1,6 +1,3 @@
-server:
-  port: 8080
-
 eureka:
   client:
     serviceUrl:
@@ -42,6 +39,23 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      globalcors:
+        corsConfigurations:
+            '[/**]':
+                allowedOrigins: "${app.cors.allowed-origins}"
+                allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                allowedHeaders:
+                - Authorization
+                - Content-Type
+                - Cache-Control
+                exposedHeaders:
+                - Authorization
+                allowCredentials: true
+                maxAge: 3600
 
 
 
