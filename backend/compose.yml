@@ -51,8 +51,6 @@ services:
    <<: *service
    container_name: user-service
    build: user-service
-   ports:
-     - '8081:8081'
    networks:
      - net-userDB-userServ
      - net-postServ-userServ
@@ -83,8 +81,6 @@ services:
    <<: *service
    container_name: post-service
    build: post-service
-   ports:
-     - '8082:8082'
    networks:
      - net-postServ-userServ
      - net-postDB-postServ
@@ -114,15 +110,19 @@ services:
   chat-service:
     <<: *service
     build: chat-service
-    ports:
-      - '8084:8084'
     networks:
       - net-messageDB-chatServ
       - net-apiGw-chatServ
       - net-userServ-chatServ
+      - net-eureka-config
     depends_on:
       message-db-service:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
 
   message-db-service:
     <<: *db
@@ -220,8 +220,6 @@ services:
     <<: *service
     build: blob-service
     container_name: blob-service
-    ports:
-      - '8083:8083'
     networks:
       - net-apiGw-blobServ
       - net-blobServ-azurite
