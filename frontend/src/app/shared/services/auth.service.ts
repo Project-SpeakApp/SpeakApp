@@ -1,38 +1,47 @@
 import { Injectable, signal } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
 import {ProfilesService} from "../../modules/profiles/services/profiles.service";
-import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private keycloak: KeycloakService, private router: Router) { }
+  constructor(private keycloak: KeycloakService, private profileService: ProfilesService) { }
 
   defaultState: AuthState = {
     isLoggedIn: false,
-    firstName: 'Christopher',
-    lastName: 'Bear',
-    userId: '6c84fb97-12c4-11ec-82a8-0242ac130003'
+    firstName: '',
+    lastName: '',
+    userId: '',
+    profilePhotoId: '',
   }
 
   state = signal(this.defaultState);
 
+  requestCount = signal(0);
+
   public updateState() {
     try {
       this.keycloak.loadUserProfile().then(x => {
-        this.state.set({
-          isLoggedIn: true,
-          firstName: x.firstName!,
-          lastName: x.lastName!,
-          userId: x.id!
+        this.profileService.getProfile(x.id!).subscribe((res) => {
+          this.state.set({
+            isLoggedIn: true,
+            firstName: res.firstName,
+            lastName: res.lastName,
+            userId: x.id!,
+            profilePhotoId: res.profilePhotoId,
+          });
         });
       });
     }
     catch (_) {
       this.state.set(this.defaultState);
     }
+  }
+
+  public updateRequestsCount(amount: number) {
+    this.requestCount.update((s) => s - amount);
   }
 
   public async login(options?: Keycloak.KeycloakLoginOptions) {
@@ -53,6 +62,13 @@ export class AuthService {
   public manageAccount() {
     window.location.href = 'http://localhost:8443/realms/SpeakApp/account/#/security/signingin';
   }
+
+  public updateProfilePhoto(photoId: string) {
+    this.state.set({
+      ...this.state(),
+      profilePhotoId: photoId,
+    })
+  }
 }
 
 type AuthState = {
@@ -60,4 +76,5 @@ type AuthState = {
   firstName: string;
   lastName: string;
   userId: string;
+  profilePhotoId: string;
 }

@@ -28,6 +28,10 @@ public class ApiGatewayApplication {
                         .path("/api/media/**")
                         .uri("lb://blob-service") //blob-service:8083
                 )
+                .route("chat-service", r -> r
+                        .path("/api/chat/**", "/chat.sendMessage")
+                        .uri("http://chat-service:8084")
+                )
                 .build();
     }
 }

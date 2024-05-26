@@ -6,6 +6,7 @@ import {ReactionsGet} from "../../../../shared/types/posts/reactions-get.model";
 import {ReactionService} from "../../sevices/reaction.service";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-comment',
@@ -26,7 +27,10 @@ export class CommentComponent implements OnInit, OnDestroy{
   userId: string = '';
   formattedDateOfEditing: string = '';
 
-  constructor(private reactionService: ReactionService, private authService: AuthService) {}
+  constructor(
+    private reactionService: ReactionService,
+    private authService: AuthService,
+    private router: Router) {}
 
   upsertReaction(reactionType: ReactionType) {
     if (this.reactionService.isLoading()) return;
@@ -85,6 +89,10 @@ export class CommentComponent implements OnInit, OnDestroy{
       this.comment = updatedComment;
       if(this.comment.modifiedAt) this.formattedDateOfEditing = DateFormatting.formatDateTime(this.comment.modifiedAt);
     }
+  }
+
+  async redirectToProfile() {
+    await this.router.navigate(['/profiles', this.comment.author.userId, 'info']);
   }
 
   ngOnInit(): void {

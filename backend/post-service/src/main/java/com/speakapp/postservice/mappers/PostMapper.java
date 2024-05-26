@@ -20,7 +20,8 @@ public interface PostMapper {
                         UserGetDTO author,
                         ReactionsGetDTO reactions,
                         ReactionType currentUserReaction,
-                        Long totalNumberOfComments);
+                        Long totalNumberOfComments,
+                        boolean favourite);
 
     @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     void updatePostFromPostCreateDTO(PostCreateDTO postCreateDTO, @MappingTarget Post post);

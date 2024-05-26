@@ -2,11 +2,17 @@ package com.speakapp.postservice.services;
 
 import com.speakapp.postservice.communication.UserServiceCommunicationClient;
 import com.speakapp.postservice.dtos.*;
-import com.speakapp.postservice.entities.*;
+import com.speakapp.postservice.entities.FavouriteList;
+import com.speakapp.postservice.entities.Post;
+import com.speakapp.postservice.entities.PostReaction;
+import com.speakapp.postservice.entities.ReactionType;
 import com.speakapp.postservice.exceptions.AccessDeniedException;
 import com.speakapp.postservice.exceptions.PostNotFoundException;
-import com.speakapp.postservice.mappers.*;
+import com.speakapp.postservice.mappers.PostMapper;
+import com.speakapp.postservice.mappers.PostPageMapper;
+import com.speakapp.postservice.mappers.ReactionsMapper;
 import com.speakapp.postservice.repositories.CommentRepository;
+import com.speakapp.postservice.repositories.FavouriteListRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +33,8 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     private final PostReactionRepository postReactionRepository;
+
+    private final FavouriteListRepository favouriteListRepository;
 
     private final PostMapper postMapper;
 
@@ -47,15 +56,15 @@ public class PostService {
                 author,
                 reactionsGetDTO,
                 null,
-                0L
+                0L,
+                false
         );
     }
 
     public PostGetDTO updatePost(PostCreateDTO postCreateDTO, UUID postId, UUID userId) {
         Post postToUpdate = postRepository.findById(postId).orElseThrow(() ->
-                new PostNotFoundException("Post with id = " + postId + " was not found"));
+                new PostNotFoundException(postId));
 
-        UserGetDTO author = userServiceCommunicationClient.getUserById(postToUpdate.getUserId());
 
         if (!postToUpdate.getUserId().equals(userId))
             throw new AccessDeniedException("Only author of post can update it");
@@ -64,17 +73,27 @@ public class PostService {
 
         Post postUpdated = postRepository.save(postToUpdate);
 
-        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(postUpdated);
+        return createPostGetDTOFromPost(userId, postUpdated);
+    }
 
-        ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(postUpdated, userId).orElse(null);
+    private PostGetDTO createPostGetDTOFromPost(UUID userId, Post post) {
+        UserGetDTO author = userServiceCommunicationClient.getUserById(post.getUserId());
+        ReactionsGetDTO reactionsGetDTO = getReactionsForThePost(post);
 
-        Long totalNumberOfComments = commentRepository.countAllByPost(postUpdated);
+        ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
 
-        return postMapper.toGetDTO(postUpdated,
+        Long totalNumberOfComments = commentRepository.countAllByPost(post);
+
+        boolean favourite = isPostFavourite(userId, post);
+
+        return postMapper.toGetDTO(
+                post,
                 author,
                 reactionsGetDTO,
                 currentUserReactionType,
-                totalNumberOfComments);
+                totalNumberOfComments,
+                favourite
+        );
     }
 
     public PostPageGetDTO getUsersLatestPosts(int pageNumber, int pageSize, UUID userIdOfProfileOwner, UUID userId) {
@@ -92,19 +111,16 @@ public class PostService {
     }
 
     public void deletePost(UUID userId, UUID postId) {
+        Post postToDelete = postRepository.findById(postId).orElseThrow(() ->
+                new PostNotFoundException(postId));
 
-        Post postToDelete = postRepository.findById(postId).orElseThrow(()->
-                new PostNotFoundException("Post with id = " + postId + " has not been found"));
 
-
-        if(!userId.equals(postToDelete.getUserId()))
+        if (!userId.equals(postToDelete.getUserId()))
             throw new AccessDeniedException("Only author of the post can delete it");
 
         postRepository.delete(postToDelete);
     }
 
-    // TODO: Possible refactoring - create abstract class with ReactionType field which CommentReaction and PostReaction will extend
-    // then generalize "getReactionsForTheComment" and "getReactionsForThePost" methods into one function
     private ReactionsGetDTO getReactionsForThePost(Post post) {
         List<PostReaction> postReactions = postReactionRepository.findAllByPost(post);
 
@@ -123,36 +139,63 @@ public class PostService {
                 .build();
     }
 
-    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
-        List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
-            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
-            ReactionsGetDTO postReactions = getReactionsForThePost(post);
-            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
-            Long totalNumberOfComments = commentRepository.countAllByPost(post);
+    public PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
+        Set<UUID> userIds = postsPage
+                .getContent()
+                .stream()
+                .map(Post::getUserId)
+                .collect(Collectors.toSet());
+        Map<UUID, AppUserPreviewInternalDTO> uuidToAppUserPreviewInternal = userServiceCommunicationClient.getUsersByTheirIds(userIds);
 
-            return postMapper.toGetDTO(
-                post,
-                postAuthor,
-                postReactions,
-                currentUserReactionType,
-                totalNumberOfComments
-            );
-        }).toList();
+        List<PostGetDTO> postGetDTOS = postsPage
+                .getContent()
+                .stream()
+                .map(post -> {
+                            AppUserPreviewInternalDTO appUserPreviewInternalDTO = uuidToAppUserPreviewInternal.get(post.getUserId());
+                            return postMapper.toGetDTO(
+                                    post,
+                                    UserGetDTO.builder()
+                                            .userId(post.getUserId())
+                                            .profilePhotoId(appUserPreviewInternalDTO.getProfilePhotoId())
+                                            .fullName(appUserPreviewInternalDTO.getFullName())
+                                            .build(),
+                                    getReactionsForThePost(post),
+                                    postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null),
+                                    commentRepository.countAllByPost(post),
+                                    isPostFavourite(userId, post)
+                            );
+                        }
+                )
+                .toList();
 
         return postPageMapper.toGetDTO(
-            postGetDTOS,
-            page,
-            postsPage.getTotalPages()
+                postGetDTOS,
+                page,
+                postsPage.getTotalPages()
         );
     }
 
     public Post getPostById(UUID postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
-        if(postOptional.isEmpty()){
+        if (postOptional.isEmpty()) {
             throw new PostNotFoundException("Post with id = " + postId + " was not found");
         }
 
         return postOptional.get();
     }
 
+    private boolean isPostFavourite(UUID userId, Post post) {
+        Optional<FavouriteList> favouriteList = favouriteListRepository.getFavouriteListByUserId(userId);
+
+        return favouriteList.map(list -> list.getFavouritePosts().contains(post)).orElse(false);
+
+    }
+
+    public PostPageGetDTO getLatestPostsByFriends(int pageNumber, int pageSize, UUID userId) {
+        Pageable requestedPageable = Pageable.ofSize(pageSize).withPage(pageNumber);
+        List<UUID> friendIdsOfUser = userServiceCommunicationClient.getFriendIdsOfUser(userId);
+        Page<Post> postsPage = postRepository.findAllByUserIdIsInOrderByCreatedAtDesc(friendIdsOfUser, requestedPageable);
+
+        return createPostPageGetDTOFromPostPage(postsPage, userId, requestedPageable);
+    }
 }
