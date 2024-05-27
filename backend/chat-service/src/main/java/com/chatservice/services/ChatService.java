@@ -88,13 +88,6 @@ public class ChatService {
     private ChatPreviewDTO createChatPreviewDTO(Message message){
         Conversation getConversationForMessage = message.getConversation();
 
-        ConversationGetDTO conversationGetDTO = ConversationGetDTO.builder()
-                .conversationId(getConversationForMessage.getConversationId())
-                .conversationName(getConversationForMessage.getConversationName())
-                .isGroupConversation(getConversationForMessage.isGroupConversation())
-                .build();
-
-
         UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
 
         MessageGetDTO messageGetDTO = MessageGetDTO.builder()
@@ -105,6 +98,23 @@ public class ChatService {
                 .sentAt(message.getSentAt()).build();
 
         List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(getConversationForMessage.getConversationId());
+
+        if(conversationMembers.size() == 2 && getConversationForMessage.getConversationName() == null){
+            for(UUID conversationMember : conversationMembers){
+                if(!conversationMember.equals(messageAuthor.getUserId())){
+                    String nameOfMessageReciever = userServiceCommunicationClient.getUserById(message.getFromUserId()).getFullName();
+                    getConversationForMessage.setConversationName(nameOfMessageReciever);
+                    break;
+                }
+            }
+        }
+
+        ConversationGetDTO conversationGetDTO = ConversationGetDTO.builder()
+                .conversationId(getConversationForMessage.getConversationId())
+                .conversationName(getConversationForMessage.getConversationName())
+                .isGroupConversation(getConversationForMessage.isGroupConversation())
+                .build();
+
         List<UserGetDTO> conversationMembersDTO = conversationMembers.stream().map(userServiceCommunicationClient::getUserById).toList();
 
         return ChatPreviewDTO.builder()
