@@ -9,6 +9,10 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    username: guest
+    password: guest
 
 azure:
   storage:
