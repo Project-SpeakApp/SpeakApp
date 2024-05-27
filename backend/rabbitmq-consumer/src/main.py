@@ -4,6 +4,8 @@ import time
 from settings import Settings
 import pika
 import logging
+from azurebatchload import Utils
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,6 +30,7 @@ class FileDeletionConsumer:
         credentials = pika.PlainCredentials(self.rabbitmq['username'], self.rabbitmq['password'])
         parameters = pika.ConnectionParameters(self.rabbitmq['host'], credentials=credentials)
         connection_attempts = 5
+        time.sleep(15)
         for i in range(connection_attempts):
             try:
                 logging.info(f"Connecting to RabbitMQ Attempt: {i + 1}")
@@ -41,21 +44,48 @@ class FileDeletionConsumer:
         raise Exception(f"Failed to connect to RabbitMQ after {connection_attempts} attempts")
 
     def callback(self, ch, method, properties, body):
-        logging.info("Received message")
-        body = body.decode('utf-8')
-        container_client = self.blob_service_client.get_container_client(self.container_name)
-        blob_client = container_client.get_blob_client(body)
         try:
-            # blob_client.delete_blob(body)
-            logging.info(f"Deleted file: {body}")
-        except ResourceNotFoundError:
-            logging.warning(f"File {body} not found")
+            # Assuming the body contains the message in the format: type,mediaId,userId
+            type_name, media_id = body.decode('utf-8').split(',')
+            logging.info(f"Received type: {type_name}, media_id: {media_id}")
+
+            # Get container client
+            container_client = self.blob_service_client.get_container_client(self.container_name)
+            prefix = f"{type_name}/{media_id}"
+
+            # List blobs with the specified prefix
+            blob_list = container_client.list_blobs(name_starts_with=prefix)
+
+            found_blob = None
+            for blob in blob_list:
+                root, ext = os.path.splitext(blob.name)
+                if root == prefix:
+                    logging.info(f"Found blob with extension: {ext}")
+                    found_blob = blob
+                    break
+
+            if found_blob:
+                blob_client = container_client.get_blob_client(found_blob.name)
+                try:
+                    # Perform the delete operation
+                    blob_client.delete_blob()
+                    logging.info(f"Deleted file: {found_blob.name}")
+                    return
+                except ResourceNotFoundError:
+                    logging.warning(f"File not found: {found_blob.name}")
+            else:
+                logging.warning(f"No file found for media_id: {media_id}")
+
+        except ValueError as e:
+            logging.error(f"Error decoding message: {e}")
+        except Exception as e:
+            logging.error(f"Unexpected error: {e}")
 
     def delete_blob(self, file_name):
         try:
             container_client = self.blob_service_client.get_container_client(self.container_name)
             blob_client = container_client.get_blob_client(file_name)
-            # blob_client.delete_blob(file_name)
+            blob_client.delete_blob(file_name)
             logging.info(f"Deleted file: {file_name}")
         except Exception as e:
             logging.error(f"Error deleting file: {e}")
