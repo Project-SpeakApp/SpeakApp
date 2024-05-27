@@ -10,27 +10,9 @@ import {FriendsService} from "../../../modules/profiles/services/friends.service
   selector: 'app-header',
   templateUrl: './header.component.html'
 })
-<<<<<<< HEAD
-export class HeaderComponent implements OnInit {
-
-  constructor(private authService: AuthService, private themeService: ThemeService, private chatService: ChatService, private router: Router) { }
-
-  authState = this.authService.state;
-
-  themes = this.themeService.themes;
-
-  connectToWebSocket() {
-    this.chatService.connect(this.authService.state().userId);
-    this.router.navigate(['/chats']);
-  }
-  themeChanges(event: any) {
-    this.themeService.changeTheme(event.target.value);
-    console.log(event.target.value);
-  }
-=======
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  constructor(private authService: AuthService, private friendsService: FriendsService) {
+  constructor(private authService: AuthService, private friendsService: FriendsService, private themeService: ThemeService, private chatService: ChatService, private router: Router) {
     effect(() => {
       if (this.authState().isLoggedIn) {
         this.sub.add(this.friendsService.getFriendRequests(0, 99).subscribe((count) => {
@@ -40,11 +22,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  themes = this.themeService.themes;
+
+  connectToWebSocket() {
+    this.chatService.connect(this.authService.state().userId);
+    this.router.navigate(['/chats']);
+  }
+
   authState = this.authService.state;
 
   requestsCount = this.authService.requestCount;
   sub = new Subscription();
->>>>>>> main
+
+  themeChanges(event: any) {
+    this.themeService.changeTheme(event.target.value);
+    console.log(event.target.value);
+  }
 
   async logoutUser() {
     await this.authService.logout('http://localhost:4200/');
