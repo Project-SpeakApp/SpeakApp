@@ -1,12 +1,14 @@
 package com.speakapp.userservice.controllers;
 
 import com.speakapp.userservice.dtos.AppUserPreviewDTO;
+import com.speakapp.userservice.dtos.AppUserPreviewInternalDTO;
 import com.speakapp.userservice.services.InternalUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -18,7 +20,7 @@ public class InternalUserController {
 
     @GetMapping("/userIds={userIds}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppUserPreviewDTO> getUsers(@PathVariable List<UUID> userIds) {
+    public Map<UUID, AppUserPreviewInternalDTO> getUsers(@PathVariable Set<UUID> userIds) {
         return internalUserService.getUsersPreviews(userIds);
     }
 

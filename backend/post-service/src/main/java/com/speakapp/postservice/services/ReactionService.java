@@ -21,7 +21,7 @@ public class ReactionService {
     
     public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId){
         Post post = postRepository.findById(postId).orElseThrow(() ->
-                new PostNotFoundException("Post with id = " + postId + " has not been found"));
+                new PostNotFoundException(postId));
         PostReaction oldReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 
         if (oldReaction == null && newReaction != null) {
