@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy, OnChanges {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      this.imageSubscription.add(this.imageService.uploadImage(file, TypeMedia.AVATAR).pipe(
+      this.imageSubscription.add(this.imageService.uploadImage(file, type === 'avatar' ? TypeMedia.AVATAR : TypeMedia.BG).pipe(
         tap((res) => {
           if (type === 'avatar')
             this.updateAvatar(res);
