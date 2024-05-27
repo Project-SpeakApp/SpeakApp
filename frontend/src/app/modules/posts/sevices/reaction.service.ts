@@ -24,7 +24,7 @@ export class ReactionService {
     const reactionToSend = reactionType === currentReactionType ? null : reactionType;
     return this.http
       .put<ReactionType | null>(
-        `https://localhost:4200/api/${contentType}s/reactions/${contentId}?${
+        `https://localhost:4443/api/${contentType}s/reactions/${contentId}?${
           reactionToSend ? 'reactionType=' + reactionToSend : ''
         }`, {},)
       .pipe(

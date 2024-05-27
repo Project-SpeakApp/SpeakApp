@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   sub = new Subscription();
 
   async logoutUser() {
-    await this.authService.logout('https://localhost:4200/');
+    await this.authService.logout('https://localhost:4443/');
   }
 
   async loginUser() {

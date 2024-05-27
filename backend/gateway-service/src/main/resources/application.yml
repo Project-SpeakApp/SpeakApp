@@ -18,7 +18,7 @@ logging:
 
 app:
   cors:
-    allowed-origins: https://localhost:4200
+    allowed-origins: https://localhost:4443
   jwt:
     keycloak: http://keycloak:8444 
     realm: SpeakApp

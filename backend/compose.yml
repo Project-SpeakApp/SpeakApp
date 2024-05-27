@@ -163,6 +163,7 @@ services:
       context: ../frontend
     ports:
       - '4200:4200'
+      - '4443:4443'
     depends_on:
       - api-gateway
     volumes:
