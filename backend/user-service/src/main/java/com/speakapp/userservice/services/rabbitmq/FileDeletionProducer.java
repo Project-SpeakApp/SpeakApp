@@ -14,7 +14,7 @@ public class FileDeletionProducer {
     private final RabbitTemplate rabbitTemplate;
     public void sendFileDeletionMessage(String type, UUID mediaId) {
         MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setDelay(1000); // TODO Set delay to 1 hour later
+        messageProperties.setDelay(60 * 5 * 1000); // 5 minutes
         String messageBody = type + "," + mediaId;
         Message message = new Message(messageBody.getBytes(), messageProperties);
         rabbitTemplate.send("delayedExchange", "fileDeletionQueue", message);
