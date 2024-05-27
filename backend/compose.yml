@@ -267,6 +267,16 @@ services:
       interval: 1s
       retries: 30
 
+  rabbitmq-consumer:
+    container_name: rabbitmq-consumer
+    build:
+      context: rabbitmq-consumer
+    networks:
+      - net-blobServ-azurite
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   rabbitmq:
     container_name: rabbitmq
     build:
