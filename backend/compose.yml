@@ -227,7 +227,7 @@ services:
       - net-blobServ-azurite
       - net-eureka-config
     environment:
-      RABBITMQ_HOST: rabbitmq
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       azurite:
         condition: service_healthy
@@ -285,19 +285,15 @@ services:
       - '5672:5672'
       - '15672:15672'
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
     environment:
         RABBITMQ_DEFAULT_USER: guest
         RABBITMQ_DEFAULT_PASS: guest
     networks:
       - net-blobServ-azurite
-    command: >
-      bash -c "
-      rabbitmq-plugins enable --offline rabbitmq_delayed_message_exchange &&
-      rabbitmq-server"
 
 networks:
   net-postDB-postServ:

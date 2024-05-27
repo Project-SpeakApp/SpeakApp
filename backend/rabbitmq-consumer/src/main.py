@@ -3,6 +3,10 @@ from azure.core.exceptions import ResourceNotFoundError
 import time
 from settings import Settings
 import pika
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class FileDeletionConsumer:
@@ -10,49 +14,55 @@ class FileDeletionConsumer:
         self.settings = Settings()
         self.blob_service_client = (BlobServiceClient
                                     .from_connection_string(self.settings.azure['storage_connection_string']))
-        self.container_name = self.settings.azure['storage_container_name']
+        self.container_name = self.settings.azure['container_name']
         self.rabbitmq = {
             'host': self.settings.rabbitmq['host'],
-            'user': self.settings.rabbitmq['username'],
+            'username': self.settings.rabbitmq['username'],
             'password': self.settings.rabbitmq['password'],
-            'queue': self.settings.rabbitmq['queue_name'],
-            'exchange': self.settings.rabbitmq['delayed_exchange']
+            'queue': self.settings.rabbitmq['queue'],
+            'exchange': self.settings.rabbitmq['exchange']
         }
         self.channel = self.setup_rabbitmq()
 
     def setup_rabbitmq(self):
         credentials = pika.PlainCredentials(self.rabbitmq['username'], self.rabbitmq['password'])
         parameters = pika.ConnectionParameters(self.rabbitmq['host'], credentials=credentials)
-        connection = pika.BlockingConnection(parameters)
-        channel = connection.channel()
-        channel.queue_declare(queue=self.rabbitmq['queue'])
-        return channel
+        connection_attempts = 5
+        for i in range(connection_attempts):
+            try:
+                logging.info(f"Connecting to RabbitMQ Attempt: {i + 1}")
+                connection = pika.BlockingConnection(parameters)
+                channel = connection.channel()
+                channel.queue_declare(queue=self.rabbitmq['queue'], durable=True)
+                return channel
+            except pika.exceptions.AMQPConnectionError as e:
+                logging.error(f"Error connecting to RabbitMQ: {e}")
+                time.sleep(5)
+        raise Exception(f"Failed to connect to RabbitMQ after {connection_attempts} attempts")
 
     def callback(self, ch, method, properties, body):
-        print("Received message")
-        time.sleep(180)
+        logging.info("Received message")
         body = body.decode('utf-8')
         container_client = self.blob_service_client.get_container_client(self.container_name)
         blob_client = container_client.get_blob_client(body)
         try:
             # blob_client.delete_blob(body)
-            print(f"Deleted file: {body}")
+            logging.info(f"Deleted file: {body}")
         except ResourceNotFoundError:
-            print(f"File {body} not found")
+            logging.warning(f"File {body} not found")
 
     def delete_blob(self, file_name):
         try:
             container_client = self.blob_service_client.get_container_client(self.container_name)
             blob_client = container_client.get_blob_client(file_name)
             # blob_client.delete_blob(file_name)
-            print(f"Deleted file: {file_name}")
-
+            logging.info(f"Deleted file: {file_name}")
         except Exception as e:
-            print(f"Error deleting file: {e}")
+            logging.error(f"Error deleting file: {e}")
 
     def consume_messages(self):
         self.channel.basic_consume(queue=self.rabbitmq['queue'], on_message_callback=self.callback, auto_ack=True)
-        print("### Waiting for messages. ###")
+        logging.info("### Waiting for messages. ###")
         self.channel.start_consuming()
 
 
@@ -60,4 +70,3 @@ if __name__ == "__main__":
     # Create consumer
     consumer = FileDeletionConsumer()
     consumer.consume_messages()
-

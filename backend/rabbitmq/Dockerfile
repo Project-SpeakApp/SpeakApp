@@ -8,7 +8,7 @@ RUN apk add --no-cache curl
 RUN curl -LJO https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/v3.13.0/rabbitmq_delayed_message_exchange-3.13.0.ez
 
 # Stage 2: Build the RabbitMQ image
-FROM rabbitmq:3.13
+FROM rabbitmq:3.13-management-alpine
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -17,4 +17,4 @@ WORKDIR /usr/src/app
 COPY --from=downloader /rabbitmq_delayed_message_exchange-3.13.0.ez /plugins/
 
 # Enable the plugin and start RabbitMQ
-CMD rabbitmq-plugins enable rabbitmq_delayed_message_exchange && rabbitmq-server
+CMD rabbitmq-plugins enable --offline rabbitmq_delayed_message_exchange && rabbitmq-server
