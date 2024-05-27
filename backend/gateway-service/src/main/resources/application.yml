@@ -18,14 +18,15 @@ logging:
 
 app:
   cors:
-    allowed-origins: http://localhost:4200
+    allowed-origins: https://localhost:4443
   jwt:
-    keycloak: http://keycloak-service:8443
+    keycloak: http://keycloak:8444 
     realm: SpeakApp
-    issuer-uri: http://localhost:8443/realms/${app.jwt.realm}
+    issuer-uri: https://localhost:8443/realms/${app.jwt.realm}
     resource-client-id: SpeakAppClient
 
 spring:
+
   main:
     web-application-type: reactive
   security:

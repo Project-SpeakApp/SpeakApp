@@ -18,7 +18,7 @@ export class ProfilesService {
   public getProfile(userId: string) {
     this.isLoading.set(true);
     return this.http
-      .get<ProfileGetDTO>(`http://localhost:8080/api/users/${userId}`)
+      .get<ProfileGetDTO>(`https://localhost:4443/api/users/${userId}`)
       .pipe(
         finalize(() => this.isLoading.set(false)),
       );
@@ -27,7 +27,7 @@ export class ProfilesService {
   public updateProfile(profile: ProfileUpdateDTO) {
     this.profileUpdateLoading.set(true);
     return this.http
-      .put<ProfileGetDTO>(`http://localhost:8080/api/users`, profile, {
+      .put<ProfileGetDTO>(`https://localhost:4443/api/users`, profile, {
       })
       .pipe(
         finalize(() => this.profileUpdateLoading.set(false)),
@@ -38,10 +38,10 @@ export class ProfilesService {
   }
 
   public updateProfilePhoto(mediaId: string) {
-    return this.http.put(`http://localhost:8080/api/users/profile-photo`, { photoId: mediaId }, {});
+    return this.http.put(`https://localhost:4443/api/users/profile-photo`, { photoId: mediaId }, {});
   }
 
   public updateBackgroundPhoto(mediaId: string) {
-    return this.http.put(`http://localhost:8080/api/users/background-photo`, { photoId: mediaId }, {});
+    return this.http.put(`https://localhost:4443/api/users/background-photo`, { photoId: mediaId }, {});
   }
 }
