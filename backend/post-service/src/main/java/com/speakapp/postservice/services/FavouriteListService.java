@@ -28,11 +28,7 @@ public class FavouriteListService {
 
     private final FavouriteListRepository favouriteListRepository;
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-    private final PostReactionRepository postReactionRepository;
-    private final PostMapper postMapper;
-    private final PostPageMapper postPageMapper;
-    private final UserServiceCommunicationClient userServiceCommunicationClient;
+    private final PostService postService;
 
     public void createFavouriteList(FavouriteListCreateDTO favouriteListCreateDTO) {
         FavouriteList newFavouriteList = FavouriteList.builder()
@@ -49,7 +45,7 @@ public class FavouriteListService {
         );
 
         Page<Post> favouritePosts = postRepository.findByFavouriteListsOrderByCreatedAtDesc(favouriteList, page);
-        return createPostPageGetDTOFromPostPage(favouritePosts, userId, page);
+        return postService.createPostPageGetDTOFromPostPage(favouritePosts, userId, page);
     }
 
     public void addPost(UUID userId, FavouriteListAddPostDTO favouriteListAddPostDTO) {
@@ -85,57 +81,4 @@ public class FavouriteListService {
         favouriteListRepository.save(favouriteList);
     }
 
-    private PostPageGetDTO createPostPageGetDTOFromPostPage(Page<Post> postsPage, UUID userId, Pageable page) {
-        List<PostGetDTO> postGetDTOS = postsPage.getContent().stream().map(post -> {
-            UserGetDTO postAuthor = userServiceCommunicationClient.getUserById(post.getUserId());
-            ReactionsGetDTO postReactions = getReactionsForThePost(post);
-            ReactionType currentUserReactionType = postReactionRepository.findTypeByPostAndUserId(post, userId).orElse(null);
-            Long totalNumberOfComments = commentRepository.countAllByPost(post);
-            boolean favourite = isPostFavourite(userId, post);
-
-            return postMapper.toGetDTO(
-                    post,
-                    postAuthor,
-                    postReactions,
-                    currentUserReactionType,
-                    totalNumberOfComments,
-                    favourite
-            );
-        }).toList();
-
-        return postPageMapper.toGetDTO(
-                postGetDTOS,
-                page,
-                postsPage.getTotalPages()
-        );
-    }
-
-    private ReactionsGetDTO getReactionsForThePost(Post post) {
-        List<PostReaction> postReactions = postReactionRepository.findAllByPost(post);
-
-        Map<ReactionType, Long> sumOfReactionsByType = new EnumMap<>(ReactionType.class);
-        for (PostReaction postReaction : postReactions) {
-            sumOfReactionsByType.merge(postReaction.getType(), 1L, Long::sum);
-        }
-
-        return ReactionsGetDTO.builder()
-                .sumOfReactionsByType(sumOfReactionsByType)
-                .sumOfReactions(sumOfReactionsByType
-                        .values()
-                        .stream()
-                        .reduce(0L, Long::sum)
-                )
-                .build();
-    }
-
-    private boolean isPostFavourite(UUID userId, Post post) {
-
-        Optional<FavouriteList> favouriteList = favouriteListRepository.getFavouriteListByUserId(userId);
-
-        if(favouriteList.isEmpty()) {       //If it doesn't exist
-            return false;
-        }
-
-        return favouriteList.get().getFavouritePosts().contains(post);
-    }
 }

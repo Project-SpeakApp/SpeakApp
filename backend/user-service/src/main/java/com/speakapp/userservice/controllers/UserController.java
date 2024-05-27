@@ -28,11 +28,21 @@ public class UserController {
         return userService.getUser(requesterId, userId);
     }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody AppUserCreateDTO userCreateDTO) {
-        userService.createUser(userCreateDTO);
-    }
+  @GetMapping("/findByFullName")
+  @ResponseStatus(HttpStatus.OK)
+  public AppUserPreviewPageDTO getUsersByFullName(
+      @RequestParam(defaultValue = "") String appUserFullName,
+      @RequestParam(defaultValue = "0") int pageNumber,
+      @RequestParam(defaultValue = "5") int pageSize) {
+
+    return userService.getUsersByFullName(appUserFullName, pageNumber, pageSize);
+  }
+
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void createUser(@RequestBody AppUserCreateDTO userCreateDTO) {
+    userService.createUser(userCreateDTO);
+  }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -56,11 +66,5 @@ public class UserController {
                                                    @RequestBody PhotoUpdateDTO photoUpdateDTO) {
         UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return userService.updateUserBackgroundPhoto(userId, photoUpdateDTO);
-    }
-
-    @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable(name = "userId") UUID userId) {
-        userService.deleteUser(userId);
     }
 }

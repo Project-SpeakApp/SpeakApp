@@ -1,0 +1,7 @@
+<div
+  class="w-[180px] h-[180px] rounded-[20px] bg-base-300 shadow-lg flex flex-col justify-center cursor-pointer transition hover:scale-105"
+  [routerLink]="['/profiles', user.userId]"
+>
+  <app-user-avatar class="flex flex-row justify-center" [src]="user.profilePhotoId" [size]="'xxl'"></app-user-avatar>
+  <h1 class="h-[50px] text-center text-xl font-semibold">{{ user.fullName }}</h1>
+</div>

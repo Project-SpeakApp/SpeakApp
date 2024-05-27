@@ -1,0 +1,9 @@
+<div infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0.8">
+  <ul class="flex flex-col gap-4">
+    <li *ngFor="let request of requests">
+      <app-friend-request-card [request]="request" (removeRequest)="removeRequest($event)"></app-friend-request-card>
+    </li>
+  </ul>
+  <p *ngIf="requests.length === 0">You have no pending friend requests.</p>
+</div>
+<app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
