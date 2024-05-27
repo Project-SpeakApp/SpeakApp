@@ -2,19 +2,21 @@ package com.chatservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.Instant;
 import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity(name = "message")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "message")
-public class Message extends Auditable{
+public class Message{
 
     @Id
     @GeneratedValue
@@ -38,6 +40,12 @@ public class Message extends Auditable{
     @OneToOne
     @JoinColumn(name = "response_to_message_id")
     private Message responseToMessage;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant sentAt;
+
+    private Instant deliveredAt;
 
     private boolean isDeleted;
 
