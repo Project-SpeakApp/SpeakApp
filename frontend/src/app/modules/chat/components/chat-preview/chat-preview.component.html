@@ -7,7 +7,9 @@
   <div class="details">
     <div class="name">{{ chatPreview.conversationGetDTO.conversationName }}</div>
     <div class="last-message">
-      <span *ngIf="userId === chatPreview.lastMessage.fromUser.userId">You: </span>{{ ChatPreviewTextFormatting.formatChatPreviewText(chatPreview.lastMessage.content, 30) }} • 39 min.
+      <span *ngIf="userId === chatPreview.lastMessage.fromUser.userId">You: </span>
+      {{ ChatPreviewTextFormatting.formatChatPreviewText(chatPreview.lastMessage.content, 30) }} •
+      {{ ChatPreviewTextFormatting.timeAgo(chatPreview.lastMessage.sentAt) }}
     </div>
   </div>
 </div>

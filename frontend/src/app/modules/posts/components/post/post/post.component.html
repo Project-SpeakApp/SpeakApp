@@ -1,11 +1,9 @@
 <div class="card py-2 bg-base-300 w-[500px] shadow-xl">
     <div class="flex items-center">
-      <div class="w-1/8">
-        <app-user-avatar [src]="post.author.profilePhotoId" size="m"></app-user-avatar>
-      </div>
-      <div style="padding-left: 10px" >
-        <h2 class="text-xl font-semibold">{{post.author.fullName}}</h2>
-        <p style="font-size: 12px" class="italic">{{formattedDate}}</p>
+      <app-user-avatar [src]="post.author.profilePhotoId" size="m" class="cursor-pointer" (click)="redirectToProfile()"></app-user-avatar>
+      <div class="pl-[10px]" >
+        <h2 class="text-xl font-semibold cursor-pointer" (click)="redirectToProfile()">{{post.author.fullName}}</h2>
+        <p class="italic text-[12px]">{{formattedDate}}</p>
       </div>
       <div class="ml-auto" style="margin-right: -5px">
         <app-delete-post (deleted)="handleDeletion($event)" [postId]="post.postId" [authorId]="post.author.userId"></app-delete-post>

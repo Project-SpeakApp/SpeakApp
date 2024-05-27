@@ -1,10 +1,8 @@
 <div class="card py-2 px-2 w-[470px] bg-base-100 shadow-xl " >
   <div class="flex items-center">
-    <div class="w-1/8">
-      <app-user-avatar [src]="comment.author.profilePhotoId" size="sm" class="m-1"></app-user-avatar>
-    </div>
+    <app-user-avatar [src]="comment.author.profilePhotoId" size="sm" class="m-1 cursor-pointer" (click)="redirectToProfile()"></app-user-avatar>
     <div class="pl-[2px] -mt-[8px]">
-      <h2 class="text-sm font-semibold">{{comment.author.fullName}}</h2>
+      <h2 class="text-sm font-semibold cursor-pointer" (click)="redirectToProfile()">{{comment.author.fullName}}</h2>
       <p class="italic text-[12px]">{{formattedDate}}</p>
     </div>
     <div class="ml-auto">

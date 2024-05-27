@@ -64,4 +64,14 @@ public class PostController {
         UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
         return postService.getLatestPosts(pageNumber, pageSize, userId);
     }
+
+    @GetMapping("/by-friends")
+    @ResponseStatus(HttpStatus.OK)
+    public PostPageGetDTO getLatestPostsByFriends(@RequestParam(defaultValue = "0") int pageNumber,
+                                                  @RequestParam(defaultValue = "5") int pageSize,
+                                                  @RequestHeader("Authorization") String authHeader) {
+        UUID userId = JwtDecoder.extractUserIdFromAuthorizationHeader(authHeader);
+        return postService.getLatestPostsByFriends(pageNumber, pageSize, userId);
+    }
+
 }

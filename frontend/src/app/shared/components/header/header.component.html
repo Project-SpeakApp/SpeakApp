@@ -17,15 +17,22 @@
       </span>
       <h2 class="my-auto hidden min-[320px]:block" >Home</h2>
     </a>
-    <a class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" routerLink="/chats"><span class="material-symbols-outlined" style="font-size: 32px">chat</span><h2 class="my-auto hidden min-[320px]:block">Chats</h2></a><a class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" routerLink="/search"><span class="material-symbols-outlined" style="font-size: 32px">
-        search
-      </span>
-      <h2 class="my-auto hidden min-[320px]:block">Search</h2>
+
+    <a class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" routerLink="/friends">
+      <span class="material-symbols-outlined" style="font-size: 32px">group</span>
+      <div class="indicator">
+        <span *ngIf="requestsCount() !== 0" class="indicator-item badge badge-secondary badge-sm">{{ requestsCount() }}</span>
+        <h2 class="my-auto hidden min-[320px]:block pr-2">Friends</h2>
+      </div>
+    </a>
+    <a style="cursor: pointer" class="flex flex-row gap-2 transition duration-300 min-w-[4rem] justify-center hover:scale-110" (click)="connectToWebSocket()">
+      <span class="material-symbols-outlined" style="font-size: 32px">chat</span>
+      <h2 class="my-auto hidden min-[320px]:block">Chats</h2>
     </a>
   </nav>
   <!-- user menu-->
   <div *ngIf="authState().isLoggedIn" class="navbar-end mr-4 flex gap-8 w-100 lg:mr-16">
-    <div class="flex flex-row gap-2 cursor-pointer sm:gap-4" [routerLink]="['profiles/', authState().userId]">
+    <div class="flex flex-row gap-2 cursor-pointer sm:gap-4" [routerLink]="['profiles/', authState().userId, 'info']">
       <h2 class="text-lg font-semibold my-auto hidden min-[320px]:block select-none">{{ authState().firstName }}</h2>
       <app-user-avatar [src]="authState().profilePhotoId" size="xl"></app-user-avatar>
     </div>

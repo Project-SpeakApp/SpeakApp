@@ -19,6 +19,8 @@ export class AuthService {
 
   state = signal(this.defaultState);
 
+  requestCount = signal(0);
+
   public updateState() {
     try {
       this.keycloak.loadUserProfile().then(x => {
@@ -36,6 +38,10 @@ export class AuthService {
     catch (_) {
       this.state.set(this.defaultState);
     }
+  }
+
+  public updateRequestsCount(amount: number) {
+    this.requestCount.update((s) => s - amount);
   }
 
   public async login(options?: Keycloak.KeycloakLoginOptions) {
