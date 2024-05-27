@@ -226,6 +226,8 @@ services:
       - net-apiGw-blobServ
       - net-blobServ-azurite
       - net-eureka-config
+    environment:
+      RABBITMQ_HOST: rabbitmq
     depends_on:
       azurite:
         condition: service_healthy
@@ -234,6 +236,8 @@ services:
       config-server:
         condition: service_healthy
       eureka-server:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
 
   metadata-db:
@@ -262,6 +266,28 @@ services:
       test: nc 127.0.0.1 10000 -z
       interval: 1s
       retries: 30
+
+  rabbitmq:
+    container_name: rabbitmq
+    build:
+      context: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - net-blobServ-azurite
+    command: >
+      bash -c "
+      rabbitmq-plugins enable --offline rabbitmq_delayed_message_exchange &&
+      rabbitmq-server"
 
 networks:
   net-postDB-postServ:
