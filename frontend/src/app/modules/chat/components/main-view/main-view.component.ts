@@ -47,7 +47,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
       if (this.selectedChat && this.selectedChat.conversationGetDTO.conversationId === message.conversationId) {
         this.messages.unshift(message);
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -92,6 +92,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.messages = response.listOfMessages;
         this.currentPageMessages = 1;
         this.isLoading2 = false;
+        console.log(this.messages);
       },
       error => {
         console.error('Failed to load chat messages:', error);
