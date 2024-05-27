@@ -165,10 +165,10 @@ public class ChatService {
         .build());
   }
 
-<<<<<<< HEAD
-  public MessageGetDTO convertMessageToGetDTO(Message message){
-        conversationRepository.findByConversationId(message.getConversation().getConversationId())
-              .orElseThrow(ConversationNotFound::new);
+
+  public MessageGetDTO convertMessageToGetDTO(Message message) {
+      conversationRepository.findByConversationId(message.getConversation().getConversationId())
+              .orElseThrow(ConversationNotFoundException::new);
 
       UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
       return MessageGetDTO.builder()
@@ -178,7 +178,7 @@ public class ChatService {
               .fromUser(messageAuthor)
               .type(message.getType())
               .build();
-=======
+  }
   public void deleteMessage(UUID messageId, UUID fromUserId){
         Message messageToDelete = messageRepository.findByMessageIdAndFromUserId(messageId, fromUserId)
                 .orElseThrow(MessageNotFoundException::new);
@@ -191,7 +191,6 @@ public class ChatService {
         }
 
         messageRepository.save(messageToDelete);
->>>>>>> main
   }
 
 }
