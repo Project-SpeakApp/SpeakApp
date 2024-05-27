@@ -32,7 +32,7 @@
       </div>
       <div class="card">
         <form (submit)="sendMessage()" class="flex w-full items-center">
-          <textarea [formControl]="contentControl" class="text-black" placeholder="Add a comment..."></textarea>
+          <textarea [formControl]="contentControl" (keydown.enter)="sendMessage()" class="text-black" placeholder="Add a comment..."></textarea>
           <button *ngIf="!isLoading" class="material-symbols-outlined cursor-pointer" type="submit">send</button>
           <div *ngIf="isLoading" class="loading loading-spinner"></div>
         </form>

@@ -40,7 +40,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
       if (chatPreviewIndex !== -1) {
         // Also design case
         message.fromUser.profilePhotoId = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-        this.chatPreviews[chatPreviewIndex].lastMessage = message;
+        const chatPreviewItem = this.chatPreviews.splice(chatPreviewIndex, 1)[0];
+        chatPreviewItem.lastMessage = message;
+        this.chatPreviews.unshift(chatPreviewItem);
       }
       if (this.selectedChat && this.selectedChat.conversationGetDTO.conversationId === message.conversationId) {
         console.log(this.messages);
@@ -112,11 +114,14 @@ export class MainViewComponent implements OnInit, OnDestroy {
       }
       const messageDTO: MessagePrivateCreateDTO = {
         fromUserId: userId,
-        toUserId: this.selectedChat.conversationGetDTO.conversationId,
+        toUserId: this.selectedChat.chatMembers
+          .filter(member => member.userId !== userId)
+          .map(member => member.userId)[0],
         content: this.contentControl.value as string,
         type: 'TEXT',
         conversationId: this.selectedChat.conversationGetDTO.conversationId
       };
+      console.log(messageDTO);
 
       this.isLoading = true;
       this.chatService.sendMessage(messageDTO).subscribe(

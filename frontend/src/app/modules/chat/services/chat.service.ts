@@ -43,7 +43,7 @@ export class ChatService {
   public sendMessage(messageDTO: MessagePrivateCreateDTO): Observable<any> {
     return new Observable((subscriber) => {
       if (this.stompClient && this.stompClient.connected) {
-        this.stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(messageDTO));
+        this.stompClient.send(`/app/chat.sendMessage`, {}, JSON.stringify(messageDTO));
         subscriber.next({ message: 'Message sent successfully' });
         subscriber.complete();
       } else {
