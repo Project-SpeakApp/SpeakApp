@@ -45,7 +45,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.chatPreviews.unshift(chatPreviewItem);
       }
       if (this.selectedChat && this.selectedChat.conversationGetDTO.conversationId === message.conversationId) {
-        console.log(this.messages);
         this.messages.unshift(message);
       }
     })
@@ -78,7 +77,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.chatPreviews = response.chatPreviewDTOS;
         this.totalPagesPreview = response.totalPages;
         this.currentPagePreview = response.currentPage + 1;
-        console.log(this.chatPreviews);
       },
       error => {
         console.error('Failed to load chat previews:', error);
@@ -88,7 +86,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
 
   selectChat(chatPreview: ChatPreviewDTO): void {
     this.isLoading2 = true;
-    this.chatService.connect(this.authService.state().userId);
     this.selectedChat = chatPreview;
     this.chatService.getMessages(this.selectedChat.conversationGetDTO.conversationId, 0, 10).subscribe(
       response => {
@@ -121,8 +118,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
         type: 'TEXT',
         conversationId: this.selectedChat.conversationGetDTO.conversationId
       };
-      console.log(messageDTO);
-
       this.isLoading = true;
       this.chatService.sendMessage(messageDTO).subscribe(
         response => {
