@@ -37,19 +37,4 @@ public class Comment extends Auditable {
     private String content;
 
     private int numberOfReactions;
-
-    public void incrementNumberOfReactions() {
-        numberOfReactions++;
-    }
-
-    public void decrementNumberOfReactions() {
-        if(numberOfReactions > 0) {
-            numberOfReactions--;
-        }
-    }
-
-    //   TODO Media service for photos, audio, video
-    //    @Lob
-    //    private byte[] media;
-
 }

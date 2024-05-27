@@ -7,7 +7,7 @@ RUN npm run build --prod
 
 
 FROM nginx:alpine
-COPY default.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=build-step /app/dist/frontend /usr/share/nginx/html
 
 EXPOSE 4200
