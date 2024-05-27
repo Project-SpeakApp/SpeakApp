@@ -18,8 +18,20 @@ class FileDeletionConsumer:
             'queue': self.settings.rabbitmq['queue_name'],
             'exchange': self.settings.rabbitmq['delayed_exchange']
         }
+        self.channel = self.setup_rabbitmq()
+
+    def setup_rabbitmq(self):
+        credentials = pika.PlainCredentials(self.rabbitmq['username'], self.rabbitmq['password'])
+        parameters = pika.ConnectionParameters(self.rabbitmq['host'], credentials=credentials)
+        connection = pika.BlockingConnection(parameters)
+        channel = connection.channel()
+        channel.queue_declare(queue=self.rabbitmq['queue'])
+        return channel
 
     def callback(self, ch, method, properties, body):
+        print("Received message")
+        time.sleep(180)
+        body = body.decode('utf-8')
         container_client = self.blob_service_client.get_container_client(self.container_name)
         blob_client = container_client.get_blob_client(body)
         try:
@@ -28,16 +40,20 @@ class FileDeletionConsumer:
         except ResourceNotFoundError:
             print(f"File {body} not found")
 
-    def consume_messages(self):
-        connection_parameters = pika.ConnectionParameters(host=self.rabbitmq['host'])
-        connection = pika.BlockingConnection(connection_parameters)
-        channel = connection.channel()
+    def delete_blob(self, file_name):
+        try:
+            container_client = self.blob_service_client.get_container_client(self.container_name)
+            blob_client = container_client.get_blob_client(file_name)
+            # blob_client.delete_blob(file_name)
+            print(f"Deleted file: {file_name}")
 
-        # Create queue
-        channel.queue_declare(queue=self.rabbitmq['queue'])
-        channel.basic_consume(queue=self.rabbitmq['queue'], on_message_callback=self.callback, auto_ack=True)
+        except Exception as e:
+            print(f"Error deleting file: {e}")
+
+    def consume_messages(self):
+        self.channel.basic_consume(queue=self.rabbitmq['queue'], on_message_callback=self.callback, auto_ack=True)
         print("### Waiting for messages. ###")
-        channel.start_consuming()
+        self.channel.start_consuming()
 
 
 if __name__ == "__main__":
