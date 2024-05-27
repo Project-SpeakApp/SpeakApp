@@ -59,6 +59,7 @@ services:
      - net-apiGw-userServ
      - net-eureka-config
      - net-userServ-chatServ
+     - net-rabbitmq
    depends_on:
      config-server:
        condition: service_healthy
@@ -90,6 +91,7 @@ services:
      - net-postDB-postServ
      - net-apiGw-postServ
      - net-eureka-config
+     - net-rabbitmq
    depends_on:
      post-db-service:
        condition: service_healthy
@@ -226,8 +228,7 @@ services:
       - net-apiGw-blobServ
       - net-blobServ-azurite
       - net-eureka-config
-    environment:
-      - RABBITMQ_HOST=rabbitmq
+      - net-rabbitmq
     depends_on:
       azurite:
         condition: service_healthy
@@ -236,8 +237,6 @@ services:
       config-server:
         condition: service_healthy
       eureka-server:
-        condition: service_healthy
-      rabbitmq:
         condition: service_healthy
 
   metadata-db:
@@ -272,6 +271,7 @@ services:
     build:
       context: rabbitmq-consumer
     networks:
+      - net-rabbitmq
       - net-blobServ-azurite
     depends_on:
       rabbitmq:
@@ -293,7 +293,7 @@ services:
         RABBITMQ_DEFAULT_USER: guest
         RABBITMQ_DEFAULT_PASS: guest
     networks:
-      - net-blobServ-azurite
+      - net-rabbitmq
 
 networks:
   net-postDB-postServ:
@@ -309,6 +309,7 @@ networks:
   net-blobServ-azurite:
   net-eureka-config:
   net-apiGw-chatServ:
+  net-rabbitmq:
 
 volumes:
   vol-user-db:

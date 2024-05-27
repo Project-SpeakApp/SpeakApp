@@ -6,7 +6,6 @@ import com.speakapp.blobservice.dtos.BlobFileDTO;
 import com.speakapp.blobservice.dtos.BlobMetadataDTO;
 import com.speakapp.blobservice.entities.Metadata;
 import com.speakapp.blobservice.entities.TypeMedia;
-import com.speakapp.blobservice.exceptions.AccessDeniedException;
 import com.speakapp.blobservice.exceptions.MetadataNotFoundException;
 import com.speakapp.blobservice.mappers.BlobMapper;
 import com.speakapp.blobservice.repositories.MediaMetadataRepository;
@@ -65,20 +64,5 @@ public class MediaService {
         savedMetadata.setBlobUrl(blobClient.getBlobUrl());
 
         return blobMapper.toDTO(savedMetadata, userId);
-    }
-
-    @Transactional
-    public void deleteMedia(UUID userId, UUID mediaId) {
-        // TODO Finish implementing this method after consulting with frontend team
-        Optional<Metadata> optionalMetadata = mediaMetadataRepository.findByMediaId(mediaId);
-        Metadata metadata = optionalMetadata.orElseThrow(MetadataNotFoundException::new);
-
-        if (!metadata.getUserId().equals(userId)) {
-            throw new AccessDeniedException("User with id = " + userId + " is not allowed to delete media with id = " + mediaId);
-        }
-
-        BlobClient blobClient = blobContainerClient.getBlobClient(metadata.getFileName());
-        blobClient.delete();
-        mediaMetadataRepository.delete(metadata);
     }
 }
