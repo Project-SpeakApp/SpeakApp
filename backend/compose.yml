@@ -59,6 +59,7 @@ services:
      - net-apiGw-userServ
      - net-eureka-config
      - net-userServ-chatServ
+     - net-rabbitmq
    depends_on:
      config-server:
        condition: service_healthy
@@ -90,6 +91,7 @@ services:
      - net-postDB-postServ
      - net-apiGw-postServ
      - net-eureka-config
+     - net-rabbitmq
    depends_on:
      post-db-service:
        condition: service_healthy
@@ -209,7 +211,6 @@ services:
       - "--import-realm"
       - "--features=declarative-user-profile"
       - "--spi-theme-cache-themes=true"
-
     depends_on:
       keycloak-db:
         condition: service_healthy
@@ -269,10 +270,39 @@ services:
       - '10002:10002'
     networks:
       - net-blobServ-azurite
+      - net-rabbitmq
     healthcheck:
       test: nc 127.0.0.1 10000 -z
       interval: 1s
       retries: 30
+
+  rabbitmq-consumer:
+    container_name: rabbitmq-consumer
+    build:
+      context: rabbitmq-consumer
+    networks:
+      - net-rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    container_name: rabbitmq
+    build:
+      context: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - net-rabbitmq
 
 networks:
   net-postDB-postServ:
@@ -289,6 +319,7 @@ networks:
   net-eureka-config:
   net-apiGw-chatServ:
   net-apiGw-client:
+  net-rabbitmq:
 
 volumes:
   vol-user-db:

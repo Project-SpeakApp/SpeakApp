@@ -42,13 +42,4 @@ public class MediaController {
             BlobMetadataDTO blobMetadataDTO = mediaService.uploadMedia(file, type, userId);
             return ResponseEntity.ok(blobMetadataDTO.getMediaId());
         }
-
-        @DeleteMapping("/{mediaId}")
-        @ResponseStatus(HttpStatus.NO_CONTENT)
-        public void deleteMedia(@PathVariable UUID mediaId, @RequestHeader("Authorization") String authHeader) {
-            String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
-            UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
-            mediaService.deleteMedia(userId, mediaId);
-        }
-
 }

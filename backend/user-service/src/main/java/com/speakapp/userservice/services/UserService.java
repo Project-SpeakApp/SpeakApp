@@ -1,5 +1,6 @@
 package com.speakapp.userservice.services;
 
+import com.speakapp.userservice.services.rabbitmq.FileDeletionProducer;
 import com.speakapp.userservice.communication.PostServiceCommunication;
 import com.speakapp.userservice.dtos.*;
 import com.speakapp.userservice.entities.AppUser;
@@ -26,6 +27,7 @@ public class UserService {
     private final AppUserMapper appUserMapper;
     private final PostServiceCommunication postServiceCommunication;
     private final UserFriendRepository userFriendRepository;
+    private final FileDeletionProducer fileDeletionProducer;
 
     public AppUserWithFriendStatusGetDTO getUser(UUID requesterId, UUID userIdToFetch) throws UserNotFoundException {
         AppUser requester = userRepository.findById(requesterId)
@@ -126,6 +128,7 @@ public class UserService {
         appUserMapper.updateAppUserProfilePhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
         AppUser updatedUser = userRepository.save(appUser);
+        fileDeletionProducer.sendFileDeletionMessage("AVATAR", appUser.getProfilePhotoId());
         return appUserMapper.toGetDTO(updatedUser);
     }
 
@@ -136,6 +139,7 @@ public class UserService {
         appUserMapper.updateAppUserBackgroundPhotoFromPhotoUpdateDTO(photoUpdateDTO, appUser);
 
         AppUser updatedUser = userRepository.save(appUser);
+        fileDeletionProducer.sendFileDeletionMessage("BG", appUser.getBgPhotoId());
         return appUserMapper.toGetDTO(updatedUser);
     }
 }

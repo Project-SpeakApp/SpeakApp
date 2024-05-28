@@ -6,6 +6,13 @@ spring:
     name: post-service
   config:
     import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-server:8888/post-service}
+  rabbitmq:
+    host: rabbitmq
+    username: guest
+    password: guest
+    template:
+      exchange: delayedExchange
+      routing-key: fileDeletionQueue
 
 logging:
   level:

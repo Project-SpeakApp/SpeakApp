@@ -15,6 +15,7 @@ import com.speakapp.postservice.repositories.CommentRepository;
 import com.speakapp.postservice.repositories.FavouriteListRepository;
 import com.speakapp.postservice.repositories.PostReactionRepository;
 import com.speakapp.postservice.repositories.PostRepository;
+import com.speakapp.postservice.services.rabbitmq.FileDeletionProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +44,8 @@ public class PostService {
     private final PostPageMapper postPageMapper;
 
     private final UserServiceCommunicationClient userServiceCommunicationClient;
+
+    private final FileDeletionProducer fileDeletionProducer;
 
     public PostGetDTO createPost(PostCreateDTO postCreateDTO, UUID userId) {
         Post savedPost = postRepository.save(postMapper.toEntity(postCreateDTO, userId));
@@ -114,10 +117,9 @@ public class PostService {
         Post postToDelete = postRepository.findById(postId).orElseThrow(() ->
                 new PostNotFoundException(postId));
 
-
         if (!userId.equals(postToDelete.getUserId()))
             throw new AccessDeniedException("Only author of the post can delete it");
-
+        fileDeletionProducer.sendFileDeletionMessage(postToDelete.getMediaId());
         postRepository.delete(postToDelete);
     }
 
