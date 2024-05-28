@@ -120,8 +120,13 @@ services:
       - net-messageDB-chatServ
       - net-apiGw-chatServ
       - net-userServ-chatServ
+      - net-eureka-config
     depends_on:
       message-db-service:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
 
   message-db-service:

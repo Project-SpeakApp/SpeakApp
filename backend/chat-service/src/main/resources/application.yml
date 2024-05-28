@@ -1,6 +1,12 @@
 server:
   port: 8084
 
+spring:
+  application:
+    name: chat-service
+  config:
+    import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-server:8888/chat-service}
+
 logging:
   level:
     org.springframework.web: DEBUG
