@@ -33,7 +33,7 @@ public class ApiGatewayApplication {
                 )
                 .route("chat-service-ws", r -> r
                         .path("/app/**", "/chat/**", "/ws")
-                        .uri("ws://chat-service:8084")
+                        .uri("wss://chat-service:8084")
                 )
                 .build();
     }

@@ -22,7 +22,7 @@ export class ChatService {
 
 
   public connect(userId: string): void {
-    const socket = new SockJS('http://localhost:8084/ws');
+    const socket = new SockJS('https://localhost:4443/api/ws');
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe(`/chat/${userId}`, (message: { body: string; }) => {
