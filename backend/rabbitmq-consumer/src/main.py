@@ -7,7 +7,6 @@ import logging
 from azurebatchload import Utils
 import os
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
@@ -45,15 +44,12 @@ class FileDeletionConsumer:
 
     def callback(self, ch, method, properties, body):
         try:
-            # Assuming the body contains the message in the format: type,mediaId,userId
             type_name, media_id = body.decode('utf-8').split(',')
             logging.info(f"Received type: {type_name}, media_id: {media_id}")
 
-            # Get container client
             container_client = self.blob_service_client.get_container_client(self.container_name)
             prefix = f"{type_name}/{media_id}"
 
-            # List blobs with the specified prefix
             blob_list = container_client.list_blobs(name_starts_with=prefix)
 
             found_blob = None
@@ -67,7 +63,6 @@ class FileDeletionConsumer:
             if found_blob:
                 blob_client = container_client.get_blob_client(found_blob.name)
                 try:
-                    # Perform the delete operation
                     blob_client.delete_blob(delete_snapshots='only')
                     logging.info(f"Deleted file: {found_blob.name}")
                     return
@@ -97,6 +92,5 @@ class FileDeletionConsumer:
 
 
 if __name__ == "__main__":
-    # Create consumer
     consumer = FileDeletionConsumer()
     consumer.consume_messages()
