@@ -68,7 +68,7 @@ class FileDeletionConsumer:
                 blob_client = container_client.get_blob_client(found_blob.name)
                 try:
                     # Perform the delete operation
-                    blob_client.delete_blob()
+                    blob_client.delete_blob(delete_snapshots='only')
                     logging.info(f"Deleted file: {found_blob.name}")
                     return
                 except ResourceNotFoundError:
