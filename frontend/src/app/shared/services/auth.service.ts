@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   public manageAccount() {
-    window.location.href = 'http://localhost:8443/realms/SpeakApp/account/#/security/signingin';
+    window.location.href = 'https://localhost:8443/realms/SpeakApp/account/#/security/signingin';
   }
 
   public updateProfilePhoto(photoId: string) {
