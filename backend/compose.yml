@@ -228,7 +228,6 @@ services:
       - net-apiGw-blobServ
       - net-blobServ-azurite
       - net-eureka-config
-      - net-rabbitmq
     depends_on:
       azurite:
         condition: service_healthy
@@ -261,6 +260,7 @@ services:
       - '10002:10002'
     networks:
       - net-blobServ-azurite
+      - net-rabbitmq
     healthcheck:
       test: nc 127.0.0.1 10000 -z
       interval: 1s
@@ -272,7 +272,6 @@ services:
       context: rabbitmq-consumer
     networks:
       - net-rabbitmq
-      - net-blobServ-azurite
     depends_on:
       rabbitmq:
         condition: service_healthy
