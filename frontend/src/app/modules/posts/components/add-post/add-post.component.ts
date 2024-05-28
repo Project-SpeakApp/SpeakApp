@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PostService} from '../../sevices/post.service';
-import {pipe, Subscription, tap} from 'rxjs';
+import {Subscription, tap} from 'rxjs';
 import {AlertService} from '../../../../shared/services/alert.service';
 import {AddPost} from "../../../../shared/types/posts/add-post.model";
 import {PostGet} from "../../../../shared/types/posts/post-get.model";
@@ -55,6 +55,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.myForm.reset();
           this.selectedFile = null;
+          this.fileInputElement.nativeElement.value = '';
         },
         (error) => {
           this.isLoading = false;

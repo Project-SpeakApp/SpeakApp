@@ -21,7 +21,7 @@ public class ReactionService {
     
     public ReactionType createUpdatePostReaction(ReactionType newReaction, UUID postId, UUID userId){
         Post post = postRepository.findById(postId).orElseThrow(() ->
-                new PostNotFoundException("Post with id = " + postId + " has not been found"));
+                new PostNotFoundException(postId));
         PostReaction oldReaction = postReactionRepository.findPostReactionByPostAndUserId(post, userId);
 
         if (oldReaction == null && newReaction != null) {
@@ -47,7 +47,7 @@ public class ReactionService {
         CommentReaction oldReaction = commentReactionRepository.findCommentReactionByCommentAndUserId(comment, userId);
 
         if (oldReaction == null && newReaction != null) {
-            comment.incrementNumberOfReactions();
+            commentRepository.incrementNumberOfReactions(commentId);
             commentReactionRepository.save(CommentReaction.builder()
                     .comment(comment)
                     .userId(userId)
@@ -55,7 +55,7 @@ public class ReactionService {
                     .build());
         }
         if (oldReaction != null && newReaction == null) {
-            comment.decrementNumberOfReactions();
+            commentRepository.decrementNumberOfReactions(commentId);
             commentReactionRepository.delete(oldReaction);
         }
         if (oldReaction != null && newReaction != null) {

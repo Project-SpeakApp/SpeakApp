@@ -16,10 +16,11 @@
       <p>Comment</p>
     </div>
   </button>
-  <button class="w-[calc(470px/3)] hover:bg-base-200 rounded">
-    <div class="flex flex-row gap-2 justify-center">
-      <span class="material-symbols-outlined inline">share</span>
-      <p>Share</p>
+  <button class="w-[calc(470px/3)] hover:bg-base-200 rounded" (click)="manageFavourite()">
+    <div [ngClass]="{'flex flex-row gap-2 justify-center': true, 'text-secondary': post.favourite}"
+    >
+      <span class="material-symbols-outlined inline">bookmark</span>
+      <p>Save<span *ngIf="post.favourite">d</span></p>
     </div>
   </button>
 </div>

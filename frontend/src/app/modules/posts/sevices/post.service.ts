@@ -12,20 +12,33 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   updatePost(postId: string, model: AddPost): Observable<PostGet> {
-    return this.http.put<PostGet>(`http://localhost:8080/api/posts/${postId}`, model);
+    return this.http.put<PostGet>(`https://localhost:4443/api/posts/${postId}`, model);
   }
 
   deletePost(postId: string): Observable<void> {
-    return this.http.delete<void>(`http://localhost:8080/api/posts/${postId}`);
+    return this.http.delete<void>(`https://localhost:4443/api/posts/${postId}`);
   }
 
   addPost(model: AddPost): Observable<PostGet> {
-    return this.http.post<PostGet>('http://localhost:8080/api/posts', model);
+    return this.http.post<PostGet>('https://localhost:4443/api/posts', model);
   }
 
-  getPosts(page: number, size: number): Observable<PostGetResponse> {
+  getPosts(page: number, size: number, favouritePosts?: boolean, userId?: string, friendsOnly?: boolean): Observable<PostGetResponse> {
     let params = new HttpParams();
     params = params.set('pageNumber', page.toString()).set('pageSize', size.toString());
-    return this.http.get<PostGetResponse>('http://localhost:8080/api/posts', {params});
+
+    const url = favouritePosts ? 'https://localhost:4443/api/posts/favouriteList' :
+      userId ? `https://localhost:4443/api/posts/by-user/${userId}` :
+      friendsOnly ? 'https://localhost:4443/api/posts/by-friends' : 'https://localhost:4443/api/posts';
+
+    return this.http.get<PostGetResponse>(url,  {params});
+  }
+
+  saveToFavourites(postId: string): Observable<void> {
+    return this.http.post<void>(`https://localhost:4443/api/posts/favouriteList`, { postId: postId });
+  }
+
+  removeFromFavourites(postId: string): Observable<void> {
+    return this.http.delete<void>(`https://localhost:4443/api/posts/favouriteList`, { body: {postId: postId}});
   }
 }

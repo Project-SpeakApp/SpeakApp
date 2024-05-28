@@ -19,6 +19,8 @@ export class AuthService {
 
   state = signal(this.defaultState);
 
+  requestCount = signal(0);
+
   public updateState() {
     try {
       this.keycloak.loadUserProfile().then(x => {
@@ -38,6 +40,10 @@ export class AuthService {
     }
   }
 
+  public updateRequestsCount(amount: number) {
+    this.requestCount.update((s) => s - amount);
+  }
+
   public async login(options?: Keycloak.KeycloakLoginOptions) {
     await this.keycloak.login(options);
     this.updateState();
@@ -54,7 +60,7 @@ export class AuthService {
   }
 
   public manageAccount() {
-    window.location.href = 'http://localhost:8443/realms/SpeakApp/account/#/security/signingin';
+    window.location.href = 'https://localhost:8443/realms/SpeakApp/account/#/security/signingin';
   }
 
   public updateProfilePhoto(photoId: string) {

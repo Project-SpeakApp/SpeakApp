@@ -742,8 +742,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:4200/*",
-        "http://localhost:4200"
+        "https://localhost:4443/*",
+        "https://localhost:4443"
       ],
       "webOrigins": [
         "+"
@@ -760,7 +760,7 @@
       "protocol": "openid-connect",
       "attributes": {
         "login_theme": "keywind",
-        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4200",
+        "post.logout.redirect.uris": "https://localhost:4443/*##https://localhost:4443",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "use.refresh.tokens": "true",
@@ -846,7 +846,7 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:8443/*"
+        "https://localhost:8443/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1708,7 +1708,20 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "replyToDisplayName": "SpeakApp",
+    "starttls": "false",
+    "auth": "true",
+    "envelopeFrom": "",
+    "ssl": "true",
+    "password": "gutg vlke lrlr vkuf",
+    "port": "465",
+    "host": "smtp.gmail.com",
+    "replyTo": "speakappproject@gmail.com",
+    "from": "speakappproject@gmail.com",
+    "fromDisplayName": "SpeakApp",
+    "user": "speakappproject@gmail.com"
+  },
   "eventsEnabled": false,
   "eventsListeners": [
     "custom-event-listener",

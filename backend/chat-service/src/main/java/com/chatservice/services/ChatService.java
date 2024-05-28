@@ -16,7 +16,8 @@ import com.chatservice.entities.Message;
 import com.chatservice.entities.MessageType;
 import com.chatservice.exceptions.AccessDeniedException;
 import com.chatservice.exceptions.BadRequestException;
-import com.chatservice.exceptions.ConversationNotFound;
+import com.chatservice.exceptions.ConversationNotFoundException;
+import com.chatservice.exceptions.MessageNotFoundException;
 import com.chatservice.repositories.ConversationRepository;
 import com.chatservice.repositories.GroupMemberRepository;
 import com.chatservice.repositories.MessageRepository;
@@ -143,7 +144,7 @@ public class ChatService {
       UUID conversationId,
       UUID userId) {
     Conversation conversation = conversationRepository.findByConversationId(conversationId)
-        .orElseThrow(ConversationNotFound::new);
+        .orElseThrow(ConversationNotFoundException::new);
 
     if (!groupMemberRepository.existsGroupMemberByConversationAndAndUserId(conversation, userId)) {
       throw new AccessDeniedException();
@@ -162,10 +163,9 @@ public class ChatService {
     }).toList();
   }
 
-  public void saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO) {
-    Conversation conversation = conversationRepository.findByConversationId(
-            messagePrivateCreateDTO.getConversationId())
-        .orElseThrow(ConversationNotFound::new);
+  public void saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
+    Conversation conversation = conversationRepository.findByConversationId(messagePrivateCreateDTO.getConversationId())
+        .orElseThrow(ConversationNotFoundException::new);
 
     messageRepository.save(Message.builder()
         .fromUserId(messagePrivateCreateDTO.getFromUserId())
@@ -174,6 +174,20 @@ public class ChatService {
         .conversation(conversation)
         .responseToMessage(null)
         .build());
+  }
+
+  public void deleteMessage(UUID messageId, UUID fromUserId){
+        Message messageToDelete = messageRepository.findByMessageIdAndFromUserId(messageId, fromUserId)
+                .orElseThrow(MessageNotFoundException::new);
+
+        if(messageToDelete.isDeleted()){
+            throw new BadRequestException("Message is already deleted!");
+        }
+        else{
+            messageToDelete.setDeleted(true);
+        }
+
+        messageRepository.save(messageToDelete);
   }
 
   public ConversationPageDTO getConversationsByUsernameOrConversationName(int pageNumber,

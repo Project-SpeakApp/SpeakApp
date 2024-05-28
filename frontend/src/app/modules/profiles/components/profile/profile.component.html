@@ -10,7 +10,7 @@
         class="object-cover w-full h-full rounded-[20px] bg-black"
         [src]="backgroundSrc"
         alt="user background picture">
-      <label class="absolute left-[0px] top-[0px] max-w-[calc(64rem)] w-[calc(100%)] h-[250px] rounded-[20px] cursor-pointer z-0 justify-center flex flex-col opacity-0 hover:opacity-100">
+      <label *ngIf="authState().userId === profile.userId" class="absolute left-[0px] top-[0px] max-w-[calc(64rem)] w-[calc(100%)] h-[250px] rounded-[20px] cursor-pointer z-0 justify-center flex flex-col opacity-0 hover:opacity-100">
         <div class="mx-auto">
           <span class="material-symbols-outlined text-black text-[100px]">photo_camera</span>
         </div>
@@ -22,7 +22,7 @@
       <div class="avatar">
         <div [ngClass]="{ 'w-[180px] rounded-full border-white border-4' : true,
                     'hover:filter hover:brightness-50 hover:blur-[1px]': authState().userId === profile.userId}">
-          <label class="absolute w-[180px] h-[180px] rounded-full cursor-pointer z-40 justify-center flex flex-col opacity-0 hover:opacity-100">
+          <label *ngIf="authState().userId === profile.userId" class="absolute w-[180px] h-[180px] rounded-full cursor-pointer z-40 justify-center flex flex-col opacity-0 hover:opacity-100">
             <div class="mx-auto">
               <span class="material-symbols-outlined text-black text-[100px]">photo_camera</span>
             </div>
@@ -36,13 +36,43 @@
         <div class="flex flex-row justify-between">
           <h1 class="text-3xl font-semibold">{{ profile.firstName + " " + profile.lastName }}</h1>
           <div class="flex flex-row gap-2">
-            <button class="flex flex-row gap-2 app-btn btn-primary" (click)="changePassword()">
+            <button *ngIf="authState().userId === profile.userId" class="flex flex-row gap-2 app-btn btn-primary" (click)="changePassword()">
               <h2 class="">Manage Account</h2>
               <span class="material-symbols-outlined">manage_accounts</span>
             </button>
-            <button class="flex flex-row gap-2 app-btn btn-primary" routerLink="settings">
+            <button *ngIf="authState().userId === profile.userId" class="flex flex-row gap-2 app-btn btn-primary" routerLink="settings">
               <h2 class="">Preferences</h2>
               <span class="material-symbols-outlined">settings</span>
+            </button>
+            <ng-container *ngIf="authState().userId !== profile.userId">
+              <button *ngIf="profile.friendStatus === null" [disabled]="sendRequestLoading"  class="flex flex-row gap-2 app-btn btn-primary w-[193px]" (click)="sendRequest()">
+                <h2 *ngIf="!sendRequestLoading" class="">Send friend request</h2>
+                <span *ngIf="sendRequestLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!sendRequestLoading" class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_TO_ACCEPT" [disabled]="acceptRequestLoading"  class="flex flex-row gap-2 app-btn btn-primary w-[107px]" (click)="acceptRequest()">
+                <h2 *ngIf="!acceptRequestLoading" class="">Accept</h2>
+                <span *ngIf="acceptRequestLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!acceptRequestLoading" class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_TO_ACCEPT" [disabled]="rejectRequestLoading" class="flex flex-row gap-2 app-btn btn-error w-[107px]" (click)="rejectRequest()">
+                <h2 *ngIf="!rejectRequestLoading" class="">Reject</h2>
+                <span *ngIf="rejectRequestLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!rejectRequestLoading" class="material-symbols-outlined">person_remove</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.REQUEST_SENT" class="flex flex-row gap-2 app-btn btn-primary" disabled>
+                <h2 class="">Request sent</h2>
+                <span class="material-symbols-outlined">person_add</span>
+              </button>
+              <button *ngIf="profile.friendStatus === FriendStatus.FRIEND" [disabled]="unfriendLoading" class="flex flex-row gap-2 app-btn btn-error w-[117px]" (click)="unfriend()">
+                <h2 *ngIf="!unfriendLoading" class="">Unfriend</h2>
+                <span *ngIf="unfriendLoading" class="loading loading-spinner"></span>
+                <span *ngIf="!unfriendLoading" class="material-symbols-outlined justify-self-end">person_remove</span>
+              </button>
+            </ng-container>
+            <button *ngIf="authState().userId !== profile.userId" class="flex flex-row gap-2 app-btn btn-primary">
+              <h2 class="">Chat</h2>
+              <span class="material-symbols-outlined">chat</span>
             </button>
           </div>
         </div>
@@ -50,7 +80,7 @@
     </div>
   </div>
   <div class="flex flex-row justify-between mt-4">
-    <app-user-profile-navigation></app-user-profile-navigation>
+    <app-user-profile-navigation [userId]="profile.userId"></app-user-profile-navigation>
     <app-profile-search-form></app-profile-search-form>
   </div>
 </div>

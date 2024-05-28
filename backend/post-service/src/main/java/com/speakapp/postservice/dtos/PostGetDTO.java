@@ -30,4 +30,6 @@ public class PostGetDTO {
     Long totalNumberOfComments;
     
     UUID mediaId;
+
+    boolean favourite;
 }

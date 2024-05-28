@@ -6,7 +6,7 @@ export function initializeKeycloak(
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8443',
+        url: 'https://localhost:8443',
         realm: 'SpeakApp',
         clientId: 'SpeakAppClient',
       },
