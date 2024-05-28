@@ -28,6 +28,7 @@ function connect(event) {
 
         stompClient.connect({}, onConnected, onError);
     }
+
     event.preventDefault();
 }
 
@@ -41,6 +42,11 @@ function onConnected() {
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
+
+    stompClient.ws.onclose = function(event) {
+        alert("Session expired - send new handshake request");
+        console.log("Session expired");
+    };
 
     connectingElement.classList.add('hidden');
 }
