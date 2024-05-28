@@ -1,0 +1,45 @@
+.chat-preview {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  min-height: 80px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  margin-right: 10px;
+}
+
+.details {
+  flex-grow: 1;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.last-message {
+  color: gray;
+  word-break: break-word;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.new-message-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green;
+}

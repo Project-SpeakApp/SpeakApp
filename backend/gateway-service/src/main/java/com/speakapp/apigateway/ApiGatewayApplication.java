@@ -13,6 +13,7 @@ public class ApiGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
+
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
@@ -27,8 +28,12 @@ public class ApiGatewayApplication {
                         .uri("http://blob-service:8083")
                 )
                 .route("chat-service", r -> r
-                        .path("/api/chat/**", "/chat.sendMessage")
+                        .path("/api/chat/**", "/ws")
                         .uri("http://chat-service:8084")
+                )
+                .route("chat-service-ws", r -> r
+                        .path("/app/**", "/chat/**", "/ws")
+                        .uri("ws://chat-service:8084")
                 )
                 .build();
     }

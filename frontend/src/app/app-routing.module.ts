@@ -7,6 +7,7 @@ import { UserProfileInfoPageComponent } from './modules/profiles/components/user
 import { UserProfileSettingsPageComponent } from './modules/profiles/components/user-profile-settings-page/user-profile-settings-page.component';
 import {PostFeedPageComponent} from "./modules/posts/components/post-feed-page/post-feed-page.component";
 import {AuthGuard} from "./guard/auth.guard";
+import {MainViewComponent} from "./modules/chat/components/main-view/main-view.component";
 import {UserPostsPageComponent} from "./modules/posts/components/user-posts-page/user-posts-page.component";
 import {
   UserFavoritePostsPageComponent
@@ -27,6 +28,7 @@ const routes: Routes = [
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostFeedPageComponent, canActivate: [AuthGuard]},
+  {path: 'chats', component:MainViewComponent, canActivate: [AuthGuard]},
   { path: 'friends', component: FriendsPageComponent, canActivate: [AuthGuard]},
   { path: '**', component: NotFoundPageComponent },
 

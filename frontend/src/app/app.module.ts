@@ -12,6 +12,7 @@ import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {HttpErrorHandler} from "./http-interceptor/http-error-handler";
 import {AlertService} from "./shared/services/alert.service";
+import {ChatModule} from "./modules/chat/chat.module";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {AlertService} from "./shared/services/alert.service";
     ProfilesModule,
     PostsModule,
     SharedModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    ChatModule
   ],
   exports: [],
   providers: [

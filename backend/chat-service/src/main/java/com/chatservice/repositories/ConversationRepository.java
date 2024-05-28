@@ -17,6 +17,6 @@ public interface ConversationRepository extends JpaRepository<Conversation, UUID
             "AND gm.conversation.conversationId IN " +
             "(SELECT gm2.conversation.conversationId FROM group_member gm2 WHERE gm2.userId = :userId2)")
     List<UUID> findConversationsForTwoUsers(UUID userId1, UUID userId2);
-  Optional<Conversation> findByConversationId(UUID conversationID);
+  Optional<Conversation> findByConversationId(UUID conversationId);
 
 }

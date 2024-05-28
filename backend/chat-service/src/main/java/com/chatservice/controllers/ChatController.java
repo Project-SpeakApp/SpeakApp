@@ -1,15 +1,12 @@
 package com.chatservice.controllers;
 
 
-import com.chatservice.dtos.ChatPreviewPageDTO;
-import com.chatservice.dtos.MessageGetDTO;
-import com.chatservice.dtos.MessagePrivateCreateDTO;
-import com.chatservice.dtos.NewPrivateConversationDTO;
+import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
+import com.chatservice.entities.Message;
 import com.chatservice.services.ChatService;
 import com.chatservice.utils.JwtDecoder;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -31,8 +28,10 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload MessagePrivateCreateDTO messageDTO){
-        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), messageDTO);
-        chatService.saveMessage(messageDTO);
+        Message savedMessage = chatService.saveMessage(messageDTO);
+        MessageGetDTO convertedMessage = chatService.convertMessageToGetDTO(savedMessage);
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getToUserId(), convertedMessage);
+        messagingTemplate.convertAndSend("/chat/" + messageDTO.getFromUserId(), convertedMessage);
     }
 
     @PostMapping("/api/chat")
@@ -67,10 +66,10 @@ public class ChatController {
 
   @GetMapping("/api/chat/{conversationId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<MessageGetDTO> getConversationHistory(@RequestParam(defaultValue = "0") int pageNumber,
-      @RequestParam(defaultValue = "5") int pageSize,
-      @PathVariable UUID conversationId,
-      @RequestHeader("Authorization") String authHeader) {
+  public ConversationHistoryGetDTO getConversationHistory(@RequestParam(defaultValue = "0") int pageNumber,
+                                                          @RequestParam(defaultValue = "5") int pageSize,
+                                                          @PathVariable UUID conversationId,
+                                                          @RequestHeader("Authorization") String authHeader) {
     String jwtToken = authHeader.replace(AUTH_HEADER_PREFIX, "");
     UUID userId = jwtDecoder.extractUserIdFromJwt(jwtToken);
 

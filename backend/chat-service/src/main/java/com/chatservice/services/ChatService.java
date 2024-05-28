@@ -1,13 +1,7 @@
 package com.chatservice.services;
 
 import com.chatservice.communication.UserServiceCommunicationClient;
-import com.chatservice.dtos.ChatPreviewDTO;
-import com.chatservice.dtos.ChatPreviewPageDTO;
-import com.chatservice.dtos.ConversationGetDTO;
-import com.chatservice.dtos.MessageGetDTO;
-import com.chatservice.dtos.MessagePrivateCreateDTO;
-import com.chatservice.dtos.NewPrivateConversationDTO;
-import com.chatservice.dtos.UserGetDTO;
+import com.chatservice.dtos.*;
 import com.chatservice.entities.Conversation;
 import com.chatservice.entities.GroupMember;
 import com.chatservice.entities.Message;
@@ -23,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -94,21 +89,33 @@ public class ChatService {
     private ChatPreviewDTO createChatPreviewDTO(Message message){
         Conversation getConversationForMessage = message.getConversation();
 
+        UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
+
+        MessageGetDTO messageGetDTO = MessageGetDTO.builder()
+                .content(message.getContent())
+                .type(message.getType())
+                .fromUser(messageAuthor)
+                .conversationId(message.getConversation().getConversationId())
+                .sentAt(message.getSentAt()).build();
+
+        List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(getConversationForMessage.getConversationId());
+
+        if(conversationMembers.size() == 2 && getConversationForMessage.getConversationName() == null){
+            for(UUID conversationMember : conversationMembers){
+                if(!conversationMember.equals(messageAuthor.getUserId())){
+                    String nameOfMessageReciever = userServiceCommunicationClient.getUserById(message.getFromUserId()).getFullName();
+                    getConversationForMessage.setConversationName(nameOfMessageReciever);
+                    break;
+                }
+            }
+        }
+
         ConversationGetDTO conversationGetDTO = ConversationGetDTO.builder()
                 .conversationId(getConversationForMessage.getConversationId())
                 .conversationName(getConversationForMessage.getConversationName())
                 .isGroupConversation(getConversationForMessage.isGroupConversation())
                 .build();
 
-
-        UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
-
-        MessageGetDTO messageGetDTO = MessageGetDTO.builder()
-                .content(message.getContent())
-                .type(message.getType())
-                .fromUser(messageAuthor).build();
-
-        List<UUID> conversationMembers = groupMemberRepository.findUserIdsByConversation(getConversationForMessage.getConversationId());
         List<UserGetDTO> conversationMembersDTO = conversationMembers.stream().map(userServiceCommunicationClient::getUserById).toList();
 
         return ChatPreviewDTO.builder()
@@ -117,8 +124,8 @@ public class ChatService {
                 .conversationGetDTO(conversationGetDTO).build();
     }
 
-  public List<MessageGetDTO> getConversationHistory(int pageNumber, int pageSize, UUID conversationId,
-      UUID userId) {
+  public ConversationHistoryGetDTO getConversationHistory(int pageNumber, int pageSize, UUID conversationId,
+                                                          UUID userId) {
     Conversation conversation = conversationRepository.findByConversationId(conversationId)
         .orElseThrow(ConversationNotFoundException::new);
 
@@ -126,23 +133,30 @@ public class ChatService {
       throw new AccessDeniedException();
     }
 
-    Pageable page = PageRequest.of(pageNumber, pageSize);
+    Sort sort = Sort.by(Sort.Direction.DESC, "sentAt");
+    Pageable page = PageRequest.of(pageNumber, pageSize, sort);
     Page<Message> messagesPage = messageRepository.findAllByConversationOrderByDeliveredAtDesc(conversation, page);
 
-    return messagesPage.getContent().stream().map(message -> {
-      return MessageGetDTO.builder()
-          .fromUser(userServiceCommunicationClient.getUserById(message.getFromUserId()))
-          .content(message.getContent())
-          .type(MessageType.valueOf(message.getType().toString()))
-          .build();
-    }).toList();
+    List<MessageGetDTO> listOfMessages = messagesPage.getContent().stream().map(message -> MessageGetDTO.builder()
+        .fromUser(userServiceCommunicationClient.getUserById(message.getFromUserId()))
+        .content(message.getContent())
+        .type(MessageType.valueOf(message.getType().toString()))
+        .conversationId(message.getConversation().getConversationId())
+        .sentAt(message.getSentAt())
+        .build()).toList();
+
+    return ConversationHistoryGetDTO.builder()
+            .listOfMessages(listOfMessages)
+            .listOfMessages(listOfMessages)
+            .currentPage(page.getPageNumber())
+            .totalPages(messagesPage.getTotalPages()).build();
   }
 
-  public void saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
+  public Message saveMessage(MessagePrivateCreateDTO messagePrivateCreateDTO){
     Conversation conversation = conversationRepository.findByConversationId(messagePrivateCreateDTO.getConversationId())
         .orElseThrow(ConversationNotFoundException::new);
 
-    messageRepository.save(Message.builder()
+    return messageRepository.save(Message.builder()
             .fromUserId(messagePrivateCreateDTO.getFromUserId())
             .content(messagePrivateCreateDTO.getContent())
             .type(messagePrivateCreateDTO.getType())
@@ -151,6 +165,20 @@ public class ChatService {
         .build());
   }
 
+
+  public MessageGetDTO convertMessageToGetDTO(Message message) {
+      conversationRepository.findByConversationId(message.getConversation().getConversationId())
+              .orElseThrow(ConversationNotFoundException::new);
+
+      UserGetDTO messageAuthor = userServiceCommunicationClient.getUserById(message.getFromUserId());
+      return MessageGetDTO.builder()
+              .sentAt(message.getSentAt())
+              .conversationId(message.getConversation().getConversationId())
+              .content(message.getContent())
+              .fromUser(messageAuthor)
+              .type(message.getType())
+              .build();
+  }
   public void deleteMessage(UUID messageId, UUID fromUserId){
         Message messageToDelete = messageRepository.findByMessageIdAndFromUserId(messageId, fromUserId)
                 .orElseThrow(MessageNotFoundException::new);

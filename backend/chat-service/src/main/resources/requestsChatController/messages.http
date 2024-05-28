@@ -1,0 +1,3 @@
+### No Parameters request
+GET http://localhost:8084/api/chat/6c84fbad-12c4-11ec-82a8-0242ac130011
+Authorization: Bearer Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Yzg0ZmI5YS0xMmM0LTExZWMtODJhOC0wMjQyYWMxMzAwMDMiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ORoUNvS-mE_eCUcOLfzWPryTlpOnvvxepvjnggDvHRs
