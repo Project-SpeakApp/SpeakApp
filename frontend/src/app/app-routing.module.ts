@@ -28,7 +28,7 @@ const routes: Routes = [
   ]},
   { path: 'profiles/:id/settings', component: UserProfileSettingsPageComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostFeedPageComponent, canActivate: [AuthGuard]},
-  {path: 'chats', component:MainViewComponent},
+  {path: 'chats', component:MainViewComponent, canActivate: [AuthGuard]},
   { path: 'friends', component: FriendsPageComponent, canActivate: [AuthGuard]},
   { path: '**', component: NotFoundPageComponent },
 
