@@ -16,7 +16,7 @@ public class PostServiceCommunication {
 
     public PostServiceCommunication() {
         webClient = WebClient.builder()
-                .baseUrl("http://post-service:8082")
+                .baseUrl("http://post-service")
                 .build();
     }
 
